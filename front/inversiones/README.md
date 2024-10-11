@@ -27,3 +27,8 @@ npm run dev
 ```sh
 npm run build
 ```
+### TO use sweeat alert
+
+```sh
+import Swal from 'sweetalert2'
+```
