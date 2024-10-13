@@ -73,3 +73,5 @@
 
 ### NOTA:
 - Agregar el campo "estado" de tipo tinyint(1) con valor por defecto de 1 en la tabla usuarios 
+- agregar copiar  en su .env las credenciales de Cloudnary 
+CLOUDINARY_URL=cloudinary://699232622624775:jzrk1Lsi_Is_WbEbTV7au7NqEw8@dpb4sg7pc
