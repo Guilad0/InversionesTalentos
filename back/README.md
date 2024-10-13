@@ -1,13 +1,14 @@
 # Rutas de los endpoinst para los usuarios de tipo inversores
+
 ### Obtener todos los inversores
 - **Método**: `GET`
-- **Ruta**: `http://localhost:3000/users/investors`
-- **Descripción**: Lista todos los inversores
+- **Ruta**: `http://localhost:3000/users/`
+- **Descripción**: Lista todos los usuarios
 
-### Registar inversores
+### Registar inversores, clientes
 - **Método**: `POST`
-- **Ruta**: `http://localhost:3000/users/investors`
-- **Descripción**: Registra un inversor
+- **Ruta**: `http://localhost:3000/users/`
+- **Descripción**: Registra un inversor,admin, o cliente
 - **BodyEjemplo**:
 {
   "nombre": "John",
@@ -19,7 +20,7 @@
   "password": "securepassword123",
   "acepta_terminos": "1",
   "categoria_persona_id":1,
-  "rol": "cliente"
+  "rol": "cliente || inversor || admin"
 }
 
 ### modifica inversores
@@ -36,10 +37,39 @@
 
 ### modifica el estado de un inversores
 - **Método**: `PUT`
-- **Ruta**: `http://localhost:3000/users/Stateinvestors/id_usuario`
+- **Ruta**: `http://localhost:3000/users/Stateinvestors/id = id del inversor`
 - **Descripción**: Modifica el estado de un inversor
 
+### agrega informacion del cliente
+- **Método**: `POST`
+- **Ruta**: `http://localhost:3000/users/info`
+- **Descripción**: agrega la tabla informacion a un cliente
+
+### Editar informacion del cliente
+- **Método**: `PUT`
+- **Ruta**: `http://localhost:3000/users/info/id = id del cliente`
+- **Descripción**: Modifica la informacion del cliente
+
+### Muestra informacion del cliente por su id
+- **Método**: `GET`
+- **Ruta**: `http://localhost:3000/users/clients/info/id = id del cliente`
+- **Descripción**: Modifica la informacion del cliente
+
+### cargar imagen del cliente al servidor
+- **Método**: `POST`
+- **Ruta**: `http://localhost:3000/users/upload/id = colocar el id del cliente`
+- **Descripción**: Guarda una imagen en els ervidor en la carpeta uploads/images y ademas agrega el nombre de la imagen encripatada a la tabla de usuarios en imagen
+
+### Url de la imagen del cliente del servidor
+- **Método**: `GET`
+- **Ruta**: `http://localhost:3000/users/image/id = colocar el id del cliente`
+- **Descripción**: Crea un enlace para acceder a la imagen dels ervidor
+
+### CArgar imagen del cliente al servidor Cloudinary
+- **Método**: `POST`
+- **Ruta**: `http://localhost:3000/users/cloudinary/id=colocar el id del cliente`
+- **Descripción**: Gaurda la imagen en el servidor Cloudinary opcional, tambien modifica la   base de datos del usuario para tener una referencia de la imagen
 
 
 ### NOTA:
-- Agregar el campo "state" de tipo tinyint(1) con valor por defecto de 1 en la tabla usuarios 
+- Agregar el campo "estado" de tipo tinyint(1) con valor por defecto de 1 en la tabla usuarios 
