@@ -27,6 +27,49 @@ const getUsers  = (req, res)=>{
     })
 }
 
+/**
+ * Obtiene todos los clientes con su informacion
+ */
+const getAllClientesWithInfo  =async (req, res)=>{
+    let sql = 'select * from usuarios where rol="cliente"';
+    try {
+        conexion.query(sql, (err, data) => {
+            if (err) {
+                res.status(500).json({
+                    msg:'error al buscar clientes'
+                })
+                return;
+            }
+            const usersPromise = data.map( c =>{
+                return new Promise((resolve, reject)=>{
+                    sql = 'select * from informacion where cliente_id=? ';
+                    conexion.query(sql, [c.usuario_id], (err, result)=>{
+                        if( err ){
+                            return reject(err)
+                        }
+                        c.informacion = result;
+                        resolve(c)
+                    })
+                })
+            })
+            Promise.all(usersPromise)
+            .then( data =>{
+                res.status(200).json({
+                    clientes:data,
+                    cantidad:data.length
+                })
+            })
+            .catch( err =>{
+                res.status(500).json({ msg:'Error al obtener informacion del usuario' })
+            })
+            
+        });
+    } catch (error) { 
+        res.status(500).json({ msg: 'Error en el servidor' });
+    }
+    
+}
+
 
 /**
  *  Esta funsion obtiene la lista de todos los usuarios por su rol
@@ -413,6 +456,7 @@ module.exports = {
     getInfoClientById,
     putClientInfo,
     createUrlImg,
-    uploadimageUserCloudinary
+    uploadimageUserCloudinary,
+    getAllClientesWithInfo
 }
 

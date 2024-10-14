@@ -65,7 +65,12 @@
 - **Ruta**: `http://localhost:3000/users/image/id = colocar el id del cliente`
 - **Descripción**: Crea un enlace para acceder a la imagen dels ervidor
 
-### CArgar imagen del cliente al servidor Cloudinary
+### Obtiene los clientes con su informacion
+- **Método**: `GET`
+- **Ruta**: `http://localhost:3000/users/clients/all`
+- **Descripción**: Obtiene cada usuario con su informacion
+
+### Cargar imagen del cliente al servidor Cloudinary
 - **Método**: `POST`
 - **Ruta**: `http://localhost:3000/users/cloudinary/id=colocar el id del cliente`
 - **Descripción**: Gaurda la imagen en el servidor Cloudinary opcional, tambien modifica la   base de datos del usuario para tener una referencia de la imagen
@@ -73,5 +78,4 @@
 
 ### NOTA:
 - Agregar el campo "estado" de tipo tinyint(1) con valor por defecto de 1 en la tabla usuarios 
-- agregar copiar  en su .env las credenciales de Cloudnary 
-CLOUDINARY_URL=cloudinary://699232622624775:jzrk1Lsi_Is_WbEbTV7au7NqEw8@dpb4sg7pc
+- crearse una cuenta en Cloudinary y colocar sus credenciales en el .env
