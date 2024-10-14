@@ -11,6 +11,8 @@ var postsRouter = require('./routes/posts');
 var categoria_postsRouter = require('./routes/categoria_posts');
 var logrosRouter = require('./routes/logros');
 var categoriesRouter = require('./routes/categories')
+var linksRouter = require('./routes/links');
+var faqRouter = require('./routes/faq');
 
 var app = express();
 
@@ -34,5 +36,7 @@ app.use('/posts', postsRouter);
 app.use('/categoria_posts', categoria_postsRouter);
 app.use('/logros', logrosRouter);
 app.use('/categories',categoriesRouter )
+app.use('/links', linksRouter); 
+app.use('/faq', faqRouter);
 
 module.exports = app;
