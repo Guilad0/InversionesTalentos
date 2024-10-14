@@ -79,4 +79,26 @@ router.delete("/:id", (req, res) => {
     })
 });
 
+router.patch('/estado/:id', function (req, res, next) {
+    // res.send('estas eliminando productos');
+    const { cliente_id,descripcion, estado } = req.body;
+    var query = `UPDATE logros SET estado= !estado WHERE logro_id = ${req.params.id};`;
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.status(500).send({
+                error: error,
+                message: 'Error al realizar la peticion'
+            });
+        } else {
+            console.log(req.results);
+            res.status(200).send({
+                data: results,
+                message: 'Estado actualizado correctamente'
+            });
+        }
+    })
+});
+
 module.exports = router;
