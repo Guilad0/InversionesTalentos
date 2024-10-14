@@ -12,7 +12,8 @@ const {
         getInfoClientById,
         putClientInfo,
         uploadimageUserCloudinary,
-        createUrlImg
+        createUrlImg,
+        getAllClientesWithInfo
         } = require("../controllers/users");
 
 
@@ -28,5 +29,7 @@ router.post("/info/", addInfClient);
 router.put("/info/:id", putClientInfo);
 router.get("/image/:id", createUrlImg);
 router.post("/cloudinary/:id", uploadimageUserCloudinary);
+router.get("/clients/all", getAllClientesWithInfo);
+
 
 module.exports = router;
