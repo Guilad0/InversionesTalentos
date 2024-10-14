@@ -45,10 +45,10 @@ router.post("/", (req, res) => {
 
 router.put("/:post_id", (req, res) => {
   const { autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado } = req.body;
-  const { id } = req.params;
-  console.log(id);
+  const { post_id } = req.params;
+  console.log(post_id);
 
-  const producto = `UPDATE posts SET 
+  const post = `UPDATE posts SET 
     autor_id = '${autor_id}',
     categoria_id = '${categoria_id}',
     titulo = '${titulo}',

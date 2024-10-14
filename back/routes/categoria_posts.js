@@ -89,6 +89,27 @@ router.delete("/:categoria_id", (req, res) => {
   });
 });
 
+router.patch("/estado/:categoria_id", (req, res) => {
+  const { categoria_id } = req.params;
+
+  const post = `UPDATE categoria_posts SET estado = !estado WHERE categoria_id = ${categoria_id};`;
+
+  connection.query(categoria_post, (err, results) => {
+    if (err) {
+      //console.log(err);
+      res.status(500).send({
+        error: err,
+        message: "Error en la peticion",
+      });
+    } else {
+      //console.log(result);
+      res.status(200).json({
+        data: results,
+        message: "Actualizacion de estado exitoso",
+      });
+    }
+  });
+});
 
 
 

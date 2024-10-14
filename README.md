@@ -1,11 +1,18 @@
-# hamilo_inversiones
 
 
+# proyecto Inversiones
 
-weeeeyyy jonathan
+Descripción breve del proyecto.
 
-weeeeyyy jonathan jorgeeee el travieso
+## Requisitos Previos
 
-hola Cawalleros
-kjhgfjgjkfjhg 
+Antes de comenzar, asegúrate de instalar los modulos de node
+
+## Dependencias instaladas
+
+1. **SweetAlert2**
+2. **notyf**
+3. **CDN de bootstrap**
+
+
 
