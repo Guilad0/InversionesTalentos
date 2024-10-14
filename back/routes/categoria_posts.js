@@ -112,4 +112,5 @@ router.patch("/estado/:categoria_id", (req, res) => {
 });
 
 
+
 module.exports = router;
