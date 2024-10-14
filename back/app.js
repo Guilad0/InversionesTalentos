@@ -10,6 +10,7 @@ var contactRouter = require('./routes/contact');
 var postsRouter = require('./routes/posts');
 var categoria_postsRouter = require('./routes/categoria_posts');
 var logrosRouter = require('./routes/logros');
+var categoriesRouter = require('./routes/categories')
 
 var app = express();
 
@@ -26,11 +27,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', indexRouter); 
 app.use('/users', usersRouter);
 app.use('/contact', contactRouter);
 app.use('/posts', postsRouter);
 app.use('/categoria_posts', categoria_postsRouter);
 app.use('/logros', logrosRouter);
+app.use('/categories',categoriesRouter )
 
 module.exports = app;

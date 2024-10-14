@@ -13,7 +13,8 @@ const {
         putClientInfo,
         uploadimageUserCloudinary,
         createUrlImg,
-        getAllClientesWithInfo
+        getAllClientesWithInfo,
+        changeStateUser
         } = require("../controllers/users");
 
 
@@ -30,6 +31,7 @@ router.put("/info/:id", putClientInfo);
 router.get("/image/:id", createUrlImg);
 router.post("/cloudinary/:id", uploadimageUserCloudinary);
 router.get("/clients/all", getAllClientesWithInfo);
+router.put("/changeState/:id", changeStateUser);
 
 
 module.exports = router;
