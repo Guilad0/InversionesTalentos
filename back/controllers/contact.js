@@ -3,6 +3,11 @@ const conexion = require('../database');
 
 const transporter = require('../helpers/mailer');
 
+/**
+ * Controlador para manejar solicitudes GET y obtener la lista de contactos almacenados en la base de datos.
+ * @param {object} req - El objeto de solicitud de Express, contiene detalles de la solicitud HTTP.
+ * @param {object} res - El objeto de respuesta de Express, se utiliza para enviar una respuesta HTTP al cliente.
+ */
 const getContact = (req, res) => {
     let sql = 'select * from contacto';
     conexion.query(sql, (error, results) => {
@@ -18,6 +23,13 @@ const getContact = (req, res) => {
         }
     });
 }
+
+/**
+ * Controlador para manejar solicitudes POST y agregar un nuevo contacto(Comentario) a la base de datos.
+ * Además, envía un correo electrónico con los detalles del nuevo contacto(Comentario).
+ * @param {object} req - El objeto de solicitud de Express, contiene los datos del nuevo contacto en req.body.
+ * @param {object} res - El objeto de respuesta de Express, se utiliza para enviar una respuesta HTTP al cliente.
+ */
 const postContact = async (req, res) => {
     const { nombre, apellido, email, telefono, comentarios } = req.body;
     const sql = `INSERT INTO contacto(nombre, apellido, email, telefono, comentarios,estado) VALUES (?, ?, ?, ?, ?, 0)`;
@@ -133,6 +145,12 @@ const postContact = async (req, res) => {
     });
 
 }
+
+/**
+ * Controlador para manejar solicitudes PUT y cambiar el estado de un contacto específico en la base de datos.
+ * @param {object} req - El objeto de solicitud de Express, contiene el ID del contacto a modificar en req.params.id.
+ * @param {object} res - El objeto de respuesta de Express, se utiliza para enviar una respuesta HTTP al cliente.
+ */
 const putStateContact = async (req, res) => {
     let sql = `select * from contacto where contacto_id=${req.params.id}`;
     conexion.query(sql, (error, results) => {
