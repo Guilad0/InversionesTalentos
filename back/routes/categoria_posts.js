@@ -3,9 +3,9 @@ const { Router } = require("express");
 const router = Router();
 
 router.get("/", (req, res) => {
-  const posts = "SELECT * FROM posts";
+  const categoria_posts = "SELECT * FROM categoria_posts";
 
-  connection.query(posts, (err, results) => {
+  connection.query(categoria_posts, (err, results) => {
     if (err) {
       //console.log(err);
       res.status(500).send({
@@ -16,18 +16,18 @@ router.get("/", (req, res) => {
       //console.log(result);
       res.status(200).json({
         data: results,
-        message: "Lista de posts",
+        message: "Lista de categorias posts",
       });
     }
   });
 });
 
 router.post("/", (req, res) => {
-  const { autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado } = req.body;
+  const { nombre } = req.body;
 
-  const post = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${imagen_portada}", "${fecha_hora}", "${contenido}", "${estado}");`;
+  const post = `INSERT INTO posts(nombre) VALUES ("${nombre}");`;
 
-  connection.query(post, (err, results) => {
+  connection.query(categoria_post, (err, results) => {
     if (err) {
       //console.log(err);
       res.status(500).send({
@@ -43,24 +43,16 @@ router.post("/", (req, res) => {
   });
 });
 
-router.put("/:post_id", (req, res) => {
-  const { autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado } = req.body;
-  const { post_id } = req.params;
-  console.log(post_id);
+router.put("/:categoria_id", (req, res) => {
+  const { nombre } = req.body;
+  const { categoria_id } = req.params;
+  console.log(categoria_id);
 
-  const post = `UPDATE posts SET 
-    autor_id = '${autor_id}',
-    categoria_id = '${categoria_id}',
-    titulo = '${titulo}',
-    resumen = '${resumen}',
-    imagen_portada = '${imagen_portada}',
-    fecha_hora = '${fecha_hora}',
-    contenido = '${contenido}',
-    estado = '${estado}',
-    updated_at = CURRENT_TIMESTAMP()
-  WHERE post_id = ${post_id};`;
+  const producto = `UPDATE categoria_posts SET 
+    nombre = '${nombre}',
+  WHERE categoria = ${categoria_id};`;
 
-  connection.query(post, (err, results) => {
+  connection.query(categoria_post, (err, results) => {
     if (err) {
       //console.log(err);
       res.status(500).send({
@@ -76,10 +68,10 @@ router.put("/:post_id", (req, res) => {
   });
 });
 
-router.delete("/:post_id", (req, res) => {
-  const { post_id } = req.params;
+router.delete("/:categoria_id", (req, res) => {
+  const { categoria_id } = req.params;
 
-  const post = `DELETE FROM posts WHERE post_id = ${post_id};`;
+  const post = `DELETE FROM posts WHERE categoria_id = ${categoria_id};`;
 
   connection.query(post, (err, results) => {
     if (err) {
@@ -97,12 +89,12 @@ router.delete("/:post_id", (req, res) => {
   });
 });
 
-router.patch("/estado/:post_id", (req, res) => {
-  const { post_id } = req.params;
+router.patch("/estado/:categoria_id", (req, res) => {
+  const { categoria_id } = req.params;
 
-  const post = `UPDATE posts SET estado = !estado WHERE post_id = ${post_id};`;
+  const post = `UPDATE categoria_posts SET estado = !estado WHERE categoria_id = ${categoria_id};`;
 
-  connection.query(post, (err, results) => {
+  connection.query(categoria_post, (err, results) => {
     if (err) {
       //console.log(err);
       res.status(500).send({
