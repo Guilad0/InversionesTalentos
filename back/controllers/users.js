@@ -271,6 +271,38 @@ const putClientInfo = (req, res) => {
 };
 
 
+const changeStateUser = (req, res)=>{
+    let query = 'select * from usuarios where usuario_id = ? ';
+    conexion.query(query,[req.params.id],(err, data)=>{
+        if(err){
+            res.status(404).json({
+                msg:'Error al buscar usuarios'
+            })
+            return
+        }
+        if( data.length == 0 ){
+            res.status(404).json({
+                msg:'Usuario no encontrado'
+            })
+            return
+        }
+        query = 'update usuarios set state=!state where usuario_id = ?';
+        let state = data[0].state;
+        conexion.query(query,[req.params.id], err=>{
+            if(err){
+                res.status(404).json({
+                    msg:'Error al cambiar estado'
+                })
+                return
+            }
+            res.status(201).json({
+                msg:(state == '1')? 'Categoria no activa':'Categoria activa'
+            })
+        })
+
+    })
+}
+
 
 /**
  *  Esta funsion obtiene la informacion del usaurio tipo cliente por su id
@@ -457,6 +489,7 @@ module.exports = {
     putClientInfo,
     createUrlImg,
     uploadimageUserCloudinary,
-    getAllClientesWithInfo
+    getAllClientesWithInfo,
+    changeStateUser
 }
 

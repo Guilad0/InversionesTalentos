@@ -78,4 +78,5 @@
 
 ### NOTA:
 - Agregar el campo "estado" de tipo tinyint(1) con valor por defecto de 1 en la tabla usuarios 
+- Colocar unique en el nombre de categoria_personas
 - crearse una cuenta en Cloudinary y colocar sus credenciales en el .env
