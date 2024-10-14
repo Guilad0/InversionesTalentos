@@ -158,6 +158,27 @@ const updateImgCategory = (req, res)=>{
     })
 }
 
+const getById = (req, res)=>{
+    let query = 'select * from categoria_personas where categoria_persona_id=?';
+    conexion.query(query,[req.params.id], (err,data) =>{
+        if( err ){
+            res.status(400).json({
+                msg: 'Categoria no encontrada'
+            });
+            return;
+        }
+        if( data.length == 0 ){
+            res.status(404).json({
+                msg: 'Usuario no encontrada'
+            });
+            return;
+        }
+        res.status(500).json({
+            data
+        });
+    })
+}
+
 
 /* 
 gaurda una categoria yy sube la imagen a cloudnary
@@ -221,5 +242,6 @@ module.exports = {
     saveCategory,
     putCategorie,
     changeState,
-    updateImgCategory
+    updateImgCategory,
+    getById
 }
