@@ -160,7 +160,7 @@ const postUser = async (req, res) => {
 
 // Ruta de verificación
 const verifyEmail = ((req, res) => {
-    const { correo, verificationCode } = req.query;
+    const { correo, verificationCode } = req.body;
 
     const query = `SELECT * FROM usuarios WHERE correo = ? AND cod_verificacion = ?`;
     conexion.query(query, [correo, verificationCode], (err, results) => {
