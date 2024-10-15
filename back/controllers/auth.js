@@ -27,6 +27,14 @@ const auth =  (req, res) => {
         const user = results[0];
         const validPassword = await bcrypt.compare(password, user.password);
 
+        if (user.verificado === 0) {
+            res.status(400).json({
+                msg: 'Verifica tu Cuenta'
+            });
+            return;
+        }
+
+
         if (!validPassword) {
             res.status(400).json({
                 msg: 'Credenciales incorrectas, contraseñas no coinciden'
