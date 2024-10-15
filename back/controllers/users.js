@@ -162,13 +162,11 @@ const postUser = async (req, res) => {
 const verifyEmail = ((req, res) => {
     const { correo, verificationCode } = req.query;
 
-    // Verificar si el código es correcto
     const query = `SELECT * FROM usuarios WHERE correo = ? AND cod_verificacion = ?`;
     conexion.query(query, [correo, verificationCode], (err, results) => {
         if (err) return res.status(500).send('Error al verificar el código');
         if (results.length === 0) return res.status(400).send('Correo no encontrado');
 
-        // Actualizar el estado del usuario a verificado
         const updateQuery = `UPDATE usuarios SET verificado = 1 WHERE correo = ?`;
         conexion.query(updateQuery, [correo], (updateErr, updateResults) => {
             if (updateErr) return res.status(500).send('Error al actualizar el estado de verificación');
@@ -346,8 +344,8 @@ const changeStateUser = (req, res) => {
             })
             return
         }
-        query = 'update usuarios set state=!state where usuario_id = ?';
-        let state = data[0].state;
+        query = 'update usuarios set estado=!estado where usuario_id = ?';
+        let estado = data[0].estado;
         conexion.query(query, [req.params.id], err => {
             if (err) {
                 res.status(404).json({
@@ -356,7 +354,7 @@ const changeStateUser = (req, res) => {
                 return
             }
             res.status(201).json({
-                msg: (state == '1') ? 'Categoria no activa' : 'Categoria activa'
+                msg: (estado == '1') ? 'Categoria no activa' : 'Categoria activa'
             })
         })
 
