@@ -16,7 +16,7 @@ var faqRouter = require('./routes/faq');
 var authRouter = require('./routes/auth');
 var ajustesRouter = require('./routes/ajustes');
 var movimientosRouter = require('./routes/movimientos');
-
+var experienciaRoutes = require('./routes/experienciaRoutes');
 var app = express();
 
 app.use(cors());
@@ -44,4 +44,5 @@ app.use('/faq', faqRouter);
 app.use('/auth', authRouter);
 app.use('/ajustes', ajustesRouter);
 app.use('/movimientos', movimientosRouter);
+app.use('/experiencia', experienciaRoutes); 
 module.exports = app;
