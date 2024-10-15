@@ -13,6 +13,7 @@ var logrosRouter = require('./routes/logros');
 var categoriesRouter = require('./routes/categories')
 var linksRouter = require('./routes/links');
 var faqRouter = require('./routes/faq');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -38,5 +39,6 @@ app.use('/logros', logrosRouter);
 app.use('/categories',categoriesRouter )
 app.use('/links', linksRouter); 
 app.use('/faq', faqRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;
