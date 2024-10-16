@@ -12,7 +12,7 @@ Antes de comenzar, asegúrate de instalar los modulos de node
 
 1. **SweetAlert2**
 2. **notyf**
-3. **CDN de bootstrap**
+3. **Bosotrap**
 
 
 
