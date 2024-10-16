@@ -2,9 +2,8 @@
 </script>
 
 <template>
-  <main  class="container">
-   Home
+  <main class="container">
+    Home    
   </main>
 </template>
-<style scoped>
-</style>
+<style scoped></style>
