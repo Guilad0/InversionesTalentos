@@ -242,7 +242,6 @@ const postUser = async (req, res) => {
                                         <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
                                     </div>
                                 </div>
-<<<<<<< HEAD
                                 <div style="padding: 20px;">
                                     <p>Hola,</p>
                                     <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
@@ -261,18 +260,9 @@ const postUser = async (req, res) => {
                 if (error) return res.status(500).send('Error al enviar el correo de verificación');
                 res.send('Registro exitoso, revisa tu correo para verificar tu cuenta.');
             });
-=======
-                            </body>
-                            </html>
-                            `
-                };
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) return res.status(500).send('Error al enviar el correo de verificación');
-                    res.send('Registro exitoso, revisa tu correo para verificar tu cuenta.');
-                });
+
         
             }
->>>>>>> acd5ce70a82f4c1966d80da82bf041bfc4cf5924
             
         });
     })
