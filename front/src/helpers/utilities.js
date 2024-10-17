@@ -11,5 +11,5 @@ export const orderByEdad = (clients)=>{
 }
 
 export const orderByPrice = (clients)=>{
-    return clients.sort( (a,b)=> a.informacion[0]?.monto_inversion - b.informacion[0].monto_inversion );
+    return clients.sort( (a,b)=> a.monto_inversion - b.monto_inversion );
 }

@@ -23,7 +23,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/view2">Marketplace</a>
+                        <a class="nav-link" href="/marketplace">Marketplace</a>
                     </li>
 
                     <li class="nav-item">
