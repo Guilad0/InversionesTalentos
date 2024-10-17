@@ -209,25 +209,40 @@ const postUser = async (req, res) => {
         let passwordHash = await bcrypt.hash(password, 10);
         const verificationCode = crypto.randomBytes(20).toString('hex');
         const values = [nombre, apellido, correo, codigo_pais, numero_telefono, pais_residencia, passwordHash, acepta_terminos, categoria_persona_id, rol, verificationCode];
-        conexion.query(sql, values, (error) => {
 
-            const mailOptions = {
-                from: process.env.GG_EMAIL,
-                to: correo,
-                subject: 'Verifica tu cuenta',
-                text: `Tu código de verificación es: ${verificationCode}`,
-                html: `<!DOCTYPE html>
-                        <html lang="es">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Bienvenido</title>
-                        </head>
-                        <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
-                            <div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                <div style="background-color: #4CAF50; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; color: white;">
-                                    <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
+        conexion.query(sql, values, (error) => {
+            console.log(values)
+            if (error) {
+                return res.status(500).send(error);
+            } else{
+                const mailOptions = {
+                    from: process.env.GG_EMAIL,
+                    to: correo,
+                    subject: 'Verifica tu cuenta',
+                    text: `Tu código de verificación es: ${verificationCode}`,
+                    html: `<!DOCTYPE html>
+                            <html lang="es">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Bienvenido</title>
+                            </head>
+                            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+                                <div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <div style="background-color: #4CAF50; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; color: white;">
+                                        <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
+                                    </div>
+                                    <div style="padding: 20px;">
+                                        <p>Hola,</p>
+                                        <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
+                                        <p>Aqui encontrarás el código de verificación para verificar tu cuenta:</p>
+                                        <p style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"> ${verificationCode}</p>
+                                    </div>
+                                    <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
+                                        <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
+                                    </div>
                                 </div>
+<<<<<<< HEAD
                                 <div style="padding: 20px;">
                                     <p>Hola,</p>
                                     <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
@@ -246,6 +261,18 @@ const postUser = async (req, res) => {
                 if (error) return res.status(500).send('Error al enviar el correo de verificación');
                 res.send('Registro exitoso, revisa tu correo para verificar tu cuenta.');
             });
+=======
+                            </body>
+                            </html>
+                            `
+                };
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) return res.status(500).send('Error al enviar el correo de verificación');
+                    res.send('Registro exitoso, revisa tu correo para verificar tu cuenta.');
+                });
+        
+            }
+>>>>>>> acd5ce70a82f4c1966d80da82bf041bfc4cf5924
             
         });
     })
@@ -255,12 +282,12 @@ const postUser = async (req, res) => {
 // Ruta de verificación
 const verifyEmail = ((req, res) => {
     const { correo, verificationCode } = req.body;
-
+ 
     const query = `SELECT * FROM usuarios WHERE correo = ? AND cod_verificacion = ?`;
     conexion.query(query, [correo, verificationCode], (err, results) => {
         if (err) return res.status(500).send('Error al verificar el código');
         if (results.length === 0) return res.status(400).send('Correo no encontrado');
-
+ 
         const updateQuery = `UPDATE usuarios SET verificado = 1 WHERE correo = ?`;
         conexion.query(updateQuery, [correo], (updateErr, updateResults) => {
             if (updateErr) return res.status(500).send('Error al actualizar el estado de verificación');
