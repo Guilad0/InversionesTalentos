@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+import WhatsAppIco from './components/WhatsAppIco.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import Footer from './components/Footer.vue'
     <Navbar />
     <RouterView />
     <Footer />
+    <WhatsAppIco />
   </div>
 </template>
 
