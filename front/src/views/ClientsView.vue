@@ -3,6 +3,7 @@ import useFetchData from '../helpers/UseFetchData'
 import CardClient from '../components/CardClient.vue'
 import { ref, onMounted } from 'vue';
 import { orderByName,orderByEdad,orderByPrice } from '@/helpers/utilities';
+import CardSm from '@/components/CardSm.vue';
 
 const { results: categories, getData: getCategories } = useFetchData(ref('/categories'));
 const activeCategory = ref(null);
@@ -10,7 +11,7 @@ const path = ref('/users/clients/all')
 const { results: clients, getData: getClients } = useFetchData(path);
 const findByname = (categoryId) => {
     activeCategory.value = categoryId;
-    path.value = '/users/clients/findBy/' + categoryId;
+    path.value = '/users/clients/findBy/'+ categoryId;
     getClients()
 };
 
@@ -69,14 +70,14 @@ console.log(clients);
                         </div>
                     </div>
                 </div>
-                <div  class="dropdown ">
+                <div class="dropdown ">
                     <div class="dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <small>Orden por
                             <img src="../assets/svg/menu-order-svgrepo-com.svg" width="15">
                             <ul class="dropdown-menu bg-custom m-0 p-0">
-                                <li @click="orderBy('edad')"><a  class="dropdown-item"  >Edad</a></li>
-                                <li @click="orderBy('nombre')"><a class="dropdown-item" >Nombre</a></li>
-                                <li @click="orderBy('precio')"><a class="dropdown-item" >Precio </a></li>
+                                <li @click="orderBy('edad')"><a class="dropdown-item">Edad</a></li>
+                                <li @click="orderBy('nombre')"><a class="dropdown-item">Nombre</a></li>
+                                <li @click="orderBy('precio')"><a class="dropdown-item">Precio </a></li>
                             </ul>
                         </small>
                     </div>
@@ -84,9 +85,16 @@ console.log(clients);
             </div>
         </div>
         <div class="container mt-3 ">
-            <div class="content ">
-                <div class="d-flex flex-wrap justify-content-start ">
-                    <CardClient v-for="client in clients" :key="client.usuario_id" :client="client" />
+            <div class="content">
+                <div class="d-none d-sm-block">
+                    <div class="d-flex flex-wrap justify-content-start">
+                        <CardClient v-for="client in clients" :key="client.usuario_id" :client="client" />
+                    </div>
+                </div>
+
+                <div class="d-block d-sm-none">
+                    <CardSm v-for="client in clients" :key="client.usuario_id" :client="client" />
+
                 </div>
             </div>
         </div>
@@ -112,7 +120,7 @@ main {
     opacity: 0.9;
 }
 main{
-    background-color: var(--dun-color);
+    background-color: var(--white-anti-flash-color);
    
 }
 .dropdown-item:hover{

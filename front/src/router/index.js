@@ -19,7 +19,7 @@ const router = createRouter({
       name: 'posts',
       component: PostsView
     },
-
+  {
       path: '/marketplace',
       name: 'marketplace',  
       component: ClientsView, 

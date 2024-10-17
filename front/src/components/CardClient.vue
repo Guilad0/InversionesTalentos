@@ -17,22 +17,25 @@ const showClient = (id) => {
     },
   });
 };
+
+
 </script>
 <template>
-    <div class="col-custom">
-        <div class="card m-2 rounded-3 position-relative">
+    <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-4 col-6 ">
+        <div class="card m-2 rounded-3 position-relative ">
                 <img src="https://slicetokenfrontendassets.s3.amazonaws.com/players/img_white/61.webp" 
-                class="card-img-top">
+                class="card-img-top  rounded-3">
                 <div class="custom-absolute">
                 <img
-                  :src=props.client.imagen
-                  width="35"
+                  :src="`http://localhost:3000/categories/image/${props.client.categoria_persona_id}`"
+                  width="25"
+                  class=" rounded-circle"
                   alt="">
                 </div>
                 
                 <div class="card-body">
                 <h5 class="card-title fs-6 text-center ">{{ props.client.nombre }}</h5>
-                <small class="card-text token ">Token price: ${{ props.client.informacion[0]?.monto_inversion }}</small>
+                <small class="card-text token ">Token price: ${{ props.client.monto_inversion }}</small>
                 <div class="row px-2 my-2">
                     <button  class="btn btn-gray" @click="showClient(props.client.usuario_id)">Buy my Token</button>
                 </div>
@@ -50,7 +53,9 @@ const showClient = (id) => {
     bottom: 30%;
     right: 5px;
 }
-.col-custom{
-    width: 20%;
+
+.card{
+  border: 1px solid var(--gray-color);
 }
+
 </style>
