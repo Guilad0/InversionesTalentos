@@ -40,10 +40,10 @@ router.post("/", (req, res) => {
     })
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:categoria_id", (req, res) => {
     const { nombre } = req.body;
-    const { id } = req.params;
-    const categoria_posts = `UPDATE categoria_posts SET nombre = "${nombre}" WHERE id = "${id}";`;
+    const { categoria_id } = req.params;
+    const categoria_posts = `UPDATE categoria_posts SET nombre = "${nombre}" WHERE categoria_id = "${categoria_id}";`;
     connection.query(categoria_posts, (err, results) => {
         if (err) {
             //console.log(err);
@@ -60,9 +60,9 @@ router.put("/:id", (req, res) => {
     })
 });
 
-router.delete("/:id", (req, res) => {
-    const { id } = req.params;
-    const categoria_posts = `DELETE FROM categoria_posts WHERE id = "${id}";`;
+router.delete("/:categoria_id", (req, res) => {
+    const { categoria_id } = req.params;
+    const categoria_posts = `DELETE FROM categoria_posts WHERE categoria_id = "${categoria_id}";`;
     connection.query(categoria_posts, (err, results) => {
         if (err) {
             //console.log(err);
