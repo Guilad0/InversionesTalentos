@@ -3,8 +3,10 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import Swal from 'sweetalert2';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
