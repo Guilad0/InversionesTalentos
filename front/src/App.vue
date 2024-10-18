@@ -9,6 +9,7 @@ import WhatsAppIco from './components/WhatsAppIco.vue'
   <div id="app">
     <Navbar />
     <RouterView />
+    <ContactComponent />
     <Footer />
     <WhatsAppIco />
   </div>
