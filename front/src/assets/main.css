@@ -1,2 +1,18 @@
 @import './base.css';
 
+.btn-gray {
+    background-color: var(--gray-color) !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-gray:hover {
+    background-color: var(--white-anti-flash-color) !important;
+    color: var(--smoky-dark-color) !important;
+    border: 1px solid var(--gray-color) !important;
+  }
