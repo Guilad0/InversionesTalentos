@@ -1,6 +1,6 @@
 <template>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg custom-navbar">
 
         <div class="container-fluid mx-3">
 
@@ -23,7 +23,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/marketplace">Marketplace</a>
+                        <a class="nav-link" href="/view2">Marketplace</a>
                     </li>
 
                     <li class="nav-item">
@@ -57,8 +57,8 @@
                         <option value="4">Fr</option>
                     </select>
 
-                    <button class="btn btn-outline-primary me-2">Registrarse</button>
-                    <button class="btn btn-primary">Iniciar sesión</button>
+                    <button class="btn boton me-2">Registrarse</button>
+                    <button class="btn boton">Iniciar sesión</button>
 
                 </div>
 
@@ -76,12 +76,36 @@
 
 <style scoped>
 
+a:hover {
+    color: #d9c5b2;
+}
+
+.boton {
+    background-color: #34312d;
+    color: #f3f3f4;
+    border: 1px solid #f3f3f4
+}
+
+.boton:hover {
+    background-color:#d9c5b2;
+    color: black;
+    border: 1px solid black;
+}
+
+.custom-navbar {
+    background-color: #000;
+    
+}
+
 a {
     font-size: 1.2rem;
+    color: #f3f3f4;
 }
 
 .active {
-    background-color: #0d6efd;
+    background-color: #d9c5b2;
+    color: black;
     border-radius: 10px;
 }
+
 </style>

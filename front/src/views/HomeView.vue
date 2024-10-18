@@ -3,7 +3,7 @@
 
 <template>
   <main class="container">
-    Home    
+    Home   
   </main>
 </template>
 <<<<<<< HEAD
