@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import RegistrarseView from '@/views/RegistrarseView.vue'
 import PostsView from '../views/PostsView.vue'
 import ClientsView from '@/views/ClientsView.vue'
 import ClientView from '@/views/ClientView.vue'
 import IngresarView from '@/views/IngresarView.vue'
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -15,6 +14,10 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/registrarse',
+      name: 'registrarse',
+      component:RegistrarseView
+    }
 
       path: '/posts',
       name: 'posts',
@@ -36,7 +39,6 @@ const router = createRouter({
       name:'Login',
       component:IngresarView
     },
-
   ]
 })
 
