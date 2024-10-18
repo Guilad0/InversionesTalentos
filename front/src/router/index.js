@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import PostsView from '../views/PostsView.vue'
 import ClientsView from '@/views/ClientsView.vue'
 import ClientView from '@/views/ClientView.vue'
+import IngresarView from '@/views/IngresarView.vue'
 
 
 const router = createRouter({
@@ -30,7 +31,11 @@ const router = createRouter({
       name:'client',
       component:ClientView
     },
-   
+    {
+      path:'/login',
+      name:'Login',
+      component:IngresarView
+    },
 
   ]
 })
