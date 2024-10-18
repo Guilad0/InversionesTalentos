@@ -1,6 +1,6 @@
 <template>
 
-    <footer class="bg-dark text-light text-center text-lg-start p-3">
+    <footer class="text-center text-lg-start p-3 custom-footer">
 
         <div class="container-fluid p-4">            
 
@@ -8,7 +8,7 @@
 
                 <div class="col-lg-6 col-md-12 d-flex align-items-center justify-content-center">
 
-                    <h5 class="text-center">Forma parte de la comunidad de tu profesional favorito</h5>
+                    <h5 class="text-center color-text">Forma parte de la comunidad de tu profesional favorito</h5>
 
                 </div>
 
@@ -18,7 +18,7 @@
 
                         <div class="me-4 ">
 
-                            <h6 class="text-uppercase">Informacion General</h6>
+                            <h6 class="text-uppercase color-text">Informacion General</h6>
 
 
                             <div class="d-flex flex-column">
@@ -36,7 +36,7 @@
 
                         <div>
 
-                            <h6 class="text-uppercase">Legales</h6>
+                            <h6 class="text-uppercase color-text">Legales</h6>
 
                             <div class="d-flex flex-column ">
 
@@ -46,15 +46,15 @@
 
                             </div>
 
-                            <h6 class="text-uppercase mt-2">Comunidad</h6>
+                            <h6 class="text-uppercase mt-2 color-text">Comunidad</h6>
 
                             <div class="d-flex justify-content-between">
 
                                 <a href="https://www.instagram.com" class="me-3" target="_blank" aria-label="Instagram">
                                     <i class="fab fa-instagram fa-lg"></i>
                                 </a>
-                                <a href="https://www.twitter.com" class="me-3" target="_blank" aria-label="Twitter">
-                                    <i class="fab fa-twitter fa-lg"></i>
+                                <a href="https://x.com/" class="me-3" target="_blank" aria-label="X">
+                                    <i class="fab fa-twitter-x"></i>
                                 </a>
                                 <a href="https://www.youtube.com" class="me-3" target="_blank" aria-label="YouTube">
                                     <i class="fab fa-youtube fa-lg"></i>
@@ -77,7 +77,7 @@
 
         <hr>
 
-        <div class="text-center p-3 pie">
+        <div class="text-center p-3 pie color-text">
 
             © 2024 HAMILO INVERSIONES | Todos los derechos reservados.
 
@@ -95,9 +95,17 @@ export default {
 
 <style scoped>
 
+.custom-footer {
+    background-color: #000;
+}
+
+.color-text {
+    color: #f3f3f4;
+}
+
 a {
     text-decoration: none;
-    color: #fff;
+    color: #f3f3f4;
 }
 
 .pie {
