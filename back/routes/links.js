@@ -4,7 +4,6 @@ var router = express.Router();
 var conexion = require('../database');
 
 
-
 /* GET listar links. */
 router.get('/', function (req, res, next) {
 
@@ -30,14 +29,13 @@ router.get('/', function (req, res, next) {
     });
 });
 
-
 //POSTEAR links
 router.post('/', function (req, res, next) {
 
-    const { cliente_id, nombre, link, descripcion, estado } = req.body;
+    const { cliente_id, nombre, link, descripcion } = req.body;
 
-    var query = `INSERT INTO links (cliente_id, nombre, link, descripcion, estado) 
-                  VALUES ("${cliente_id}", "${nombre}", "${link}", "${descripcion}", "${estado}");`;
+    var query = `INSERT INTO links (cliente_id, nombre, link, descripcion) 
+                  VALUES ("${cliente_id}", "${nombre}", "${link}", "${descripcion}");`;
 
     //ejecutamos la consulta
     conexion.query(query, function (error, results, fields) {
@@ -59,14 +57,14 @@ router.post('/', function (req, res, next) {
 
 // PUT actualizar links
 router.put('/:id', function (req, res, next) {
-    const { cliente_id, nombre, link, descripcion,estado } = req.body;
+    const { cliente_id, nombre, link, descripcion } = req.body;
 
     var query = `UPDATE links SET 
                     cliente_id = "${cliente_id}",
                     nombre = "${nombre}",
                     link = "${link}",
-                    descripcion = "${descripcion}",
-                    estado = "${estado}"                                       
+                    descripcion = "${descripcion}"
+                                                         
                 WHERE link_id = ${req.params.id};`;
 
     // Ejecutamos la consulta
@@ -109,29 +107,7 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
-  
-   // PUT Cambia el estado
-router.put('/estado/:id', function (req, res, next) {
-    const id = req.params.id;
-    const nuevoEstado = req.body.estado;
-
-    var query = 'UPDATE links SET estado = ? WHERE link_id = ?;';
-
-    // ejecutamos la consulta con parámetros
-    conexion.query(query, [nuevoEstado, id], function (error, results, fields) {
-        if (error) {
-            console.error('Error en la consulta:', error);
-            return res.status(500).send({
-                error: 'Error al realizar la petición',
-                details: error
-            });
-        }
-        res.status(200).send({
-            data: results,
-            message: 'Estado actualizado correctamente'
-        });
-    });
-});
 
 
 module.exports = router;
+
