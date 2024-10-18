@@ -9,12 +9,18 @@
         </div>
         <div class="mb-3">
           <label for="password">Contraseña</label>
-          <input type="email" v-model="password" id="password" class="form-control" />
+          <input type="password" v-model="password" id="password" class="form-control" />
         </div>
         <div class="mb-3">
           <div class="form-check">
-            <basic-toggle-switch v-model="switchValue" />
-            <pre>Bound value: {{ switchValue }}</pre>
+            <div class="row">
+              <div class="col-md-2">
+                <basic-toggle-switch v-model="switchValue" />
+              </div>
+              <div class="col-md-10">
+                <p>Recuérdame</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -53,9 +59,9 @@ import Swal from "sweetalert2";
 
 import { useRouter } from "vue-router";
 
-//import BasicToggleSwitch from './toggle-switch.vue'
+import BasicToggleSwitch from "../components/toggle-switch.vue";
 
-const switchValue = ref(true)
+const switchValue = ref(true);
 
 const route = useRouter();
 
@@ -63,15 +69,6 @@ const correo = ref("");
 const password = ref("");
 let baseURL = "http://localhost:3000/auth";
 
-
-// onMounted(() => {
-//   // Verificar si hay credenciales guardadas
-//   if (localStorage.getItem("rememberMe") === "true") {
-//     correo.value = localStorage.getItem("correo") || "";
-//     password.value = localStorage.getItem("password") || "";
-//     toggleState.value = true;
-//   }
-// });
 
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
@@ -85,6 +82,7 @@ const ingresar = async () => {
   var datos = {
     correo: correo.value,
     password: password.value,
+    storeCredentials: switchValue.value
   };
 
   try {
@@ -92,17 +90,8 @@ const ingresar = async () => {
     console.log(data);
     localStorage.setItem("token", data.token);
     localStorage.setItem("usuario", JSON.stringify(data.user));
-    console.log(data.user)
-    // if (rememberMe.value) {
-    //   localStorage.setItem("rememberMe", "true");
-    //   localStorage.setItem("correo", correo.value);
-    //   localStorage.setItem("password", password.value);
-    // } else {
-    //   localStorage.removeItem("rememberMe");
-    //   localStorage.removeItem("correo");
-    //   localStorage.removeItem("password");
-    // }
-
+    console.log(data.user);
+    
     Swal.fire({
       title: "Bienvenido!",
       text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
@@ -123,12 +112,6 @@ const ingresar = async () => {
     });
   }
 };
-
-// const callback = (response) => {
-//   // This callback will be triggered when the user selects or login to
-//   // his Google account from the popup
-//   console.log("Handle the response", response);
-// };
 </script>
 
 <style scope>
@@ -139,6 +122,7 @@ const ingresar = async () => {
   width: 30rem;
   padding: 2rem;
 
-  margin-top: 10%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 </style>
