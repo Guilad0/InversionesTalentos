@@ -33,10 +33,10 @@ router.get('/', function (req, res, next) {
 
 // POSTEAR faq
 router.post('/', function (req, res, next) {
-    const { pregunta, respuesta, estado } = req.body; // No necesitas created_at ni updated_at
+    const { pregunta, respuesta, } = req.body; // No necesitas created_at ni updated_at
 
-    var query = `INSERT INTO faq (pregunta, respuesta, estado, created_at, updated_at) 
-                  VALUES ("${pregunta}", "${respuesta}", "${estado}", CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());`;
+    var query = `INSERT INTO faq (pregunta, respuesta, created_at, updated_at) 
+                  VALUES ("${pregunta}", "${respuesta}",  CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());`;
 
     // ejecutamos la consulta
     conexion.query(query, function (error, results, fields) {
@@ -59,12 +59,12 @@ router.post('/', function (req, res, next) {
 
 // PUT actualizar faq
 router.put('/:id', function (req, res, next) {
-    const { pregunta, respuesta, estado } = req.body;
+    const { pregunta, respuesta, } = req.body;
 
     var query = `UPDATE faq SET 
                     pregunta = "${pregunta}",
                     respuesta = "${respuesta}",
-                    estado = "${estado}",
+                    
                     updated_at = CURRENT_TIMESTAMP()
                 WHERE faq_id = ${req.params.id};`;
 
@@ -107,31 +107,7 @@ router.delete('/:id', function (req, res, next) {
         }
     });
 });
-
-  // PUT Cambia el estado
-router.put('/estado/:id', function (req, res, next) {
-    const id = req.params.id;
-    const nuevoEstado = req.body.estado;
-
-    var query = 'UPDATE faq SET estado = ? WHERE faq_id = ?;';
-
-    // ejecutamos la consulta con parámetros
-    conexion.query(query, [nuevoEstado, id], function (error, results, fields) {
-        if (error) {
-            console.error('Error en la consulta:', error);
-            return res.status(500).send({
-                error: 'Error al realizar la petición',
-                details: error
-            });
-        }
-        res.status(200).send({
-            data: results,
-            message: 'Estado actualizado correctamente'
-        });
-    });
-});
-
-  
+ 
 
 
 module.exports = router;
