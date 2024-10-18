@@ -1,123 +1,104 @@
 const connection = require("../database");
-const { Router } = require("express");
-const router = Router();
+var express = require('express');
+var router = express.Router();
 
 router.get("/", (req, res) => {
-  const posts = "SELECT * FROM posts";
-
-  connection.query(posts, (err, results) => {
-    if (err) {
-      //console.log(err);
-      res.status(500).send({
-        error: err,
-        message: "Error en la peticion",
-      });
-    } else {
-      //console.log(result);
-      res.status(200).json({
-        data: results,
-        message: "Lista de posts",
-      });
-    }
-  });
+    var logros = "SELECT * FROM posts";
+    connection.query(logros, function(err, results)  {
+        if (err) {
+            //console.log(err);
+            res.status(500).send({
+                error: err,
+                message: "Error en la peticion",
+            });
+        } else {
+            //console.log(result);
+            res.status(200).json({
+                data: results,
+                message: "Lista de posts",
+            });
+        }
+    })
 });
 
 router.post("/", (req, res) => {
-  const { autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado } = req.body;
-
-  const post = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${imagen_portada}", "${fecha_hora}", "${contenido}", "${estado}");`;
-
-  connection.query(post, (err, results) => {
-    if (err) {
-      //console.log(err);
-      res.status(500).send({
-        error: err,
-        message: "Error en la peticion",
-      });
-    } else {
-      //console.log(result);
-      res.status(200).send({
-        message: "Registro exitoso",
-      });
-    }
-  });
+    const {autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado}= req.body;
+    var posts = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${imagen_portada}", "${contenido}", "${estado}");`;
+    connection.query(posts, (err, results) => {
+        if (err) {
+            //console.log(err);
+            res.status(500).send({
+                error: err,
+                message: "Error en la peticion",
+            });
+        } else {
+            //console.log(result);
+            res.status(200).send({
+                message: "Registro exitoso",
+            });
+        }
+    })
 });
 
 router.put("/:post_id", (req, res) => {
-  const { autor_id, categoria_id, titulo, resumen, imagen_portada, fecha_hora, contenido, estado } = req.body;
-  const { post_id } = req.params;
-  console.log(post_id);
-
-  const post = `UPDATE posts SET 
-    autor_id = '${autor_id}',
-    categoria_id = '${categoria_id}',
-    titulo = '${titulo}',
-    resumen = '${resumen}',
-    imagen_portada = '${imagen_portada}',
-    fecha_hora = '${fecha_hora}',
-    contenido = '${contenido}',
-    estado = '${estado}',
-    updated_at = CURRENT_TIMESTAMP()
-  WHERE post_id = ${post_id};`;
-
-  connection.query(post, (err, results) => {
-    if (err) {
-      //console.log(err);
-      res.status(500).send({
-        error: err,
-        message: "Error en la peticion",
-      });
-    } else {
-      //console.log(result);
-      res.status(200).send({
-        message: "Actualizacion exitosa",
-      });
-    }
-  });
+    const { autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
+    const { post_id } = req.params;
+    const posts = `UPDATE posts SET autor_id = "${autor_id}", categoria_id = "${categoria_id}", titulo = "${titulo}", resumen = "${resumen}", imagen_portada = "${imagen_portada}", contenido = "${contenido}", estado = "${estado}" WHERE post_id = "${post_id}";`;
+    connection.query(posts, (err, results) => {
+        if (err) {
+            //console.log(err);
+            res.status(500).send({
+                error: err,
+                message: "Error en la peticion",
+            });
+        } else {
+            //console.log(result);
+            res.status(200).send({
+                message: "Registro exitoso",
+            });
+        }
+    })
 });
 
 router.delete("/:post_id", (req, res) => {
-  const { post_id } = req.params;
-
-  const post = `DELETE FROM posts WHERE post_id = ${post_id};`;
-
-  connection.query(post, (err, results) => {
-    if (err) {
-      //console.log(err);
-      res.status(500).send({
-        error: err,
-        message: "Error en la peticion",
-      });
-    } else {
-      //console.log(result);
-      res.status(200).send({
-        message: "Borrado exitoso",
-      });
-    }
-  });
+    const { post_id } = req.params;
+    const posts = `DELETE FROM posts WHERE post_id = "${post_id}";`;
+    connection.query(posts, (err, results) => {
+        if (err) {
+            //console.log(err);
+            res.status(500).send({
+                error: err,
+                message: "Error en la peticion",
+            });
+        } else {
+            //console.log(result);
+            res.status(200).send({
+                message: "Registro exitoso",
+            });
+        }
+    })
 });
 
-router.patch("/estado/:post_id", (req, res) => {
-  const { post_id } = req.params;
+router.patch('/estado/:post_id', function (req, res, next) {
+    // res.send('estas eliminando productos');
+    const { autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
+    var query = `UPDATE posts SET estado= !estado WHERE post_id = ${req.params.post_id};`;
 
-  const post = `UPDATE posts SET estado = !estado WHERE post_id = ${post_id};`;
-
-  connection.query(post, (err, results) => {
-    if (err) {
-      //console.log(err);
-      res.status(500).send({
-        error: err,
-        message: "Error en la peticion",
-      });
-    } else {
-      //console.log(result);
-      res.status(200).json({
-        data: results,
-        message: "Actualizacion de estado exitoso",
-      });
-    }
-  });
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.status(500).send({
+                error: error,
+                message: 'Error al realizar la peticion'
+            });
+        } else {
+            console.log(req.results);
+            res.status(200).send({
+                data: results,
+                message: 'Estado actualizado correctamente'
+            });
+        }
+    })
 });
-
 
 module.exports = router;

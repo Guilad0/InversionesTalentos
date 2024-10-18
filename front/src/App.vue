@@ -1,13 +1,22 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
+import ContactComponent from './components/ContactComponent.vue';
 </script>
 
 <template>
-   
-
-  <RouterView />
+  <div id="app">
+    <Navbar />
+    <RouterView />
+    <ContactComponent />
+    <Footer />
+    
+  </div>
 </template>
 
-<style scoped>
+<script>
 
-</style>
+</script>
+
+<style scoped></style>

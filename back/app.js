@@ -13,7 +13,10 @@ var logrosRouter = require('./routes/logros');
 var categoriesRouter = require('./routes/categories')
 var linksRouter = require('./routes/links');
 var faqRouter = require('./routes/faq');
-
+var authRouter = require('./routes/auth');
+var ajustesRouter = require('./routes/ajustes');
+var movimientosRouter = require('./routes/movimientos');
+var experienciaRoutes = require('./routes/experienciaRoutes');
 var app = express();
 
 app.use(cors());
@@ -38,5 +41,8 @@ app.use('/logros', logrosRouter);
 app.use('/categories',categoriesRouter )
 app.use('/links', linksRouter); 
 app.use('/faq', faqRouter);
-
+app.use('/auth', authRouter);
+app.use('/ajustes', ajustesRouter);
+app.use('/movimientos', movimientosRouter);
+app.use('/experiencia', experienciaRoutes); 
 module.exports = app;

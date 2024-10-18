@@ -14,7 +14,9 @@ const {
         uploadimageUserCloudinary,
         createUrlImg,
         getAllClientesWithInfo,
-        changeStateUser
+        changeStateUser,
+        verifyEmail,
+        getAllClientesByCategory
         } = require("../controllers/users");
 
 
@@ -32,6 +34,8 @@ router.get("/image/:id", createUrlImg);
 router.post("/cloudinary/:id", uploadimageUserCloudinary);
 router.get("/clients/all", getAllClientesWithInfo);
 router.put("/changeState/:id", changeStateUser);
+router.put("/verify", verifyEmail);
+router.get("/clients/findBy/:id", getAllClientesByCategory);
 
 
 module.exports = router;
