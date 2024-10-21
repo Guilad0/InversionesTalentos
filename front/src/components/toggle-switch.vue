@@ -51,7 +51,7 @@
   }
   
   .checked {
-    background-color: #aac3f2;
+    background-color: var(--dun-color);
   }
   
   .checked::before {

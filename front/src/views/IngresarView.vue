@@ -1,17 +1,19 @@
 <template>
   <div class="d-flex justify-content-center bgf">
-    <div class="card">
-      <div class="card-body">
-        <h3>Inversiones</h3>
-        <div class="mb-3">
+    <div class="card login-card">
+      <div class="card-body login-card-body">
+        <div class="text-center">
+          <h3 class="login-text-color">Iniciar sesión</h3>
+        </div>
+        <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
           <input type="email" v-model="correo" id="correo" class="form-control" />
         </div>
-        <div class="mb-3">
+        <div class="mb-3 login-text-color">
           <label for="password">Contraseña</label>
           <input type="password" v-model="password" id="password" class="form-control" />
         </div>
-        <div class="mb-3">
+        <div class="mb-3 login-text-color">
           <div class="form-check">
             <div class="row">
               <div class="col-md-2">
@@ -25,23 +27,22 @@
         </div>
 
         <div class="row text-center">
-          <div class="mb-3">
+          <div class="mb-3 login-text-color">
             <h5>¿Olvidaste tu contraseña?</h5>
           </div>
           <div class="mb-3">
-            <button @click="ingresar()" class="btn btn-primary w-100">Ingresar</button>
+            <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">Ingresar</button>
           </div>
           <div class="mb-3">
-            <GoogleLogin :callback="callback" />
-            <!-- <button :callback="callback" class="btn btn-primary w-100">Ingresar con google</button> -->
+            <GoogleLogin :callback="callback"/>
           </div>
         </div>
 
         <div class="mb-3">
           <div class="row text-center w-70">
-            <div class="col"><h5>¿No tienes cuenta?</h5></div>
+            <div class="col"><h5 class="login-text-color">¿No tienes cuenta?</h5></div>
             <div class="col">
-              <RouterLink to="/registrar" class="nav-link">
+              <RouterLink to="/registrarse" class="nav-link registrar-link">
                 Regístrate gratis
               </RouterLink>
             </div>
@@ -112,17 +113,53 @@ const ingresar = async () => {
     });
   }
 };
+
+//login con google
+const callback = (response) => {
+  // This callback will be triggered when the user selects or login to
+  // his Google account from the popup
+  console.log("Handle the response", response)
+}
 </script>
 
-<style scope>
+<style scoped>
 .bgf {
   background-color: #f9f9fa;
 }
-.card {
+.login-card {
   width: 30rem;
   padding: 2rem;
 
   margin-top: 5%;
   margin-bottom: 5%;
+
+  background-color: var(--smoky-dark-color) !important;
+  
+
+}
+.login-text-color{
+  color: var(--white-anti-flash-color);
+}
+
+.login-card-body{
+  background-color: var(--smoky-dark-color);
+}
+
+.btn-ingresar{
+ background-color: var(--dun-color) !important;
+ color: var(--jet-color) !important;
+ font-weight: 600 !important;
+}
+.btn-ingresar:hover{
+ background-color: var(--gray-color) !important;
+ color: var(--dun-color) !important;
+ font-weight: 800 !important;
+}
+.registrar-link{
+  color: var(--dun-color) !important;
+}
+.registrar-link:hover{
+  color: var(--white-anti-flash-color) !important;
+  font-weight: 600 !important;
 }
 </style>
