@@ -16,7 +16,8 @@ const {
         getAllClientesWithInfo,
         changeStateUser,
         verifyEmail,
-        getAllClientesByCategory
+        getAllClientesByCategory,
+        getAllClientesByFilterName
         } = require("../controllers/users");
 
 
@@ -36,6 +37,7 @@ router.get("/clients/all", getAllClientesWithInfo);
 router.put("/changeState/:id", changeStateUser);
 router.put("/verify", verifyEmail);
 router.get("/clients/findBy/:id", getAllClientesByCategory);
+router.get("/clients/filterByName/:id", getAllClientesByFilterName);
 
 
 module.exports = router;

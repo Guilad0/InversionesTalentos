@@ -2,11 +2,12 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
-import WhatsAppIco from './components/WhatsAppIco.vue'
+import WhatsAppIco from './components/WhatsAppIco.vue';
+
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" >
     <Navbar />
     <RouterView />
     <ContactComponent />
@@ -15,8 +16,8 @@ import WhatsAppIco from './components/WhatsAppIco.vue'
   </div>
 </template>
 
-<script>
 
-</script>
 
-<style scoped></style>
+<style scoped>
+  
+</style>

@@ -1,6 +1,6 @@
 <template>
     <div class="container px-5 ">
-        <div class="card mb-3 position-relative  rounded-3" style="max-width: 500px; " @click="showClient(props.client.usuario_id)">
+        <div class="card mb-3 position-relative  rounded-3" style="max-width: 500px; " @click="showClient(props.client)">
             <div class="custom-arrow-abs">
                             <img src="../assets/svg/arrow-right-svgrepo-com.svg" width="20" class="arrow">
                             </div>
@@ -29,6 +29,7 @@
     </div>
 </template>
 <script setup>
+import { useClientStore } from '@/stores/clientStore';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -38,15 +39,18 @@ const props = defineProps({
     required: true
 })
 
-const showClient = (id) => {
-    console.log(id);
-    router.push({
-        name: 'client',
-        params: {
-            id,
-        },
-    });
+const clientStore = useClientStore();
+clientStore.resetClient();
+
+const showClient = (client) => {
+
+  clientStore.setClient(client)
+  router.push({
+    name: 'client',
+    params:{ name: `${client.nombre}-${client.apellido}`},
+  });
 };
+
 
 
 </script>
