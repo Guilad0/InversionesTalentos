@@ -44,7 +44,11 @@
                 <p class="card-text">
                   <small class="text-muted">{{ new Date(item.created_at).toLocaleString() }}</small>
                 </p>
-                <button @click="editar(item)" class="btn btn-success">Editar</button>
+                <p class="card-text">
+                  <small class="text-muted">{{ item.autor_id }}</small>
+                  <small class="text-muted">{{ item.categoria_id }}</small>
+                  <button @click="editar(item)" class="btn btn-success">Editar</button>
+                </p>
               </div>
             </div>
           </div>
@@ -61,7 +65,32 @@
 
             <div class="mb-3">
               <label for="imagen" class="form-label">Imagen</label>
-              <input type="file" id="imagen" @change="cargarImagen($event)" class="form-control">
+              <input type="file" id="imagen" name="imagen_portada" @change="cargarImagen($event)" class="form-control">
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="autor_id" class="form-label">Autor</label>
+                  <select v-model="autor_id" id="autor_id" class="form-select" required>
+                    <option value="">Seleccione autor...</option>
+                    <option v-for="item in autores" :key="item.usuario_id" :value="item.usuario_id">
+                      {{ item.nombre + '-' + item.apellido }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="categoria_id" class="form-label">Categoria</label>
+                  <select v-model="categoria_id" id="categoria_id" class="form-select" required>
+                    <option value="">Seleccione categoria...</option>
+                    <option v-for="item in categorias" :key="item.categoria_id" :value="item.categoria_id">
+                      {{ item.nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div class="mb-3">
@@ -74,8 +103,14 @@
               <textarea v-model="contenido" id="contenido" class="form-control" cols="30" rows="3"></textarea>
             </div>
 
+            <div class="mb-3">
+              <label for="resumen" class="form-label">Resumen</label>
+              <textarea v-model="resumen" id="resumen" class="form-control" cols="30" rows="3"></textarea>
+            </div>
+
             <div class="text-center my-3">
-              <button v-if="formularioAccion === 'registrar'" @click="registrarPost()" class="btn btn-dark">Registrar Post</button>
+              <button v-if="formularioAccion === 'registrar'" @click="registrarPost()" class="btn btn-dark">Registrar
+                Post</button>
               <button v-else @click="actualizarPost()" class="btn btn-dark">Actualizar</button>
               <button @click="cancelar()" class="btn btn-dark ms-3">Cancelar</button>
             </div>
@@ -117,6 +152,9 @@ const vista = ref('list');
 const formularioAccion = ref('registrar');
 const posts = ref([])
 
+const autores = ref([]);
+const categorias = ref([]);
+
 const autor_id = ref(0);
 const categoria_id = ref(0);
 const titulo = ref('');
@@ -130,6 +168,8 @@ const seleccionado = ref({});
 
 onMounted(() => {
   cargarDatos();
+  cargarAutor();
+  cargarCategoria();
 });
 
 const abrirFormulario = (tipo) => {
@@ -148,6 +188,24 @@ const cargarImagen = (event) => {
   imagen_portada.value = file;
 };
 
+const cargarAutor = async () => {
+  try {
+    const response = await axios.get(`${baseURL}usuarios`);
+    autores.value = response.data.data;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const cargarCategoria = async () => {
+  try {
+    const response = await axios.get(`${baseURL}categoria_posts`);
+    categorias.value = response.data.data;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const cargarDatos = async () => {
   try {
     const response = await axios.get(`${baseURL}posts`);
@@ -158,10 +216,10 @@ const cargarDatos = async () => {
 };
 
 const registrarPost = async () => {
-  if (!autor_id.value || !categoria_id.value || !titulo.value || !resumen.value || !contenido.value) {
-    alert('Todos los campos son obligatorios');
-    return;
-  }
+  // if (!autor_id.value || !categoria_id.value || !titulo.value || !resumen.value || !contenido.value) {
+  //   alert('Todos los campos son obligatorios');
+  //   return;
+  // }
   try {
     const formData = new FormData();
     formData.append("autor_id", autor_id.value);
@@ -181,6 +239,8 @@ const registrarPost = async () => {
     if (response.status === 201) {
       alert('Post registrado exitosamente');
       cargarDatos();
+      cargarAutor();
+      cargarCategoria();
       vista.value = 'list';
       limpiarCampos();
     }

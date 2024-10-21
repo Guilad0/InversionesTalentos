@@ -1,6 +1,10 @@
 const connection = require("../database");
 var express = require('express');
 var router = express.Router();
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config(process.env.CLOUDINARY_URL)
+
 
 router.get("/", (req, res) => {
     var logros = "SELECT * FROM posts";
@@ -21,9 +25,16 @@ router.get("/", (req, res) => {
     })
 });
 
-router.post("/", (req, res) => {
-    const {autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado}= req.body;
-    var posts = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${imagen_portada}", "${contenido}", "${estado}");`;
+router.post("/", async(req, res) => {
+    try {
+    const { tempFilePath } = req.files.imagen_portada;
+    const result = await cloudinary.uploader.upload(tempFilePath, {
+            public_id: `posts/${Date.now()}`,
+            folder: 'posts'
+    });
+    const { secure_url } = result;
+    const {autor_id, categoria_id, titulo, resumen, contenido, estado}= req.body;
+    var posts = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${secure_url}", "${contenido}", "${estado}");`;
     connection.query(posts, (err, results) => {
         if (err) {
             //console.log(err);
@@ -38,6 +49,13 @@ router.post("/", (req, res) => {
             });
         }
     })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: error,
+            message: "Error en la peticion",
+        });
+    }
 });
 
 router.put("/:post_id", (req, res) => {
@@ -102,3 +120,4 @@ router.patch('/estado/:post_id', function (req, res, next) {
 });
 
 module.exports = router;
+
