@@ -6,6 +6,7 @@ import ClientsView from '@/views/ClientsView.vue'
 import ClientView from '@/views/ClientView.vue'
 import IngresarView from '@/views/IngresarView.vue'
 import ControlAdminView from '@/views/ControlAdmin.vue'
+import PerfilView from '@/views/PerfilView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,6 +46,11 @@ const router = createRouter({
       name:'admin',
       component:ControlAdminView
     },
+    {
+      path:'/perfil',
+      name:'perfil',
+      component:PerfilView
+    }
   ]
 })
 
