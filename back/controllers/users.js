@@ -30,55 +30,113 @@ const getUsers = (req, res) => {
     })
 }
 
-/**
- * Obtiene todos los clientes con su informacion
- */
-// const getAllClientesWithInfo = async (req, res) => {
-//     let sql = 'select * from usuarios where rol="cliente"';
-//     try {
-//         conexion.query(sql, (err, data) => {
-//             if (err) {
-//                 res.status(500).json({
-//                     msg: 'error al buscar clientes'
-//                 })
-//                 return;
-//             }
-//             const usersPromise = data.map(c => {
-//                 return new Promise((resolve, reject) => {
-//                     sql = 'select * from informacion where cliente_id=? ';
-//                     conexion.query(sql, [c.usuario_id], (err, result) => {
-//                         if (err) {
-//                             return reject(err)
-//                         }
-//                         c.informacion = result;
-//                         resolve(c)
-//                     })
-//                 })
-//             })
-//             Promise.all(usersPromise)
-//                 .then(results => {
-//                     res.status(200).json({
-//                         results,
-//                         cant: results.length
-//                     })
-//                 })
-//                 .catch(err => {
-//                     res.status(500).json({ msg: 'Error al obtener informacion del usuario' })
-//                 })
 
-//         });
-//     } catch (error) {
-//         res.status(500).json({ msg: 'Error en el servidor' });
-//     }
 
-// }
-
-const getAllClientesWithInfo = (req, res) =>{
+const getAllClientesWithInfo = (req, res) => {
     let query = `
     SELECT 
+    u.usuario_id,
         u.nombre, 
         u.apellido, 
         u.correo, 
+        u.categoria_persona_id,
+        u.username, 
+        u.pais_residencia,
+        u.edad, 
+        u.imagen, 
+        u.rol, 
+        i.ocupacion, 
+        i.descripcion, 
+        i.monto_inversion, 
+        i.cantidad_maxima_inversiones,
+        i.preparacion, 
+        i.estudios, 
+        i.vision,
+        c.nombre as categoria
+    FROM 
+        usuarios AS u
+    LEFT JOIN 
+        informacion AS i ON u.usuario_id = i.cliente_id
+         LEFT JOIN 
+        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    WHERE 
+        u.rol = "cliente";
+    `;
+    
+    conexion.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({
+                msg: 'Error al buscar clientes'
+            });
+            return;
+        }
+        res.status(200).json({
+            results,
+            cant: results.length
+        });
+    });
+}
+
+
+
+const getAllClientesByCategory = async (req, res) => {
+    let query = `
+    SELECT 
+    u.usuario_id,
+        u.nombre, 
+        u.apellido, 
+        u.correo, 
+        u.categoria_persona_id,
+        u.username, 
+        u.pais_residencia,
+        u.edad, 
+        u.imagen, 
+        u.rol, 
+        i.ocupacion, 
+        i.descripcion, 
+        i.monto_inversion, 
+        i.cantidad_maxima_inversiones,
+        i.preparacion, 
+        i.estudios, 
+        i.vision,
+        c.nombre as categoria
+    FROM 
+        usuarios AS u
+    LEFT JOIN 
+        informacion AS i ON u.usuario_id = i.cliente_id
+        LEFT JOIN 
+        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    WHERE 
+        u.rol = "cliente" and u.categoria_persona_id = ?;
+    ;
+    `;
+    
+    conexion.query(query, [req.params.id],(err, results) => {
+        if (err) {
+            res.status(500).json({
+                msg: 'Error al buscar clientes'
+            });
+            return;
+        }
+        res.status(200).json({
+            results,
+            cant: results.length
+        });
+    });
+
+}
+
+
+const getAllClientesByFilterName = async (req, res) => {
+    const searchTerm = req.params.id || '';
+    const searchPattern = `${searchTerm}%`; 
+    let query = `
+    SELECT 
+        u.usuario_id,
+        u.nombre, 
+        u.apellido, 
+        u.correo, 
+        u.categoria_persona_id,
         u.username, 
         u.pais_residencia,
         u.edad, 
@@ -93,76 +151,25 @@ const getAllClientesWithInfo = (req, res) =>{
         i.vision
     FROM 
         usuarios AS u
-    JOIN 
+    LEFT JOIN 
         informacion AS i ON u.usuario_id = i.cliente_id
     WHERE 
-        u.rol = "cliente";
-`;
-    conexion.query(query, (err,results)=>{
+        u.rol = "cliente" and u.nombre like  ?;
+    ;
+    `;
+    
+    conexion.query(query, [searchPattern],(err, results) => {
         if (err) {
             res.status(500).json({
-                msg: 'error al buscar clientes'
-            })
+                msg: 'Error al buscar clientes'
+            });
             return;
         }
         res.status(200).json({
             results,
             cant: results.length
-        })
-    })
-
-}
-
-
-const getAllClientesByCategory = async (req, res) => {
-    let sql = `
-     select 
-        usuario_id,
-        nombre, 
-        apellido, 
-        correo, 
-        codigo_pais, 
-        pais_residencia, 
-        edad, 
-        categoria_persona_id,imagen, 
-        from usuarios 
-        where rol="Cliente" and categoria_persona_id=${req.params.id}
-    `
-    try {
-        conexion.query(sql, [req.params.id],(err, data) => {
-            if (err) {
-                res.status(500).json({
-                    msg: 'error al buscar clientes'
-                })
-                return;
-            }
-            const usersPromise = data.map(c => {
-                return new Promise((resolve, reject) => {
-                    sql = 'select * from informacion where cliente_id=? ';
-                    conexion.query(sql, [c.usuario_id], (err, result) => {
-                        if (err) {
-                            return reject(err)
-                        }
-                        c.informacion = result;
-                        resolve(c)
-                    })
-                })
-            })
-            Promise.all(usersPromise)
-                .then(results => {
-                    res.status(200).json({
-                        results,
-                        cant: results.length
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({ msg: 'Error al obtener informacion del usuario' })
-                })
-
         });
-    } catch (error) {
-        res.status(500).json({ msg: 'Error en el servidor' });
-    }
+    });
 
 }
 
@@ -663,6 +670,7 @@ module.exports = {
     getAllClientesWithInfo,
     changeStateUser,
     verifyEmail,
-    getAllClientesByCategory
+    getAllClientesByCategory,
+    getAllClientesByFilterName
 }
 

@@ -16,3 +16,21 @@
     color: var(--smoky-dark-color) !important;
     border: 1px solid var(--gray-color) !important;
   }
+
+  .btn-outline-gray {
+    --bs-btn-color: var(--gray-color);  
+    --bs-btn-border-color: var(--gray-color);  
+    --bs-btn-hover-color: var(--white-anti-flash-color);  
+    --bs-btn-hover-bg: var(--gray-color);  
+    --bs-btn-hover-border-color: var(--gray-color);  
+    border: 1px solid var(--gray-color) !important;
+  }
+
+  .alert-gray {
+    background-color: var(--gray-color) !important;
+    color: var(--white-anti-flash-color) !important;
+    padding: 0.75rem 1.25rem !important;
+    border: 1px solid var(--gray-color) !important;
+    border-radius: 0.25rem !important;
+    margin-bottom: 1rem !important;
+}

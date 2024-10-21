@@ -5,6 +5,7 @@ import PostsView from '../views/PostsView.vue'
 import ClientsView from '@/views/ClientsView.vue'
 import ClientView from '@/views/ClientView.vue'
 import IngresarView from '@/views/IngresarView.vue'
+import ControlAdminView from '@/views/ControlAdmin.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,8 +18,8 @@ const router = createRouter({
       path: '/registrarse',
       name: 'registrarse',
       component:RegistrarseView
-    }
-
+    },
+  {
       path: '/posts',
       name: 'posts',
       component: PostsView
@@ -30,7 +31,7 @@ const router = createRouter({
     },
    
     {
-      path:'/client/:id',
+      path:'/client/:name',
       name:'client',
       component:ClientView
     },
@@ -38,6 +39,11 @@ const router = createRouter({
       path:'/login',
       name:'Login',
       component:IngresarView
+    },
+    {
+      path:'/admin',
+      name:'admin',
+      component:ControlAdminView
     },
   ]
 })
