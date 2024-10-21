@@ -1,6 +1,5 @@
 const conexion = require("../database");
 const { response: res, request: req } = require("express");
-const multer = require("multer");
 const { uploadFile } = require("../helpers/uploadImage");
 const { v4: uuidv4 } = require("uuid");
 const cloudinary = require("cloudinary").v2;
