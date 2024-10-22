@@ -107,6 +107,29 @@ router.delete('/:id', function (req, res, next) {
         }
     });
 });
+
+// RUTA PARA RESTABLECER ELIMINACIÓN LÓGICA
+router.patch('/:id/restaurar', function (req, res, next) {
+    var query = `UPDATE faq SET eliminado = 0 WHERE faq_id = ?`;
+
+    // Ejecutamos la consulta
+    conexion.query(query, [req.params.id], function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.status(500).send({
+                error: error,
+                message: 'Error al realizar la petición'
+            });
+        } else {
+            console.log(results);
+            res.status(200).send({
+                data: results,
+                message: 'faq restaurado correctamente'
+            });
+        }
+    });
+});
+
  
 
 
