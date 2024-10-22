@@ -7,6 +7,7 @@ import ClientView from '@/views/ClientView.vue'
 import IngresarView from '@/views/IngresarView.vue'
 import ControlAdminView from '@/views/ControlAdmin.vue'
 import PerfilView from '@/views/PerfilView.vue'
+import FaqView from '@/views/FaqView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -50,6 +51,11 @@ const router = createRouter({
       path:'/perfil',
       name:'perfil',
       component:PerfilView
+    },
+    {
+      path:'/faq',
+      name:'faq',
+      component:FaqView
     }
   ]
 })
