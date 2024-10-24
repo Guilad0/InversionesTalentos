@@ -10,18 +10,14 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
               <li>
-                <div v-if="vista === 'list'">
-                  <button class="dropdown-item" @click="abrirFormulario('post')">
-                    Post
-                  </button>
-                </div>
+                <button class="dropdown-item" @click="abrirFormulario('post')">
+                  Post
+                </button>
               </li>
               <li>
-                <div v-if="vista === 'list'">
-                  <button class="dropdown-item" @click="abrirFormulario('categoria')">
-                    Categoría
-                  </button>
-                </div>
+                <button class="dropdown-item" @click="abrirFormulario('categoria')">
+                  Categoría
+                </button>
               </li>
             </ul>
           </div>

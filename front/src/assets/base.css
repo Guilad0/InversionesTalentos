@@ -1,7 +1,8 @@
 :root{
-    --smoky-dark-color:#14110F;
+    --smoky-dark-color:rgba(0, 0, 0, 0.808);
     --jet-color:#14110F;
     --gray-color:#7E7F83;
+    --yellow-orange: #e6880d;
     --dun-color:#D9C5B2;
     --white-anti-flash-color:#F3F3F4;
 

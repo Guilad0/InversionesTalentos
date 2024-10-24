@@ -54,7 +54,7 @@
                                     <i class="fab fa-instagram fa-lg"></i>
                                 </a>
                                 <a href="https://x.com/" class="me-3" target="_blank" aria-label="X">
-                                    <i class="fab fa-twitter-x"></i>
+                                    <i class="fa-brands fa-x-twitter"></i>
                                 </a>
                                 <a href="https://www.youtube.com" class="me-3" target="_blank" aria-label="YouTube">
                                     <i class="fab fa-youtube fa-lg"></i>
@@ -96,16 +96,16 @@ export default {
 <style scoped>
 
 .custom-footer {
-    background-color: #000;
+    background-color: var(--smoky-dark-color);
 }
 
 .color-text {
-    color: #f3f3f4;
+    color: var(--white-anti-flash-color);
 }
 
 a {
     text-decoration: none;
-    color: #f3f3f4;
+    color: var(--white-anti-flash-color);
 }
 
 .pie {
