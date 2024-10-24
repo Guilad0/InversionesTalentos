@@ -5,10 +5,10 @@
         
       <div class="container-wrapper  d-flex">
         <div class="col  " :class="{ 'move-right': currentPage === 1 }">
-          <Register @click="changePage" />
+          <Register @changePage="changePage" />
         </div>
         <div class="col   " :class="{ 'move-left': currentPage === 1 }">
-        <Login @click="changePage" />
+        <Login @changePage="changePage" />
         </div>
       </div>
     </main>
