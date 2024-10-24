@@ -15,121 +15,10 @@ cloudinary.config(process.env.CLOUDINARY_URL)
  *  Esta funsion obtiene la lista de todos los usuarios
  */
 const getUsers = (req, res) => {
-    let sql = 'select * from usuarios';
-    conexion.query(sql, (error, results) => {
-        if (error) {
-            res.status(500).json({
-                error,
-            })
-        } else {
-            res.status(200).json({
-                results,
-                cant: results.length
-            })
-        }
-    })
-}
+    const page = parseInt(req.query.page) || 1; 
+    const size = parseInt(req.query.size) || 10; 
+    const offset = (page - 1) * size;
 
-
-
-const getAllClientesWithInfo = (req, res) => {
-    let query = `
-    SELECT 
-    u.usuario_id,
-        u.nombre, 
-        u.apellido, 
-        u.correo, 
-        u.categoria_persona_id,
-        u.username, 
-        u.pais_residencia,
-        u.edad, 
-        u.imagen, 
-        u.rol, 
-        i.ocupacion, 
-        i.descripcion, 
-        i.monto_inversion, 
-        i.cantidad_maxima_inversiones,
-        i.preparacion, 
-        i.estudios, 
-        i.vision,
-        c.nombre as categoria
-    FROM 
-        usuarios AS u
-    LEFT JOIN 
-        informacion AS i ON u.usuario_id = i.cliente_id
-         LEFT JOIN 
-        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
-    WHERE 
-        u.rol = "cliente";
-    `;
-    
-    conexion.query(query, (err, results) => {
-        if (err) {
-            res.status(500).json({
-                msg: 'Error al buscar clientes'
-            });
-            return;
-        }
-        res.status(200).json({
-            results,
-            cant: results.length
-        });
-    });
-}
-
-
-
-const getAllClientesByCategory = async (req, res) => {
-    let query = `
-    SELECT 
-    u.usuario_id,
-        u.nombre, 
-        u.apellido, 
-        u.correo, 
-        u.categoria_persona_id,
-        u.username, 
-        u.pais_residencia,
-        u.edad, 
-        u.imagen, 
-        u.rol, 
-        i.ocupacion, 
-        i.descripcion, 
-        i.monto_inversion, 
-        i.cantidad_maxima_inversiones,
-        i.preparacion, 
-        i.estudios, 
-        i.vision,
-        c.nombre as categoria
-    FROM 
-        usuarios AS u
-    LEFT JOIN 
-        informacion AS i ON u.usuario_id = i.cliente_id
-        LEFT JOIN 
-        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
-    WHERE 
-        u.rol = "cliente" and u.categoria_persona_id = ?;
-    ;
-    `;
-    
-    conexion.query(query, [req.params.id],(err, results) => {
-        if (err) {
-            res.status(500).json({
-                msg: 'Error al buscar clientes'
-            });
-            return;
-        }
-        res.status(200).json({
-            results,
-            cant: results.length
-        });
-    });
-
-}
-
-
-const getAllClientesByFilterName = async (req, res) => {
-    const searchTerm = req.params.id || '';
-    const searchPattern = `${searchTerm}%`; 
     let query = `
     SELECT 
         u.usuario_id,
@@ -142,36 +31,139 @@ const getAllClientesByFilterName = async (req, res) => {
         u.edad, 
         u.imagen, 
         u.rol, 
+        u.estado,
         i.ocupacion, 
         i.descripcion, 
         i.monto_inversion, 
         i.cantidad_maxima_inversiones,
         i.preparacion, 
         i.estudios, 
-        i.vision
+        i.vision,
+        c.nombre as categoria
     FROM 
         usuarios AS u
     LEFT JOIN 
         informacion AS i ON u.usuario_id = i.cliente_id
-    WHERE 
-        u.rol = "cliente" and u.nombre like  ?;
-    ;
-    `;
-    
-    conexion.query(query, [searchPattern],(err, results) => {
+    LEFT JOIN 
+        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    LIMIT ? OFFSET ?`;
+
+    conexion.query(query, [size, offset], (err, results) => {
         if (err) {
             res.status(500).json({
                 msg: 'Error al buscar clientes'
             });
             return;
         }
-        res.status(200).json({
-            results,
-            cant: results.length
+        
+        const countQuery = `SELECT COUNT(*) AS total FROM usuarios`;
+        conexion.query(countQuery, (err, countResults) => {
+            if (err) {
+                res.status(500).json({
+                    msg: 'Error al contar usuarios'
+                });
+                return;
+            }
+
+            const totalUsers = countResults[0].total;
+            const totalPages = Math.ceil(totalUsers / size);
+
+            const prevPage = page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
+            const nextPage = page < totalPages ? `/api/users?page=${page + 1}&size=${size}` : null;
+
+            res.status(200).json({
+                results,
+                cant: results.length,
+                total: totalUsers,
+                totalPages: totalPages,
+                currentPage: page,
+                prev: prevPage,
+                next: nextPage
+            });
         });
     });
-
 }
+
+
+const getUsersByname = (req, res) => {
+    const page = parseInt(req.query.page) || 1; 
+    const size = parseInt(req.query.size) || 10; 
+    const offset = (page - 1) * size;
+    const searchTerm = req.params.id || '';
+    const searchPattern = `${searchTerm}%`; 
+    
+    let query = `
+    SELECT 
+        u.usuario_id,
+        u.nombre, 
+        u.apellido, 
+        u.correo, 
+        u.categoria_persona_id,
+        u.username, 
+        u.pais_residencia,
+        u.edad, 
+        u.imagen, 
+        u.rol, 
+        u.estado,
+        i.ocupacion, 
+        i.descripcion, 
+        i.monto_inversion, 
+        i.cantidad_maxima_inversiones,
+        i.preparacion, 
+        i.estudios, 
+        i.vision,
+        c.nombre as categoria
+    FROM 
+        usuarios AS u
+    LEFT JOIN 
+        informacion AS i ON u.usuario_id = i.cliente_id
+    LEFT JOIN 
+        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    WHERE u.nombre LIKE ?
+    LIMIT ? OFFSET ?`;
+
+    conexion.query(query, [searchPattern, size, offset], (err, results) => {
+        if (err) {
+            res.status(500).json({
+                msg: 'Error al buscar clientes'
+            });
+            return;
+        }
+        
+        const countQuery = `SELECT COUNT(*) AS total FROM usuarios WHERE nombre LIKE ?`;
+        conexion.query(countQuery, [searchPattern], (err, countResults) => {
+            if (err) {
+                res.status(500).json({
+                    msg: 'Error al contar usuarios'
+                });
+                return;
+            }
+
+            const totalUsers = countResults[0].total;
+            const totalPages = Math.ceil(totalUsers / size);
+
+            const prevPage = page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
+
+            const nextPage = (results.length === size && page < totalPages) ? `/api/users?page=${page + 1}&size=${size}` : null;
+
+            res.status(200).json({
+                results,
+                cant: results.length,
+                total: totalUsers,
+                totalPages: totalPages,
+                currentPage: page,
+                prev: prevPage,
+                next: nextPage
+            });
+        });
+    });
+};
+
+
+
+
+
+
 
 
 
@@ -592,66 +584,52 @@ const createUrlImg = (req, res) => {
 /**
  * funcion sube la iamgen al servidor cloudinary
  */
-const uploadimageUserCloudinary = (req, res) => {
-    if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
-        res.status(400).json({
-            msg: 'Sin archivos para subir'
-        });
-        return;
-    }
 
-    let query = 'SELECT * FROM usuarios WHERE usuario_id = ?';
-    conexion.query(query, [req.params.id],async (err, results) => {
-        if (err) {
+const getUserById = ()=>{
+    
+    let query = `
+    SELECT 
+        u.usuario_id,
+        u.nombre, 
+        u.apellido, 
+        u.correo, 
+        u.categoria_persona_id,
+        u.username, 
+        u.pais_residencia,
+        u.edad, 
+        u.imagen, 
+        u.rol, 
+        u.estado,
+        i.ocupacion, 
+        i.descripcion, 
+        i.monto_inversion, 
+        i.cantidad_maxima_inversiones,
+        i.preparacion, 
+        i.estudios, 
+        i.vision,
+        c.nombre as categoria
+    FROM 
+        usuarios AS u
+    LEFT JOIN 
+        informacion AS i ON u.usuario_id = i.cliente_id
+    LEFT JOIN 
+        categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+     where u.usuario_id = ?   
+    `;
+    conexion.query( query,[req.params.id], (error, results) =>{
+        if( error || results.length == 0 ){
             res.status(500).json({
-                err,
-            });
+                ok:'Error al buscar usuarios',
+                error
+            })
             return;
         }
-        console.log(results);
-        if (results.length === 0) {
-            return res.status(404).json({
-                msg: 'Usuario no encontrado',
-            });
-        }
+        res.status(200).json({
+            results,
+        })
+    })
+}
 
-        try {
-            let extension = req.files.image.name.split('.');
-            extension = extension[extension.length - 1];
-            if (extension !== 'jpg' && extension !== 'png' && extension !== 'jpeg') {
-                return res.status(404).json({
-                    msg: 'Extensiones de imagen no permitidas',
-                });
-            }
-            cloudinary.uploader.destroy(`clients/${'clients/'+req.params.id}`);
-            const { tempFilePath } = req.files.image;
-            const result = await cloudinary.uploader.upload(tempFilePath, {
-                    public_id: req.params.id,
-                    folder: 'clients'
-            });
-            const { secure_url } = result;
-            query = 'update usuarios set imagen = ? where usuario_id = ?';
-            conexion.query(query, [secure_url, req.params.id], async (err) => {
-                if (err) {
-                    return res.status(404).json({
-                        msg: 'Usuario no encontrado/Error al guardar nombre de imagen',
-                    });
-                }
-                
-                res.status(201).json({
-                    url: secure_url
-                })
-            })
-
-        } catch (error) {
-            return res.status(500).json({
-                msg: 'Error al procesar la imagen',
-                error
-            });
-        }
-
-    });
-};
 
 const handleEmail = (req, res) => {
     const correo = req.query.correo;
@@ -698,13 +676,11 @@ module.exports = {
     getInfoClientById,
     putClientInfo,
     createUrlImg,
-    uploadimageUserCloudinary,
-    getAllClientesWithInfo,
     changeStateUser,
     verifyEmail,
-    getAllClientesByCategory,
-    getAllClientesByFilterName,
-    handleEmail,
-    handleTelefono
+    getUsersByname,
+    getUserById,
+    handleTelefono,
+    handleEmail
 }
 

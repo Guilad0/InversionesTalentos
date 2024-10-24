@@ -8,7 +8,7 @@ import { createPinia } from 'pinia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import vue3GoogleLogin from 'vue3-google-login'
-import 'bootstrap-icons/font/bootstrap-icons.css';
+// import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 import Swal from 'sweetalert2';

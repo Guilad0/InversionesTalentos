@@ -27,52 +27,7 @@ const getCategoies = (req, res) => {
   });
 };
 
-/**
- * 
-Actualiza el nombre de la categoria
- */
-// const putCategorie = (req, res) => {
-//   const { nombre } = req.body;
-//   console.log(nombre);
 
-//   let query = "select * from categoria_personas where categoria_persona_id = ?";
-//   conexion.query(query, [req.params.id], async (err, data) => {
-//     if (err || data.length === 0) {
-//       return res.status(500).json({
-//         err,
-//         msg: "Categoria no encontrada",
-//       });
-//     }
-
-//     try {
-//       // Asegúrate de que `data[0].imagen` contenga el `public_id` (o parte del mismo) en Cloudinary
-//       let oldPublicId = data[0].nombre; // Aquí debería estar el public_id de Cloudinary, no solo el nombre de la categoría
-//       let newPublicId = `categories/${nombre}`; // Por ejemplo, puedes renombrar la imagen basada en la nueva categoría
-
-//       // Renombrar la imagen en Cloudinary
-//       await cloudinary.uploader.rename('categories/'+oldPublicId, newPublicId);
-//       const secureUrl = cloudinaryUrl(newPublicId);
-//       // Actualizar la base de datos con el nuevo nombre de la categoría
-//       query = "update categoria_personas set nombre = ?, imagen = ? where categoria_persona_id = ?";
-//       conexion.query(query, [secureUrl, newPublicId, req.params.id], (err) => {
-//         if (err) {
-//           return res.status(500).json({
-//             err,
-//             msg: "Error al actualizar nombre",
-//           });
-//         }
-//         res.status(201).json({
-//           msg: "Categoria actualizada exitosamente",
-//         });
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         msg: "Error al renombrar la imagen en Cloudinary",
-//         error,
-//       });
-//     }
-//   });
-// };
 
 
 const changeState = (req, res) => {
@@ -110,63 +65,6 @@ const changeState = (req, res) => {
   });
 };
 
-/**
- * actualziar iamgen de cloudinary
- */
-// const updateImgCategory = (req, res) => {
-//   if (!req.files || Object.keys(req.files).length === 0 || !req.files.imagen) {
-//     res.status(400).json({
-//       msg: "Sin archivos para subir",
-//     });
-//     return;
-//   }
-//   let query = "select * from categoria_personas where categoria_persona_id = ?";
-//   conexion.query(query, [req.params.id], (err, data) => {
-//     if (err) {
-//       res.status(400).json({
-//         msg: "Categoria no encontrada",
-//       });
-//       return;
-//     }
-//     let img = data[0].imagen;
-//     let extension = req.files.imagen.name.split(".");
-//     extension = extension[extension.length - 1];
-//     if (extension == "png" || extension == "jpg" || extension == "jpeg") {
-//       try {
-//         let query =
-//           "update categoria_personas set imagen=? where categoria_persona_id = ?";
-//         let nameFile = uuidv4() + "." + extension;
-//         conexion.query(query, [nameFile, req.params.id], async (error) => {
-//           if (error) {
-//             return res.status(404).json({
-//               msg: "Error en la consulta",
-//             });
-//           }
-//           cloudinary.uploader.destroy(`categories/${img}`);
-//           const { tempFilePath } = req.files.imagen;
-//           const result = await cloudinary.uploader.upload(tempFilePath, {
-//             public_id: nameFile,
-//             folder: "categories",
-//           });
-//           const { secure_url } = result;
-//           res.status(201).json({
-//             url: secure_url,
-//           });
-//         });
-//       } catch (error) {
-//         return res.status(500).json({
-//           msg: "Error al procesar la imagen",
-//           error,
-//         });
-//       }
-//     } else {
-//       res.status(500).json({
-//         msg: "Extension no valida",
-//       });
-//       return;
-//     }
-//   });
-// };
 
 /**
  * Actualiza una imagen del servidor
@@ -257,62 +155,6 @@ const getById = (req, res) => {
   });
 };
 
-/* 
-gaurda una categoria yy sube la imagen a cloudnary
-*/
-
-// const saveCategory = async (req, res) => {
-//     if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
-//       return res.status(400).json({
-//         msg: "Sin archivos para subir",
-//       });
-//     }
-//     let {nombre} = req.body;
-//     nombre = nombre.toLowerCase();
-//     let query = 'select * from categoria_personas where nombre = ?';
-//     conexion.query(query,[nombre], async(err, data)=>{
-//       if (err) {
-//         res.status(400).json({
-//           msg: "Error al buscar categoria",
-//         });
-//         return;
-//       }
-//         if( data.length > 0 ){
-//           res.status(404).json({
-//             msg:'El nombre de la categoria ya existe!!'
-//           })
-//           return;
-//         }
-//         let extension = req.files.image.name.split('.');
-//             extension = extension[extension.length - 1];
-//             if (extension !== 'jpg' && extension !== 'png' && extension !== 'jpeg') {
-//                 return res.status(404).json({
-//                     msg: 'Extensiones de imagen no permitidas',
-//                 });
-//             }
-//             const { tempFilePath } = req.files.image;
-//             const result = await cloudinary.uploader.upload(tempFilePath, {
-//               public_id: nombre,
-//               folder: 'categories'
-//             });
-//             const { secure_url } = result;
-//             query = 'insert into categoria_personas (imagen,nombre) values (?,?)';
-//             conexion.query(query,[secure_url,nombre], err =>{
-//                 if( err ){
-//                   res.status(404).json({
-//                     msg:'Error al gaurdar el nombre',
-//                     err
-//                   })
-//                   return;
-//                 }
-//                 res.status(201).json({
-//                   imgUrl:secure_url
-//                 })
-
-//             })
-            
-//     })
-//   };
 
 
 /**
@@ -349,10 +191,12 @@ gaurda una categoria yy sube la imagen a cloudnary
           res.status(201).json({
               ok: 'Imagen cargada',
           });
+            return
           })
         } catch (error) {
           res.status(400).json({
             error
+
         });
         }
     })

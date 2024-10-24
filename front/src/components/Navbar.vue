@@ -15,38 +15,37 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
 
-                <ul class="navbar-nav mx-auto">
 
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/view1" aria-current="page">Slice Channel
-                            <span class="visually-hidden">(current)</span></a>
-                    </li>
+                    <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/">Slice Channel</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/marketplace">Marketplace</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/">Propósito</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/">Cómo funciona</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/posts">Noticias</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/">Contactos</RouterLink>
+            </li>
+  
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/">FAQs</RouterLink>
+            </li>
+          </ul>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view2">Marketplace</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view3">Propósito</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view4">Cómo funciona</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view5">Noticias</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view6">Contactos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/view7">FAQs</a>
-                    </li>
-
-                </ul>
 
                 <div class="d-flex align-items-center">
 
@@ -93,8 +92,7 @@ a:hover {
 }
 
 .custom-navbar {
-    background-color: #000;
-    
+    background-color: var(--gray-color);
 }
 
 a {
@@ -106,6 +104,10 @@ a {
     background-color: #d9c5b2;
     color: black;
     border-radius: 10px;
+}
+
+nav{
+    height: 10vh;
 }
 
 </style>
