@@ -33,8 +33,8 @@ router.post("/", async(req, res) => {
             folder: 'posts'
     });
     const { secure_url } = result;
-    const {autor_id, categoria_id, titulo, resumen, contenido, estado}= req.body;
-    var posts = `INSERT INTO posts(autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado) VALUES ("${autor_id}", "${categoria_id}", "${titulo}", "${resumen}", "${secure_url}", "${contenido}", "${estado}");`;
+    const {usuario_id, categoria_id, titulo, resumen, contenido, estado}= req.body;
+    var posts = `INSERT INTO posts(usuario_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado) VALUES ("${usuario_id}", "${categoria_id}", "${titulo}", "${resumen}", "${secure_url}", "${contenido}", "${estado}");`;
     connection.query(posts, (err, results) => {
         if (err) {
             //console.log(err);
@@ -59,9 +59,9 @@ router.post("/", async(req, res) => {
 });
 
 router.put("/:post_id", (req, res) => {
-    const { autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
+    const { usuario_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
     const { post_id } = req.params;
-    const posts = `UPDATE posts SET autor_id = "${autor_id}", categoria_id = "${categoria_id}", titulo = "${titulo}", resumen = "${resumen}", imagen_portada = "${imagen_portada}", contenido = "${contenido}", estado = "${estado}" WHERE post_id = "${post_id}";`;
+    const posts = `UPDATE posts SET usuario_id = "${usuario_id}", categoria_id = "${categoria_id}", titulo = "${titulo}", resumen = "${resumen}", imagen_portada = "${imagen_portada}", contenido = "${contenido}", estado = "${estado}" WHERE post_id = "${post_id}";`;
     connection.query(posts, (err, results) => {
         if (err) {
             //console.log(err);
@@ -99,7 +99,7 @@ router.delete("/:post_id", (req, res) => {
 
 router.patch('/estado/:post_id', function (req, res, next) {
     // res.send('estas eliminando productos');
-    const { autor_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
+    const { usuario_id, categoria_id, titulo, resumen, imagen_portada, contenido, estado } = req.body;
     var query = `UPDATE posts SET estado= !estado WHERE post_id = ${req.params.post_id};`;
 
     connection.query(query, function (error, results, fields) {

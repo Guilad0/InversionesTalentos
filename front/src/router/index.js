@@ -9,6 +9,7 @@ import ControlAdminView from '@/views/ControlAdmin.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import FaqView from '@/views/FaqView.vue'
 import SignUpLoginView from '@/views/SignUpLoginView.vue'
+import PostView from '@/views/PostView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/posts',
       name: 'posts',
       component: PostsView
+    },
+    {
+      path: '/post/:post_id',
+      name: 'post',
+      component: PostView
     },
   {
       path: '/marketplace',
