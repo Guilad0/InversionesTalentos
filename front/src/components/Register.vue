@@ -428,7 +428,7 @@ input::placeholder {
 }
 
 main{
-    background-image: url('../assets/images/imagen.jfif');
+    background-image: url('../assets/images/2.png');
     background-size: cover;
     background-repeat: no-repeat;
     

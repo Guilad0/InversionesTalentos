@@ -165,7 +165,7 @@ const callback = (response) => {
 }
 
 main{
-    background-image: url('../assets/images/register9.jfif');
+    background-image: url('../assets/images/1.png');
     background-size: cover;
     background-repeat: no-repeat;
     
