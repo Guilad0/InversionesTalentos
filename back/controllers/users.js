@@ -653,6 +653,38 @@ const uploadimageUserCloudinary = (req, res) => {
     });
 };
 
+const handleEmail = (req, res) => {
+    const correo = req.query.correo;
+    const query = `SELECT * FROM usuarios WHERE correo = ?;`;
+   
+    conexion.query(query, [correo], (error, results) => {
+      if (error) {
+        return res.status(500).send({ message: "Error en la consulta" });
+      }
+   
+      if (results.length > 0) {
+        res.send({ existe: true });
+      } else {
+        res.send({ existe: false });
+      }
+    });
+  };
+  const handleTelefono = (req, res) => {
+    const telefono = req.query.telefono;
+    const query = `SELECT * FROM usuarios WHERE numero_telefono = ?;`;
+   
+    conexion.query(query, [telefono], (error, results) => {
+      if (error) {
+        return res.status(500).send({ message: "Error en la consulta" });
+      }
+   
+      if (results.length > 0) {
+        res.send({ existe: true });
+      } else {
+        res.send({ existe: false });
+      }
+    });
+  };
 
 
 module.exports = {
@@ -671,6 +703,8 @@ module.exports = {
     changeStateUser,
     verifyEmail,
     getAllClientesByCategory,
-    getAllClientesByFilterName
+    getAllClientesByFilterName,
+    handleEmail,
+    handleTelefono
 }
 
