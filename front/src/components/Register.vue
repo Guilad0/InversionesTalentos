@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center  container">
+  <main class="d-flex justify-content-center align-items-center  ">
     <div class="container col-md-6 mt-5 mb-5">
       <div class="card shadow">
         <div class="card-body py-5 align-items-center">
@@ -186,18 +186,18 @@
             Registrarse Gratis
           </button>
           </div>
-          <div class="mt-3 text-end me-3">
-           <div>
+          <div class="mt-3 text-end me-3 cursor">
+           <div  @click="$emit('changePage')">
             ¿Ya eres un usuario?
-          <RouterLink to="/login" class="custom-link"
-            >Iniciar Sesión</RouterLink
+          <a to="/login" class="custom-link "
+            >Iniciar Sesión</a
           >
            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
@@ -406,10 +406,15 @@ input::placeholder {
 .form-check-label span {
   color: #14110f;
 }
+.card{
+    background-color: rgba(255, 255, 255, 0.938);
+  width: 30rem;
 
+}
 /* Estilo para el enlace */
 .custom-link {
   color: #14110f;
+  text-underline-offset: 3px;
 }
 
 /* Cambiar color en el enlace */
@@ -421,4 +426,13 @@ input::placeholder {
 .custom-color{
   color: rgba(44, 43, 43, 0.753) !important;
 }
+
+main{
+    background-image: url('../assets/images/imagen.jfif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+
+}
+
 </style>

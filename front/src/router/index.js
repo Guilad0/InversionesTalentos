@@ -8,6 +8,7 @@ import IngresarView from '@/views/IngresarView.vue'
 import ControlAdminView from '@/views/ControlAdmin.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import FaqView from '@/views/FaqView.vue'
+import SignUpLoginView from '@/views/SignUpLoginView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -51,6 +52,11 @@ const router = createRouter({
       path:'/perfil',
       name:'perfil',
       component:PerfilView
+    },
+    {
+      path:'/sign-login',
+      name:'sign-login',
+      component:SignUpLoginView
     },
     {
       path:'/faq',

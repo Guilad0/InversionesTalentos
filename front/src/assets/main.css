@@ -34,3 +34,34 @@
     border-radius: 0.25rem !important;
     margin-bottom: 1rem !important;
 }
+
+.shadow-custom-1{
+  box-shadow: -3px 0px 8px 0px var(--gray-color);
+}
+
+.underline{
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.cursor-blocked{
+  cursor:not-allowed;
+}
+
+.color-gray{
+  color: var(--gray-color) !important;
+}
+.bg-gray{
+  background-color: var(--gray-color) !important;
+}
+
+.custom-absolute {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+.cursor{
+  cursor: pointer;
+}

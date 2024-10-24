@@ -9,20 +9,20 @@ import FilterClientsSm from '@/components/FilterClientsSm.vue';
 
 const { results: categories, getData: getCategories } = useFetchData(ref('/categories'));
 const activeCategory = ref(null);
-const path = ref('/users/clients/all')
+const path = ref('/clients')
 const { results: clients, getData: getClients } = useFetchData(path);
 const name = ref('')
 
 const findByname = (categoryId) => {
     activeCategory.value = categoryId;
-    path.value = '/users/clients/findBy/' + categoryId;
+    path.value = '/clients/findBy/' + categoryId;
     getClients();
     name.value = '';
 };
 
 const getAll = () => {
     activeCategory.value = null;
-    path.value = '/users/clients/all';
+    path.value = '/clients/';
     getClients()
 }
 const orderBy = (order) => {
@@ -43,7 +43,7 @@ const orderBy = (order) => {
 const handleName = () => {
     if (name.value.trim() !== '') {
         activeCategory.value = 'undefined';
-        path.value = '/users/clients/filterByName/' + name.value;
+        path.value = '/clients/filterByName/' + name.value;
     } else {
         name.value = ''
     }
@@ -121,11 +121,7 @@ main {
     width: 100%;
 }
 
-.custom-absolute {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-}
+
 
 .content {
     width: 100%;
