@@ -243,13 +243,13 @@ const { results } = useFetchData(ref("/categories"));
 // Elimina 'categoria_personas' si no es necesario
 const handleEmail = async () => {
   console.log(correo.value);
-  if (validarCorreo(correo.value)===false) {
-    alert("El correo no es valido");
-    return;
-  }
+  // if (validarCorreo(correo.value)===false) {
+  //   alert("El correo no es valido");
+  //   return;
+  // }
   try {
     const response = await axios.get(
-      "http://localhost:3000/users/handleEmail/email?email=" + correo.value
+      "http://localhost:3000/users/handleEmail/correo?correo=" + correo.value
     );
     console.log(response.data);
     if (response.data.existe == true) {
