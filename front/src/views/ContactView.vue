@@ -1,0 +1,188 @@
+<template>
+    <div class="container d-flex justify-content-center align-items-center custom-font">
+      <form class="card shadow p-5 w-50 m-5" >
+        <h3 class="text-center py-2 text-form-contact">Déjanos tu comentario llenando este formulario</h3>
+  
+        <div class="mb-3">
+          <label for="nombre" class="form-label text-form-contact">Nombres<span class="text-danger"><strong>*</strong></span></label>
+          <input type="text" class="form-control" id="nombre" v-model="nombre"
+            v-bind:class="{ 'is-valid': nombreVal, 'is-invalid': errors.nombre }" placeholder="Escriba sus nombres"
+            @input="validarCampo('nombre')" required />
+          <span v-if="errors.nombre" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.nombre }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="apellidos" class="form-label text-form-contact">Apellidos<span class="text-danger"><strong>*</strong></span></label>
+          <input type="text" class="form-control" id="apellido" v-model="apellido" 
+            v-bind:class="{ 'is-valid': apellidoVal, 'is-invalid': errors.apellido }"
+            placeholder="Escriba sus apellidos" @input="validarCampo('apellido')" required />
+          <span v-if="errors.apellido" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.apellido }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="correo" class="form-label text-form-contact">Correo Electrónico<span class="text-danger"><strong>*</strong></span></label>
+          <input type="email" class="form-control" id="correo" v-model="email"
+            v-bind:class="{ 'is-valid': emailVal, 'is-invalid': errors.email }" placeholder="Escriba su correo" @input="validarCampo('email')" required />
+          <span v-if="errors.email" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.email }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="telefono" class="form-label text-form-contact">Teléfono</label>
+          <input type="tel" id="telefono" class="form-control text-form-contact" placeholder="123-456-7890" v-model="telefono" />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label text-form-contact">Comentarios</label>
+          <textarea class="form-control" v-model="comentarios"></textarea>
+        </div>
+  
+        <button type="submit" @click="registerComment($event)" class="btn btn-form-contact button-form">Enviar</button>
+    </form>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref, computed } from 'vue';
+  import axios from 'axios';
+  import Swal from 'sweetalert2';
+  
+  const baseURL = "http://localhost:3000/contact";
+  
+  const nombre = ref('');
+  const apellido = ref('');
+  const email = ref('');
+  const comentarios = ref('');
+  const telefono = ref('');
+  
+  const errors = ref({});
+  const nombreVal = ref(false);
+  const apellidoVal = ref(false);
+  const emailVal = ref(false);
+  
+  
+  
+  const validarCampo = (field) => {
+    switch (field) {
+      case 'nombre':
+        nombreVal.value = !!nombre.value;
+        if (!nombreVal.value) {
+          errors.value.nombre = 'Este campo es requerido';
+        } else if (nombre.value.length < 3) {
+          nombreVal.value = false;
+          errors.value.nombre = 'El nombre debe tener al menos 3 caracteres';
+        } else if (!/^[A-Za-z\s]+$/.test(nombre.value)) {
+          nombreVal.value = false;
+          errors.value.nombre = 'El nombre solo puede contener letras';
+        } else {
+          errors.value.nombre = '';
+        }
+        break;
+  
+      case 'apellido':
+        apellidoVal.value = !!apellido.value;
+        if (!apellidoVal.value) {
+          errors.value.apellido = 'Este campo es requerido';
+        } else if (apellido.value.length < 2) {
+          apellidoVal.value = false;
+          errors.value.apellido = 'El apellido debe tener al menos 3 caracteres';
+        } else if (!/^[A-Za-z\s]+$/.test(apellido.value)) {
+          apellidoVal.value = false;
+          errors.value.apellido = 'El apellido solo puede contener letras';
+        } else {
+          errors.value.apellido = '';
+        }
+        break;
+  
+      case 'email':
+        emailVal.value = !!email.value;
+        if (!emailVal.value) {
+          errors.value.email = 'Este campo es requerido';
+        } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email.value)) {
+          emailVal.value = false;
+          errors.value.email = 'Introduce un correo electrónico válido';
+        } else {
+          emailVal.value = true;
+          errors.value.email = '';
+        }
+        break;
+
+      
+    }
+  }
+  
+  const registerComment = async () => {
+    event.preventDefault();   
+    
+    validarCampo('nombre');
+    validarCampo('apellido');
+    validarCampo('email');
+
+    if (!nombreVal.value || !apellidoVal.value || !emailVal.value) {
+      return;
+    }
+  
+    
+  
+    const datos = {
+      nombre: nombre.value,
+      apellido: apellido.value,
+      email: email.value,
+      telefono: telefono.value,
+      comentarios: comentarios.value,
+    };
+  
+    try {
+      const { data } = await axios.post(baseURL, datos);
+      console.log(data);
+      Swal.fire('Éxito', 'Tu comentario ha sido registrado.', 'success');
+      resetForm();
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Error', 'Hubo un problema al registrar tu comentario.', 'error');
+    }
+  };
+  
+  const resetForm = () => {
+    nombre.value = '';
+    apellido.value = '';
+    email.value = '';
+    telefono.value = '';
+    comentarios.value = '';
+    errors.value = {};
+    nombreVal.value = false;
+    apellidoVal.value = false;
+    emailVal.value = false;
+  };
+  </script>
+  
+  <style scoped>
+  .is-valid {
+    border-color: green;
+  }
+  
+  .is-invalid {
+    border-color: red;
+  }
+  
+  .text-danger {
+    font-size: 0.8rem;
+  }
+  .button-form{
+      background-color: var(--white-anti-flash-color);
+      color: black;
+  }
+  .button-form:hover{
+      background-color: var(--smoky-dark-color);
+      color:var(--yellow-orange);
+  }
+  </style>
+  

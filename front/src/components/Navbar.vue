@@ -32,7 +32,7 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/view3">Contactos
+            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/contact">Contactos
             </RouterLink>
           </li>
 

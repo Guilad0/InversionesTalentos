@@ -10,6 +10,7 @@ import PerfilView from '@/views/PerfilView.vue'
 import FaqView from '@/views/FaqView.vue'
 import SignUpLoginView from '@/views/SignUpLoginView.vue'
 import PostView from '@/views/PostView.vue'
+import ContactView from '@/views/ContactView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -68,7 +69,12 @@ const router = createRouter({
       path:'/faq',
       name:'faq',
       component:FaqView
-    }
+    },
+    {
+      path:'/contact',
+      name:'contact',
+      component:ContactView
+    },
   ]
 })
 
