@@ -14,6 +14,7 @@
         </div>
       </div>
     </div>
+    <Contact/>
   </div>
 </template>
 
@@ -22,6 +23,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import Contact from '../components/ContactComponent.vue';
 
 const faqs = ref([]);
 
