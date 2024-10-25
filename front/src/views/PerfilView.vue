@@ -11,12 +11,12 @@
                 <input type="text" name="nombre" v-model="nombre" id="nombre" class="form-control" />
                 <label for="apellido" class="form-label">Apellido</label>
                 <input type="text" name="apellido" v-model="apellido" id="apellido" class="form-control" />
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" v-model="email" id="email" class="form-control" />
+                <label for="correo" class="form-label">Correo</label>
+                <input type="correo" name="correo" v-model="correo" id="correo" class="form-control" />
                 <div class="row">
                     <div class="col-md-6">
                     <label for="codigopais" class="form-label">Codigo del pais</label>
-                        <select name="codigopais" class="form-select" id="">
+                        <select name="codigopais" v-model="codigopais" class="form-select" id="codigopais">
                             <option value="">Seleccione</option>
                         </select>
                     </div>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="pais" class="form-label">Pais de Residencia</label>
-                        <select name="pais" class="form-select" id="">
+                        <select name="pais" v-model="pais" class="form-select" id="">
                             <option value="">Seleccione</option>
                         </select>
                     </div>
@@ -50,12 +50,71 @@
                     <label class="form-check-label" for="comprasanonimas">Compras Anonimas</label>
                 </div>
                 <div class="col-md-12">
-                    <button type="button" class="btn col-md-12  perfilbutton" >Actualizar</button>
+                    <button type="button" class="btn col-md-12  perfilbutton" @click="actualizar()" >Actualizar</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+const route = useRouter();
+
+let baseURL= 'http://localhost:3000/users';
+
+let miId = ref(0);
+let nombre = ref('');
+let apellido = ref('');
+let correo = ref('');
+let codigopais = ref('');
+let telefono = ref('');
+let pais = ref('');
+
+onMounted(() => {
+    obtenerDatos();
+});
+
+const obtenerDatos = () => {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    miId.value = usuario.id;
+    nombre.value = usuario.nombre;
+    apellido.value = usuario.apellido;
+    correo.value = usuario.correo;
+    codigopais.value = usuario.codigo_pais;
+    telefono.value = usuario.numero_telefono;
+    pais.value = usuario.pais_residencia;
+};
+
+const actualizar = async () => {
+if(nombre.value == "" || apellido.value == "" || correo.value == "" || codigopais.value == "" || telefono.value == "" || pais.value == "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Todos los campos son obligatorios'
+        })
+        return;
+    };
+    const datos = {
+        nombre: nombre.value,
+        apellido: apellido.value,
+        correo: correo.value,
+        codigo_pais: codigopais.value,
+        numero_telefono: telefono.value,
+        pais_residencia: pais.value
+    };
+    try {
+        const { data } = await axios.put(baseURL + '/' + miId.value, datos);
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+</script>
 
 <style scoped>
     .perfilbutton{
