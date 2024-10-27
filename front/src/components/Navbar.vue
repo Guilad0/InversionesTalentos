@@ -1,72 +1,45 @@
 <template>
-
   <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom">
-
     <div class="container-fluid mx-3">
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-
-
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/">Slice Channel</RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/marketplace">Marketplace
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/view1">Propósito
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/view2">Cómo funciona
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/posts">Posts</RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/contact">Contactos
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/faq">FAQs</RouterLink>
-          </li>
-        </ul>
-
-
-
-
-      </div>
-
-
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <a class="navbar-brand" href="/">
-        <h2>HI</h2>
-      </a>
-      <RouterLink class="nav-link" to="sign-login"><i class="fa fa-user-circle fs-3"></i></RouterLink>
-
-
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
+            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" :to="link.path">{{ link.name }}</RouterLink>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <RouterLink class="nav-link" to="/">
+            <h2 class="greeting">HI</h2>
+          </RouterLink>
+          <RouterLink class="nav-link user-icon" to="sign-login"><i class="fa fa-user-circle fs-3"></i></RouterLink>
+        </div>
+      </div>
     </div>
-
   </nav>
-
 </template>
 
 <script>
-
-</script> 
+export default {
+  name: 'Navbar',
+  data() {
+    return {
+      navLinks: [
+        { name: 'Home', path: '/' },
+        { name: 'Marketplace', path: '/marketplace' },
+        { name: 'Propósito', path: '/view1' },
+        { name: 'Cómo funciona', path: '/view2' },
+        { name: 'Posts', path: '/posts' },
+        { name: 'Contactos', path: '/contact' },
+        { name: 'FAQs', path: '/faq' }
+      ]
+    };
+  }
+}
+</script>
 
 <style scoped>
 .active {
@@ -76,17 +49,20 @@
   z-index: 1 !important;
 }
 .active::after {
-      transform: scaleX(1) !important;
-      transform-origin: left !important;
+  transform: scaleX(1) !important;
+  transform-origin: left !important;
 }
 
 nav {
   height: 7vh;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link {
   font-size: 1.1rem;
   color: var(--white-anti-flash-color);
+  margin-right: 15px;
+  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
@@ -95,6 +71,7 @@ nav {
 
 i {
   color: var(--white-anti-flash-color);
+  transition: color 0.3s ease;
 }
 
 i:hover {
@@ -103,6 +80,7 @@ i:hover {
 
 .bg-dark-custom {
   background-color: var(--smoky-dark-color) !important;
+  border-bottom: 2px solid var(--yellow-orange);
 }
 
 .underline-dynamic {
@@ -111,6 +89,7 @@ i:hover {
   padding-bottom: 2px;
   color: var(--white-anti-flash-color);
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .underline-dynamic::after {
@@ -123,11 +102,27 @@ i:hover {
   background-color: var(--yellow-orange);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.6s;
+  transition: transform 0.6s, background-color 0.3s ease;
 }
 
 .underline-dynamic:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+.user-icon {
+  margin-left: auto;
+  transition: color 0.3s ease;
+}
+
+.greeting {
+  margin-right: 15px;
+  color: var(--white-anti-flash-color);
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.greeting:hover {
+  color: var(--yellow-orange);
 }
 </style>
