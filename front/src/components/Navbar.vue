@@ -15,6 +15,9 @@
           <RouterLink class="nav-link" to="/">
             <h2 class="greeting">HI</h2>
           </RouterLink>
+          <RouterLink class="nav-link wallet-icon" to="/">
+            <i class="fa fa-wallet fs-3"></i>
+          </RouterLink>
           <RouterLink class="nav-link user-icon" to="sign-login"><i class="fa fa-user-circle fs-3"></i></RouterLink>
         </div>
       </div>
@@ -112,6 +115,11 @@ i:hover {
 
 .user-icon {
   margin-left: auto;
+  transition: color 0.3s ease;
+}
+
+.wallet-icon {
+  margin-right: 15px;
   transition: color 0.3s ease;
 }
 
