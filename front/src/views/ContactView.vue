@@ -76,13 +76,14 @@
         nombreVal.value = !!nombre.value;
         if (!nombreVal.value) {
           errors.value.nombre = 'Este campo es requerido';
-        } else if (nombre.value.length < 3) {
+        } else if (nombre.value.trim().length < 3) {
           nombreVal.value = false;
           errors.value.nombre = 'El nombre debe tener al menos 3 caracteres';
         } else if (!/^[A-Za-z\s]+$/.test(nombre.value)) {
           nombreVal.value = false;
           errors.value.nombre = 'El nombre solo puede contener letras';
         } else {
+          nombreVal.value = true;
           errors.value.nombre = '';
         }
         break;
@@ -91,13 +92,15 @@
         apellidoVal.value = !!apellido.value;
         if (!apellidoVal.value) {
           errors.value.apellido = 'Este campo es requerido';
-        } else if (apellido.value.length < 2) {
+        } else if (apellido.value.trim().length < 2) {
           apellidoVal.value = false;
+          console.log(errors.value);
           errors.value.apellido = 'El apellido debe tener al menos 3 caracteres';
         } else if (!/^[A-Za-z\s]+$/.test(apellido.value)) {
           apellidoVal.value = false;
           errors.value.apellido = 'El apellido solo puede contener letras';
         } else {
+          apellidoVal.value = true;
           errors.value.apellido = '';
         }
         break;
@@ -121,20 +124,19 @@
   
   const registerComment = async () => {
     event.preventDefault();   
-    
+    /*
     validarCampo('nombre');
     validarCampo('apellido');
     validarCampo('email');
+    */
 
-    if (!nombreVal.value || !apellidoVal.value || !emailVal.value) {
+    if (nombreVal.value == false || apellidoVal.value == false || emailVal.value == false){
+      alert("campos importantes no ingresados");
       return;
     }
-  
-    
-  
     const datos = {
-      nombre: nombre.value,
-      apellido: apellido.value,
+      nombre: nombre.value.trim(),
+      apellido: apellido.value.trim(),
       email: email.value,
       telefono: telefono.value,
       comentarios: comentarios.value,
