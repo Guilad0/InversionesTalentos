@@ -13,3 +13,17 @@ export const orderByEdad = (clients)=>{
 export const orderByPrice = (clients)=>{
     return clients.sort( (a,b)=> a.monto_inversion - b.monto_inversion );
 }
+
+export const getAge = ( date )=>{
+    const fechaNacimiento = new Date(date);
+    let edad = new Date().getFullYear() - fechaNacimiento.getFullYear();
+    const mes = new Date().getMonth() - fechaNacimiento.getMonth();
+    if (
+      mes < 0 ||
+      (mes === 0 && new Date().getDate() < fechaNacimiento.getDate())
+    ) {
+      edad--;
+    }
+  
+    return edad;
+  }

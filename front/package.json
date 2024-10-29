@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^11.1.0",
+    "animate.css": "^4.1.1",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "cryptr": "^6.3.0",
@@ -18,7 +19,8 @@
     "sweetalert2": "^11.14.4",
     "vue": "^3.5.11",
     "vue-router": "^4.4.5",
-    "vue3-google-login": "^2.0.33"
+    "vue3-google-login": "^2.0.33",
+    "vuetify": "^3.7.0-beta.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",

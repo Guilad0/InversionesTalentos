@@ -1,6 +1,7 @@
 <template>
-  <div class="custom-main">
-    <!-- <button @click="changePage()" class="btn btn-primary custom-aboluste">Cambio a {{ currentPage === 1 ? 'Register' : 'Login' }}</button> -->
+<div>
+  
+  <div class="custom-main d-none d-lg-block">
     <main class="d-flex justify-content-center align-items-center">
         
       <div class="container-wrapper  d-flex">
@@ -13,11 +14,23 @@
       </div>
     </main>
   </div>
+  <div class="d-block d-lg-none">
+    <div :class="{'animate__animated   animate__fadeOutLeftBig': changePage == 0}">
+    <Register v-if="currentPage === 1" @changePage="changePage" />
+
+    </div>
+    <div >
+
+    <Login v-if="currentPage === 0"  @changePage="changePage" />
+    </div>
+
+  </div>
+</div>
 </template>
 
 <style scoped>
 main {
-  height: 90vh;
+  height: 93vh;
   width: 100%;
   position: relative; 
 }

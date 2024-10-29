@@ -19,5 +19,7 @@ import WhatsAppIco from './components/WhatsAppIco.vue';
 
 
 <style scoped>
-  
+  div{
+    width: 100%;
+  }
 </style>

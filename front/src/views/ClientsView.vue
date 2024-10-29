@@ -71,7 +71,7 @@ onMounted(() => {
                             <img src="../assets/svg/search-svgrepo-com.svg" alt="Descripción del SVG" width="25">
                         </div>
                     </div>
-                    <div class="d-none d-xl-block">
+                    <div class="d-none d-xl-block"> 
                         <FilterClients :categories="categories" @getAll="getAll" @findByname="findByname"
                             :activeCategory="activeCategory" />
                     </div>

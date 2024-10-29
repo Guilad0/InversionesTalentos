@@ -1,5 +1,5 @@
 <template>
-  <main class="d-flex justify-content-center bgf py-3">
+  <main class="d-flex justify-content-center bgf py-3 animate__animated   animate__fadeInLeft">
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">

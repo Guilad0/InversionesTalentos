@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom">
+  <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 ">
     <div class="container-fluid mx-3">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
