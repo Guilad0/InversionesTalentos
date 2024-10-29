@@ -2,40 +2,40 @@
 <div>
 
   <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
-    <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
-    <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-      <p class="text-xl">Total de Inversiones (USD): </p>
-    </div>
+      <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
+      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
+        <p class="text-xl">Total de Inversiones (USD):{{ total }} </p>
+      </div>
 
-    <div class="d-flex justify-content-center mb-6">
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
-        Retiro</button>
-      <!-- <button class="btn btn-dark">Copy address</button> -->
-    </div>
-    <br>
-    <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-      <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
-      <div class="row">
-        <div class="col-6">
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-            <p class="text-lg font-semibold">Inversion: {{ inversion.id }}</p>
-            <p class="text-sm text-zinc-500">Monto: ${{ inversion.monto }}</p>
-            <p class="text-sm text-zinc-500">Fecha: {{ inversion.fecha_deposito }}</p>
+      <div class="d-flex justify-content-center mb-6">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
+          Retiro</button>
+        <!-- <button class="btn btn-dark">Copy address</button> -->
+      </div>
+      <br>
+      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
+        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
+        <div class="row">
+          <div class="col-6">
+            <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
+              <p class="text-lg font-semibold">Inversion: {{ inversion.inversion_id }}</p>
+              <p class="text-sm text-zinc-500">Monto: ${{ inversion.monto }}</p>
+              <p class="text-sm text-zinc-500">Fecha: {{ new Date(inversion.fecha_deposito).toLocaleDateString() }}</p>
+            </div>
           </div>
-        </div>
-        <div class="col-6">
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="solicitud_retiro in solicitudes_retiro"
-            :key="solicitud_retiro">
-            <p class="text-lg font-semibold">Solicitud: {{ solicitud_retiro.id }}</p>
-            <p class="text-sm text-zinc-500">Monto: ${{ solicitud_retiro.monto_recibir }}</p>
-            <p class="text-sm text-zinc-500">Fecha: {{ solicitud_retiro.fecha_solicitud }}</p>
-            <p class="text-sm text-zinc-500">Estado: {{ solicitud_retiro.estado }}</p>
-            <p class="text-sm text-zinc-500" v-if="solicitud_retiro.estado == 'Aprobado'">Fecha Aprobación: {{
-              solicitud_retiro.fecha_aprobacion }}</p>
+          <div class="col-6">
+            <div class="bg-white p-4 rounded-lg shadow-md" v-for="solicitud_retiro in solicitudes_retiro"
+              :key="solicitud_retiro">
+              <p class="text-lg font-semibold">Solicitud: {{ solicitud_retiro.retiro_id }}</p>
+              <p class="text-sm text-zinc-500">Monto: ${{ solicitud_retiro.monto_recibir }}</p>
+              <p class="text-sm text-zinc-500">Fecha: {{ new Date(solicitud_retiro.fecha_solicitud).toLocaleDateString()  }}</p>
+              <p class="text-sm text-zinc-500">Estado: {{ solicitud_retiro.estado }}</p>
+              <p class="text-sm text-zinc-500" v-if="solicitud_retiro.estado == 'Aprobado'">Fecha Aprobación: {{
+                solicitud_retiro.fecha_aprobacion }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 
   <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
@@ -58,7 +58,7 @@
         <!-- Contenedor de tabs -->
         <div class="tabs">
           <button v-for="(tab1, index) in tabs1" :key="index" :class="{ active: activeTab1 === index }"
-            @click="activeTab1 = index" class="tab-button">
+            @click="activeTab1 = index" class="btn-6">
             {{ tab1 }}
           </button>
         </div>
@@ -350,7 +350,7 @@ const tabs1 = ref(['Inversiones', 'Retiro']);
 
 let baseURL = 'http://localhost:3000/inversiones/';
 
-const usuario_rol = 'Inversionista';
+const usuario_rol = 'Cliente';
 const solicitudes_retiro = ref([]);
 const inversiones = ref([]);
 const clientes = ref([]);
@@ -360,6 +360,8 @@ var activeTab1 = ref(2);
 onMounted(() => {
   obtenerInversiones_Inversionista();  
   obtenerSolicitudes_retiro();
+  obtenerInversionesClientes();
+  obtenerSolicitudes_retiroClientes();
 });
 
 const obtenerInversiones_Inversionista = async () => {
@@ -382,6 +384,94 @@ const obtenerSolicitudes_retiro = async () => {
 
   }
 };
+
+const obtenerInversionesClientes = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'clientes/inversion');
+    console.log(data);
+    inversiones_cliente.value = data.data;
+  } catch (error) {
+    console.log(error);
+
+  }
+};
+
+const obtenerSolicitudes_retiroClientes = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'clientes/retiro',);
+    console.log(data);
+    solicitudes_retiro.value = data.data;
+  } catch (error) {
+    console.log(error);
+
+  }
+};
+
+const calcularTotal = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'clientes/inversion');
+    inversiones_cliente.value = data.data;
+
+    // Calcular el total de las inversiones
+    const total = inversiones_cliente.value.reduce((sum, inversion) => {
+      return sum + inversion.monto;
+    }, 0);
+
+    console.log(`Total de Inversiones: ${total}`);
+  } catch (error) {
+    console.log(error);
+  }};
+
+  const agregarInversion = (item) => {
+
+if (cliente_id.value == '' || total.value == '' || descuento.value == '' || fecha.value == '' || detalles.value.length == 0) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Todos los campos son obligatorios'
+  })
+  return;
+}
+
+const det = {
+  producto_id: item.id,
+  nombre: item.codigo + ' - ' + item.nombre,
+  costo: item.costo,
+  cantidad: 1,
+};
+
+detalles.value.push(det);
+
+calcularTotal();
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  var buttons = document.querySelectorAll(".btn-6");
+
+  buttons.forEach(function (button) {
+    button.addEventListener("mouseenter", function (e) {
+      var rect = button.getBoundingClientRect();
+      var relX = e.pageX - rect.left - window.scrollX;
+      var relY = e.pageY - rect.top - window.scrollY;
+      var span = button.querySelector("span");
+      if (span) {
+        span.style.top = relY + "px";
+        span.style.left = relX + "px";
+      }
+    });
+
+    button.addEventListener("mouseout", function (e) {
+      var rect = button.getBoundingClientRect();
+      var relX = e.pageX - rect.left - window.scrollX;
+      var relY = e.pageY - rect.top - window.scrollY;
+      var span = button.querySelector("span");
+      if (span) {
+        span.style.top = relY + "px";
+        span.style.left = relX + "px";
+      }
+    });
+  });
+});
 
 
 </script>
@@ -478,4 +568,41 @@ input {
 .border {
   border-color: var(--border);
 }
+
+.btn-6 {
+  color: #1a1aff; /* Equivalente a 'tint($btn-color)' en Sass */
+  position: relative;
+  overflow: hidden;
+
+  /* Default Button color */
+  background-color: darkblue;
+}
+
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #000033; /* Equivalente a 'shade($btn-color, 40%)' */
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.btn-6:hover {
+  color: #b3b3ff; /* Equivalent to 'tint($btn-color, 75%)' */
+}
+
+.btn-6:hover span {
+  width: 225%;
+  height: 225%;
+}
+
+.btn-6:active {
+  background-color: darkblue;
+}
+
 </style>

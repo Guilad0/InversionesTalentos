@@ -51,6 +51,63 @@ router.get("/solicitudes_retiros/:id", function (req, res, next) {
   });
 });
 
+router.get("/clientes/inversion", function(req, res, next){
+  var query = `SELECT inversiones.inversion_id, inversiones.monto, inversiones.fecha_deposito
+                FROM inversiones
+                INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
+                WHERE usuarios.rol = 'Cliente'`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Inversiones consultadas correctamente",
+        
+      });
+    }
+  });
+});
+
+router.get("/clientes/retiro", function(req, res, next){
+  var query = `SELECT 
+                  solicitudes_retiro.retiro_id, 
+                  solicitudes_retiro.monto_recibir, 
+                  solicitudes_retiro.fecha_solicitud, 
+                  solicitudes_retiro.estado, 
+                  solicitudes_retiro.fecha_aprobacion
+                FROM 
+                  solicitudes_retiro
+                INNER JOIN 
+                  inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id
+                INNER JOIN 
+                  usuarios ON inversiones.cliente_id = usuarios.usuario_id
+                WHERE 
+                  usuarios.rol = 'Cliente'`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Inversiones consultadas correctamente",
+        
+      });
+    }
+  });
+});
+
+
 router.get("/clientes", function (req, res, next) {
 
   var query = ` SELECT * FROM usuarios WHERE rol = 'Cliente';`;
@@ -143,37 +200,3 @@ router.patch("/:id", function (req, res, next) {
 });
 
 module.exports = router;
-
-
-router.get("/handleEmail/:correo", function (req, res, next) {
-
-  var query = `SELECT * FROM usuarios WHERE correo =  ${req.params.correo};`;
-  connection.query(query, [email], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: "Error en la consulta" });
-    }
-
-    if (results.length > 0) {
-      res.send({ existe: true });
-    } else {
-      res.send({ existe: false });
-    }
-  });
-});
-
-app.get("/api/handleEmail", (req, res) => {
-  const correo = req.query.correo;
-  const query = `SELECT * FROM usuarios WHERE correo = ?;`;
-
-  connection.query(query, [email], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: "Error en la consulta" });
-    }
-
-    if (results.length > 0) {
-      res.send({ existe: true });
-    } else {
-      res.send({ existe: false });
-    }
-  });
-});
