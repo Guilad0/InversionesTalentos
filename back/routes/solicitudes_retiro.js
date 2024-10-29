@@ -7,8 +7,8 @@ var connection = require("../database");
 
 router.get("/", function (req, res, next) {
 
-  var query = `SELECT solicitudes_retiro.*, usuarios.usuario_id, inversiones.inversion_id
-                FROM solicitudes_retiro 
+  var query = `SELECT solicitudes_retiro.*,concat(usuarios.nombre, ' ', usuarios.apellido , ' - ', usuarios.rol) as username , usuarios.usuario_id, inversiones.inversion_id
+                FROM solicitudes_retiro
                 INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
                 INNER JOIN inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id;`;
   connection.query(query, function (error, results, fields) {
@@ -120,6 +120,28 @@ router.patch("/aprobar/:id", function (req, res, next) { //aprobar la solicitud 
       res.status(200).send({
         data: results.insertId,
         message: "Inversión aprobada correctamente",
+      });
+    }
+  });
+});
+
+router.patch("/pendiente/:id", function (req, res, next) { //pendiente la solicitud de retiro
+  var query = `UPDATE solicitudes_retiro SET
+  estado = 'Pendiente'
+  WHERE retiro_id = '${req.params.id}';`;
+ 
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results.insertId);
+      res.status(200).send({
+        data: results.insertId,
+        message: "Inversión Pendiente",
       });
     }
   });
