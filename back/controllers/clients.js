@@ -21,7 +21,6 @@ const getAllClientesWithInfo = (req, res) => {
         u.username, 
         u.pais_residencia,
         u.edad, 
-        u.imagen, 
         u.rol, 
         i.ocupacion, 
         u.estado,
@@ -68,7 +67,6 @@ const getAllClientesByCategory = async (req, res) => {
         u.username, 
         u.pais_residencia,
         u.edad, 
-        u.imagen, 
         u.rol, 
         i.ocupacion, 
         i.descripcion, 
@@ -104,8 +102,11 @@ const getAllClientesByCategory = async (req, res) => {
 
 }
 
+/**
+ * Filtra clientes por su nombre ( usado en el marketplace )
+ */
 
-const getAllClientesByFilterName = async (req, res) => {
+const getAllClientesByFilterName =  (req, res) => {
     const searchTerm = req.params.id || '';
     const searchPattern = `${searchTerm}%`; 
     let query = `
@@ -118,7 +119,6 @@ const getAllClientesByFilterName = async (req, res) => {
         u.username, 
         u.pais_residencia,
         u.edad, 
-        u.imagen, 
         u.rol, 
         i.ocupacion, 
         i.descripcion, 
@@ -212,9 +212,65 @@ const uploadimageUserCloudinary = (req, res) => {
     });
 };
 
+/**
+ *  Esta funsion modifica los datos mas relevantes de  un inversor/cliente
+ * desde la vista  perfil
+ */
+const putInvestors = async (req, res) => {
+    const { username, correo } = req.body;
+    let query = 'select * from usuarios where correo = ? and usuario_id = ?';
+    conexion.query( query, [correo, req.params.id], (err, results) =>{
+      if( err ){
+          return res.status(err.status || 404).json({
+              msg:err.message || 'Error en la peticion'
+          })
+      }
+      if( results.length == 0 ){
+          return res.status(err.status || 404).json({
+              msg:err.message || 'Usuario no encontrado'
+          })
+      }
+      
+    query = 'select * from usuarios where username = ?';
+    conexion.query(query, [username], (err, results)=>{
+        if( err ){
+            return res.status( 404).json({
+                msg: 'Error en la peticion'
+            })
+        }
+        if( results.length > 0 ){
+            return res.status( 404).json({
+                msg: 'El username ya esta en uso' 
+            })
+        }
+
+        query =
+        "update usuarios set username=? where usuario_id = ?";
+      const values = [
+        username,
+        req.params.id,
+      ];
+      conexion.query(query, values, (error) => {
+        if (error) {
+          res.status(500).json({
+            msg: "Error en la petición",
+            error: error.message,
+          });
+        } else {
+          res.status(201).json({
+            msg: "Inversor actualizado",
+          });
+        }
+      });
+    })
+    } )
+  };
+  
+
 module.exports = {
     getAllClientesWithInfo, 
     getAllClientesByCategory,
     getAllClientesByFilterName,
     uploadimageUserCloudinary,
+    putInvestors
 }

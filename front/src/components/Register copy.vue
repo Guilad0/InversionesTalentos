@@ -1,74 +1,90 @@
 <template>
-  <main class="  d-flex  justify-content-center align-items-center  animate__animated   animate__fadeInLeft">
-    <div class="col-10 d-flex justify-content-center  col-xl-10  col-lg-10 col- flex-wrap d-flex  col-md-11 ">
-      <div class="card shadow position-relative p-0 rounded-3">
-        <div class="card-body position-relative">
-          <p class="card-title underline text-center m-0 pb-3">Registrate</p>
-          <div class="col d-flex my-2">
+  <main class="  d-flex  justify-content-center align-items-center  animate__animated   animate__fadeInLeft" >
+    <div class="col-10  col-xxl-8 col-xl-10  col-lg-10  col-md-11 ">
+      <div class="card shadow position-relative  ">
+
+        <div class="card-body  ">
+          <h5 class=" text-center  underline custom-color">REGÍSTRATE</h5>
+          <div class="d-flex">
             <div class="col">
-              <div class="form-floating mx-1 ">
-                <input type="text" class="form-control custom-font" id="nombre" v-model="nombre"
-                  v-bind:class="{ 'valid': nombreVal, 'is-invalid': errors.nombre }" placeholder="Escriba sus nombres"
-                  @input="validarCampo('nombre')" required />
-                <span v-if="errors.nombre" class="position-absolute text-danger">
-                  <i class="bi bi-x-circle"></i>
-                </span>
-                <label for="nombre">Nombres <label class="text-danger">*</label> </label>
-              </div>
+              <label for="nombre" class="form-label">Nombre <label class="text-danger">*</label> </label>
+              <input type="text" class="form-control" id="nombre" v-model="nombre"
+                v-bind:class="{ 'valid': nombreVal, 'is-invalid': errors.nombre }" placeholder="Escriba sus nombres"
+                @input="validarCampo('nombre')" required />
+              <span v-if="errors.nombre" class="position-absolute text-danger">
+                <i class="bi bi-x-circle"></i>
+              </span>
+              <span class="text-danger ">{{ errors.nombre }}</span>
             </div>
             <div class="col">
-              <div class="form-floating mx-1 ">
-                <input type="text" class="form-control custom-font  " id="apellido" v-model="apellido"
-                  v-bind:class="{ 'is-invalid': errors.apellido }" placeholder="Escriba sus nombres"
-                  @input="validarCampo('apellido')" required />
-                <span v-if="errors.apellido" class="position-absolute text-danger">
-                  <i class="bi bi-x-circle"></i>
-                </span>
-                <label for="apellido">Apellidos <label class="text-danger">*</label> </label>
-              </div>
+              <label for="nombre" class="form-label">Apellido<label class="text-danger">*</label> </label>
+              <input type="text" class="form-control" id="apellido" v-model="apellido"
+                v-bind:class="{ 'is-invalid': errors.apellido }"
+                placeholder="Escriba sus nombres" @input="validarCampo('apellido')" required />
+              <span v-if="errors.apellido" class="position-absolute text-danger">
+                <i class="bi bi-x-circle"></i>
+              </span>
+              <span class="text-danger ">{{ errors.apellido }}</span>
             </div>
           </div>
-
-          <div class="d-flex my-2">
-            <div class="col m-2 ">
-              <select v-model="rol" class="form-select custom-font py-2 px-1  " aria-label="Default select example"
-                required>
-                <option value="">Seleccione rol</option>
+          <div class="row ">
+            <div class="col">
+              <label for="rol" class="form-label ">Rol <label class="text-danger">*</label></label>
+              <select v-model="rol" class="form-select" aria-label="Default select example" required>
+                <option value="">Seleccione</option>
                 <option value="cliente">Cliente</option>
                 <option value="inversor">Inversor</option>
               </select>
             </div>
 
-            <div class="col m-2" v-if="rol === 'cliente'">
-
-              <select v-model="categoria" id="userSelect" class="form-select py-2 px-1 custom-font">
-                <option value="">Sel. categoria</option>
+            <div class="col" v-if="rol === 'cliente'">
+              <label for="categorias" class="form-label">Categorías</label>
+              <select v-model="categoria" id="userSelect" class="form-select ">
+                <option value="">Seleccione</option>
                 <option v-for="categoria in results" :key="categoria" :value="categoria.categoria_persona_id">
                   {{ categoria.nombre }}
                 </option>
               </select>
             </div>
-            <div class="col-4 m-2 ">
+            <div class="col ">
+              <label for="fechaCumple" class="form-label">Fecha de nacimiento <label
+                  class="text-danger">*</label></label>
               <input type="date" v-model="fechaCumple" name="fechaCumple" id="fechaCumple" @blur="handleFecha"
                 :class="{ 'is-invalid': control_fecha === false, 'is-valid': control_fecha === true }"
-                class="form-control custom-font" required />
+                class="form-control" required />
             </div>
           </div>
 
-          <div class="d-flex  my-2 align-items-center  ">
+          <div class="row">
+            <div class="col">
+              <label for="correo" class="form-label">Correo <label class="text-danger">*</label> </label>
+              <input type="text" class="form-control" id="correo" v-model="correo"
+                v-bind:class="{ 'valid': correoVal, 'is-invalid': errors.correo }" placeholder="Escriba sus nombres"
+                @input="validarCampo('correo')" required />
+              <span v-if="errors.correo" class="position-absolute text-danger">
+                <i class="bi bi-x-circle"></i>
+              </span>
+              <span class="text-danger">{{ errors.correo }}</span>
+            </div>
             <div class="col ">
+              <label for="numero_telefono" class="form-label">Número de teléfono <label
+                  class="text-danger">*</label></label>
+              <input type="text" name="numero_telefono" v-model="numero_telefono" id="numero_telefono"
+                @change="handleTelefono()" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="row   align-items-center ">
+            <div class="col m-auto">
               <div class="dropdown ">
-                <button class="btn btn-outline-secondary " type="button" id="dropdownMenuButton"
+                <button class="btn btn-light border border custom-focus " type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <img v-if="selectedCountry.flag" :src="selectedCountry.flag" alt="Flag" width="20" height="15"
                     class="me-2" />
-                  <label class="custom-font">
-
-                    {{ selectedCountry.name || 'Seleccionar País' }}
-                  </label>
+                  {{ selectedCountry.name || 'Seleccionar País' }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li v-for="country in countries" :key="country.abbreviation">
+                  <li v-for="country in countries" :key="country.abbreviation" class="custom-border border-0">
                     <a class="dropdown-item" href="#" @click.prevent="selectCountry(country)">
                       <img :src="country.flag" alt="Flag" width="20" height="15" class="me-2" />
                       (+{{ country.code }}) {{ country.name }}
@@ -80,17 +96,14 @@
 
             <div class="col ">
               <div class="dropdown ">
-                <button class="btn btn-outline-secondary " type="button" id="dropdownMenuButton"
+                <button class="btn btn-light border border custom-focus " type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <img v-if="selectedCountry.flag" :src="selectedCountry.flag" alt="Flag" width="20" height="15"
-                    class="" />
-                  <label class="custom-font">
-
-                    {{ selectedCountry.name || 'Pais de residencia' }}
-                  </label>
+                    class="me-2" />
+                  {{ selectedCountry.name || 'Pais de residencia' }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li v-for="country in countries" :key="country.abbreviation">
+                  <li v-for="country in countries" :key="country.abbreviation" class="custom-border border-0">
                     <a class="dropdown-item" href="#" @click.prevent="selectCountry(country)">
                       <img :src="country.flag" alt="Flag" width="20" height="15" class="me-2" />
                       (+{{ country.code }}) {{ country.name }}
@@ -99,64 +112,47 @@
                 </ul>
               </div>
             </div>
+          </div>
+
+
+
+          <div class="row">
             <div class="col">
-              <div class="form-floating ">
-                <div class="form-floating ">
-                  <input type="number" class="form-control custom-font" id="telefono" placeholder="name@example.com"
-                    v-model="numero_telefono" @change="handleTelefono()">
-                  <label for="telefono">Telefono</label>
-                </div>
+              <label for="password" class="form-label">Contraseña <label class="text-danger">*</label></label>
+              <input type="password" v-model="password" id="password" class="form-control" required />
 
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-around my-2">
-         <div class="col mx-2">
-          <div class="form-floating">
-              <input type="password" v-model="password" id="password" class="form-control" required
-                placeholder="name@example.com" />
-              <label for="password">Contraseña <label class="text-danger">*</label></label>
 
             </div>
-         </div>
-        <div class="col mx-2">
-          <div class="form-floating">
+            <div class="col">
+              <label for="confirmPassword" class="form-label">Confirmar contraseña <label
+                  class="text-danger">*</label></label>
               <input type="password" @blur="handlePassword" v-model="confirmPassword" id="confirmPassword"
-                :class="{ 'is-invalid': password != confirmPassword }" class="form-control" required
-                placeholder="name@example.com" />
-              <label for="confirmPassword">Confirmar contraseña <label class="text-danger">*</label></label>
+                :class="{ 'is-invalid': password != confirmPassword }" class="form-control" required />
             </div>
-        </div>
           </div>
 
-         <div class="d-flex m-2">
-          <div class="form-check m-2">
+          <div class="form-check ">
             <input class="form-check-input" v-model="acepta_terminos" type="checkbox" id="flexCheckChecked" />
-            <label class="form-check-label  custom-font">
+            <label class="form-check-label" for="flexCheckChecked">
               He leído y acepto los
               <span :style="{ color: 'dark' }">Términos y condiciones</span>
               y la
               <span :style="{ color: 'dark' }">Política de privacidad</span>
             </label>
           </div>
-         </div>
 
-
-          <div class="d-flex justify-content-center mt-3">
+          <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-gray rounded-5 w-75" @click.prevent="registrar">
               Registrarse Gratis
             </button>
           </div>
-          <div class="text-end cursor mt-3">
+          <div class="text-end cursor">
             <div @click="$emit('changePage')">
               ¿Ya eres un usuario?
-              <a  class="custom-link">Iniciar Sesión</a>
+              <a to="/login" class="custom-link">Iniciar Sesión</a>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   </main>
@@ -249,8 +245,8 @@ const validarCampo = (field) => {
 
 
 const selectCountry = (abbreviation) => {
-  selectedCountry.value = abbreviation;
-  console.log(selectedCountry.value);
+    selectedCountry.value = abbreviation;
+    console.log(selectedCountry.value);
 };
 
 const handleFecha = () => {
@@ -373,23 +369,82 @@ const registrar = async () => {
 };
 </script>
 <style scoped>
-.custom-font {
+/* 
+.custom-border{
+  border-bottom: 1px solid var(--gray-color) !important;
+}
+
+
+.custom-card {
+  background-color: #34312d;
+  border: none;
+  color: #d9c5b2;
+}
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto; 
+    scrollbar-width: thin; 
+    scrollbar-color: #1b1b1ba6 #f1f1f1; 
+}
+
+.dropdown-item:hover{
+  background-color: #c2c4c496;
+}
+.custom-text {
+  color: #d9c5b2;
+}
+
+.custom-button {
+  background-color: #d9c5b2;
+  color: #14110f;
+  border: none;
+}
+
+.valid {
+  border-color: green !important;
+}
+
+.is-invalid {
+  border-color: red;
+}
+
+.text-danger {
   font-size: 0.8rem;
 }
 
+li:hover {
+  background-color: #d9c5b2;
+  color: #fff;
+}
+
+
+select {
+  background-color: #dcdde063;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.829);
+  border: none;
+}
+
+
+
+.form-check-label span {
+  color: #14110f;
+  font-size: 0.7rem;
+} */
+
 .card {
   background-color: rgba(255, 255, 255, 0.938);
-  min-height: 70vh;
-  width: 30rem;
+  height: 100%;
   
   padding: 2rem;
-
+  
   margin-top: 2%;
   margin-bottom: 5%;
 
 }
 
-.custom-link {
+/* .custom-link {
   color: #14110f;
   text-underline-offset: 3px;
 }
@@ -399,6 +454,9 @@ const registrar = async () => {
   text-decoration: underline;
 }
 
+label{
+  font-size: 0.9rem;
+} */
 main {
   background-image: url('../assets/images/2.png');
   background-size: cover;

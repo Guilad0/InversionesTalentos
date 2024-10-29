@@ -2,20 +2,20 @@
     import useFetchData from '../helpers/UseFetchData';
     import Pagination from '../components/Pagination.vue'
     import {ref,onMounted} from 'vue'
-import { notyf } from '@/helpers/NotifyAlerts';
-
+    import { notyf } from '@/helpers/NotifyAlerts';
+    const user = JSON.parse(localStorage.getItem("usuario"));
     const page = ref(1);
     const search= ref('')
-    const baseUrl =ref('/users?page='+page.value)
+    const baseUrl = ref(`/users?rol=${user.rol}&page=${page.value}`);
     const { results, prev, next, isLoading, getData,ChangeState } = useFetchData(ref(baseUrl));
     const nextAction = ()=>{
         page.value+=1;
-        baseUrl.value = `/users?page=${page.value}`;
+        baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
         getData();
     }
     const prevAction = ()=>{
         page.value-=1;
-        baseUrl.value = `/users?page=${page.value}`;
+        baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
         getData();
     }
     onMounted(() => {
@@ -26,18 +26,18 @@ import { notyf } from '@/helpers/NotifyAlerts';
 const clearSearch = ()=>{
     search.value = '';
     page.value=1;
-    baseUrl.value = `/users?page=${page.value}`;
+    baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
     getData();
 }
 
 const handleName = ()=>{
     if (search.value.trim() !== '') {
-        baseUrl.value = `/users/filterUsersByName/${search.value}?page=${page.value}`;
+        baseUrl.value = `/users/filterUsersByName/${search.value}?rol=${user.rol}&page=${page.value}`;
         
     } 
     if( search.value.trim() == '' ){
         page.value=1;
-    baseUrl.value = `/users?page=${page.value}`;
+    baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
     getData();
     }
        
@@ -46,7 +46,7 @@ const handleName = ()=>{
 const deleteUSer = (id, estado)=>{
      baseUrl.value = '/users/changeState/'+id;
      ChangeState()
-    baseUrl.value = `/users?page=${page.value}`;
+    baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
     console.log(estado);
     if( estado == '1' ){
         notyf.error("Usuario inactivo");
