@@ -4,7 +4,7 @@
   <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <p class="text-xl">Total de Inversiones (USD):{{ total }} </p>
+        <p class="text-xl">Total de Inversiones (USD):{{ dolaresInversionista }} </p>
       </div>
 
       <div class="d-flex justify-content-center mb-6">
@@ -12,156 +12,86 @@
           Retiro</button>
         <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
-      <br>
-      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
-        <div class="row">
-          <div class="col-6">
-            <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-              <p class="text-lg font-semibold">Inversion: {{ inversion.inversion_id }}</p>
-              <p class="text-sm text-zinc-500">Monto: ${{ inversion.monto }}</p>
-              <p class="text-sm text-zinc-500">Fecha: {{ new Date(inversion.fecha_deposito).toLocaleDateString() }}</p>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="bg-white p-4 rounded-lg shadow-md" v-for="solicitud_retiro in solicitudes_retiro"
-              :key="solicitud_retiro">
-              <p class="text-lg font-semibold">Solicitud: {{ solicitud_retiro.retiro_id }}</p>
-              <p class="text-sm text-zinc-500">Monto: ${{ solicitud_retiro.monto_recibir }}</p>
-              <p class="text-sm text-zinc-500">Fecha: {{ new Date(solicitud_retiro.fecha_solicitud).toLocaleDateString()  }}</p>
-              <p class="text-sm text-zinc-500">Estado: {{ solicitud_retiro.estado }}</p>
-              <p class="text-sm text-zinc-500" v-if="solicitud_retiro.estado == 'Aprobado'">Fecha Aprobación: {{
-                solicitud_retiro.fecha_aprobacion }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
   </div>
 
   <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
     <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
     <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-      <p class="text-xl">Total de Inversiones (USD): </p>
+      <div class="row">
+        <div class="col-md-4">
+          <p class="text-xl">Total de USD Ingresados: $US {{ dolaresInversionista }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista  -  tokensInvertidosInversionista }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+        </div>
+      </div>
+
     </div>
 
     <div class="d-flex justify-content-around mb-6">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens</button>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInversion">Invertir</button>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
-        Retiro</button>
-
-    </div>
-    <br>
-    <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-      <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
-
-      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <!-- Contenedor de tabs -->
-        <div class="tabs">
-          <button v-for="(tab1, index) in tabs1" :key="index" :class="{ active: activeTab1 === index }"
-            @click="activeTab1 = index" class="btn-6">
-            {{ tab1 }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Contenido de los tabs -->
-      <div class="tab-content" v-if="activeTab1 === 0">
-        <!-- Inversiones -->
-        <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-          <p class="text-lg font-semibold">Inversion: {{ inversion.inversion_id }}</p>
-          <p class="text-sm text-zinc-500">Cliente: {{ inversion.nombre_cliente }}</p>
-          <p class="text-sm text-zinc-500">Monto: ${{ inversion.monto }}</p>
-          <p class="text-sm text-zinc-500">Fecha: {{ inversion.fecha_deposito }}</p>
-          <p class="text-sm text-zinc-500">Estado: {{ inversion.estado }}</p>
-          <hr>
-        </div>
-      </div>
-
-      <div class="tab-content" v-if="activeTab1 === 1">
-        <!-- Lista de solicitudes de retiro -->
-        <div class="bg-white p-4 rounded-lg shadow-md" v-for="solicitud_retiro in solicitudes_retiro" :key="solicitud_retiro">
-          <p class="text-lg font-semibold">Solicitud: {{ solicitud_retiro.retiro_id }}</p>
-          <p class="text-sm text-zinc-500">Monto: ${{ solicitud_retiro.monto_recibir }}</p>
-          <p class="text-sm text-zinc-500">Fecha: {{ solicitud_retiro.fecha_solicitud }}</p>
-          <p class="text-sm text-zinc-500">Estado: {{ solicitud_retiro.estado }}</p>
-          <p class="text-sm text-zinc-500" v-if="solicitud_retiro.estado == 'Aprobado'">Fecha Aprobación: {{
-            solicitud_retiro.fecha_aprobacion }}</p>
-        </div>
-      </div>
-
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro</button>
     </div>
 
   </div>
+  <!-- Modal Tokens -->
+  <div class="modal fade" id="modalTokens" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Datos de la Compra de Tokens
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <div class="card m-1">
+                  <div class="card-body">
+                    <div class="form">
 
-  <div class="container mx-auto p-4" v-if="usuario_rol == 'Admin'">
-    <h1 class="text-2xl font-bold mb-4">Administrador</h1>
-    <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-      <!-- Contenedor de tabs -->
-      <div class="tabs">
-        <button v-for="(tab, index) in tabs" :key="index" :class="{ active: activeTab === index }"
-          @click="activeTab = index" class="tab-button">
-          {{ tab }}
-        </button>
+                      <div class="row d-flex justify-content-around">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="montoUsd" class="form-label">Monto en USD</label>
+                            <input type="text" v-model="montoUsd" id="montoUsd" class="form-control" @change="calcularTokens()" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">Tokens</label>
+                            <p>{{ tokens }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="text-center">
+                        <button type="button" @click="comprarTokens()" class="btn btn-success">Comprar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+
       </div>
-    </div>
-
-    <!-- Contenido de los tabs -->
-    <div class="tab-content" v-if="activeTab === 0">
-      <!-- Tabla de Movimientos -->
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tipo</th>
-            <th>Inversionista</th>
-            <th>Cliente</th>
-            <th>Fecha Solicitud</th>
-            <th>Fecha Desembolso</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(movimiento) in movimientos" :key="movimiento">
-            <td>{{ movimiento.id }}</td>
-            <td>{{ movimiento.inversionista }}</td>
-            <td>{{ movimiento.cliente }}</td>
-            <td>{{ movimiento.fecha_solicitud }}</td>
-            <td>{{ movimiento.fecha_desembolso }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="tab-content" v-if="activeTab === 1">
-      <!-- Lista de solicitudes de retiro -->
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Solicitud ID</th>
-            <th>Solicitante</th>
-            <th>Nombre</th>
-            <th>Monto de solicitud</th>
-            <th>Monto a retirar</th>
-            <th>Fecha de solicitud</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(solicitud) in solicitudes" :key="solicitud">
-            <td>{{ solicitud.retiro_id }}</td>
-            <td>{{ solicitud.tipo }}</td>
-            <td>{{ solicitud.nombre_usuario }}</td>
-            <td>{{ solicitud.monto_solicitud }}</td>
-            <td>{{ solicitud.monto_recibir }}</td>
-            <td>{{ solicitud.fecha_solicitud }}</td>
-            <td>{{ solicitud.estado }}</td>
-            <td>
-              <button class="btn btn-primary" @click="aprobarSolicitud(solicitud)">Aprobar</button>
-              <button class="btn btn-danger" @click="rechazarSolicitud(solicitud)">Rechazar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
@@ -186,42 +116,30 @@
                     <div class="form">
                       <div class="row d-flex justify-content-around">
 
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                           <div class="mb-3">
                             <label for="cliente_id" class="form-label">Cliente</label><br>
-                            <select v-model="cliente_id" id="cliente_id" class="form-select" required>
+                            <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select" required>
                               <option disabled>Seleccione un Cliente</option>
-                              <option v-for="cliente in clientes" :key="cliente" :value="usuario.id">
-                                {{ usuario.nombre + '-' + usuario.apellido }}
+                              <option v-for="cliente in clientes" :key="cliente" :value="cliente.usuario_id"> <!-- :value="cliente.usuario_id" -->
+                                {{ cliente.nombre + ' ' + cliente.apellido }}
                               </option>
                             </select>
                           </div>
-                        </div>
-
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="tipo_ganancia" class="form-label">Tipo de Ganancia</label><br>
-                            <select v-model="tipo_ganancia" id="tipo_ganancia" class="form-select" required>
-                              <option disabled>Seleccione un Tipo de Ganancia</option>
-                              <option value="Monto fijo">Monto Fijo</option>
-                              <option value="Porcentual">Porcentual</option>
-                            </select>
-                          </div>
-                        </div>
+                        </div>                        
                       </div>
 
                       <div class="row d-flex justify-content-around">
                         <div class="col-md-4">
                           <div class="mb-3">
-                            <label for="monto" class="form-label">Monto</label>
-                            <input type="text" v-model="monto" id="monto" class="form-control" required />
+                            <label for="monto" class="form-label">Tokens a invertir</label>
+                            <input type="number" v-model="monto_tokens_invertir" id="monto" class="form-control" required />
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="mb-3">
-                            <label for="ganancia_estimada" class="form-label">Ganancia Estimada</label>
-                            <input type="text" v-model="ganancia_estimada" id="ganancia_estimada" class="form-control"
-                              required />
+                            <label class="form-label">Ganancia Estimada</label>
+                            <p>{{ ganancia_estimada }}</p>
                           </div>
                         </div>
 
@@ -229,7 +147,7 @@
 
                       <hr>
                       <div class="text-center">
-                        <button type="button" @click="registrarInversion()" class="btn btn-success">Guardar</button>
+                        <button type="button" @click="inversionistaInvertir()" class="btn btn-success">Invertir</button>
                       </div>
                     </div>
                   </div>
@@ -343,136 +261,153 @@ import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 const route = useRouter();
 
+let baseURL = 'http://localhost:3000/billetera/';
 
-const tabs = ref(['Movimientos', 'Solicitudes de Retiro']);
-const tabs1 = ref(['Inversiones', 'Retiro']);
-
-
-let baseURL = 'http://localhost:3000/inversiones/';
-
-const usuario_rol = 'Cliente';
-const solicitudes_retiro = ref([]);
-const inversiones = ref([]);
 const clientes = ref([]);
-var activeTab = ref(0);
-var activeTab1 = ref(2);
+const valorToken = ref([]);
+const tokens = ref(0);
+const montoUsd = ref(0);
+const dolaresInversionista = ref(0);
+const tokensCompradosInversionista = ref(0);
+const tokensInvertidosInversionista = ref(0);
 
-onMounted(() => {
-  obtenerInversiones_Inversionista();  
-  obtenerSolicitudes_retiro();
-  obtenerInversionesClientes();
-  obtenerSolicitudes_retiroClientes();
-});
+const ganancia_estimada = ref(0);
+const monto_tokens_invertir = ref(0);
 
-const obtenerInversiones_Inversionista = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'inversionista/1');
-    console.log(data);
-    inversiones.value = data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const obtenerSolicitudes_retiro = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'solicitudes_retiro/1',);
-    console.log(data);
-    solicitudes_retiro.value = data.data;
-  } catch (error) {
-    console.log(error);
-
-  }
-};
-
-const obtenerInversionesClientes = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'clientes/inversion');
-    console.log(data);
-    inversiones_cliente.value = data.data;
-  } catch (error) {
-    console.log(error);
-
-  }
-};
-
-const obtenerSolicitudes_retiroClientes = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'clientes/retiro',);
-    console.log(data);
-    solicitudes_retiro.value = data.data;
-  } catch (error) {
-    console.log(error);
-
-  }
-};
-
-const calcularTotal = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'clientes/inversion');
-    inversiones_cliente.value = data.data;
-
-    // Calcular el total de las inversiones
-    const total = inversiones_cliente.value.reduce((sum, inversion) => {
-      return sum + inversion.monto;
-    }, 0);
-
-    console.log(`Total de Inversiones: ${total}`);
-  } catch (error) {
-    console.log(error);
-  }};
-
-  const agregarInversion = (item) => {
-
-if (cliente_id.value == '' || total.value == '' || descuento.value == '' || fecha.value == '' || detalles.value.length == 0) {
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Todos los campos son obligatorios'
-  })
-  return;
+const cliente_Invertir_ID = ref('');
+const cliente_ID = ref('');
+const inversionista_ID = ref('');
+const usuario = JSON.parse(localStorage.getItem("usuario"));
+const usuario_id = ref(usuario.usuario_id);
+const usuario_rol = ref(usuario.rol);
+console.log(usuario_rol.value);
+console.log(usuario_id.value);
+if(usuario_rol.value == 'Inversionista'){
+  inversionista_ID.value = usuario_id.value;
+  console.log(inversionista_ID.value);
+}
+else
+{
+  cliente_ID.value = usuario_id;
 }
 
-const det = {
-  producto_id: item.id,
-  nombre: item.codigo + ' - ' + item.nombre,
-  costo: item.costo,
-  cantidad: 1,
-};
 
-detalles.value.push(det);
+onMounted(() => {
+  obtenerDolares_Inversionista();  
+  obtenerTokens_Inversionista();
+  obtenerTokens_Inversionista_Invertidos();
+  calcularTokens();
 
-calcularTotal();
-};
-
-document.addEventListener("DOMContentLoaded", function () {
-  var buttons = document.querySelectorAll(".btn-6");
-
-  buttons.forEach(function (button) {
-    button.addEventListener("mouseenter", function (e) {
-      var rect = button.getBoundingClientRect();
-      var relX = e.pageX - rect.left - window.scrollX;
-      var relY = e.pageY - rect.top - window.scrollY;
-      var span = button.querySelector("span");
-      if (span) {
-        span.style.top = relY + "px";
-        span.style.left = relX + "px";
-      }
-    });
-
-    button.addEventListener("mouseout", function (e) {
-      var rect = button.getBoundingClientRect();
-      var relX = e.pageX - rect.left - window.scrollX;
-      var relY = e.pageY - rect.top - window.scrollY;
-      var span = button.querySelector("span");
-      if (span) {
-        span.style.top = relY + "px";
-        span.style.left = relX + "px";
-      }
-    });
-  });
+  obtenerListaClientes();  
 });
 
+
+const obtenerDolares_Inversionista = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'dolaresInversionista/' + inversionista_ID.value);
+    console.log(data);
+    dolaresInversionista.value = data.data[0].totalUsd;
+    console.log(dolaresInversionista.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const obtenerTokens_Inversionista = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'tokensInversionistaComprados/' + inversionista_ID.value);
+    console.log(data);
+    tokensCompradosInversionista.value = data.data[0].totalTokensComprados;
+    console.log(tokensCompradosInversionista.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const obtenerTokens_Inversionista_Invertidos = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
+    console.log(data);
+    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos;
+    console.log(tokensInvertidosInversionista.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const calcularTokens = async () => {
+
+  try {
+    const { data } = await axios.get(baseURL + 'valorToken');
+    
+    console.log(data);
+    /* valorToken.value = data.data; */
+    var valor = parseFloat(data.data[0].valor_token)
+    console.log(valor);
+    console.log(montoUsd.value);
+    montoUsd.value = parseFloat(montoUsd.value);
+    console.log(montoUsd.value);
+    tokens.value = montoUsd.value * valor;
+    console.log(tokens.value);    
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const comprarTokens = async () => {
+  const datos = {
+    monto: montoUsd.value,
+    tokens: tokens.value,
+    usuario_id: inversionista_ID.value,
+    tipo: 'Ingreso',
+    descripcion: 'Compra de tokens',
+  };
+  console.log(datos);
+  try {
+    await axios.post(baseURL + 'comprarTokens', datos);
+    alert('Tokens comprados exitosamente');
+    var myModalEl = document.getElementById('modalTokens');
+    var modal = bootstrap.Modal.getInstance(myModalEl);
+    modal.hide();
+  } catch (error) {
+    console.error('Error al guardar los tokens:', error);
+  }
+
+};
+
+const obtenerListaClientes = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'clientes');
+    console.log(data);
+    clientes.value = data.data;    
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const inversionistaInvertir = async () => {
+  console.log(cliente_ID.value);
+  const datos = {
+    token: monto_tokens_invertir.value,
+    usuario_id: inversionista_ID.value,
+    cliente_id: cliente_Invertir_ID.value,
+    inversor_id: inversionista_ID.value,
+    tipo: 'Egreso',
+    descripcion: 'Tokens invertidos',
+    monto: monto_tokens_invertir.value
+  };
+  console.log(datos);
+  try {
+    await axios.post(baseURL + 'invertirTokens', datos);
+    alert('Tokens comprados exitosamente');
+    var myModalEl = document.getElementById('modalInversion');
+    var modal = bootstrap.Modal.getInstance(myModalEl);
+    modal.hide();
+  } catch (error) {
+    console.error('Error al invertir los tokens:', error);
+  }
+  monto_tokens_invertir.value = 0;
+};
 
 </script>
 
