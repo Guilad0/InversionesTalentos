@@ -10,22 +10,22 @@
                         <label>General </label>
                     </li>
                     <li 
-                      :class="{'active px-2': currentNav === 'clients'}" 
-                      @click="setActive('clients')" 
+                      :class="{'active px-2': currentNav === 'Cliente'}" 
+                      @click="setActive('Cliente')" 
                       class="nav-link mx-2">
                         <label>Clientes </label>
                     </li>
                     <li 
-                      :class="{'active px-2': currentNav === 'investor'}" 
-                      @click="setActive('investor')" 
+                      :class="{'active px-2': currentNav === 'Inversionista'}" 
+                      @click="setActive('Inversionista')" 
                       class="nav-link mx-2">
                         <label>Inversionistas </label>
                     </li>
                     <li 
-                      :class="{'active px-2': currentNav === 'admins'}" 
-                      @click="setActive('admins')" 
+                      :class="{'active px-2': currentNav === 'Admin'}" 
+                      @click="setActive('Admin')" 
                       class="nav-link mx-2">
-                        <label>Admins</label>
+                        <label>Admin</label>
                     </li>
                 </ol>
             </nav>
@@ -34,14 +34,14 @@
             <div class="container" v-if="currentNav =='users'">
                 <GralUsers/>
             </div>
-            <div class="container" v-if="currentNav =='clients'">
-                <Client/>
+            <div class="container" v-if="currentNav =='Cliente'"  >
+                <Client :rol="rol"/>
             </div>
-            <div class="container" v-if="currentNav =='investor'">
-                <Investor/>
+            <div class="container" v-if="currentNav =='Inversionista'" >
+                <Client :rol="rol"/>
             </div>
-            <div class="container" v-if="currentNav =='admins'">
-                <Admins/>
+            <div class="container" v-if="currentNav =='Admin'" >
+                <Client :rol="rol"/>
             </div>
         </div>
     </main>
@@ -51,13 +51,15 @@
 import {ref} from 'vue';
 import GralUsers from './GralUsers.vue';
 import Client from './Client.vue';
-import Investor from './Investor.vue';
-import Admins from './Admins.vue';
+
+const rol = ref('');
 
 const currentNav = ref('users');
 
 const setActive = ( nav )=>{
     currentNav.value = nav;
+    rol.value = nav
+    console.log(rol.value);
 }
 </script>
 

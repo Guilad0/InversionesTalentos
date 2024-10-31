@@ -15,13 +15,16 @@ const {
         getUsersByname,
         getUserById,
         handleTelefono,
-        handleEmail
+        handleEmail, 
+        approvedUser,
+        getUsersBynameAndRol
         } = require("../controllers/users");
 
 
 
 router.get("/", getUsers);
 router.get("/filterUsersByName/:id", getUsersByname);
+router.get("/filterUsersByNameAndRol/:nombre", getUsersBynameAndRol);
 router.get("/filterByRol/:rol", getUsersByRol);
 router.post("/", postUser);
 router.put("/Stateinvestors/:id", putStateusers);
@@ -34,6 +37,7 @@ router.get("/verify/:id", verifyEmail);
 router.get("/getUserById/:id", getUserById);
 router.get("/handleEmail/correo", handleEmail);
 router.get("/handleTelefono/telefono", handleTelefono);
+router.patch("/approved/:id", approvedUser);
  
 
 module.exports = router;

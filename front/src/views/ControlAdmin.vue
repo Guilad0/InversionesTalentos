@@ -26,7 +26,7 @@
                 <Solicitudes v-if="view == 'wallRequests'"/>
                 <Users v-if="view == 'users'"/>
                 <Posts v-if="view == 'posts'"/>
-                <Ajustes v-if="view == 'ajustes'"/>
+                <Ajustes v-if="view == 'ajustes'" />
             </div>
         </div>
     </main>

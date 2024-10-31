@@ -1,5 +1,7 @@
+import { watch } from 'vue';
 <template>
-  <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 ">
+  <div class="bg-dark">
+    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3  shadow">
     <div class="container-fluid mx-3">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,18 +13,20 @@
             <RouterLink exact-active-class="active" class="nav-link underline-dynamic" :to="link.path">{{ link.name }}</RouterLink>
           </li>
         </ul>
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ">
           <RouterLink class="nav-link" to="/">
             <h2 class="greeting">HI</h2>
           </RouterLink>
           <RouterLink class="nav-link wallet-icon" to="/">
             <i class="fa fa-wallet fs-3"></i>
           </RouterLink>
+          <RouterLink class="nav-link user-icon pb-1" to="admin"><img src="../assets/svg/admin-svgrepo-com.svg" width="25"></RouterLink>
           <RouterLink class="nav-link user-icon" to="sign-login"><i class="fa fa-user-circle fs-3"></i></RouterLink>
         </div>
       </div>
     </div>
   </nav>
+  </div>
 </template>
 
 <script>
@@ -83,7 +87,7 @@ i:hover {
 
 .bg-dark-custom {
   background-color: var(--smoky-dark-color) !important;
-  border-bottom: 2px solid var(--yellow-orange);
+  border-bottom: 1px solid var(--yellow-orange);
 }
 
 .underline-dynamic {

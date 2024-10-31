@@ -36,13 +36,14 @@ const getUsers = (req, res) => {
         u.usuario_id,
         u.nombre, 
         u.apellido, 
+        u.aprobado,
         u.correo, 
         u.categoria_persona_id,
         u.username, 
         u.pais_residencia,
         u.edad, 
         u.aprobado,
-        u.cod_verificacion,
+        u.verificado,
         u.rol, 
         u.estado,
         i.ocupacion, 
@@ -130,9 +131,10 @@ const getUsersByname = (req, res) => {
         u.categoria_persona_id,
         u.username, 
         u.pais_residencia,
+        u.aprobado,
         u.edad, 
         u.aprobado,
-        u.cod_verificacion,
+        u.verificado,
         u.rol, 
         u.estado,
         i.ocupacion, 
@@ -194,35 +196,55 @@ const getUsersByname = (req, res) => {
   })
 };
 
-/**
- * Nesesita el rol de admin enviado en la query
- * Esta funsion obtiene la lista de todos los usuarios por su rol
- * Nesesita el tipo de rola  bsucar enviado mediante  el body
- */
-const getUsersByRol = (req, res) => {
-  middlewareControlAdmin(req.query.rol)(req, res, (err)=>{
-    if(err){
-        return res.status(err.status || 403).json({
-            msg: err.message || "No tiene permisos para acceder a esta sección.",
-            
-        })
+const approvedUser = (req, res) => {
+  const handleError = (status, msg, err = null) => res.status(status).json({ msg, err });
+
+  middlewareControlAdmin(req.query.rol)(req, res, (err) => {
+    if (err) return handleError(err.status || 403, err.message || "No tiene permisos para acceder a esta sección.");
+
+    const getUserQuery = 'SELECT * FROM usuarios WHERE usuario_id = ?';
+    conexion.query(getUserQuery, [req.params.id], (err, results) => {
+      if (err) return handleError(500, 'Error en la petición', err);
+      if (results.length === 0) return handleError(404, 'Usuario no encontrado');
+      const currentApprovalState = results[0].aprobado;
+      const toggleApprovalQuery = 'UPDATE usuarios SET aprobado = !aprobado WHERE usuario_id = ?';
+      conexion.query(toggleApprovalQuery, [req.params.id], (err) => {
+        if (err) return handleError(500, 'Error al aprobar el usuario', err);
+        const responseMsg = currentApprovalState === 0 ? 'Usuario aprobado' : 'Usuario rechazado';
+        res.status(200).json({ msg: responseMsg });
+      });
+    });
+  });
+};
+
+
+const getUsersBynameAndRol = (req, res) => {
+  middlewareControlAdmin(req.query.rol)(req, res, (err) => {
+    if (err) {
+      return res.status(err.status || 403).json({
+        msg: err.message || "No tiene permisos para acceder a esta sección.",
+      });
     }
+
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
     const offset = (page - 1) * size;
+    const searchTerm = req.params.nombre || "";
+    const searchPattern = `${searchTerm}%`;
 
     let query = `
     SELECT 
         u.usuario_id,
         u.nombre, 
         u.apellido, 
+        u.aprobado,
         u.correo, 
         u.categoria_persona_id,
         u.username, 
         u.pais_residencia,
         u.edad, 
         u.aprobado,
-        u.cod_verificacion,
+        u.verificado,
         u.rol, 
         u.estado,
         i.ocupacion, 
@@ -239,9 +261,10 @@ const getUsersByRol = (req, res) => {
         informacion AS i ON u.usuario_id = i.cliente_id
     LEFT JOIN 
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    WHERE u.nombre LIKE ? AND u.rol = ?
     LIMIT ? OFFSET ?`;
 
-    conexion.query(query, [size, offset], (err, results) => {
+    conexion.query(query, [searchPattern, req.query.rolUser, size, offset], (err, results) => {
       if (err) {
         res.status(500).json({
           msg: "Error al buscar clientes",
@@ -249,8 +272,8 @@ const getUsersByRol = (req, res) => {
         return;
       }
 
-      const countQuery = `SELECT COUNT(*) AS total FROM usuarios where rol = ?`;
-      conexion.query(countQuery,[req.params.rol], (err, countResults) => {
+      const countQuery = `SELECT COUNT(*) AS total FROM usuarios u WHERE u.nombre LIKE ? AND u.rol = ?`;
+      conexion.query(countQuery, [searchPattern, req.query.rolUser], (err, countResults) => {
         if (err) {
           res.status(500).json({
             msg: "Error al contar usuarios",
@@ -263,8 +286,11 @@ const getUsersByRol = (req, res) => {
 
         const prevPage =
           page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
+
         const nextPage =
-          page < totalPages ? `/api/users?page=${page + 1}&size=${size}` : null;
+          results.length === size && page < totalPages
+            ? `/api/users?page=${page + 1}&size=${size}`
+            : null;
 
         res.status(200).json({
           results,
@@ -277,8 +303,104 @@ const getUsersByRol = (req, res) => {
         });
       });
     });
-  })
+  });
 };
+
+
+
+/**
+ * Nesesita el rol de admin enviado en la query
+ * Esta funsion obtiene la lista de todos los usuarios por su rol
+ * Nesesita el tipo de rola  bsucar enviado mediante  el body
+ */
+const getUsersByRol = (req, res) => {
+  // Middleware para control de acceso
+  middlewareControlAdmin(req.query.rol)(req, res, (err) => {
+    if (err) {
+      return res.status(err.status || 403).json({
+        msg: err.message || "No tiene permisos para acceder a esta sección.",
+      });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const size = parseInt(req.query.size) || 10;
+    const offset = (page - 1) * size;
+    const rol = req.params.rol;
+
+    let query = `
+      SELECT 
+          u.usuario_id,
+          u.nombre, 
+          u.apellido, 
+          u.correo, 
+          u.categoria_persona_id,
+          u.username, 
+          u.pais_residencia,
+          u.edad, 
+          u.aprobado,
+          u.verificado,
+          u.rol, 
+          u.estado,
+          i.ocupacion, 
+          i.descripcion, 
+          i.monto_inversion, 
+          i.cantidad_maxima_inversiones,
+          i.preparacion, 
+          i.estudios, 
+          i.vision,
+          c.nombre as categoria
+      FROM 
+          usuarios AS u
+      LEFT JOIN 
+          informacion AS i ON u.usuario_id = i.cliente_id
+      LEFT JOIN 
+          categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+      WHERE 
+          u.rol = ?
+      LIMIT ? OFFSET ?`;
+
+    // Ejecución de la consulta principal
+    conexion.query(query, [rol, size, offset], (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          msg: "Error al buscar usuarios",
+        });
+      }
+
+      // Consulta para contar el total de usuarios con el rol especificado
+      const countQuery = `SELECT COUNT(*) AS total FROM usuarios WHERE rol = ?`;
+      conexion.query(countQuery, [rol], (err, countResults) => {
+        if (err) {
+          return res.status(500).json({
+            msg: "Error al contar usuarios",
+          });
+        }
+
+        // Calcular total de páginas
+        const totalUsers = countResults[0].total;
+        const totalPages = Math.ceil(totalUsers / size);
+
+        // Configurar enlaces para paginación
+        const prevPage =
+          page > 1 ? `/api/users?page=${page - 1}&size=${size}&rol=${rol}` : null;
+        const nextPage =
+          page < totalPages ? `/api/users?page=${page + 1}&size=${size}&rol=${rol}` : null;
+
+        // Enviar respuesta JSON
+        res.status(200).json({
+          results,
+          cant: results.length,
+          total: totalUsers,
+          totalPages: totalPages,
+          currentPage: page,
+          prev: prevPage,
+          next: nextPage,
+        });
+      });
+    });
+  });
+};
+
 
 /**
  *  Esta funsion crea un inversor, cliente/ desde la vista sign-login 
@@ -871,4 +993,6 @@ module.exports = {
   getUserById,
   handleTelefono,
   handleEmail,
+  getUsersBynameAndRol,
+  approvedUser
 };
