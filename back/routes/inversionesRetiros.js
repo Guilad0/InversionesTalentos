@@ -28,7 +28,7 @@ router.get("/inversionista/:id", function (req, res, next) {
 
 router.get("/cliente/:id", function (req, res, next) {
 
-  var query = ` SELECT inversiones.*, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_inversor  
+  var query = ` SELECT inversiones.*, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_inversor
                 FROM inversiones
                 INNER JOIN usuarios
                 ON inversiones.inversor_id = usuarios.usuario_id
