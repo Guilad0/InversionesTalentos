@@ -21,6 +21,7 @@ var experienciaRoutes = require('./routes/experienciaRoutes');
 var solicitudesRoutes = require('./routes/solicitudes_retiro');
 var billeteraRoutes = require('./routes/billetera');
 var inversionesRetirosRoutes = require('./routes/inversionesRetiros');
+var combinedDataRouter = require('./routes/ajustesAdmin');
 var app = express();
 
 app.use(cors());
@@ -53,4 +54,5 @@ app.use('/experiencia', experienciaRoutes);
 app.use('/solicitudes', solicitudesRoutes); 
 app.use('/billetera', billeteraRoutes);
 app.use('/inversionesRetiros', inversionesRetirosRoutes);
+app.use('/ajustesAdmin', combinedDataRouter);
 module.exports = app;
