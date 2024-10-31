@@ -26,7 +26,7 @@ const showClient = (client) => {
     <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-4 col-6 ">
         <div class="card m-2 rounded-3 position-relative  ">
                 <img src="https://slicetokenfrontendassets.s3.amazonaws.com/players/img_white/61.webp" 
-                class="card-img-top  rounded-3">
+                class="card-img-top  rounded-3" >
                 <div class="custom-absolute">
                 <img
                   :src="`http://localhost:3000/categories/image/${props.client.categoria_persona_id}`"
