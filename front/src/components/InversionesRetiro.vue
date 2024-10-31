@@ -20,9 +20,8 @@
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_recibida in inversiones_recibidas" :key="inversion_recibida">
             <p class="text-lg font-semibold">Inversion: {{ inversion_recibida.inversion_id }}</p>
             <p class="text-sm text-zinc-500">Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
-            <p class="text-sm text-zinc-500">Monto: ${{ inversion_recibida.monto }}</p>
-            <p class="text-sm text-zinc-500">Fecha: {{ inversion_recibida.fecha_deposito }}</p>
-            <p class="text-sm text-zinc-500">Estado: {{ inversion_recibida.estado }}</p>
+            <p class="text-sm text-zinc-500">Tokens Recibidos: {{ inversion_recibida.monto }}</p>
+            <p class="text-sm text-zinc-500">Fecha: {{ inversion_recibida.fecha_deposito }}</p>            
             <hr>
           </div>
         </div>
@@ -60,9 +59,9 @@
         <div class="tab-content" v-if="activeTab === 0">
           <!-- Inversiones -->
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-            <p class="text-lg font-semibold">Inversion: {{ inversion.inversion_id }}</p>
+            <p class="text-lg font-semibold">Inversion ID: {{ inversion.inversion_id }}</p>
             <p class="text-sm text-zinc-500">Cliente: {{ inversion.nombre_cliente }}</p>
-            <p class="text-sm text-zinc-500">Tokens: {{ inversion.monto }}</p>
+            <p class="text-sm text-zinc-500">Tokens Invertidos: {{ inversion.monto }}</p>
             <p class="text-sm text-zinc-500">Fecha: {{ inversion.fecha_deposito }}</p>
             <p class="text-sm text-zinc-500">Estado: {{ inversion.estado }}</p>
             <hr>
@@ -91,7 +90,6 @@
 
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 const route = useRouter();
 const tabs = ref(['Inversiones', 'Retiro']);
@@ -108,12 +106,12 @@ const usuario_rol = ref(usuario.rol);
 console.log(usuario_rol.value);
 console.log(usuario_id.value);
 if(usuario_rol.value == 'Inversionista'){
-  inversionista_ID.value = usuario_id.value;
+  inversionista_ID.value = usuario_id.value;  
   console.log(inversionista_ID.value);
 }
-else
-{
-  cliente_ID.value = usuario_id;
+if(usuario_rol.value == 'Cliente'){
+  cliente_ID.value = usuario_id.value;
+  console.log(cliente_ID.value);
 }
 
 const inversiones = ref([]);
@@ -156,7 +154,6 @@ const obtenerInversiones_Clientes = async () => {
     inversiones_recibidas.value = data.data;
   } catch (error) {
     console.log(error);
-
   }
 };
 
