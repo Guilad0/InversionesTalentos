@@ -57,10 +57,10 @@ console.log(primerosCinco);
 }
 
 .card-client {
-    margin: 1rem;
-    flex: 1 1 calc(100% - 2rem);
-    max-width: calc(100% - 2rem);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin: 0.25rem;
+    flex: 1 1 calc(25% - 0.5rem);
+    max-width: calc(25% - 0.5rem);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card-client:hover {
@@ -77,8 +77,8 @@ console.log(primerosCinco);
 
 @media (min-width: 900px) {
     .card-client {
-        flex: 1 1 calc(33.333% - 2rem);
-        max-width: calc(33.333% - 2rem);
+        flex: 1 1 calc(20% - 2rem);
+        max-width: calc(20% - 2rem);
     }
 }
 
