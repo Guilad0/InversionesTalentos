@@ -5,7 +5,7 @@
             @click="$emit('getAll')" 
             type="button" 
             class="btn btn-sm mx-1 badge"
-            :class="{ 'btn-gray': props.activeCategory === null, 'btn-ligth active': props.activeCategory !== null }">
+            :class="{ 'btn-orange': props.activeCategory === null, 'btn-ligth active': props.activeCategory !== null }">
             All
         </button>
         <div
@@ -16,7 +16,7 @@
             <button 
                 type="button" 
                 class="btn btn-sm mx-1 rounded badge "
-                :class="{ 'btn-gray': props.activeCategory === cat.categoria_persona_id, 'btn-ligth active': props.activeCategory !== cat.categoria_persona_id }"
+                :class="{ 'btn-orange': props.activeCategory === cat.categoria_persona_id, 'btn-ligth active': props.activeCategory !== cat.categoria_persona_id }"
                 @click="$emit('findByname', cat.categoria_persona_id)">
                 {{ cat.nombre }}
             </button>
@@ -42,7 +42,7 @@ const props = defineProps({
      font-weight: normal;
    }
    button:hover{
-    background-color: var(--gray-color) !important;
+    background-color: var(--yellow-orange) !important;
     color: var(--white-anti-flash-color) !important;
    }
 </style>
