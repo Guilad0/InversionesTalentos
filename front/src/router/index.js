@@ -12,6 +12,9 @@ import SignUpLoginView from '@/views/SignUpLoginView.vue'
 import PostView from '@/views/PostView.vue'
 import ContactView from '@/views/ContactView.vue'
 import BilleteraView from '@/views/BilleteraView.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
+import ResetPassword from '@/views/ResetPassword.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -80,6 +83,14 @@ const router = createRouter({
       path:'/billetera',
       name:'billetera',
       component:BilleteraView
+    },
+    { path: '/forgot-password',
+      name: 'forgot-password', 
+      component: ForgotPassword 
+    }, 
+    { path: '/reset-password/:token',
+      name: 'reset-password',
+      component: ResetPassword 
     },
   ]
 })

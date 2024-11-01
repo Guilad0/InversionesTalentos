@@ -4,8 +4,11 @@ const bcrypt = require('bcrypt');
 const jsonWebToken = require('jsonwebtoken');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotallySecretKey');
+const crypto = require('crypto');
+const transporter = require('../helpers/mailer');
 
-const auth =  (req, res) => {   
+
+const auth = (req, res) => {
     const { correo, password, storeCredentials } = req.body;
 
     const sql = 'SELECT * FROM usuarios WHERE correo = ?';
@@ -18,7 +21,7 @@ const auth =  (req, res) => {
             return;
         }
         console.log(results);
-        
+
         if (results.length === 0) {
             res.status(400).json({
                 msg: 'Credenciales incorrectas, Correo no encontrado'
@@ -44,16 +47,16 @@ const auth =  (req, res) => {
             return;
         }
 
-        const token = jsonWebToken.sign({user},'secretkey',{expiresIn:'1h'});
+        const token = jsonWebToken.sign({ user }, 'secretkey', { expiresIn: '1h' });
 
         if (storeCredentials) {
             const encryptedData = cryptr.encrypt(JSON.stringify({ correo, password }));
             res.cookie('remember_me', encryptedData, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true }); // 30 días
             console.log('Cookie remember_me creada:', encryptedData);
-          } else {
+        } else {
             res.clearCookie('remember_me');
-          }
-          
+        }
+
 
         res.status(200).json({
             msg: 'Login correcto',
@@ -62,10 +65,121 @@ const auth =  (req, res) => {
         });
 
     })
-    
+
 
 }
 
+const forgotPassword = (req, res) => {
+	const { correo } = req.body;
+
+	if (!correo) {
+		return res.status(400).json({ error: 'El correo es requerido' });
+	}
+
+	const query = `SELECT * FROM usuarios WHERE correo = ?`;
+	conexion.query(query, [correo], (err, results) => {
+		if (err) {
+			console.error('Error en la consulta:', err);
+			return res.status(500).send('Error al procesar la solicitud');
+		}
+
+		if (results.length === 0) {
+			return res.status(200).send('Si este correo está registrado, se ha enviado un correo para restablecer la contraseña.');
+		}
+
+		const usuario = results[0];
+		const token = crypto.randomBytes(20).toString('hex');
+		const tokenExpiry = Date.now() + 3600000; // 1 hora 
+
+		const updateQuery = `UPDATE usuarios SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE usuario_id = ?`;
+		conexion.query(updateQuery, [token, tokenExpiry, usuario.usuario_id], (updateErr) => {
+			if (updateErr) {
+				console.error('Error al guardar el token de restablecimiento:', updateErr);
+				return res.status(500).send('Error al guardar el token de restablecimiento');
+			}
+
+			const resetLink = `http://localhost:5173/reset-password/${token}`;
+
+
+			const mailOptions = {
+                from: process.env.GG_EMAIL,
+                to: correo,
+                subject: 'Restablece tu contraseña',
+                text: `Por favor, restablece tu contraseña haciendo clic en el siguiente enlace: ${resetLink}`,
+                html: `
+                  <p>Por favor, restablece tu contraseña haciendo clic en el siguiente enlace:</p>
+                  <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #e6880d; text-decoration: none; border-radius: 5px;">Restablecer contraseña</a>
+                `
+              };
+              
+              
+
+			transporter.sendMail(mailOptions, (error) => {
+				if (error) {
+					return res.status(500).send('Error al enviar el correo de restablecimiento');
+				}
+				res.cookie('resetToken', token, {
+					maxAge: 3600000,
+					httpOnly: true
+				});
+				res.send('Si este correo está registrado, se ha enviado un correo para restablecer la contraseña.');
+			});
+		});
+	});
+};
+
+
+const resetPassword = (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    // Asegúrate de que el token y la contraseña estén presentes
+    if (!token || !password) {
+        return res.status(400).json({ error: 'Token o contraseña faltante' });
+    }
+
+    const query = `SELECT * FROM usuarios WHERE resetPasswordToken = ? AND resetPasswordExpires > ?`;
+    conexion.query(query, [token, Date.now()], (err, results) => {
+        if (err) {
+            console.error('Error en la consulta:', err);
+            return res.status(500).json({ error: 'Error en la consulta a la base de datos' });
+        }
+        if (results.length === 0) {
+            return res.status(400).json({ error: 'El token es inválido o ha expirado' });
+        }
+
+        const usuario = results[0];
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+            if (hashErr) {
+                console.error('Error al hashear la contraseña:', hashErr);
+                return res.status(500).json({ error: 'Error al hashear la nueva contraseña' });
+            }
+            const updateQuery = `UPDATE usuarios SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE usuario_id = ?`;
+            conexion.query(updateQuery, [hashedPassword, usuario.usuario_id], (updateErr) => {
+                if (updateErr) {
+                    console.error('Error al actualizar la contraseña:', updateErr);
+                    return res.status(500).json({ error: 'Error al guardar la nueva contraseña' });
+                }
+                res.json({ message: 'Contraseña restablecida exitosamente' });
+            });
+        });
+    });
+};
+
+
+const resetPasswordForm = (req, res) => {
+    const { token } = req.params;
+    
+    // Aquí podrías agregar lógica para verificar si el token es válido
+    // y si ha expirado, si es necesario.
+
+    res.json({ valid: true, token }); // Indica que el token es válido y envía el token al frontend
+};
+
+      
 module.exports = {
-    auth
+    auth,
+    forgotPassword, 
+    resetPassword,
+    resetPasswordForm
 }
