@@ -87,7 +87,7 @@ i:hover {
 }
 
 .bg-dark-custom {
-  background-color: var(--smoky-dark-color) !important;
+  background-color: var(--gray-color) !important;
   border-bottom: 1px solid var(--yellow-orange);
 }
 
