@@ -3,7 +3,7 @@
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="login-text-color">Iniciar sesión</h3>
+          <h3 class="orange-text-color">Iniciar sesión</h3>
         </div>
         <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
@@ -27,8 +27,10 @@
         </div>
 
         <div class="row text-center">
-          <div class="mb-3 login-text-color">
-            <h5>¿Olvidaste tu contraseña?</h5>
+          <div class="mb-3 orange-text-color">
+            <RouterLink to="/forgot-password" class="nav-link registrar-link">
+              ¿Olvidaste tu contraseña?
+            </RouterLink>
           </div>
           <div class="mb-3">
             <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">Ingresar</button>
@@ -41,10 +43,10 @@
         <div class="mb-3">
           <div class="row text-center w-70">
             <div class="col"><h5 class="login-text-color">¿No tienes cuenta?</h5></div>
-            <div @click="$emit('changePage')" class="col cursor">
-              <a  class="nav-link registrar-link">
+            <div class="col">
+              <RouterLink to="/registrarse" class="nav-link registrar-link">
                 Regístrate gratis
-              </a>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -62,7 +64,7 @@ import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
-const switchValue = ref(true);
+const switchValue = ref(false);
 
 const route = useRouter();
 
@@ -141,7 +143,9 @@ const callback = (response) => {
 .login-text-color{
   color: var(--white-anti-flash-color);
 }
-
+.orange-text-color{
+  color: var(--yellow-orange)!important;
+}
 
 
 .btn-ingresar{
@@ -150,12 +154,12 @@ const callback = (response) => {
  font-weight: 600 !important;
 }
 .btn-ingresar:hover{
- background-color: var(--gray-color) !important;
+ background-color: var(--yellow-orange) !important;
  color: var(--dun-color) !important;
  font-weight: 800 !important;
 }
 .registrar-link{
-  color: var(--dun-color) !important;
+  color: var(--yellow-orange) !important;
   text-decoration:  underline;
   text-underline-offset: 4px;
 }

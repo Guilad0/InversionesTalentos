@@ -28,7 +28,9 @@
 
         <div class="row text-center">
           <div class="mb-3 login-text-color">
-            <h5>¿Olvidaste tu contraseña?</h5>
+            <RouterLink to="/forgot-password" class="nav-link registrar-link">
+              ¿Olvidaste tu contraseña?
+            </RouterLink>
           </div>
           <div class="mb-3">
             <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">Ingresar</button>
@@ -62,7 +64,7 @@ import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
-const switchValue = ref(true);
+const switchValue = ref(false);
 
 const route = useRouter();
 

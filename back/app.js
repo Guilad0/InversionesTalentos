@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var fileUpload = require('express-fileupload')
+var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var clientsRouter = require('./routes/clients');
@@ -14,14 +15,12 @@ var logrosRouter = require('./routes/logros');
 var categoriesRouter = require('./routes/categories')
 var linksRouter = require('./routes/links');
 var faqRouter = require('./routes/faq');
-var authRouter = require('./routes/auth');
+var authRouter = require('./routes/auth');  
 var ajustesRouter = require('./routes/ajustes');
 var movimientosRouter = require('./routes/movimientos');
 var experienciaRoutes = require('./routes/experienciaRoutes');
 var solicitudesRoutes = require('./routes/solicitudes_retiro');
-var billeteraRoutes = require('./routes/billetera');
-var inversionesRetirosRoutes = require('./routes/inversionesRetiros');
-var combinedDataRouter = require('./routes/ajustesAdmin');
+
 var app = express();
 
 app.use(cors());
@@ -33,9 +32,11 @@ app.use(fileUpload({
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json()); // Para leer JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Para leer datos urlencoded
 
 app.use('/', indexRouter); 
 app.use('/users', usersRouter); 
@@ -52,7 +53,5 @@ app.use('/ajustes', ajustesRouter);
 app.use('/movimientos', movimientosRouter);
 app.use('/experiencia', experienciaRoutes); 
 app.use('/solicitudes', solicitudesRoutes); 
-app.use('/billetera', billeteraRoutes);
-app.use('/inversionesRetiros', inversionesRetirosRoutes);
-app.use('/ajustesAdmin', combinedDataRouter);
+
 module.exports = app;
