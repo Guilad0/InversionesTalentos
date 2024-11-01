@@ -4,7 +4,7 @@
   <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <p class="text-xl">Total de Inversiones (USD):{{ dolaresInversionista }} </p>
+        <p class="text-xl">Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
       </div>
 
       <div class="d-flex justify-content-center mb-6">
@@ -270,6 +270,7 @@ const montoUsd = ref(0);
 const dolaresInversionista = ref(0);
 const tokensCompradosInversionista = ref(0);
 const tokensInvertidosInversionista = ref(0);
+const tokensRecibidosCliente = ref(0);
 
 const ganancia_estimada = ref(0);
 const monto_tokens_invertir = ref(0);
@@ -283,12 +284,12 @@ const usuario_rol = ref(usuario.rol);
 console.log(usuario_rol.value);
 console.log(usuario_id.value);
 if(usuario_rol.value == 'Inversionista'){
-  inversionista_ID.value = usuario_id.value;
+  inversionista_ID.value = usuario_id.value;  
   console.log(inversionista_ID.value);
 }
-else
-{
-  cliente_ID.value = usuario_id;
+if(usuario_rol.value == 'Cliente'){
+  cliente_ID.value = usuario_id.value;
+  console.log(cliente_ID.value);
 }
 
 
@@ -298,7 +299,9 @@ onMounted(() => {
   obtenerTokens_Inversionista_Invertidos();
   calcularTokens();
 
-  obtenerListaClientes();  
+  obtenerListaClientes();
+
+  obtenerTokens_Cliente();
 });
 
 
@@ -367,8 +370,9 @@ const comprarTokens = async () => {
     await axios.post(baseURL + 'comprarTokens', datos);
     alert('Tokens comprados exitosamente');
     var myModalEl = document.getElementById('modalTokens');
-    var modal = bootstrap.Modal.getInstance(myModalEl);
+    var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
     modal.hide();
+    
   } catch (error) {
     console.error('Error al guardar los tokens:', error);
   }
@@ -407,6 +411,17 @@ const inversionistaInvertir = async () => {
     console.error('Error al invertir los tokens:', error);
   }
   monto_tokens_invertir.value = 0;
+};
+
+const obtenerTokens_Cliente = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
+    console.log(data);
+    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos;
+    console.log(tokensRecibidosCliente.value);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 </script>

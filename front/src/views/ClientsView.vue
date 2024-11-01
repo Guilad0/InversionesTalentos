@@ -98,7 +98,7 @@ onMounted(() => {
             <div class="content" v-if="clients.length > 0">
                 <div class="d-none d-sm-block">
                     <div class="d-flex flex-wrap justify-content-start">
-                        <CardClient v-for="client in clients" :key="client.usuario_id" :client="client" />
+                        <CardClient v-for="client in clients" :key="client.usuario_id" :client="client" class="fade-in card-client"/>
                     </div>
                 </div>
 
@@ -139,5 +139,9 @@ main {
 
 input:focus {
     border: 1px solid var(--white-anti-flash-color);
+}
+.card-client:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 </style>

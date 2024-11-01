@@ -147,21 +147,57 @@ router.post("/invertirTokens", function (req, res, next) {
     } else {
       console.log(results.insertId);
       const inversion_id = results.insertId;
-      var queryToken = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
+      var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${usuario_id}', '${inversion_id}', NULL);`;
 
-      connection.query(queryToken, function (error, results, fields) {
+      connection.query(queryTokenInversionista, function (error, results, fields) {
         if (error) {
           console.log(error);
           res.status(500).send({
             error: error,
             message: "Error al realizar la petición",
           });
-        }  
+        }
+        else{
+          var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
+          VALUES ('Ingreso', 'Inversión recibida', CURRENT_TIMESTAMP(), NULL, '${token}', '${cliente_id}', '${inversion_id}', NULL);`;
+
+            connection.query(queryTokenCliente, function (error, results, fields) {
+              if (error) {
+                console.log(error);
+                res.status(500).send({
+                  error: error,
+                  message: "Error al realizar la petición",
+                });
+              }
+            })
+        }
       })
       res.status(200).send({
         data: results.insertId,
         message: "inversion realizada",
+      });
+    }
+  });
+});
+
+router.get("/tokensClienteRecibido/:id", function (req, res, next) {
+
+  var query = ` SELECT SUM(token) as totalTokensRecibidos
+                FROM movimientos
+                WHERE usuario_id =${req.params.id}
+                AND tipo = 'Ingreso';`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Tokens del inversionista consultada correctamente",
       });
     }
   });

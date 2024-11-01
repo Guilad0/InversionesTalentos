@@ -39,6 +39,7 @@ export default {
         { name: 'Marketplace', path: '/marketplace' },
         { name: 'Propósito', path: '/view1' },
         { name: 'Cómo funciona', path: '/view2' },
+        { name: 'Billetera', path: '/billetera' },
         { name: 'Posts', path: '/posts' },
         { name: 'Contactos', path: '/contact' },
         { name: 'FAQs', path: '/faq' }
@@ -86,7 +87,7 @@ i:hover {
 }
 
 .bg-dark-custom {
-  background-color: var(--smoky-dark-color) !important;
+  background-color: var(--gray-color) !important;
   border-bottom: 1px solid var(--yellow-orange);
 }
 

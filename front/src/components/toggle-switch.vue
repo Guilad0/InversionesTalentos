@@ -23,7 +23,7 @@
   
   <style scoped>
   .toggle-switch {
-    background: #ddd;
+    background: var(--dun-color);
     border-radius: 0.75em;
     box-shadow: 0.0625em 0.0625em 0.0625em rgba(0, 0, 0, 0.08) inset;
     cursor: pointer;
@@ -51,7 +51,7 @@
   }
   
   .checked {
-    background-color: var(--dun-color);
+    background-color: var(--yellow-orange);
   }
   
   .checked::before {
