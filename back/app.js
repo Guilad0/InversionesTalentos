@@ -20,6 +20,9 @@ var ajustesRouter = require('./routes/ajustes');
 var movimientosRouter = require('./routes/movimientos');
 var experienciaRoutes = require('./routes/experienciaRoutes');
 var solicitudesRoutes = require('./routes/solicitudes_retiro');
+var billeteraRoutes = require('./routes/billetera');
+var inversionesRetirosRoutes = require('./routes/inversionesRetiros');
+var ajustesAdminRouter = require('./routes/ajustesAdmin');
 
 var app = express();
 
@@ -53,5 +56,9 @@ app.use('/ajustes', ajustesRouter);
 app.use('/movimientos', movimientosRouter);
 app.use('/experiencia', experienciaRoutes); 
 app.use('/solicitudes', solicitudesRoutes); 
+app.use('/billetera', billeteraRoutes);
+app.use('/inversionesRetiros', inversionesRetirosRoutes);
+app.use('/ajustesAdmin', ajustesAdminRouter);
+
 
 module.exports = app;
