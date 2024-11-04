@@ -1,15 +1,16 @@
 <template>
-  <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeInLeft ">
-      <form @submit.prevent="registrar" class="mt-3">
-        <div class="card login-card shadow">
-      <div class="card-body login-card-body">
-        <div class="text-center">
-          <h3 class="login-text-color">Registrar cuenta</h3>
-        </div>
-        <div class="mb-2 login-text-color d-flex">
-          <div class="col me-2">
-          <label for="name">Nombres <label class="text-danger">*</label> </label>
-            <input
+  <main class="  d-flex  justify-content-center align-items-center  animate__animated   animate__fadeInLeft">
+    <div class="col-10 d-flex justify-content-center  col-xl-10  col-lg-10 col- flex-wrap d-flex  col-md-11 ">
+      <form @submit.prevent="registrar">
+
+        <div class="card shadow position-relative p-0 rounded-3">
+          <div class="card-body position-relative">
+            <p class="card-title underline text-center m-0 pb-3">Registrate</p>
+
+            <div class="col d-flex my-2 px-2">
+              <div class="col">
+                <div class="form-floating mx-1 ">
+                  <input
                         type="text"
                         class="form-control custom-font"
                         id="name"
@@ -20,13 +21,15 @@
                         :class="{ 'is-invalid': nameConfirm === false, 'is-valid': nameConfirm === true }"
                         @input="handleName"
                       />
+                  <label for="name">Nombres <label class="text-danger">*</label> </label>
                   <div v-if="nameConfirm == false" class="invalid-feedback">
                     Minimo 5 caracteres
                   </div>
-          </div>
-          <div class="col ms-2">
-            <label for="lastName">Apellidos <label class="text-danger">*</label> </label>
-            <input
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating mx-1 ">
+                  <input
                     type="text"
                     class="form-control custom-font"
                     id="lastName"
@@ -37,13 +40,41 @@
                     @input="handleLastName"
                     placeholder="" />
 
-          </div>
-        </div>
+                  <label for="lastName">Apellidos <label class="text-danger">*</label> </label>
+                  <div v-if="nameConfirm === false" class="invalid-feedback">
+                    Minimo 5 caracteres
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="mb-2 login-text-color d-flex ">
-            <div class="col me-2">
-            <label for="lastName">Fecha de nacimiento <label class="text-danger">*</label> </label>
-              <input
+            <!-- Solo para admin -->
+            <!-- <div v-if="user.rol == 'Admin'" class="d-flex my-2">
+              <div class="col m-2">
+                <select v-model="rol" class="form-select custom-font py-2 px-1  " aria-label="Default select example"
+                  required>
+                  <option  value="">Seleccione rol</option>
+                  <option  value="cliente">Cliente</option>
+                  <option  value="inversor">Inversor</option>
+                </select>
+              </div>
+
+              <div class="col m-2" v-if="rol === 'cliente'">
+
+                <select v-model="categoria" id="userSelect" class="form-select py-2 px-1 custom-font" required>
+                  <option value="">Sel. categoria</option>
+                  <option v-for="categoria in results" :key="categoria" :value="categoria.categoria_persona_id">
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div> -->
+            <!-- ---- -->
+
+            <div class=" d-flex justify-content-center px-3 my-auto">
+              <div class=" col-3">Fecha de nacimiento<label class="text-danger">*</label> </div>
+              <div class="col-4 text-center">
+                <input
                   type="date"
                   v-model="fechaCumple"
                   name="fechaCumple"
@@ -51,13 +82,13 @@
                   id="fechaCumple"
                   @input="handleFecha"
                   :class="{ 'is-invalid': control_fecha === false, 'is-valid': control_fecha === true }"
-                  class="form-control custom-font p-1"
+                  class="form-control custom-font"
                   required />
-            </div>
-            <div class="col ms-2">
-            <label for="lastName">Pais de residencia <label class="text-danger">*</label> </label>
-              <select
-                  class="form-select form-select-sm p-1"
+              </div>
+
+              <div class="col text-center ms-1">
+                <select
+                  class="form-select form-select-sm "
                   id="countrySelect"
                   @invalid="handleInvalid"
                   v-model="countryName"
@@ -69,14 +100,14 @@
                     {{ country.name }}
                   </option>
                 </select>
+              </div>
             </div>
-        </div>
 
-        <div class="mb-2 login-text-color d-flex ">
-          <div class="col me-2">
-            <label for="codigo_pais">Codigo de pais</label>
-            <div class="dropdown  ">
-                  <button class=" py-2 px-4 btn btn-light rounded-3 btn-sm " type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="d-flex  flex-wrap px-3   my-2 align-items-center  ">
+              <div class="col-4 ">
+                <div class="dropdown  ">
+                  <button class="py-2 px-4 btn btn-gray rounded-3 btn-sm " type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     <img v-if="selectedCountry.flag" :src="selectedCountry.flag" alt="Flag" width="20" height="15"
                       class="" />
                     <label class="custom-font">
@@ -84,19 +115,20 @@
                       {{ selectedCountry.code || 'Codigo de Pais' }}
                     </label>
                   </button>
-                  <ul class="dropdown-menu custom-code-country" aria-labelledby="dropdownMenuButton">
-                    <li v-for="country in countries" :key="country.abbreviation" class="rounded-0  w-100 text-start custom-code ">
-                      <a class="dropdown-item cursor custom-country  text-white" @click="selectCountry(country)">
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li v-for="country in countries" :key="country.abbreviation">
+                      <a class="dropdown-item" href="#" @click="selectCountry(country)">
                         <img :src="country.flag" alt="Flag" width="20" height="15" class="" /> ({{ country.code }}) {{
                         country.name }}
                       </a>
                     </li>
                   </ul>
                 </div>
-          </div>
-          <div class="col ms-2">
-            <label for="telefono">Telefono</label>
-            <input
+              </div>
+              <div class="col">
+                <div class="form-floating ">
+                  <div class="form-floating ">
+                    <input
                       type="number"
                       class="form-control custom-font"
                       id="telefono"
@@ -106,16 +138,19 @@
                       placeholder=""
                       v-model="numero_telefono"
                       @input="handleTelefono">
+                    <label for="telefono">Telefono</label>
                     <div v-if="control_telefono === false" class="invalid-feedback">
                       Minimo 5 caracteres
                     </div>
-          </div>
-        </div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="mb-2 login-text-color d-flex">
-          <div class="col me-2">
-            <label for="floatingInput">Correo <label class="text-danger">*</label></label>
-            <input
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="col px-2">
+              <div class="form-floating ">
+                <input
                   type="email"
                   class="form-control "
                   required
@@ -125,48 +160,42 @@
                   placeholder=""
                   @input="handleEmail"
                   v-model="email">
+                <label for="floatingInput">Correo <label class="text-danger">*</label></label>
                 <div v-if="control_email === false" class="invalid-feedback">
                   Formato no permitido
                 </div>
-          </div>
-          <div class="col ms-2">
-            <label >Genero <label class="text-danger">*</label></label>
-            <div className=" d-flex align-items-center gap-3 mt-2">
-              <div className="form-check">
+              </div>
+            </div>
+            <div class="col-2 ">
+              Genero
+            </div>
+            <div class="col">
+              <div class="form-check">
                 <input
-                  className="form-check-input"
+                  class="form-check-input"
                   type="radio"
                   name="gender"
                   value="mujer"
-                  onChange={handleValidGender}
+                  v-model="gender"
+                   @input="handleValidGender"
                   required
-                  onInvalid={handleInvalid}
-                />
-                <label className="form-check-label" htmlFor="flexRadioDefault1">
+                  @invalid="handleInvalid">
+                <label class="form-check-label" for="flexRadioDefault1">
                   Mujer
                 </label>
               </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="gender"
-                  value="hombre"
-                  onChange={handleValidGender}
-                />
-                <label className="form-check-label" htmlFor="flexRadioDefault2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" value="hombre" v-model="gender" >
+                <label class="form-check-label" for="flexRadioDefault2">
                   Hombre
                 </label>
               </div>
             </div>
-
-          </div>
-        </div>
-
-        <div class="mb-2 login-text-color d-flex">          
-          <div class="col me-2">
-            <label for="floatingInput">Contraseña <label class="text-danger">*</label></label>
-            <input
+            </div>
+            <div class="d-flex justify-content-around my-2">
+              <div class="col mx-2 ">
+                <div class="form-floating ">
+                  <input
                     type="password"
                     @input="handlePassword"
                     v-model="password"
@@ -175,8 +204,11 @@
                     class="form-control"
                     required
                     :class="{ 'is-invalid': controlPassword === false, 'is-valid': controlPassword === true }"
-                    placeholder="" />
-                    <div class="invalid-feedback">
+                    placeholder="name@example.com" />
+                  <label for="password" >
+                    Contraseña
+                    </label>
+                  <div class="invalid-feedback">
                     <ul>
                       <li v-if="password.length < 8">Debe ser mayor a 7 caracteres</li>
                       <li v-if="!haveLetter(password)">Debe contener al menos una letra minuscula</li>
@@ -185,10 +217,13 @@
                       <li v-if="!tieneCaracterEspecial(password)">Debe contener al menos un carácter especial</li>
                     </ul>
                   </div>
-          </div>
-          <div class="col ms-2">
-            <label for="floatingInput">Confirmar contraseña <label class="text-danger">*</label></label>
-              <input
+                </div>
+              </div>
+
+
+              <div class="col mx-2">
+                <div class="form-floating">
+                  <input
                     type="password"
                     v-model="confirmPassword"
                     id="confirmPassword"
@@ -197,32 +232,55 @@
                     @invalid="handleInvalid"
                     @input="handleValid"
                     required
-                    placeholder="" />
-          </div>
-        </div>
-        
-        <div class="row text-center">
-          <div class="my-3">
-            <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75">
-                <label v-if="!isLoading"> Crear cuenta</label>
+                    placeholder="name@example.com" />
+                  <label for="confirmPassword">Confirmar contraseña </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex m-2">
+              <div class="form-check m-2">
+                <input
+                  class="form-check-input"
+                  v-model="acepta_terminos"
+                  type="checkbox"
+                  @input="handleValid"
+                  @invalid="handleInvalid"
+                  id="flexCheckChecked"
+                  required />
+                <label class="form-check-label  custom-font">
+                  He leído y acepto los
+                  <span :style="{ color: 'dark' }">Términos y condiciones</span>
+                  y la
+                  <span :style="{ color: 'dark' }">Política de privacidad</span>
+                </label>
+              </div>
+            </div>
+
+
+            <div class="d-flex justify-content-center mt-3">
+              <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75">
+                <label v-if="!isLoading"> Registrarse</label>
                 <div v-if="isLoading" class="d-flex justify-content-center">
                   <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </div>
               </button>
+            </div>
+            <div class="text-end cursor mt-3">
+              <div @click="$emit('changePage')">
+                ¿Ya eres un usuario?
+                <a class="custom-link">Iniciar Sesión</a>
+              </div>
+            </div>
+
           </div>
+
         </div>
 
-          <div class="row text-center w-70">
-            <div class="col"><h5 class="login-text-color">¿Ya tienes una cuenta ?</h5></div>
-            <div @click="$emit('changePage')" class="col cursor">
-              <a class="nav-link registrar-link"> Iniciar Sesion </a>
-            </div>
-          </div>
-      </div>
-    </div>
       </form>
+    </div>
   </main>
 </template>
 <script setup>
@@ -258,7 +316,6 @@ const countryConfirm = ref(null)
 
 const email = ref("");
 const control_email = ref(null);
-const existsEmail = ref(null)
 
 const rol = ref("Null");
 const categoria = ref(6);
@@ -449,66 +506,34 @@ return true
 
 </script>
 <style scoped>
-.custom-code-country{
-  background-color: var(--gray-color);
-  color: red;
 
-}
 
-.custom-country:hover{
-  background-color:  #0d6efd !important;
-  color: wheat ;
-}
-.custom-code:hover{
-  background-color: #0d6efd !important ;
+.custom-font {
+  font-size: 0.8rem;
 }
 
-.bgf {
-  background-color: #f9f9fa;
-}
-.login-card {
+.card {
+  background-color: rgba(255, 255, 255, 0.938);
   width: 30rem;
   padding: 2rem;
   height: 45rem;
   margin-top: 5%;
   margin-bottom: 5%;
-  background-color: #17223be8;
-}
-.login-text-color {
-  color: var(--white-anti-flash-color);
 }
 
-.btn-ingresar {
-  background-color: var(--dun-color) !important;
-  color: var(--jet-color) !important;
-  font-weight: 600 !important;
+.custom-link {
+  color: #14110f;
+  text-underline-offset: 3px;
 }
-.btn-ingresar:hover {
-  background-color: var(--gray-color) !important;
-  color: var(--dun-color) !important;
-  font-weight: 800 !important;
-}
-.registrar-link {
-  color: var(--dun-color) !important;
+
+.custom-link:hover {
+  color: #7e7f83;
   text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.registrar-link:hover {
-  color: var(--white-anti-flash-color) !important;
-  font-weight: 600 !important;
 }
 
 main {
-  background-image: url("../assets/images/register8.png");
+  background-image: url('../assets/images/2.png');
   background-size: cover;
   background-repeat: no-repeat;
-}
-.swal-button-confirm {
-  background-color: #4caf50;
-  color: white;
-}
-.swal-button-cancel {
-  background-color: #f44336;
-  color: white;
 }
 </style>
