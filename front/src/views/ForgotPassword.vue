@@ -17,6 +17,7 @@
           </div>
         </form>
         <p class="login-text-color text-center p-3" v-if="message">{{ message }}</p>
+        <RouterLink v-if="showBackLink" to="/sign-login" class="text-center orange-text-color w-100 p-3 d-block">Volver a inicio de sesión</RouterLink>
       </div>
     </div>
   </main>
@@ -29,6 +30,7 @@ import axios from 'axios';
 const correo = ref('');
 const message = ref('');
 const emailSent = ref(false);
+const showBackLink = ref(false);
 
 const forgotPassword = async () => {
   try {
@@ -40,6 +42,7 @@ const forgotPassword = async () => {
   } catch (error) {
     console.log(error);
     message.value = error.response.data.error || 'Ocurrió un error';
+    showBackLink.value = true; // Muestra el enlace para volver
   }
 };
 </script>
