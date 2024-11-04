@@ -16,6 +16,14 @@
                     :class="{'border-custom': view === 'posts'}" >
                     <img src="../assets/svg/post.svg" width="25" class="me-2">Guias
                     </li>
+                    <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('categorias')"
+                    :class="{'border-custom': view === 'categorias'}" >
+                    <img src="../assets/svg/tags-category-categories-labels-svgrepo-com.svg" width="25" class="me-2">Categorias
+                    </li>
+                    <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('reclamos')"
+                    :class="{'border-custom': view === 'reclamos'}" >
+                    <img src="../assets/svg/consultas.svg" width="25" class="me-2">Consultas y Reclamos
+                    </li>
                     <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('ajustes')"
                     :class="{'border-custom': view === 'ajustes'}" >
                     <img src="../assets/svg/settings-svgrepo-com.svg" width="25" class="me-2">Ajustes
@@ -27,6 +35,8 @@
                 <Users v-if="view == 'users'"/>
                 <Posts v-if="view == 'posts'"/>
                 <Ajustes v-if="view == 'ajustes'" />
+                <Categories v-if="view == 'categorias'" />
+                <ConsultasReclamos v-if="view == 'reclamos'" />
             </div>
         </div>
     </main>
@@ -38,6 +48,8 @@ import Solicitudes from '../components/WalletRequests.vue'
 import Users from '../components/Users.vue';
 import Posts from '../components/Posts.vue'
 import Ajustes from '@/components/Ajustes.vue';
+import Categories from './Categories.vue';
+import ConsultasReclamos from '@/components/ConsultasReclamos.vue';
 const view = ref('users');
 
 

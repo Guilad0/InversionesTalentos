@@ -419,6 +419,7 @@ const postUser = async (req, res) => {
     username,
     edad,
     rol,
+    gender,
   } = req.body;
 
   if (acepta_terminos == "0") {
@@ -434,7 +435,7 @@ const postUser = async (req, res) => {
       });
     }
     const sql =
-      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
     let passwordHash = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomBytes(20).toString("hex");
     const values = [
@@ -450,9 +451,10 @@ const postUser = async (req, res) => {
       acepta_terminos,
       categoria_persona_id,
       rol,
-      verificationCode
+      verificationCode,
+      gender
     ];
-
+ 
     conexion.query(sql, values, (error, results) => {
         
       console.log(values);
