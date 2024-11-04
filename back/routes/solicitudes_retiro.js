@@ -19,7 +19,8 @@ router.get("/", function (req, res, next) {
               FROM solicitudes_retiro
               INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
               INNER JOIN inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id
-              WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%';`; 
+              WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
+              AND solicitudes_retiro.estado != 'Eliminado';`; 
 
   connection.query(queryFilas, function (error, results, fields) {
       numFilas = results[0].numFilas;
@@ -29,6 +30,7 @@ router.get("/", function (req, res, next) {
                    INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
                    INNER JOIN inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id
                    WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
+                   AND solicitudes_retiro.estado != 'Eliminado' 
                    LIMIT ${limite};`; 
 
       connection.query(query, function (error, results, fields) {
@@ -59,7 +61,6 @@ router.get("/", function (req, res, next) {
       });
   });
 });
-
 
 router.post("/", function (req, res, next) {
   const { tipo, usuario_id, monto_solicitud, comision_aplicar, monto_recibir, fecha_solicitud,
@@ -154,6 +155,28 @@ router.patch("/aprobar/:id", function (req, res, next) { //aprobar la solicitud 
       res.status(200).send({
         data: results.insertId,
         message: "Inversión aprobada correctamente",
+      });
+    }
+  });
+});
+
+router.patch("/rechazar/:id", function (req, res, next) { //rechazar la solicitud de retiro
+  var query = `UPDATE solicitudes_retiro SET 
+  estado = 'Rechazado'
+  WHERE retiro_id = '${req.params.id}';`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results.insertId);
+      res.status(200).send({
+        data: results.insertId,
+        message: "Inversión rechazada correctamente",
       });
     }
   });

@@ -36,6 +36,8 @@
                                         }}</span>
                                     <span v-if="item.estado == 'Aprobado'" class="badge text-bg-success">{{ item.estado
                                         }}</span>
+                                    <span v-if="item.estado == 'Rechazado'" class="badge text-bg-danger">{{ item.estado
+                                        }}</span>
                                     <span v-if="item.estado == 'Eliminado'" class="badge text-bg-danger">{{ item.estado
                                         }}</span>
                                 </td>
@@ -48,10 +50,14 @@
                                 <td v-if="item.estado == 'Aprobado'">
                                     <button class="btn btn-warning btn-sm" @click="pendiente(item.retiro_id)"><i
                                             class="fa fa-clock"></i></button>
+                                    <button class="btn bg-white text-danger color-danger border-danger btn-sm" @click="eliminado(item.retiro_id)"><i
+                                            class="fa fa-trash"></i></button>
                                 </td>
-                                <td v-if="item.estado == 'Eliminado'">
+                                <td v-if="item.estado == 'Rechazado'">
                                     <button class="btn btn-warning btn-sm" @click="pendiente(item.retiro_id)"><i
                                             class="fa fa-clock"></i></button>
+                                    <button class="btn bg-white text-danger color-danger border-danger btn-sm" @click="eliminado(item.retiro_id)"><i
+                                            class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -74,7 +80,7 @@
                                 :class="paginacion.current === page ? 'active' : ''">
                                 <button @click="obtenerDatos(page)"
                                     class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">{{
-                                    page
+                                        page
                                     }}</button>
                             </li>
 
@@ -135,7 +141,7 @@ const aprobado = async (retiro_id) => {
 const rechazado = async (retiro_id) => {
 
     try {
-        const { data } = await axios.patch(BaseURL + '/' + retiro_id);
+        const { data } = await axios.patch(BaseURL + '/rechazar/' + retiro_id);
         obtenerDatos();
 
 
@@ -155,6 +161,18 @@ const pendiente = async (retiro_id) => {
         console.log(error);
     }
 }
+
+const eliminado = async (retiro_id) => {
+
+    try {
+        const { data } = await axios.patch(BaseURL + '/' + retiro_id);
+        obtenerDatos();
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 </script>
 
 <style scoped>
@@ -194,7 +212,7 @@ td {
     max-height: 60vh;
     overflow-y: auto;
     margin-bottom: 1rem;
-   
+
 }
 
 .table {
