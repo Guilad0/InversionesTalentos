@@ -27,7 +27,12 @@ import { watch } from 'vue';
           </ul>
           <div class="d-flex align-items-center">
             <RouterLink class="nav-link" to="/">
-              <h2 class="greeting">HI</h2>
+              <img
+                src="@/assets/images/logo-manos.png"
+                alt=""
+                width="40"
+                class="rounded-circle"
+              />
             </RouterLink>
 
             <RouterLink
