@@ -7,6 +7,8 @@ import { createPinia } from 'pinia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import vue3GoogleLogin from 'vue3-google-login'
+import iziToast from './plugins/iziToast';
+
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
@@ -18,6 +20,7 @@ const app = createApp(App)
 
 app.config.globalProperties.$swal = Swal;
 app.config.globalProperties.$notyf = new Notyf();
+app.config.globalProperties.$izitoast = iziToast;
 
 app.use(vue3GoogleLogin, {
   clientId: 'YOUR_GOOGLE_CLIENT_ID'
