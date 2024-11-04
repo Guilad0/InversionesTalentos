@@ -59,7 +59,7 @@
 import { onMounted, ref } from "vue";
 import axios from "axios";
 import iziToast from "izitoast";
-
+import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
@@ -74,10 +74,23 @@ let baseURL = "http://localhost:3000/auth";
 
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
-    iziToast.show({
-      title: "Hey",
-      message: "What would you like to add?",
-    });
+    // iziToast.show({
+    //   title: "Hey",
+    //   message: "What would you like to add?",
+    // });
+
+    Swal.fire({
+
+title: "¡Error!",
+
+text: "Ingrese sus credenciales",
+
+icon: "error",
+
+});
+
+
+
   }
 
   var datos = {
@@ -94,24 +107,22 @@ const ingresar = async () => {
     console.log(data.user);
 
     Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, continuar",
-      cancelButtonText: "Cancelar",
-      customClass: {
-        confirmButton: "swal-button-confirm",
-        cancelButton: "swal-button-cancel",
-      },
+      title: "Bienvenido!",
+      text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1000,
     });
+    setTimeout(() => {
+      route.push({ path: "/" });
+    }, 1000);
 
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
   } catch (error) {
     console.log(error);
-    console.log(error.response.data);
+    // console.log(error.response.data);
     Swal.fire({
       title: "¡Error!",
       text: error.response.data.message,
