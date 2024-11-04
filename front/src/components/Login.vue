@@ -1,9 +1,11 @@
 <template>
-  <main class="d-flex justify-content-center bgf py-3 animate__animated   animate__fadeInLeft">
+  <main
+    class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeInLeft"
+  >
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="orange-text-color">Iniciar sesión</h3>
+          <h3 class="login-text-color">Iniciar sesión</h3>
         </div>
         <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
@@ -27,26 +29,24 @@
         </div>
 
         <div class="row text-center">
-          <div class="mb-3 orange-text-color">
-            <RouterLink to="/forgot-password" class="nav-link registrar-link">
-              ¿Olvidaste tu contraseña?
-            </RouterLink>
+          <div class="mb-3 login-text-color">
+            <h5>¿Olvidaste tu contraseña?</h5>
           </div>
           <div class="mb-3">
-            <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">Ingresar</button>
+            <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">
+              Ingresar
+            </button>
           </div>
           <div class="mb-3">
-            <GoogleLogin :callback="callback"/>
+            <GoogleLogin :callback="callback" />
           </div>
         </div>
 
         <div class="mb-3">
           <div class="row text-center w-70">
             <div class="col"><h5 class="login-text-color">¿No tienes cuenta?</h5></div>
-            <div class="col">
-              <RouterLink to="/registrarse" class="nav-link registrar-link">
-                Regístrate gratis
-              </RouterLink>
+            <div @click="$emit('changePage')" class="col cursor">
+              <a class="nav-link registrar-link"> Regístrate gratis </a>
             </div>
           </div>
         </div>
@@ -58,13 +58,13 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
-import Swal from "sweetalert2";
+import iziToast from "izitoast";
 
 import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
-const switchValue = ref(false);
+const switchValue = ref(true);
 
 const route = useRouter();
 
@@ -72,20 +72,18 @@ const correo = ref("");
 const password = ref("");
 let baseURL = "http://localhost:3000/auth";
 
-
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
-    Swal.fire({
-      title: "¡Error!",
-      text: "Ingrese sus credenciales",
-      icon: "error",
+    iziToast.show({
+      title: "Hey",
+      message: "What would you like to add?",
     });
   }
 
   var datos = {
     correo: correo.value,
     password: password.value,
-    storeCredentials: switchValue.value
+    storeCredentials: switchValue.value,
   };
 
   try {
@@ -94,14 +92,20 @@ const ingresar = async () => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("usuario", JSON.stringify(data.user));
     console.log(data.user);
-    
+
     Swal.fire({
-      title: "Bienvenido!",
-      text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1000,
+      title: "¿Estás seguro?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+      customClass: {
+        confirmButton: "swal-button-confirm",
+        cancelButton: "swal-button-cancel",
+      },
     });
+
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
@@ -120,8 +124,8 @@ const ingresar = async () => {
 const callback = (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
-  console.log("Handle the response", response)
-}
+  console.log("Handle the response", response);
+};
 </script>
 
 <style scoped>
@@ -136,45 +140,42 @@ const callback = (response) => {
   margin-bottom: 5%;
 
   background-color: rgba(0, 0, 0, 0.705);
-
-  
-
 }
-.login-text-color{
+.login-text-color {
   color: var(--white-anti-flash-color);
 }
-.orange-text-color{
-  color: var(--yellow-orange)!important;
-}
 
-
-.btn-ingresar{
- background-color: var(--dun-color) !important;
- color: var(--jet-color) !important;
- font-weight: 600 !important;
+.btn-ingresar {
+  background-color: var(--dun-color) !important;
+  color: var(--jet-color) !important;
+  font-weight: 600 !important;
 }
-.btn-ingresar:hover{
- background-color: var(--yellow-orange) !important;
- color: var(--dun-color) !important;
- font-weight: 800 !important;
+.btn-ingresar:hover {
+  background-color: var(--gray-color) !important;
+  color: var(--dun-color) !important;
+  font-weight: 800 !important;
 }
-.registrar-link{
-  color: var(--yellow-orange) !important;
-  text-decoration:  underline;
+.registrar-link {
+  color: var(--dun-color) !important;
+  text-decoration: underline;
   text-underline-offset: 4px;
 }
-.registrar-link:hover{
+.registrar-link:hover {
   color: var(--white-anti-flash-color) !important;
   font-weight: 600 !important;
 }
 
-main{
-    background-image: url('../assets/images/1.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    
-
+main {
+  background-image: url("../assets/images/1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-
-
+.swal-button-confirm {
+  background-color: #4caf50;
+  color: white;
+}
+.swal-button-cancel {
+  background-color: #f44336;
+  color: white;
+}
 </style>
