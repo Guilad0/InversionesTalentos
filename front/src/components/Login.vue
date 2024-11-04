@@ -30,10 +30,12 @@
 
         <div class="row text-center">
           <div class="mb-3 login-text-color">
-            <h5>¿Olvidaste tu contraseña?</h5>
+            <RouterLink to="/forgot-password" class="nav-link registrar-link">
+              ¿Olvidaste tu contraseña?
+            </RouterLink>
           </div>
           <div class="mb-3">
-            <button type="button" @click="ingresar()" class="btn btn-ingresar w-100">
+            <button type="button" @click="ingresar()" class="btn btn-gray rounded-5 w-75">
               Ingresar
             </button>
           </div>
@@ -58,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
-import iziToast from "izitoast";
+// import iziToast from "izitoast";
 import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
 
@@ -146,10 +148,9 @@ const callback = (response) => {
 .login-card {
   width: 30rem;
   padding: 2rem;
-
+  height: 45rem;
   margin-top: 5%;
   margin-bottom: 5%;
-
   background-color: rgba(0, 0, 0, 0.705);
 }
 .login-text-color {

@@ -12,34 +12,16 @@ export const countriesData = [
     code: "+1"  // Código de país para Canadá
   },
   {
-    name: "United Kingdom",
-    abbreviation: "GB",
-    flag: "https://flagcdn.com/w320/gb.png",
-    code: "+44"  // Código de país para Reino Unido
+    name: "Mexico",
+    abbreviation: "MX",
+    flag: "https://flagcdn.com/w320/mx.png",
+    code: "+52"  // Código de país para México
   },
   {
-    name: "Germany",
-    abbreviation: "DE",
-    flag: "https://flagcdn.com/w320/de.png",
-    code: "+49"  // Código de país para Alemania
-  },
-  {
-    name: "France",
-    abbreviation: "FR",
-    flag: "https://flagcdn.com/w320/fr.png",
-    code: "+33"  // Código de país para Francia
-  },
-  {
-    name: "Japan",
-    abbreviation: "JP",
-    flag: "https://flagcdn.com/w320/jp.png",
-    code: "+81"  // Código de país para Japón
-  },
-  {
-    name: "China",
-    abbreviation: "CN",
-    flag: "https://flagcdn.com/w320/cn.png",
-    code: "+86"  // Código de país para China
+    name: "Argentina",
+    abbreviation: "AR",
+    flag: "https://flagcdn.com/w320/ar.png",
+    code: "+54"  // Código de país para Argentina
   },
   {
     name: "Brazil",
@@ -48,15 +30,105 @@ export const countriesData = [
     code: "+55"  // Código de país para Brasil
   },
   {
-    name: "India",
-    abbreviation: "IN",
-    flag: "https://flagcdn.com/w320/in.png",
-    code: "+91"  // Código de país para India
+    name: "Chile",
+    abbreviation: "CL",
+    flag: "https://flagcdn.com/w320/cl.png",
+    code: "+56"  // Código de país para Chile
   },
   {
-    name: "Australia",
-    abbreviation: "AU",
-    flag: "https://flagcdn.com/w320/au.png",
-    code: "+61"  // Código de país para Australia
+    name: "Colombia",
+    abbreviation: "CO",
+    flag: "https://flagcdn.com/w320/co.png",
+    code: "+57"  // Código de país para Colombia
+  },
+  {
+    name: "Venezuela",
+    abbreviation: "VE",
+    flag: "https://flagcdn.com/w320/ve.png",
+    code: "+58"  // Código de país para Venezuela
+  },
+  {
+    name: "Peru",
+    abbreviation: "PE",
+    flag: "https://flagcdn.com/w320/pe.png",
+    code: "+51"  // Código de país para Perú
+  },
+  {
+    name: "Ecuador",
+    abbreviation: "EC",
+    flag: "https://flagcdn.com/w320/ec.png",
+    code: "+593"  // Código de país para Ecuador
+  },
+  {
+    name: "Paraguay",
+    abbreviation: "PY",
+    flag: "https://flagcdn.com/w320/py.png",
+    code: "+595"  // Código de país para Paraguay
+  },
+  {
+    name: "Uruguay",
+    abbreviation: "UY",
+    flag: "https://flagcdn.com/w320/uy.png",
+    code: "+598"  // Código de país para Uruguay
+  },
+  {
+    name: "Bolivia",
+    abbreviation: "BO",
+    flag: "https://flagcdn.com/w320/bo.png",
+    code: "+591"  // Código de país para Bolivia
+  },
+  {
+    name: "Honduras",
+    abbreviation: "HN",
+    flag: "https://flagcdn.com/w320/hn.png",
+    code: "+504"  // Código de país para Honduras
+  },
+  {
+    name: "Guatemala",
+    abbreviation: "GT",
+    flag: "https://flagcdn.com/w320/gt.png",
+    code: "+502"  // Código de país para Guatemala
+  },
+  {
+    name: "El Salvador",
+    abbreviation: "SV",
+    flag: "https://flagcdn.com/w320/sv.png",
+    code: "+503"  // Código de país para El Salvador
+  },
+  {
+    name: "Nicaragua",
+    abbreviation: "NI",
+    flag: "https://flagcdn.com/w320/ni.png",
+    code: "+505"  // Código de país para Nicaragua
+  },
+  {
+    name: "Costa Rica",
+    abbreviation: "CR",
+    flag: "https://flagcdn.com/w320/cr.png",
+    code: "+506"  // Código de país para Costa Rica
+  },
+  {
+    name: "Panama",
+    abbreviation: "PA",
+    flag: "https://flagcdn.com/w320/pa.png",
+    code: "+507"  // Código de país para Panamá
+  },
+  {
+    name: "Cuba",
+    abbreviation: "CU",
+    flag: "https://flagcdn.com/w320/cu.png",
+    code: "+53"  // Código de país para Cuba
+  },
+  {
+    name: "Dominican Republic",
+    abbreviation: "DO",
+    flag: "https://flagcdn.com/w320/do.png",
+    code: "+1-809"  // Código de país para República Dominicana
+  },
+  {
+    name: "Puerto Rico",
+    abbreviation: "PR",
+    flag: "https://flagcdn.com/w320/pr.png",
+    code: "+1-787"  // Código de país para Puerto Rico
   }
 ];
