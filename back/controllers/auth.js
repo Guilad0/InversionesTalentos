@@ -70,63 +70,57 @@ const auth = (req, res) => {
 }
 
 const forgotPassword = (req, res) => {
-	const { correo } = req.body;
-
-	if (!correo) {
-		return res.status(400).json({ error: 'El correo es requerido' });
-	}
-
-	const query = `SELECT * FROM usuarios WHERE correo = ?`;
-	conexion.query(query, [correo], (err, results) => {
-		if (err) {
-			console.error('Error en la consulta:', err);
-			return res.status(500).send('Error al procesar la solicitud');
-		}
-
-		if (results.length === 0) {
-			return res.status(200).send('Si este correo está registrado, se ha enviado un correo para restablecer la contraseña.');
-		}
-
-		const usuario = results[0];
-		const token = crypto.randomBytes(20).toString('hex');
-		const tokenExpiry = Date.now() + 3600000; // 1 hora 
-
-		const updateQuery = `UPDATE usuarios SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE usuario_id = ?`;
-		conexion.query(updateQuery, [token, tokenExpiry, usuario.usuario_id], (updateErr) => {
-			if (updateErr) {
-				console.error('Error al guardar el token de restablecimiento:', updateErr);
-				return res.status(500).send('Error al guardar el token de restablecimiento');
-			}
-
-			const resetLink = `http://localhost:5173/reset-password/${token}`;
-
-
-			const mailOptions = {
-                from: process.env.GG_EMAIL,
-                to: correo,
-                subject: 'Restablece tu contraseña',
-                text: `Por favor, restablece tu contraseña haciendo clic en el siguiente enlace: ${resetLink}`,
-                html: `
-                  <p>Por favor, restablece tu contraseña haciendo clic en el siguiente enlace:</p>
-                  <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #e6880d; text-decoration: none; border-radius: 5px;">Restablecer contraseña</a>
-                `
-              };
-              
-              
-
-			transporter.sendMail(mailOptions, (error) => {
-				if (error) {
-					return res.status(500).send('Error al enviar el correo de restablecimiento');
-				}
-				res.cookie('resetToken', token, {
-					maxAge: 3600000,
-					httpOnly: true
-				});
-				res.send('Si este correo está registrado, se ha enviado un correo para restablecer la contraseña.');
-			});
-		});
-	});
-};
+    const { correo } = req.body;
+  
+    if (!correo) {
+      return res.status(400).json({ error: 'El correo es requerido' });
+    }
+  
+    const query = `SELECT * FROM usuarios WHERE correo = ?`;
+    conexion.query(query, [correo], (err, results) => {
+      if (err) {
+        console.error('Error en la consulta:', err);
+        return res.status(500).send('Error al procesar la solicitud');
+      }
+  
+      if (results.length === 0) {
+        return res.status(400).json({ error: 'El correo no está registrado' });
+      }
+  
+      const usuario = results[0];
+      const token = crypto.randomBytes(20).toString('hex');
+      const tokenExpiry = Date.now() + 3600000; // 1 hora
+  
+      const updateQuery = `UPDATE usuarios SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE usuario_id = ?`;
+      conexion.query(updateQuery, [token, tokenExpiry, usuario.usuario_id], (updateErr) => {
+        if (updateErr) {
+          console.error('Error al guardar el token de restablecimiento:', updateErr);
+          return res.status(500).send('Error al guardar el token de restablecimiento');
+        }
+  
+        const resetLink = `http://localhost:5173/reset-password/${token}`;
+        const mailOptions = {
+          from: process.env.GG_EMAIL,
+          to: correo,
+          subject: 'Restablece tu contraseña',
+          text: `Por favor, restablece tu contraseña haciendo clic en el siguiente enlace: ${resetLink}`,
+          html: `
+            <p>Por favor, restablece tu contraseña haciendo clic en el siguiente enlace:</p>
+            <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #e6880d; text-decoration: none; border-radius: 5px;">Restablecer contraseña</a>
+          `
+        };
+  
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) {
+            return res.status(500).send('Error al enviar el correo de restablecimiento');
+          }
+          res.cookie('resetToken', token, { maxAge: 3600000, httpOnly: true });
+          res.send('Correo de restablecimiento enviado. Revisa tu bandeja de entrada.');
+        });
+      });
+    });
+  };
+  
 
 
 const resetPassword = (req, res) => {
