@@ -15,6 +15,15 @@ import { watch } from 'vue';
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+          <RouterLink class="nav-link" to="/">
+              <img
+                src="@/assets/images/logo-manos.png"
+                alt=""
+                width="40"
+                
+                class="rounded me-2"
+              />
+            </RouterLink>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
               <RouterLink
@@ -26,14 +35,7 @@ import { watch } from 'vue';
             </li>
           </ul>
           <div class="d-flex align-items-center">
-            <RouterLink class="nav-link" to="/">
-              <img
-                src="@/assets/images/logo-manos.png"
-                alt=""
-                width="40"
-                class="rounded-circle"
-              />
-            </RouterLink>
+           
 
             <RouterLink
               v-if="isAuthenticated()"
