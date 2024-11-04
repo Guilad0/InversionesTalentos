@@ -1,52 +1,68 @@
 import { watch } from 'vue';
 <template>
   <div class="bg-dark">
-    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3  shadow">
-    <div class="container-fluid mx-3">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
-            <RouterLink exact-active-class="active" class="nav-link underline-dynamic" :to="link.path">{{ link.name }}</RouterLink>
-          </li>
-        </ul>
-        <div class="d-flex align-items-center ">
-          <RouterLink class="nav-link" to="/">
-            <h2 class="greeting">HI</h2>
-          </RouterLink>
-          <RouterLink class="nav-link wallet-icon" to="/">
-            <i class="fa fa-wallet fs-3"></i>
-          </RouterLink>
-          <RouterLink class="nav-link user-icon pb-1" to="admin"><img src="../assets/svg/admin-svgrepo-com.svg" width="25"></RouterLink>
-          <RouterLink class="nav-link user-icon" to="sign-login"><i class="fa fa-user-circle fs-3"></i></RouterLink>
+    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
+      <div class="container-fluid mx-3">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                :to="link.path"
+                >{{ link.name }}</RouterLink
+              >
+            </li>
+          </ul>
+          <div class="d-flex align-items-center">
+            <RouterLink class="nav-link" to="/">
+              <h2 class="greeting">HI</h2>
+            </RouterLink>
+            <RouterLink class="nav-link wallet-icon" to="/billetera">
+              <i class="fa fa-wallet fs-3"></i>
+            </RouterLink>
+            <RouterLink class="nav-link user-icon pb-1" to="admin"
+              ><img src="../assets/svg/admin-svgrepo-com.svg" width="25"
+            /></RouterLink>
+            <RouterLink class="nav-link user-icon" to="sign-login"
+              ><i class="fa fa-user-circle fs-3"></i
+            ></RouterLink>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Navbar',
+  name: "Navbar",
   data() {
     return {
       navLinks: [
-        { name: 'Home', path: '/' },
-        { name: 'Marketplace', path: '/marketplace' },
-        { name: 'Propósito', path: '/view1' },
-        { name: 'Cómo funciona', path: '/view2' },
-        { name: 'Billetera', path: '/billetera' },
-        { name: 'Posts', path: '/posts' },
-        { name: 'Contactos', path: '/contact' },
-        { name: 'FAQs', path: '/faq' }
-      ]
+        { name: "Home", path: "/" },
+        { name: "Marketplace", path: "/marketplace" },
+        { name: "Propósito", path: "/view1" },
+        { name: "Cómo funciona", path: "/view2" },
+        { name: "Billetera", path: "/billetera" },
+        { name: "Posts", path: "/posts" },
+        { name: "Contactos", path: "/contact" },
+        { name: "FAQs", path: "/faq" },
+      ],
     };
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
