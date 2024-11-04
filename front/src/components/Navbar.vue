@@ -29,15 +29,24 @@ import { watch } from 'vue';
             <RouterLink class="nav-link" to="/">
               <h2 class="greeting">HI</h2>
             </RouterLink>
-            <RouterLink class="nav-link wallet-icon" to="/billetera">
+
+            <RouterLink
+              v-if="isAuthenticated()"
+              class="nav-link wallet-icon"
+              to="/billetera"
+            >
               <i class="fa fa-wallet fs-3"></i>
             </RouterLink>
-            <RouterLink class="nav-link user-icon pb-1" to="admin"
+            <RouterLink
+              v-if="isAuthenticated()"
+              class="nav-link user-icon pb-1"
+              to="admin"
               ><img src="../assets/svg/admin-svgrepo-com.svg" width="25"
             /></RouterLink>
-            <RouterLink class="nav-link user-icon" to="sign-login"
-              ><i class="fa fa-user-circle fs-3"></i
-            ></RouterLink>
+            <RouterLink class="nav-link user-icon" to="sign-login">
+              <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
+              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i>
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -46,6 +55,9 @@ import { watch } from 'vue';
 </template>
 
 <script>
+import { isAuthenticated } from "@/helpers/Authenticator";
+import router from "@/router";
+
 export default {
   name: "Navbar",
   data() {
@@ -55,12 +67,19 @@ export default {
         { name: "Marketplace", path: "/marketplace" },
         { name: "Propósito", path: "/view1" },
         { name: "Cómo funciona", path: "/view2" },
-        { name: "Billetera", path: "/billetera" },
         { name: "Posts", path: "/posts" },
         { name: "Contactos", path: "/contact" },
         { name: "FAQs", path: "/faq" },
       ],
     };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      router.push("/sign-login");
+    },
+    isAuthenticated,
   },
 };
 </script>
