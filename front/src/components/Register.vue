@@ -20,7 +20,7 @@
                         :class="{ 'is-invalid': nameConfirm === false, 'is-valid': nameConfirm === true }"
                         @input="handleName"
                       />
-                  <div v-if="nameConfirm == false" class="invalid-feedback">
+                  <div v-if="nameConfirm == false" class="invalid-feedback text-orange">
                     Minimo 5 caracteres
                   </div>
           </div>
@@ -36,7 +36,9 @@
                     :class="{ 'is-invalid': lastNameConfirm === false, 'is-valid': lastNameConfirm === true }"
                     @input="handleLastName"
                     placeholder="" />
-
+                    <div v-if="lastNameConfirm == false" class="invalid-feedback text-orange">
+                    Minimo 5 caracteres
+                  </div>
           </div>
         </div>
 
@@ -53,6 +55,9 @@
                   :class="{ 'is-invalid': control_fecha === false, 'is-valid': control_fecha === true }"
                   class="form-control custom-font p-1"
                   required />
+                  <div v-if="control_fecha == false" class="invalid-feedback text-orange">
+                    Fecha no valida
+                  </div>
             </div>
             <div class="col ms-2">
             <label for="lastName">Pais de residencia <label class="text-danger">*</label> </label>
@@ -74,28 +79,53 @@
 
         <div class="mb-2 login-text-color d-flex ">
           <div class="col me-2">
-            <label for="codigo_pais">Codigo de pais</label>
-            <div class="dropdown  ">
-                  <button class=" py-2 px-4 btn btn-light rounded-3 btn-sm " type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img v-if="selectedCountry.flag" :src="selectedCountry.flag" alt="Flag" width="20" height="15"
-                      class="" />
-                    <label class="custom-font">
-                      &nbsp;
-                      {{ selectedCountry.code || 'Codigo de Pais' }}
-                    </label>
-                  </button>
-                  <ul class="dropdown-menu custom-code-country" aria-labelledby="dropdownMenuButton">
-                    <li v-for="country in countries" :key="country.abbreviation" class="rounded-0  w-100 text-start custom-code ">
-                      <a class="dropdown-item cursor custom-country  text-white" @click="selectCountry(country)">
-                        <img :src="country.flag" alt="Flag" width="20" height="15" class="" /> ({{ country.code }}) {{
-                        country.name }}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+            <label for="lastName">Codigo de Pais <label class="text-danger">*</label> </label>
+
+            <div class="dropdown">
+              <button
+                class="py-2 px-4 btn btn-light rounded-3 btn-sm"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  v-if="selectedCountry.flag"
+                  :src="selectedCountry.flag"
+                  alt="Flag"
+                  width="20"
+                  height="15"
+                />
+                <label class="custom-font">
+                  &nbsp;
+                  {{ selectedCountry.code || 'Codigo de Pais' }}
+                </label>
+              </button>
+              <ul
+                class="dropdown-menu custom-code-country overflow-auto rounded"
+                aria-labelledby="dropdownMenuButton"
+                style="max-height: 200px; border: 1px solid white; scrollbar-width: thin; scrollbar-color: white var(--gray-color); "  
+              >
+                <li
+                  v-for="country in countries"
+                  :key="country.abbreviation"
+                  class="rounded-0 w-100 text-start custom-code"
+                >
+                  <a
+                    class="dropdown-item cursor custom-country text-white"
+                    @click="selectCountry(country)"
+                  >
+                    <img :src="country.flag" alt="Flag" width="20" height="15" /> 
+                    ({{ country.code }}) {{ country.name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+
           </div>
           <div class="col ms-2">
-            <label for="telefono">Telefono</label>
+            <label >Telefono <label class="text-danger">*</label> </label>
+
             <input
                       type="number"
                       class="form-control custom-font"
@@ -106,8 +136,8 @@
                       placeholder=""
                       v-model="numero_telefono"
                       @input="handleTelefono">
-                    <div v-if="control_telefono === false" class="invalid-feedback">
-                      Minimo 5 caracteres
+                    <div v-if="control_telefono === false" class="invalid-feedback text-orange">
+                      Minimo 6 caracteres
                     </div>
           </div>
         </div>
@@ -125,8 +155,8 @@
                   placeholder=""
                   @input="handleEmail"
                   v-model="email">
-                <div v-if="control_email === false" class="invalid-feedback">
-                  Formato no permitido
+                <div v-if="control_email === false" class="invalid-feedback text-orange">
+                  Correo no permitido
                 </div>
           </div>
           <div class="col ms-2">
@@ -164,20 +194,22 @@
         </div>
 
         <div class="mb-2 login-text-color d-flex">          
-          <div class="col me-2">
-            <label for="floatingInput">Contraseña <label class="text-danger">*</label></label>
+          <div class="col me-2 position-relative">
+            <label for="password">Contraseña <label class="text-danger">*</label></label>
             <input
-                    type="password"
+                    :type="typeInput"
                     @input="handlePassword"
                     v-model="password"
                     @invalid="handleInvalid"
                     id="password"
-                    class="form-control"
+                    class="form-control p-custom-start"
                     required
-                    :class="{ 'is-invalid': controlPassword === false, 'is-valid': controlPassword === true }"
+                    :class="{ 'is-invalid': controlPassword === false, 'is-valid': controlPassword == true }"
                     placeholder="" />
+            <i v-if="typeInput=='text'" class="fa-solid fa-eye-slash cursor custom-abs-icon-eye"  @click="showPass"></i>
+            <i v-if="typeInput=='password'" class="fa fa-eye custom-abs-icon-eye cursor "  @click="showPass"></i>
                     <div class="invalid-feedback">
-                    <ul>
+                    <ul class="text-orange">
                       <li v-if="password.length < 8">Debe ser mayor a 7 caracteres</li>
                       <li v-if="!haveLetter(password)">Debe contener al menos una letra minuscula</li>
                       <li v-if="!haveLetterCapital(password)">Debe contener al menos una letra mayuscula</li>
@@ -186,14 +218,14 @@
                     </ul>
                   </div>
           </div>
-          <div class="col ms-2">
-            <label for="floatingInput">Confirmar contraseña <label class="text-danger">*</label></label>
+          <div class="col ms-2 ">
+            <label >Confirmar contraseña <label class="text-danger">*</label></label>
               <input
-                    type="password"
+                    :type="typeInput"
                     v-model="confirmPassword"
                     id="confirmPassword"
                     :class="{ 'is-invalid': password != confirmPassword && confirmPassword.length > 0, 'is-valid': password == confirmPassword && confirmPassword.length > 0 === true }"
-                    class="form-control"
+                    class="form-control "
                     @invalid="handleInvalid"
                     @input="handleValid"
                     required
@@ -203,7 +235,7 @@
         
         <div class="row text-center">
           <div class="my-3">
-            <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75">
+            <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75 ">
                 <label v-if="!isLoading"> Crear cuenta</label>
                 <div v-if="isLoading" class="d-flex justify-content-center">
                   <div class="spinner-border" role="status">
@@ -271,6 +303,7 @@ const edad = ref('')
 
 const acepta_terminos = ref(false);
 
+const typeInput = ref('password')
 
 const numero_telefono = ref("");
 const control_telefono = ref(null);
@@ -289,10 +322,6 @@ const handleInvalidDate = (event) => {
   event.target.setCustomValidity('Por favor, introduce una fecha valida');
 };
 
-const handleValidGender = () =>{
-  event.target.setCustomValidity('');
-
-}
 const handleName = (event) => {
   event.target.setCustomValidity('');
   nameConfirm.value = validateName(name.value.trim());
@@ -330,6 +359,10 @@ const selectCountryCode = (abbreviation) => {
 const handlePassword = () => {
   event.target.setCustomValidity('');
   controlPassword.value = validatePassword(password.value);
+}
+
+const showPass = () =>{
+  typeInput.value = (typeInput.value == 'password')? 'text':'password';
 }
 
 const handleEmail = async ( event ) => {
@@ -449,6 +482,22 @@ return true
 
 </script>
 <style scoped>
+
+ustom-abs-icon-eye:hover{
+  color:#526379
+}
+
+.custom-abs-icon-eye {
+    position: absolute; 
+    left: 10px; 
+    top: 35px; 
+    color: var(--gray-color);
+    
+}
+.p-custom-start{
+  padding-left:  2rem ;
+}
+
 .custom-code-country{
   background-color: var(--gray-color);
   color: red;
@@ -463,13 +512,16 @@ return true
   background-color: #0d6efd !important ;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none; 
+}
 .bgf {
   background-color: #f9f9fa;
 }
 .login-card {
   width: 30rem;
   padding: 2rem;
-  height: 45rem;
+  min-height: 45rem;
   margin-top: 5%;
   margin-bottom: 5%;
   background-color: #17223be8;

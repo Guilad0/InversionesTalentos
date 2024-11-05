@@ -75,3 +75,8 @@
 .cursor{
   cursor: pointer;
 }
+
+
+.text-orange {
+  color: var(--yellow-orange); /* Color amarillo de Bootstrap */
+}
