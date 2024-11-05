@@ -2,9 +2,9 @@ var express = require("express");
 var router = express.Router();
 var connection = require("../database");
 
-router.get("/valorToken", function (req, res, next) {
+router.get("/valores", function (req, res, next) {
 
-  var query = ` SELECT valor_token
+  var query = ` SELECT valor_token, tiempo_minimo_inversion as tiempo_inversion, comision_porcentual_ganancia AS porcentaje_inversion, comision_porcentual_retiro AS comision_retiros
                 FROM ajustes
                 WHERE valor_token IS NOT NULL
                 ORDER BY ajuste_id DESC LIMIT 1;`;
@@ -133,10 +133,10 @@ router.get("/clientes", function (req, res, next) {
 });
 
 router.post("/invertirTokens", function (req, res, next) {
-  const {usuario_id, cliente_id, inversor_id, monto, token,  tipo, descripcion} = req.body;
+  const {usuario_id, cliente_id, inversor_id, monto, token,  tipo, descripcion, ganancia_estimada} = req.body;
 
-  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito)
-                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP());`;
+  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada)
+                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}');`;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
