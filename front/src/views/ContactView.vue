@@ -26,7 +26,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="apellidos" class="form-label text-form-contact"
+        <label for="apellido" class="form-label text-form-contact"
           >Apellidos<span class="text-danger"><strong>*</strong></span></label
         >
         <input
