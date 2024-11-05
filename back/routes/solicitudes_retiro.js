@@ -7,112 +7,52 @@ var connection = require("../database");
 
 
 router.get("/", function (req, res, next) {
-  var numFilas;
-  var porPagina = 10;
-  var pagina = parseInt(req.query.page, 10) || 1;
-  var busqueda = req.query.search || ''; 
-  var numPaginas;
-  var salto = (pagina - 1) * porPagina;
-  var limite = salto + ',' + porPagina;
+  const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
+  const busqueda = req.query.search || ''; 
+  const pagina = parseInt(req.query.page, 10) || 1;
+  const porPagina = 10;
+  const salto = (pagina - 1) * porPagina;
 
-  var queryFilas = `SELECT COUNT(*) AS numFilas
-              FROM solicitudes_retiro
-              INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
-              INNER JOIN inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id
-              WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
-              AND solicitudes_retiro.estado != 'Eliminado';`; 
+  // Agregar filtro de estado a la consulta SQL si está presente
+  let filtroEstado = estado ? `AND solicitudes_retiro.estado = '${estado}'` : '';
 
-  connection.query(queryFilas, function (error, results, fields) {
-      numFilas = results[0].numFilas;
-      numPaginas = Math.ceil(numFilas / porPagina);
-      var query = `SELECT solicitudes_retiro.*, concat(usuarios.nombre, ' ', usuarios.apellido , ' - ', usuarios.rol) as username, usuarios.usuario_id, inversiones.inversion_id
-                   FROM solicitudes_retiro
-                   INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
-                   INNER JOIN inversiones ON solicitudes_retiro.inversion_id = inversiones.inversion_id
-                   WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
-                   AND solicitudes_retiro.estado != 'Eliminado' 
-                   LIMIT ${limite};`; 
+  const queryFilas = `
+    SELECT COUNT(*) AS numFilas
+    FROM solicitudes_retiro
+    INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
+    WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
+    ${filtroEstado};`;
 
-      connection.query(query, function (error, results, fields) {
-          if (error) {
-              console.log(error);
-              res.status(500).send({
-                  error: error,
-                  message: "Error al realizar la petición",
-              });
-          } else {
-              console.log(results);
-              var paginas = Array.from({ length: numPaginas }, (_, i) => i + 1);
+  connection.query(queryFilas, function (error, results) {
+    const numFilas = results[0].numFilas;
+    const numPaginas = Math.ceil(numFilas / porPagina);
 
-              var paginacion = {
-                  total: numFilas,
-                  current: pagina,
-                  pages: paginas,
-                  perPage: porPagina,
-                  previous: (pagina > 1) ? (pagina - 1) : null,
-                  next: (pagina < numPaginas) ? (pagina + 1) : null,
-              };
-              res.status(200).send({
-                  pagination: paginacion,
-                  data: results,
-                  message: 'Listando clientes',
-              });
-          }
-      });
-  });
-});
+    const query = `
+      SELECT solicitudes_retiro.*, concat(usuarios.nombre, ' ', usuarios.apellido, ' - ', usuarios.rol) AS username
+      FROM solicitudes_retiro
+      INNER JOIN usuarios ON solicitudes_retiro.usuario_id = usuarios.usuario_id
+      WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
+      ${filtroEstado} 
+      LIMIT ${salto}, ${porPagina};`;
 
-router.post("/", function (req, res, next) {
-  const { tipo, usuario_id, monto_solicitud, comision_aplicar, monto_recibir, fecha_solicitud,
-    fecha_aprobacion, foto_identificacion, selfie_identificacion, estado, inversion_id } = req.body;
-
-  var query = ` INSERT INTO solicitudes_retiro, tipo, usuario_id, monto_solicitud,
-                comision_aplicar, monto_recibir, fecha_aprobacion, estado, inversion_id
-                VALUES ('${tipo}', '${usuario_id}', '${monto_solicitud}', '${comision_aplicar}', 
-                '${monto_recibir}', '${fecha_aprobacion}', '${estado}', '${inversion_id}');`;
-
-  connection.query(query, function (error, results, fields) {
-    if (error) {
-      console.log(error);
-      res.status(500).send({
-        error: error,
-        message: "Error al realizar la petición",
-      });
-    } else {
-      console.log(results.insertId);
-      res.status(200).send({
-        data: results.insertId,
-        message: "Producto insertado correctamente",
-      });
-    }
-  });
-});
-
-router.put("/:id", function (req, res, next) {
-  const { tipo, usuario_id, monto_solicitud, comision_aplicar, monto_recibir, fecha_solicitud,
-    fecha_aprobacion, foto_identificacion, selfie_identificacion, estado, inversion_id } = req.body;
-
-  var query = `UPDATE solicitudes_retiro SET 
-  tipo = '${tipo}', usuario_id = '${usuario_id}',
-  monto_solicitud = '${monto_solicitud}', comision_aplicar = '${comision_aplicar}',
-  monto_recibir= '${monto_recibir}', fecha_aprobacion = '${fecha_aprobacion}',
-  estado = '${estado}', inversion_id = '${inversion_id}'
-  WHERE retiro_id = '${req.params.id}';`;
-
-  connection.query(query, function (error, results, fields) {
-    if (error) {
-      console.log(error);
-      res.status(500).send({
-        error: error,
-        message: "Error al realizar la petición",
-      });
-    } else {
-      console.log(results.insertId);
-      res.status(200).send({
-        data: results.insertId,
-        message: "Producto actualizado correctamente",
-      });
-    }
+    connection.query(query, function (error, results) {
+      if (error) {
+        res.status(500).send({ error, message: "Error al realizar la petición" });
+      } else {
+        res.status(200).send({
+          pagination: {
+            total: numFilas,
+            current: pagina,
+            pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
+            perPage: porPagina,
+            previous: pagina > 1 ? pagina - 1 : null,
+            next: pagina < numPaginas ? pagina + 1 : null,
+          },
+          data: results,
+          message: "Listando clientes",
+        });
+      }
+    });
   });
 });
 
