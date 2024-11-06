@@ -38,21 +38,21 @@ import { watch } from 'vue';
            
 
             <RouterLink
-              v-if="isAuthenticated()"
+              
               class="nav-link wallet-icon"
               to="/billetera"
             >
               <i class="fa fa-wallet fs-3"></i>
             </RouterLink>
             <RouterLink
-              v-if="isAuthenticated()"
+              
               class="nav-link user-icon pb-1"
               to="admin"
               ><img src="../assets/svg/admin-svgrepo-com.svg" width="25"
             /></RouterLink>
             <RouterLink class="nav-link user-icon" to="sign-login">
-              <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
-              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i>
+              <!-- <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i> -->
+              <!-- <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i> -->
             </RouterLink>
           </div>
         </div>
@@ -62,7 +62,7 @@ import { watch } from 'vue';
 </template>
 
 <script>
-import { isAuthenticated } from "@/helpers/Authenticator";
+// import { isAuthenticated } from "@/helpers/Authenticator";
 import router from "@/router";
 
 export default {
@@ -86,7 +86,7 @@ export default {
       localStorage.removeItem("user");
       router.push("/sign-login");
     },
-    isAuthenticated,
+    // isAuthenticated,
   },
 };
 </script>

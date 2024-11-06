@@ -59,6 +59,7 @@ app.use('/solicitudes', solicitudesRoutes);
 app.use('/billetera', billeteraRoutes);
 app.use('/inversionesRetiros', inversionesRetirosRoutes);
 app.use('/ajustesAdmin', ajustesAdminRouter);
+app.use('/api/experiencia', experienciaRoutes);
 
 
 module.exports = app;

@@ -9,12 +9,12 @@ const getExperiencia = (req, res) => {
   });
 };
 const postExperiencia = (req, res) => {
-  const { cliente_id, institucion, cargo, actividades } = req.body;
+  const { cliente_id, institucion, cargo, actividades, fecha_inicio, fecha_final } = req.body;
 
   const query =
-    "INSERT INTO experiencia (cliente_id, institucion, cargo, actividades) VALUES (?, ?, ?,?)";
+    "INSERT INTO experiencia (cliente_id, institucion, cargo, actividades, fecha_inicio, fecha_final) VALUES (?, ?, ?,?,?,?)";
 
-  conexion.query(query, [cliente_id, institucion, cargo, actividades], (error, results) => {
+  conexion.query(query, [cliente_id, institucion, cargo, actividades, fecha_inicio, fecha_final], (error, results) => {
     if (error) {
       return res.status(500).json({ error: error.message });
     }
