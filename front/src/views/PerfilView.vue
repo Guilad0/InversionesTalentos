@@ -7,15 +7,13 @@
       <div class="col-5 d-flex justify-content-center">
         <div class="card  shadow w-75">
           <div class="card-body">
-            <!--  -->
-            <h5 class="card-title">
-                <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`" class="rounded-circle me-2" width="30" alt="">{{nombre+' '+apellido}}</h5>
-            <span :style="{ fontSize: '1rem' }" class="text-secondary"
-              >Bienvenido!!! </span
-            >
-            <br />
-            <br />
-            <h5>Datos Personales</h5>
+            
+            <p :style="{ fontSize: '1rem' }" class="text-secondary text-center "
+              >Bienvenid@!!! <strong>{{nombre+' '+apellido}}</strong>  </p>
+            <h5 class=" fs-6 text-secondary ">Datos Personales</h5>
+              
+            
+        
             <label for="nombre" class="form-label">Nombre</label>
             <input
               type="text"
@@ -110,7 +108,7 @@
                 <div class="">
                     <button
                 type="button"
-                class="btn col btn-gray perfilbutton rounded-5 px-4 mt-3"
+                class="btn col btn-gray perfilbutton rounded-5 px-4 mt-5"
                 @click="actualizar()"
               >
                 Actualizar
@@ -129,7 +127,7 @@
             Cambiar Contraseña
           </div>
           <div class="">
-            <button class="btn btn-primary">Modificar</button>
+            <button  class="btn btn-orange rounded-5 px-3">Modificar</button>
           </div>
         </div>
         <hr>
@@ -139,17 +137,83 @@
             Verificar Cuenta(KYC)
           </div>
           <div class="">
-            <button class="btn btn-primary">Verificar</button>
+            <button
+              class="btn btn-orange rounded-5 px-3"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasScrolling"
+              aria-controls="offcanvasScrolling">
+              Verificar
+              </button>
           </div>
-        </div>
-        <hr>
-        <div class="d-flex justify-content-between py-4 ">
+
+            <div class="offcanvas offcanvas-end bg-blue-custom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title text-white" id="offcanvasScrollingLabel">Completa tu registro</h5>
+              
+              <button type="button" class="btn-close bg-orange " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p class="text-white  text-center pb-3">Progreso de registro (0/4)</p>
+                <ul class="text-white">
+                  <li class="mb-3">
+                    <div class="d-flex m-auto align-items-center">
+                      <div class="col"> <i class="fa-solid fa-trophy"></i> - logros </div> 
+                      <div class="col">
+                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="mb-3">
+                    <div class="d-flex m-auto align-items-center ">
+                      <div class="col"><i class="fa-solid fa-shield-halved"></i> - Experiencia </div> 
+                      <div class="col">
+                        <RouterLink to="experiencia" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="mb-3">
+                    <div class="d-flex m-auto align-items-center">
+                      <div class="col">  <i class="fas fa-info-circle"></i> - Informacion </div> 
+                      <div class="col">
+                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="mb-3">
+                    <div class="d-flex m-auto align-items-center">
+                      <div class="col">  <i class="fa-solid fa-image-portrait"></i> - Selfie </div> 
+                      <div class="col">
+                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="mb-3">
+                    <div class="d-flex m-auto align-items-center justify-content-between">
+                      <div class="col "> <i class="fa-solid fa-play"></i> - Presentacion </div> 
+                      <div class="col ">
+                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+               
+
+                </ul>
+            </div>
+            </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between py-4 ">
+              <div class="">
+                <i class="fas fa-smile"></i>
+                Referir Amigos
+              </div>
           <div class="">
-            <i class="fas fa-smile"></i>
-            Referir Amigos
-          </div>
-          <div class="">
-            <button class="btn btn-primary">Referir</button>
+            <button class="btn btn-orange rounded-5 px-3">Referir</button>
           </div>
         </div>
       </div>
@@ -238,8 +302,17 @@ const actualizar = async () => {
   color: white;
   background-color: var(--jet-color);
 }
+li{
+  list-style: none;
+}
 .custom-profile {
     max-height: 321px;
+}
+.btn-orange{
+  min-width: 100px;
+}
 
+.bg-blue-custom{
+  background-color: #17223be7;
 }
 </style>

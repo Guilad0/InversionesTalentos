@@ -1,7 +1,6 @@
-import { watch } from 'vue';
 <template>
   <div class="bg-dark">
-    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
+    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn">
       <div class="container-fluid mx-3">
         <button
           class="navbar-toggler"
@@ -16,43 +15,88 @@ import { watch } from 'vue';
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <RouterLink class="nav-link" to="/">
-              <img
-                src="@/assets/images/logo-manos.png"
-                alt=""
-                width="40"
-                
-                class="rounded me-2"
-              />
-            </RouterLink>
+            <img
+              src="@/assets/images/logo-manos.png"
+              alt=""
+              width="40"
+              class="rounded me-2"
+            />
+          </RouterLink>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
+            <li class="nav-item" >
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
-                :to="link.path"
-                >{{ link.name }}</RouterLink
-              >
+                to="/"
+              >Inicio</RouterLink>
+            </li>
+            <li class="nav-item"  v-if="rol !== 'Cliente'">
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="marketplace"
+              >Markeplace</RouterLink>
+            </li>
+            <li class="nav-item" >
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="/view1"
+              >Proposito</RouterLink>
+            </li>
+            <li class="nav-item" >
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="view2"
+              >Cómo funciona</RouterLink>
+            </li>
+            <li class="nav-item" >
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="posts"
+              >Guias de usuario</RouterLink>
+            </li>
+            <li class="nav-item" >
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="contact"
+              >Contactos</RouterLink>
+            </li>
+            <li class="nav-item" >
+              <RouterLink
+                exact-active-class="active"
+                class="nav-link underline-dynamic"
+                to="faq"
+              >Faqs</RouterLink>
             </li>
           </ul>
           <div class="d-flex align-items-center">
-           
-
-            <RouterLink
-              
-              class="nav-link wallet-icon"
-              to="/billetera"
-            >
-              <i class="fa fa-wallet fs-3"></i>
+            <RouterLink class="nav-link wallet-icon" to="/billetera">
+              <i v-if="rol == 'Cliente' || rol=='Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
             <RouterLink
-              
               class="nav-link user-icon pb-1"
-              to="admin"
-              ><img src="../assets/svg/admin-svgrepo-com.svg" width="25"
-            /></RouterLink>
+              to="/admin"
+            >
+              <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
+              
+
+            </RouterLink>
+            <RouterLink
+              class="nav-link user-icon pb-1"
+              to="perfil"
+              v-if="rol =='Cliente' || rol == 'Inversionista'"
+            >
+             <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`" class="rounded-circle me-2" width="30" alt="">
+              
+
+            </RouterLink>
             <RouterLink class="nav-link user-icon" to="sign-login">
-              <!-- <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i> -->
-              <!-- <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i> -->
+              <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i> 
+              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i>
             </RouterLink>
           </div>
         </div>
@@ -61,34 +105,55 @@ import { watch } from 'vue';
   </div>
 </template>
 
-<script>
-// import { isAuthenticated } from "@/helpers/Authenticator";
-import router from "@/router";
+<script setup>
+import { isAuthenticated } from '@/helpers/Authenticator';
 
-export default {
-  name: "Navbar",
-  data() {
-    return {
-      navLinks: [
-        { name: "Home", path: "/" },
-        { name: "Marketplace", path: "/marketplace" },
-        { name: "Propósito", path: "/view1" },
-        { name: "Cómo funciona", path: "/view2" },
-        { name: "Posts", path: "/posts" },
-        { name: "Contactos", path: "/contact" },
-        { name: "FAQs", path: "/faq" },
-      ],
-    };
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      router.push("/sign-login");
-    },
-    // isAuthenticated,
-  },
+import { ref, onMounted,watch } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const rol = ref('');
+const nombre = ref('');
+const apellido = ref('');
+
+const updateRole = () => {
+  const storedUser = JSON.parse(localStorage.getItem('usuario'));
+  rol.value = storedUser?.rol || ''; 
+  nombre.value = storedUser?.nombre || ''; 
+  apellido.value = storedUser?.apellido || ''; 
 };
+
+onMounted(() => {
+  updateRole();
+});
+
+watch(
+  () => router.currentRoute.value,
+  () => {
+    updateRole(); 
+  }
+);
+
+
+const logout = () => {
+  localStorage.clear();
+  rol.value = '';
+  nombre.value = '';
+  apellido.value = '';
+  router.push("/sign-login"); 
+};
+
+const navLinks = ref([
+  { name: "Home", path: "/" },
+  { name: "Marketplace", path: "/marketplace" },
+  { name: "Propósito", path: "/view1" },
+  { name: "Cómo funciona", path: "/view2" },
+  { name: "Guias de usuario", path: "/posts" },
+  { name: "Contactos", path: "/contact" },
+  { name: "FAQs", path: "/faq" },
+]);
+
+
 </script>
 
 <style scoped>

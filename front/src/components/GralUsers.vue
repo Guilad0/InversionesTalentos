@@ -247,8 +247,14 @@ const clearId = ()=>{
         <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol"/>
         <ModalCreateUserAdmin />
         <div class="footer">
-            <Pagination :page="page" :prev="prev" :next="next" :isLoading="isLoading" @nextAction="nextAction"
-                @prevAction="prevAction" :total="total" />
+            <Pagination
+              :page="page"
+              :prev="prev"
+              :next="next"
+              :isLoading="isLoading"
+              @nextAction="nextAction"
+              @prevAction="prevAction"
+              :total="total" />
         </div>
     </main>
 </template>
