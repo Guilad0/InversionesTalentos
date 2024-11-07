@@ -24,7 +24,7 @@ const auth = (req, res) => {
 
         if (results.length === 0) {
             res.status(400).json({
-                msg: 'Credenciales incorrectas, Correo no encontrado'
+                msg: 'Revisa si sus credenciales son correctas'
             });
             return;
         }
@@ -34,7 +34,7 @@ const auth = (req, res) => {
 
         if (user.verificado === 0) {
             res.status(400).json({
-                msg: 'Verifica tu Cuenta'
+                msg: 'Correo incorrecto'
             });
             return;
         }
@@ -42,7 +42,7 @@ const auth = (req, res) => {
 
         if (!validPassword) {
             res.status(400).json({
-                msg: 'Credenciales incorrectas, contraseñas no coinciden'
+                msg: 'Contraseña incorrecta'
             });
             return;
         }
@@ -68,6 +68,7 @@ const auth = (req, res) => {
 
 
 }
+
 
 const forgotPassword = (req, res) => {
     const { correo } = req.body;

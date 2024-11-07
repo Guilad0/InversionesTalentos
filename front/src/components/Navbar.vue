@@ -48,7 +48,7 @@
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
-                to="view2"
+                to="como-funciona"
               >Cómo funciona</RouterLink>
             </li>
             <li class="nav-item" >
