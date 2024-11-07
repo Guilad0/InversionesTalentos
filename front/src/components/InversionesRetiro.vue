@@ -49,7 +49,7 @@
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_vencida in inversiones_vencidas"
             :key="inversion_vencida">
             <p>Solicitud: {{ inversion_vencida.inversion_id }}</p>
-            <p>Tokens Pendientes: ${{ inversion_vencida.ganancia_estimada }}</p>
+            <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
             <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
             <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
             <hr/>
@@ -82,8 +82,9 @@
             <p>Inversion ID: {{ inversion.inversion_id }}</p>
             <p>Cliente: {{ inversion.nombre_cliente }}</p>
             <p>Tokens Invertidos: {{ inversion.monto }}</p>
-            <p>Fecha: {{ inversion.fecha_deposito }}</p>
-            <p>Estado: {{ inversion.estado }}</p>
+            <p>Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}</p>
+            <p>Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
+            <p>Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>            
             <hr />
           </div>
         </div>

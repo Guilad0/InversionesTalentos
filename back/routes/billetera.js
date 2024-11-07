@@ -24,7 +24,6 @@ router.get("/valores", function (req, res, next) {
   });
 });
 
-
 router.post("/comprarTokens", function (req, res, next) {
   const {usuario_id, tokens, monto, tipo, descripcion} = req.body;
 
@@ -184,10 +183,18 @@ router.post("/invertirTokens", function (req, res, next) {
 
 router.get("/tokensClienteRecibido/:id", function (req, res, next) {
 
-  var query = ` SELECT SUM(token) as totalTokensRecibidos
-                FROM movimientos
-                WHERE usuario_id =${req.params.id}
-                AND tipo = 'Ingreso';`;
+  var query = `
+  SELECT 
+    SUM(inversiones.monto) AS totalTokensRecibidos, 
+    SUM(inversiones.ganancia_estimada) AS totalTokensDeudas,
+    (
+        SELECT SUM(movimientos.token)
+        FROM movimientos
+        WHERE movimientos.usuario_id = ${req.params.id}
+        AND movimientos.descripcion = 'Compra de tokens'
+    ) AS tokensCompradosCliente
+  FROM inversiones
+  WHERE inversiones.cliente_id = ${req.params.id};`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
