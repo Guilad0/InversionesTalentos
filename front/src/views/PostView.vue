@@ -1,20 +1,32 @@
 <template>
-  <div class="post-view-container" v-if="post && Object.keys(post).length">
+  <div class="post-view-container shadow border-primary bg-light animate__animated animate__fadeInLeft" v-if="post && Object.keys(post).length">
     <div class="post-header">
-      <h1 class="post-title">{{ post.titulo }}</h1>
+      <div class="card-header bg-transparent border-success fs-5 underline mb-3">{{ post.titulo }}</div>
       <img
         :src="post.imagen_portada || '/assets/empty_img.jpg'"
-        class="post-image"
+        class=""
         alt="Post Image"
+        width="300"
       />
     </div>
     <div class="post-content">
-      <p>{{ post.contenido }}</p>
+      <p class="fs-6 ">
+        {{ mostrarCompleto ? post.contenido : post.contenido.slice(0, 300) + '...' }}
+      </p>
+      <button @click="toggleMostrarCompleto" class="btn ">
+        <label class="text-orange showmore "> {{ mostrarCompleto ? 'Mostrar menos' : 'Leer más' }}</label>
+      </button>
     </div>
-    <button @click="volverAtras" class="btn-back">Volver Atrás</button>
+    <div class="text-center">
+      <button @click="volverAtras" class="btn-gray btn rounded-5 px-4 mt-2">Regresar</button>
+    </div>
   </div>
   <div v-else>
-    <p>Cargando contenido...</p>
+    <div  class="d-flex justify-content-center align-items-center min-vh-100">
+    <div  class="spinner-grow text-dark" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -27,14 +39,18 @@ const route = useRoute();
 const router = useRouter();
 const baseURL = "http://localhost:3000/";
 const post = ref({});
+const mostrarCompleto = ref(false); 
 
-// Cargar el post específico
+
+const toggleMostrarCompleto = () => {
+  mostrarCompleto.value = !mostrarCompleto.value;
+};
+
 const cargarPost = async () => {
   const postId = route.params.post_id;
   try {
     const response = await axios.get(`${baseURL}posts/${postId}`);
     post.value = response.data.data;
-    console.log("Post cargado:", post.value); // Verifica que post tenga datos
   } catch (error) {
     console.error("Error al cargar el post:", error);
   }
@@ -51,13 +67,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-:root {
-  --smoky-dark-color: rgba(0, 0, 0, 0.808);
-  --jet-color: #14110f;
-  --gray-color: #17223b;
-  --yellow-orange: #f37926;
-  --dun-color: #d9c5b2;
-  --white-anti-flash-color: #f3f3f4;
+.showmore:hover{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
 .post-view-container {
@@ -73,41 +86,23 @@ onMounted(() => {
   text-align: center;
 }
 
-.post-title {
-  font-size: 2.5rem;
-  color: var(--gray-color);
-  margin-bottom: 1rem;
-}
-
-.post-image {
-  width: 100%;
-  height: auto;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
 .post-content {
   font-size: 1.2rem;
   color: var(--jet-color);
   line-height: 1.6;
 }
 
-.btn-back {
-  display: block;
-  margin: 2rem auto;
-  padding: 0.8rem 1.5rem;
-  background-color: var(--yellow-orange);
-  color: var(--white-anti-flash-color);
+.btn-link {
+  color: var(--blue); 
+  font-weight: bold;
+  padding: 0;
   border: none;
-  border-radius: 5px;
+  background: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-decoration: underline;
 }
 
-.btn-back:hover {
-  background-color: var(--gray-color);
-  color: var(--dun-color);
+.btn-link:hover {
+  color: var(--dark-blue);
 }
 </style>
