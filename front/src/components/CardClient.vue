@@ -1,5 +1,4 @@
 <script setup>
-import { useClientStore } from '../stores/clientStore';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -9,17 +8,13 @@ const props = defineProps({
     required: true
 })
 
-const clientStore = useClientStore();
-clientStore.resetClient();
-const showClient = (client) => {
-
-  clientStore.setClient(client)
+const showClient =  (user) => {
   router.push({
     name: 'client',
-    params:{ name: `${client.nombre}-${client.apellido}`},
+    params: { name: `${user.nombre}-${user.apellido}` },
+    query: { user: user.usuario_id },
   });
 };
-
 
 </script>
 <template>

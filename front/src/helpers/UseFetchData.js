@@ -7,7 +7,8 @@ export default function useFetchData(ruta){
     const next = ref('');
     const prev = ref('');
     const isLoading = ref(false);
-    const baseURL = 'http://localhost:3000'
+    const baseURL = 'http://localhost:3000';
+    const total = ref('')
     const getData = async ()=>{
         try {
             isLoading.value = true;
@@ -15,6 +16,7 @@ export default function useFetchData(ruta){
             results.value = data.results;
             next.value = data.next;
             prev.value = data.prev;
+            total.value = data.total;
         } catch (error) {
             console.log(error);
         }finally{
@@ -43,6 +45,7 @@ export default function useFetchData(ruta){
         next, 
         prev,
         isLoading,
-        ChangeState
+        ChangeState,
+        total
     };
 }

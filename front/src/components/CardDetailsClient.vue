@@ -2,7 +2,7 @@
   <div class="col-7 row col-xl-8 col-md-12 col-sm-10 d-none d-md-block">
     <p class="m-0 pb-3">
       <RouterLink to="/marketplace" class="custom-link">Marketplace</RouterLink> |
-      <label>{{ selectedClient.rol }}</label>
+      <label>{{ client.rol }}</label>
     </p>
     <div class="card m-auto shadow mb-5">
       <div class="card-body">
@@ -14,23 +14,23 @@
             />
           </div>
           <div class="col">
-            <h3 class="card-title">{{ selectedClient.nombre }}</h3>
+            <h3 class="card-title">{{ client.nombre }}</h3>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="mx-1">{{ selectedClient.pais_residencia }} |</li>
-                <li class="mx-1">{{ selectedClient.edad }} |</li>
-                <li class="mx-1">{{ selectedClient.categoria }}</li>
+                <li class="mx-1">{{ client.pais_residencia }} |</li>
+                <li class="mx-1">{{ client.edad }} |</li>
+                <li class="mx-1">{{ client.categoria }}</li>
               </ol>
             </nav>
             <label>Bio:</label>
             <p class="descripcion">
               {{
-                selectedClient.descripcion == null
+                client.descripcion == null
                   ? `Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha
                     sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T.
                     persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal
                     manera que logró hacer un libro de textos especimen`
-                  : selectedClient.descripcion
+                  : client.descripcion
               }}
             </p>
             <div class="row justify-content-between align-items-center mb-3">
@@ -38,9 +38,9 @@
                 <p class="token m-0">
                   Precio por token USD $
                   {{
-                    selectedClient.monto_inversion == null
+                    client.monto_inversion == null
                       ? "00.00"
-                      : selectedClient.monto_inversion
+                      : client.monto_inversion
                   }}
                 </p>
               </div>
@@ -88,13 +88,30 @@
 </template>
 
 <script setup>
-import { isAuthenticated, isAuthenticatedAlert } from "@/helpers/Authenticator";
-const props = defineProps({
-  selectedClient: {
-    type: Object,
-    required: true,
-  },
-});
+
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios'
+import {ref,onMounted} from 'vue'
+const route = useRoute();
+const userId = ref('')
+
+const client = ref({});
+
+const getUser =async () =>{
+  try {
+      const {data} = await axios.get('http://localhost:3000/users/getUserById/'+userId.value)
+      client.value = data.results[0];
+      console.log(client.value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+onMounted(() => {
+      userId.value = route.query.user;
+      getUser()
+    });
+
 </script>
 <style scoped>
 .profile {

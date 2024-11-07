@@ -6,7 +6,8 @@ const   {
             getAllClientesByCategory,
             getAllClientesByFilterName,
             uploadimageUserCloudinary,
-            putInvestors
+            putInvestors,
+            getExperiencia
 
         } = require("../controllers/clients");
 
@@ -15,6 +16,7 @@ router.get("/findBy/:id", getAllClientesByCategory);
 router.get("/filterByName/:id", getAllClientesByFilterName);
 router.post("/cloudinary/:id", uploadimageUserCloudinary);
 router.put("/:id", putInvestors);
+router.get("/getExperienceById/:id", getExperiencia);
 
 module.exports = router;
 

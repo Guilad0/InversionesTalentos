@@ -59,7 +59,6 @@ const currentNav = ref('users');
 const setActive = ( nav )=>{
     currentNav.value = nav;
     rol.value = nav
-    console.log(rol.value);
 }
 </script>
 

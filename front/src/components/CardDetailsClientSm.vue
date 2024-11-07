@@ -1,3 +1,29 @@
+
+<script setup>
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios'
+import {ref,onMounted} from 'vue'
+const route = useRoute();
+const userId = ref('')
+
+const client = ref({});
+
+const getUser =async () =>{
+try {
+    const {data} = await axios.get('http://localhost:3000/users/getUserById/'+userId.value)
+    client.value = data.results[0];
+    console.log(client.value);
+} catch (error) {
+  
+}
+}
+
+onMounted(() => {
+    userId.value = route.query.user;
+    getUser()
+  });
+
+</script>
 <style scoped>
   
 img{
@@ -37,7 +63,7 @@ img{
 <template >
     <div class="d-block d-md-none ">
         <p class="m-0 pb-3 ms-4">
-            <RouterLink to="/marketplace" class="custom-link">Marketplace</RouterLink> | <label>{{ selectedClient.rol
+            <RouterLink to="/marketplace" class="custom-link">Marketplace</RouterLink> | <label>{{ client.rol
               }}</label>
           </p>
     <div class="card  shadow " >
@@ -46,24 +72,24 @@ img{
                     class="  rounded-3" >
     </div>
   <div class="card-body">
-    <h3 class="card-title">{{ selectedClient.nombre }}</h3>
+    <h3 class="card-title">{{ client.nombre }}</h3>
     <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="mx-1">{{ selectedClient.pais_residencia }} | </li>
-                      <li class="mx-1">{{ selectedClient.edad }} | </li>
-                      <li class="mx-1">{{ selectedClient.categoria }} </li>
+                      <li class="mx-1">{{ client.pais_residencia }} | </li>
+                      <li class="mx-1">{{ client.edad }} | </li>
+                      <li class="mx-1">{{ client.categoria }} </li>
                     </ol>
                   </nav>
                   <label>Bio:</label>
-                  <p class="descripcion">{{ selectedClient.descripcion == null ?
+                  <p class="descripcion">{{ client.descripcion == null ?
                     `Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha
                     sido el texto de relleno n`
-                    :selectedClient.descripcion }}
+                    :client.descripcion }}
                   </p>
                   <div class="row justify-content-between align-items-center mb-3">
                     <div class="col-4 col-sm-8 col-custom">
-                      <p class="token m-0">Precio por token USD $ {{ selectedClient.monto_inversion == null ? '00.00' :
-                        selectedClient.monto_inversion }} </p>
+                      <p class="token m-0">Precio por token USD $ {{ client.monto_inversion == null ? '00.00' :
+                        client.monto_inversion }} </p>
                     </div>
                     <div class="col-4 col-sm-4 col-custom">
                       <button class="border-custom btn-sm available rounded-3">0 Disponibles</button>
@@ -93,13 +119,6 @@ img{
 </div>
   </template>
   
-  <script setup>
-    const props = defineProps({
-      selectedClient: {
-        type: Object,
-        required: true
-      }
-    });
-  </script>
+
 
   

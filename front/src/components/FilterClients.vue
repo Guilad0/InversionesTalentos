@@ -14,6 +14,7 @@
             v-for="cat in props.categories"
             :key="cat.categoria_persona_id">
             <button 
+              v-if="cat.nombre !== 'sin categoria'"
                 type="button" 
                 class="btn btn-sm mx-1 rounded badge "
                 :class="{ 'btn-orange': props.activeCategory === cat.categoria_persona_id, 'btn-ligth active': props.activeCategory !== cat.categoria_persona_id }"

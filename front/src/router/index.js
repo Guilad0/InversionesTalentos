@@ -46,7 +46,7 @@ const router = createRouter({
     },
    
     {
-      path:'/client/:name',
+      path:'/:name',
       name:'client',
       component:ClientView
     },
