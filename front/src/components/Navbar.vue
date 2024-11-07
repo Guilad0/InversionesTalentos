@@ -147,7 +147,7 @@ const navLinks = ref([
   { name: "Home", path: "/" },
   { name: "Marketplace", path: "/marketplace" },
   { name: "Propósito", path: "/view1" },
-  { name: "Cómo funciona", path: "/view2" },
+  { name: "Cómo funciona", path: "/como-funciona" },
   { name: "Guias de usuario", path: "/posts" },
   { name: "Contactos", path: "/contact" },
   { name: "FAQs", path: "/faq" },

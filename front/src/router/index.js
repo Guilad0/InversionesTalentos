@@ -15,6 +15,7 @@ import BilleteraView from '@/views/BilleteraView.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
 import Experiencia from '@/views/Experiencia.vue'
+import ComoFunciona from '@/components/ComoFunciona.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -97,6 +98,10 @@ const router = createRouter({
       name: 'experiencia', 
       component: Experiencia
     }, 
+    { path: '/como-funciona',
+      name: 'como-funciona',
+      component: ComoFunciona 
+    },
   ]
 })
 

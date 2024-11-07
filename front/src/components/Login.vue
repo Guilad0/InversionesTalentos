@@ -66,7 +66,7 @@ import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
-const switchValue = ref(true);
+const switchValue = ref(false);
 
 const route = useRouter();
 
@@ -110,7 +110,7 @@ icon: "error",
 
     Swal.fire({
       title: "Bienvenido!",
-      text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
+      text: "Estás de regreso :) " + data.user.nombre + " " + data.user.apellido,
       icon: "success",
       showConfirmButton: false,
       timer: 1000,
@@ -124,14 +124,16 @@ icon: "error",
     }, 1000);
   } catch (error) {
     console.log(error);
-    // console.log(error.response.data);
-    Swal.fire({
-      title: "¡Error!",
-      text: error.response.data.message,
-      icon: "error",
+    const errorMessage = error.response?.data?.msg;
+    Swal.fire({ 
+      title: "¡Error!", 
+      text: errorMessage, 
+      icon: "warning", 
     });
+
   }
 };
+
 
 //login con google
 const callback = (response) => {
