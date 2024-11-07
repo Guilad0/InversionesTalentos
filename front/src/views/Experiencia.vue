@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center container">
+  <div class="d-flex justify-content-center align-items-center container animate__animated animate__fadeInLeft">
     <div class="container col-md-6 mt-5 mb-5">
       <form @submit.prevent="registrarExperiencia">
         <div class="card shadow">

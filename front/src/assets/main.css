@@ -21,6 +21,14 @@
     transition: background-color 0.3s ease;
   }
 
+  .btn-orange:hover{
+    background-color: var(--gray-color) !important;
+    color: var(--white-anti-flash-color) !important;
+    border: 1px solid var(--white-anti-flash-color) !important;
+
+  }
+
+
   .btn-gray:hover {
     background-color: var(--yellow-orange) !important;
     color: var(--white-anti-flash-color) !important;
