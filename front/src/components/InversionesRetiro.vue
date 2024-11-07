@@ -25,7 +25,7 @@
             <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
             <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
             <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
-            <hr />
+            <hr/>
           </div>
         </div>
         <!---->
@@ -35,25 +35,24 @@
           <div class="bg-white p-4" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
             <p>Solicitud: {{ cliente_retiro.retiro_id }}</p>
             <p>Monto: ${{ cliente_retiro.monto_recibir }}</p>
-            <p>Fecha: {{ cliente_retiro.fecha_solicitud }}</p>
+            <p>Fecha Solicitud: {{ cliente_retiro.fecha_solicitud }}</p>
             <p>Estado: {{ cliente_retiro.estado }}</p>
             <p v-if="cliente_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
             </p>
+            <hr/>
           </div>
         </div>
         <!---->
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversionista_retiro in inversionistas_retiros"
-            :key="inversionista_retiro">
-            <p>Solicitud: {{ inversionista_retiro.retiro_id }}</p>
-            <p>Monto: ${{ inversionista_retiro.monto_recibir }}</p>
-            <p>Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
-            <p>Estado: {{ inversionista_retiro.estado }}</p>
-            <p v-if="inversionista_retiro.estado == 'Aprobado'">
-              Fecha Aprobación: {{ inversionista_retiro.fecha_aprobacion }}
-            </p>
+          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_vencida in inversiones_vencidas"
+            :key="inversion_vencida">
+            <p>Solicitud: {{ inversion_vencida.inversion_id }}</p>
+            <p>Tokens Pendientes: ${{ inversion_vencida.ganancia_estimada }}</p>
+            <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
+            <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
+            <hr/>
           </div>
         </div>
         <!---->
@@ -155,6 +154,7 @@ if (usuario_rol.value == "Cliente") {
   onMounted(() => {
     obtenerInversiones_Clientes();
     obtenerCliente_retiro();
+    obtenerInversiones_Clientes_Vencidas();
   });
 }
 
@@ -162,6 +162,7 @@ const inversiones = ref([]);
 const inversionistas_retiros = ref([]);
 const inversiones_recibidas = ref([]);
 const clientes_retiros = ref([]);
+const inversiones_vencidas = ref([]);
 
 
 
@@ -206,6 +207,17 @@ const obtenerCliente_retiro = async () => {
     console.log(error);
   }
 };
+
+const obtenerInversiones_Clientes_Vencidas = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "inversiones_vencidas/" + cliente_ID.value);
+    inversiones_vencidas.value = data.data;
+    console.log(inversiones_vencidas.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 </script>
 
 <style scoped>

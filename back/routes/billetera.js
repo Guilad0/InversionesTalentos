@@ -133,10 +133,10 @@ router.get("/clientes", function (req, res, next) {
 });
 
 router.post("/invertirTokens", function (req, res, next) {
-  const {usuario_id, cliente_id, inversor_id, monto, token,  tipo, descripcion, ganancia_estimada} = req.body;
+  const {usuario_id, cliente_id, inversor_id, monto, token,  tipo, descripcion, ganancia_estimada, fecha_devolucion} = req.body;
 
-  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada)
-                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}');`;
+  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion)
+                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}');`;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
@@ -199,6 +199,29 @@ router.get("/tokensClienteRecibido/:id", function (req, res, next) {
       res.status(200).send({
         data: results,
         message: "Tokens del inversionista consultada correctamente",
+      });
+    }
+  });
+});
+
+router.post("/solicitarRetiro", function (req, res, next) {
+  const {tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado} = req.body;
+
+  var query = ` INSERT INTO solicitudes_retiro (tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado, fecha_solicitud)
+                VALUES ('${tipo}', '${usuario_id}', '${monto_solicitud}', '${tokens_cambio}', '${comision_aplicar}', '${monto_recibir}', '${estado}', CURRENT_TIMESTAMP());`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results.insertId);
+      res.status(200).send({
+        data: results.insertId,
+        message: "Solicitud de retiro realizada correctamente",
       });
     }
   });

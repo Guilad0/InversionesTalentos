@@ -52,14 +52,9 @@ router.get("/cliente/:id", function (req, res, next) {
 
 router.get("/inversionista_retiros/:id", function (req, res, next) {
 
-  var query = ` SELECT solicitudes_retiro.*, movimientos.tipo
-                FROM solicitudes_retiro
-                INNER JOIN movimientos
-                ON solicitudes_retiro.retiro_id = movimientos.solicitudes_retiro_id
-                WHERE solicitudes_retiro.usuario_id = ${req.params.id}
-                AND movimientos.tipo = 'Egreso'
-                AND movimientos.monto IS NOT NULL 
-                ORDER BY solicitudes_retiro.retiro_id DESC;`;
+  var query = ` SELECT *
+                FROM solicitudes_retiro                
+                WHERE usuario_id = ${req.params.id};`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -77,15 +72,10 @@ router.get("/inversionista_retiros/:id", function (req, res, next) {
 });
 
 router.get("/cliente_retiros/:id", function(req, res, next){
-  var query = ` SELECT solicitudes_retiro.*, movimientos.tipo
-                FROM solicitudes_retiro
-                INNER JOIN movimientos
-                ON solicitudes_retiro.retiro_id = movimientos.solicitudes_retiro_id
-                WHERE solicitudes_retiro.usuario_id = ${req.params.id}
-                AND movimientos.tipo = 'Egreso'
-                AND movimientos.monto IS NOT NULL 
-                ORDER BY solicitudes_retiro.retiro_id DESC;`;
-  connection.query(query, function (error, results, fields) {
+  var query = ` SELECT *
+                FROM solicitudes_retiro                
+                WHERE usuario_id = ${req.params.id};`;
+  connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -97,6 +87,29 @@ router.get("/cliente_retiros/:id", function(req, res, next){
       res.status(200).send({
         data: results,
         message: "Inversiones consultadas correctamente",
+        
+      });
+    }
+  });
+});
+
+router.get("/inversiones_vencidas/:id", function(req, res, next){
+  var query = ` SELECT *
+                FROM inversiones                
+                WHERE cliente_id = ${req.params.id}
+                AND fecha_devolucion <= CURRENT_DATE();`;
+  connection.query(query, function (error, results) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Inversiones pendientes consultadas correctamente",
         
       });
     }
