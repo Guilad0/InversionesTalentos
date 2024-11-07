@@ -23,7 +23,6 @@
     <div  class="spinner-grow text-dark" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-
     </div>
     <Contact />
   </div>
