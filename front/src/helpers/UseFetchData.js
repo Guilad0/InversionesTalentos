@@ -20,7 +20,9 @@ export default function useFetchData(ruta){
         } catch (error) {
             console.log(error);
         }finally{
-            isLoading.value = false;
+            setTimeout(() => {
+                isLoading.value = false;
+            }, 1000);
         }
     }
     const ChangeState = async ()=>{
@@ -31,8 +33,8 @@ export default function useFetchData(ruta){
         } catch (error) {
             console.log(error);
         }finally{
-            isLoading.value = false;
         }
+        
     }
 
     watch( ruta, getData);

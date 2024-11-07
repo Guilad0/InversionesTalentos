@@ -1,6 +1,6 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center custom-font">
-    <form class="card shadow p-5 w-50 m-5">
+  <div class="container d-flex justify-content-center align-items-center custom-font ">
+    <form class="card shadow p-5 w-50 m-5 animate__animated animate__fadeIn " >
       <h3 class="text-center py-2 text-form-contact">
         Déjanos tu comentario llenando este formulario
       </h3>
@@ -78,16 +78,18 @@
 
       <div class="mb-3">
         <label class="form-label text-form-contact">Comentarios</label>
-        <textarea class="form-control" v-model="comentarios"></textarea>
+        <textarea class="form-control mb-3" v-model="comentarios"></textarea>
       </div>
 
-      <button
+      <div class="text-center">
+        <button
         type="submit"
         @click="registerComment($event)"
-        class="btn btn-form-contact button-form"
+        class="btn btn-form-contact btn-gray rounded-5 w-75"
       >
         Enviar
       </button>
+      </div>
     </form>
   </div>
 </template>
