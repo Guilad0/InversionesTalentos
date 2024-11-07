@@ -267,7 +267,6 @@ const putInvestors = async (req, res) => {
   };
   
   const getExperiencia = (req, res) =>{
-    console.log(req.query.type);
     let query = `select * from ${req.query.type}  where cliente_id = ?`;
     conexion.query(query,[req.params.id], (err, results) =>{
         if( err  ){
@@ -283,11 +282,81 @@ const putInvestors = async (req, res) => {
     })
   }
 
+  const addInfinversionista = (req, res) => {
+    const {
+        id_inversionista,
+        nombre_completo,
+        dni,
+        tipo_dni,
+        domicilio,
+        ciudad,
+        situacion_laboral,
+        fuente_de_ingresos,
+    } = req.body;
+    let query = "select * from usuarios where usuario_id=?";
+    conexion.query(query, [id_inversionista], (err, results) => {
+      if (err) {
+        res.status(500).json({
+          err,
+        });
+        return;
+      }
+  
+      if (results.length == 0) {
+        res.status(500).json({
+          msg: "El usuario no existe",
+        });
+        return;
+      }
+      query = "select * from informacion_inversionista where id_inversionista = ?";
+      conexion.query(query, [id_inversionista], (err, data) => {
+        if (err) {
+          res.status(500).json({
+            err,
+          });
+          return;
+        }
+  
+        if (data.length > 0) {
+          res.status(500).json({
+            msg: "El inversionista ya cuenta con una informacion",
+          });
+          return;
+        }
+        query =
+          "insert into informacion_inversionista (id_inversionista, nombre_completo, dni, tipo_dni, domicilio, ciudad, situacion_laboral,fuente_de_ingresos) values (?,?,?,?,?,?,?,?)";
+        const values = [
+            id_inversionista,
+            nombre_completo,
+            dni,
+            tipo_dni,
+            domicilio,
+            ciudad,
+            situacion_laboral,
+            fuente_de_ingresos,
+        ];
+        conexion.query(query, values, (err) => {
+          if (err) {
+            res.status(500).json({
+              err,
+            });
+            return;
+          }
+          res.status(201).json({
+            msg: "Informacion agregada",
+          });
+        });
+      });
+    });
+  };
+  
+
 module.exports = {
     getAllClientesWithInfo, 
     getAllClientesByCategory,
     getAllClientesByFilterName,
     uploadimageUserCloudinary,
     putInvestors,
+    addInfinversionista,
     getExperiencia
 }
