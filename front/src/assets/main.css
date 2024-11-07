@@ -67,6 +67,10 @@
   background-color: var(--gray-color) !important;
 }
 
+.bg-orange{
+  background-color: var(--yellow-orange) !important; 
+    color: white;
+}
 .custom-absolute {
   position: absolute;
   right: 10px;

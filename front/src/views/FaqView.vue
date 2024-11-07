@@ -1,20 +1,31 @@
 <template>
   <div class="container py-5">
-    <div class="accordion" id="accordionExample">
-      <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
-        <h2 class="accordion-header" :id="'heading-' + index">
-          <button class="accordion-button collapsed custom-accordion-button" type="button" :data-bs-toggle="'collapse'"
-            :data-bs-target="'#collapse-' + index" aria-expanded="false" :aria-controls="'collapse-' + index">
-            {{ faq.pregunta }}
-          </button>
-        </h2>
-        <div :id="'collapse-' + index" class="accordion-collapse collapse" :aria-labelledby="'heading-' + index"
-          data-bs-parent="#accordionExample">
-          <div class="accordion-body custom-accordion-body" v-html="faq.respuesta"></div>
+    <div v-if="!loading" class="card sh animate__animated animate__fadeIn">
+      <div class="card-body p-1 bg-gray rounded-2">
+        <div class="accordion  " id="accordionExample">
+          <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
+            <h2 class="accordion-header" :id="'heading-' + index">
+              <button class="accordion-button collapsed custom-accordion-button " type="button"
+                :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + index" aria-expanded="false"
+                :aria-controls="'collapse-' + index">
+                {{ faq.pregunta }}
+              </button>
+            </h2>
+            <div :id="'collapse-' + index" class="accordion-collapse collapse btn-gray p-1 rounded-0 "
+              :aria-labelledby="'heading-' + index" data-bs-parent="#accordionExample">
+              <div class="accordion-body custom-accordion-body bg-light " v-html="faq.respuesta"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <Contact/>
+    <div v-if="loading" class="d-flex justify-content-center align-items-center min-vh-100">
+    <div  class="spinner-grow text-dark" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+    </div>
+    <Contact />
   </div>
 </template>
 
@@ -25,14 +36,18 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Contact from '../components/ContactComponent.vue';
 
+const loading = ref(false)
 const faqs = ref([]);
 
 onMounted(async () => {
   try {
+    loading.value = true;
     const response = await axios.get('http://localhost:3000/faq');
     faqs.value = response.data.data;
   } catch (error) {
     console.error('Error al cargar las preguntas:', error);
+  } finally {
+    loading.value = false
   }
 });
 </script>
@@ -42,7 +57,7 @@ onMounted(async () => {
 
 <style scoped>
 .custom-accordion-button {
-  background-color: rgb(20, 17, 15);
+  background-color: #17223B;
   color: #f1faee;
   border: none;
   font-weight: bold;
@@ -51,7 +66,7 @@ onMounted(async () => {
 
 
 .custom-accordion-button:not(.collapsed) {
-  background-color: rgb(20, 17, 15);
+  background-color: #17223B;
   color: #f1faee;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -59,8 +74,8 @@ onMounted(async () => {
 
 
 .custom-accordion-button:hover {
-  background-color: rgb(126, 127, 131);
-  color: rgb(20, 17, 15);
+  background-color: #d95a00c7;
+  color: wheat;
 }
 
 
@@ -83,6 +98,7 @@ onMounted(async () => {
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 
 }
+
 .custom-accordion-button:focus {
   outline: none;
   box-shadow: none;
