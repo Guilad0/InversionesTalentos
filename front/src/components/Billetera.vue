@@ -206,47 +206,37 @@
                     <div class="card-body">
                       <div class="form">
                         <div class="row d-flex justify-content-around">
-
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="monto_solicitud" class="form-label">Monto de Solicitud</label>
-                              <input type="text" v-model="monto_solicitud" id="monto_solicitud" class="form-control"
-                                required />
+                              <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
+                              <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control"
+                                @change="calcularDolares()" required />
                             </div>
                           </div>
-
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="tipo_ganancia" class="form-label">Tipo de Ganancia</label><br>
-                              <select v-model="tipo_ganancia" id="tipo_ganancia" class="form-select" required>
-                                <option disabled>Seleccione un Tipo de Ganancia</option>
-                                <option value="Monto fijo">Monto Fijo</option>
-                                <option value="Porcentual">Porcentual</option>
-                              </select>
+                              <label class="form-label">Dolares</label>
+                              <p>$US {{ montoDolares }}</p>
                             </div>
                           </div>
                         </div>
-
                         <div class="row d-flex justify-content-around">
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="monto" class="form-label">Monto</label>
-                              <input type="text" v-model="monto" id="monto" class="form-control" required />
+                              <label class="form-label">Comisión de Retiro</label>
+                              <p>{{ comision_retiro }}%</p>
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="ganancia_estimada" class="form-label">Ganancia Estimada</label>
-                              <input type="text" v-model="ganancia_estimada" id="ganancia_estimada" class="form-control"
-                                required />
+                              <label for="retiro_inversionista" class="form-label">Total a Retirar</label>
+                              <p>$US {{ dolares }}</p>
                             </div>
                           </div>
-
                         </div>
-
                         <hr>
                         <div class="text-center">
-                          <button type="button" @click="registrarInversion()" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                          <button type="button" @click="solicitarRetiro()" class="btn btn-secondary" data-bs-dismiss="modal">Solicitar Retiro</button>
                         </div>
                       </div>
                     </div>
@@ -317,11 +307,15 @@ if (usuario_rol.value == 'Cliente') {
 }
 onMounted(() => {
   calcularTokens();
+  calcularDolares();
 });
 
 const tiempo_inversion = ref(0);
 const porcentaje_inversion = ref(0);
 const ganancia_tokens_inv = ref(0);
+const montoDolares = ref(0);
+const comision_retiro = ref(0);
+const dolares = ref(0);
 
 //Función para saber cuantos dólares invirtió el inversionista
 const obtenerDolares_Inversionista = async () => {
@@ -365,7 +359,9 @@ const calcularTokens = async () => {
 };
 
 const comprarTokens = async () => {
-  const datos = {
+
+  if (usuario_rol.value == 'Inversionista') {
+    const datos = {  
     monto: montoUsd.value,
     tokens: tokens.value,
     usuario_id: inversionista_ID.value,
@@ -381,7 +377,30 @@ const comprarTokens = async () => {
   } catch (error) {
     console.error('Error al guardar los tokens:', error);
   }
-
+  obtenerDolares_Inversionista();
+  obtenerTokens_Inversionista();
+  }
+  if (usuario_rol.value == 'Cliente') {
+    const datos = {  
+    monto: montoUsd.value,
+    tokens: tokens.value,
+    usuario_id: cliente_ID.value,
+    tipo: 'Ingreso',
+    descripcion: 'Compra de tokens',
+  };
+  try {
+    await axios.post(baseURL + 'comprarTokens', datos);
+    alert('Tokens comprados exitosamente');
+    var myModalEl = document.getElementById('modalTokens');
+    var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+    modal.hide();
+  } catch (error) {
+    console.error('Error al guardar los tokens:', error);
+  }
+  obtenerTokens_Cliente();
+  }
+  montoUsd.value = 0;
+  tokens.value = 0;
 };
 
 const obtenerListaClientes = async () => {
@@ -392,7 +411,6 @@ const obtenerListaClientes = async () => {
     console.log(error);
   }
 };
-
 
 const calcularGanancias = async () => {
 
@@ -410,7 +428,12 @@ try {
 };
 const inversionistaInvertir = async () => {
   ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
-  console.log(ganancia_estimada.value);
+  const fecha_devolucion = ref('');
+  const fecha = new Date();
+  fecha.setMonth(fecha.getMonth() + tiempo_inversion.value);
+  fecha_devolucion.value = new Date(fecha).toISOString().slice(0, 10);
+  console.log(fecha_devolucion.value);
+  
   const datos = {
     token: monto_tokens_invertir.value,
     usuario_id: inversionista_ID.value,
@@ -419,7 +442,8 @@ const inversionistaInvertir = async () => {
     tipo: 'Egreso',
     descripcion: 'Tokens invertidos',
     monto: monto_tokens_invertir.value,
-    ganancia_estimada: ganancia_estimada.value
+    ganancia_estimada: ganancia_estimada.value,
+    fecha_devolucion: fecha_devolucion.value
   };
   console.log(datos);
   try {
@@ -442,6 +466,69 @@ const obtenerTokens_Cliente = async () => {
     console.log(error);
   }
 };
+
+const calcularDolares = async () => {
+
+try {
+  const { data } = await axios.get(baseURL + 'valores');
+  valores.value = data.data;
+  let valor = parseFloat(data.data[0].valor_token);
+  let interes = parseFloat(data.data[0].comision_retiros);
+  comision_retiro.value = interes
+  montoDolares.value = cambioTokens.value / valor;
+  dolares.value = montoDolares.value - (montoDolares.value * (interes/100));
+} catch (error) {
+  console.log(error);
+}
+};
+
+const solicitarRetiro = async () => {
+  
+  if (usuario_rol.value == 'Inversionista') {
+    const datos = {
+      tipo: 'inversor',
+      usuario_id: inversionista_ID.value,
+      monto_solicitud: montoDolares.value,
+      tokens_cambio: cambioTokens.value,
+      comision_aplicar: montoDolares.value * (comision_retiro.value/100),
+      monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
+      estado: 'Pendiente'
+    };
+    try {
+      await axios.post(baseURL + 'solicitarRetiro', datos);
+      alert('Solicitud de Retiro realizada exitosamente');
+      var myModalEl = document.getElementById('modalSolicitud');
+      var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+      modal.hide();
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }  
+  }
+  if (usuario_rol.value == 'Cliente') {
+    const datos = {
+      tipo: 'cliente',
+      usuario_id: cliente_ID.value,
+      monto_solicitud: montoDolares.value,
+      tokens_cambio: cambioTokens.value,
+      comision_aplicar: montoDolares.value * (comision_retiro.value/100),
+      monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
+      estado: 'Pendiente'
+    };
+    try {
+      await axios.post(baseURL + 'solicitarRetiro', datos);
+      alert('Solicitud de Retiro realizada exitosamente');
+      var myModalEl = document.getElementById('modalSolicitud');
+      var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+      modal.hide();
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }  
+  }
+  cambioTokens.value = 0;
+  montoDolares.value = 0;
+  comision_retiro.value = 0;
+  dolares.value = 0;
+}
 
 </script>
 
