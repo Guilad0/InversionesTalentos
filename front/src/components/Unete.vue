@@ -1,14 +1,57 @@
 <template>
-    <div class="unete-container">
-        <div class="image-overlay text-center">
-            <h2 class="animate__animated animate__fadeInDown animate__slow">¿A qué te Dedicas?</h2>
-            <button
-                class="btn btn-outline-light mt-3 animate__animated animate__fadeInUp animate__slow animate__bounce"
-            >
-                Únete Ahora
-            </button>
+
+    <div class="container-fluid">
+
+        <div class="row custom-row ">
+
+            <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
+
+                <div class="card text-center position-relative">
+
+                    <img src="../assets/images/profesional.png" alt="Profesionales">
+
+                    <div
+                        class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
+
+                        <h5 class="card-title">Eres un profesional en busca de tu primer capital?</h5>
+
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6">
+                            Únete Ahora
+                            <span></span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
+
+                <div class="card text-center position-relative">
+
+                    <img src="../assets/images/profesional.png" alt="Inversor">
+
+                    <div
+                        class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
+
+                        <h5 class="card-title">Buscas profesionales para invertir?</h5>
+
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6">
+                            Únete Ahora
+                            <span></span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
+
 </template>
 
 <script>
@@ -21,133 +64,57 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
 
-.unete-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-image: url("https://via.placeholder.com/150"); /* Imagen genérica temporal */ 
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Cambia por los Colores de la Paleta*/ 
-    background-color: rgba(0, 0, 0, 0.3); /* Ajusta la opacidad para que se note más la foto */
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+img {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Cambia por los Colores de la Paleta*/ 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 20px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-h2 {
-    margin: 0;
-    font-size: 3em;
-    font-weight: 700;
 }
 
 button {
+    color: white;
     font-size: 1.2em;
     padding: 10px 20px;
     border-radius: 25px;
     transition: background-color 0.3s, transform 0.3s;
 }
 
-button:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Cambia por los Colores de la Paleta*/ 
-    transform: scale(1.05);
-    color: #f8f9fa;
-    background-color: #343a40;/* Cambia por los Colores de la Paleta*/ 
-}
+
 
 .animate__slow {
-    animation-duration: 2s;
+    animation-duration: 3s;
 }
 
-/* Media Queries */
-@media (max-width: 411px) and (max-height: 731px) {
-    .unete-container {
-        height: 250px;
-    }
-    h2 {
-        font-size: 2em;
-    }
-    button {
-        font-size: 1em;
-        padding: 8px 16px;
-    }
+.btn-6 {
+    position: relative;
+    display: block;
+    overflow: hidden;    
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    color: var(--gray-color);
+    transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 
-@media (max-width: 768px) and (max-height: 1204px) {
-    .unete-container {
-        height: 350px;
-    }
-    h2 {
-        font-size: 2.5em;
-    }
-    button {
-        font-size: 1.1em;
-        padding: 9px 18px;
-    }
+.btn-6 span {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: var(--gray-color);
+    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+    z-index: -1;
 }
 
-@media (max-width: 428px) and (max-height: 926px) {
-    .unete-container {
-        height: 300px;
-    }
-    h2 {
-        font-size: 2.2em;
-    }
-    button {
-        font-size: 1.1em;
-        padding: 9px 18px;
-    }
+.btn-6:hover {
+    color: var(--white-anti-flash-color);
 }
 
-@media (max-width: 1440px) and (max-height: 900px) {
-    .unete-container {
-        height: 400px;
-    }
-    h2 {
-        font-size: 3em;
-    }
-    button {
-        font-size: 1.2em;
-        padding: 10px 20px;
-    }
-}
-
-@media (max-width: 900px) and (max-height: 1400px) {
-    .unete-container {
-        height: 350px;
-    }
-    h2 {
-        font-size: 2.5em;
-    }
-    button {
-        font-size: 1.1em;
-        padding: 9px 18px;
-    }
-}
-
-@media (max-width: 412px) and (max-height: 915px) {
-    .unete-container {
-        height: 300px;
-    }
-    h2 {
-        font-size: 2.2em;
-    }
-    button {
-        font-size: 1.1em;
-        padding: 9px 18px;
-    }
+.btn-6:hover span {
+    width: 225%;
+    height: 562.5px;
 }
 </style>
