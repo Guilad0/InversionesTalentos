@@ -61,7 +61,7 @@
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <h2 class="text-xl font-bold mb-4">Inversiones, Retiros & Ganancias</h2>
+        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
 
         <!-- Contenedor de tabs -->
         <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
@@ -104,20 +104,6 @@
           </div>
         </div>
         <!---->
-               <!-- Lista de ganancias-->
-               <div class="tab-content" v-if="activeTabInv === 2">
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversionista_retiro in inversionistas_retiros"
-            :key="inversionista_retiro">
-            <p>Solicitud: {{ inversionista_retiro.retiro_id }}</p>
-            <p>Monto: ${{ inversionista_retiro.monto_recibir }}</p>
-            <p>Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
-            <p>Estado: {{ inversionista_retiro.estado }}</p>
-            <p v-if="inversionista_retiro.estado == 'Aprobado'">
-              Fecha Aprobación: {{ inversionista_retiro.fecha_aprobacion }}
-            </p>
-          </div>
-        </div>
-        <!---->
 
       </div>
     </div>
@@ -129,7 +115,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 const route = useRouter();
-const tabsInv = ref(["Inversiones", "Retiros", "Ganancias"]);
+const tabsInv = ref(["Inversiones", "Retiros"]);
 var activeTabInv = ref(0);
 
 const tabsCli = ref(["Inversiones", "Retiros", "Devoluciones"]);
