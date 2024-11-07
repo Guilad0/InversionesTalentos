@@ -266,11 +266,28 @@ const putInvestors = async (req, res) => {
     } )
   };
   
+  const getExperiencia = (req, res) =>{
+    console.log(req.query.type);
+    let query = `select * from ${req.query.type}  where cliente_id = ?`;
+    conexion.query(query,[req.params.id], (err, results) =>{
+        if( err  ){
+            res.status(500).json({
+                err,
+                msg:'Error al buscar la experiencia del usuario'
+            })
+            return;
+        }
+        res.status(201).json({
+            results
+        })
+    })
+  }
 
 module.exports = {
     getAllClientesWithInfo, 
     getAllClientesByCategory,
     getAllClientesByFilterName,
     uploadimageUserCloudinary,
-    putInvestors
+    putInvestors,
+    getExperiencia
 }

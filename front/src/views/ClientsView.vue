@@ -25,6 +25,7 @@ const getAll = () => {
     path.value = '/clients/';
     getClients()
 }
+
 const orderBy = (order) => {
     if (order == 'nombre') {
         clients.value = orderByName(clients.value)

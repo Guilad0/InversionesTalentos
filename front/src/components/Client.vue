@@ -3,6 +3,9 @@
     import Pagination from '../components/Pagination.vue'
     import {ref,onMounted,watch} from 'vue'
     import { notyf } from '@/helpers/NotifyAlerts';
+    import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
+    import ModalInforUser from '../components/ModalInforUser.vue'
+
 
     const props = defineProps({
     rol: {
@@ -13,7 +16,8 @@
 
 const myRol = ref('');
 
-
+const id = ref(-1)
+const typeForm = ref('')
 watch(
   () => props.rol,
   (newSelectionated) => {
@@ -27,7 +31,7 @@ watch(
     const page = ref(1);
     const search= ref('')
     const baseUrl = ref(`/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`);
-    const { results, prev, next, isLoading, getData,ChangeState } = useFetchData(ref(baseUrl));
+    const { results, prev, next, isLoading, getData,ChangeState, total } = useFetchData(ref(baseUrl));
     const nextAction = ()=>{
         page.value+=1;
         baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
@@ -75,7 +79,18 @@ const deleteUSer = (id, estado)=>{
     }else{
         notyf.success("Usuario activo");
     }
+}
 
+const selecionatedUser = ( idUser, typeModel )=>{
+    id.value = idUser;
+    typeForm.value = typeModel;
+}
+
+
+
+const clearId = ()=>{
+    id.value = -1;
+    typeForm.value = '';
 }
 
 </script>
@@ -93,7 +108,7 @@ const deleteUSer = (id, estado)=>{
                 <div class="col-8 ">
                 </div>
                 <div class="col-2 text-end">
-                    <button class="btn bg-gray rounded-3 btn-sm text-white">
+                    <button class="btn bg-gray rounded-3 btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalRegisterUser">
                         +<img src="../assets/svg/user-white.svg" width="25" class="img">
                     </button>
                 </div>
@@ -105,10 +120,11 @@ const deleteUSer = (id, estado)=>{
                             <th class="custom-size">Nombre</th>
                             <th class="custom-size">Apellido</th>
                             <th class="custom-size">Correo</th>
-                            <th class="custom-size">Categoria</th>
-                            <th class="custom-size">Pais de residencia</th>
-                            <th class="custom-size">Edad</th>
-                            <th class="custom-size text-center">Ver inf.</th>
+                            <th class="custom-size">Imagen</th>
+                            <th  class="custom-size">Logros</th>
+                            <th class="custom-size">Experiencia</th>
+                            <th class="custom-size text-center">informacion</th>
+                            <th class="custom-size text-center">Video</th>
                             <th class="custom-size">Rol</th>
                             <th class="custom-size">Aprobado</th>
                             <th class="custom-size">Estado</th>
@@ -131,12 +147,38 @@ const deleteUSer = (id, estado)=>{
                                 </div>
                                 </div>
                             </td>
-                            <td>{{ user.categoria }}</td>
-                            <td>{{ user.pais_residencia }}</td>
-                            <td>{{ user.edad }}</td>
-                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
-                                <img  src="../assets/svg/eye.svg" width="18">
+                            <td class="text-secondary text-center">
+                                <i v-if="user.rol !=='Admin' ||user.rol =='Inversionista' " class="fas fa-image "></i>
+                                <i v-else class="fa-solid fa-xmark text-danger"></i>
                             </td>
+                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'logros')">
+                                <img v-if="myRol !=='Admin'"  src="../assets/svg/eye.svg" width="18">
+                                <i v-else class="fa-solid fa-xmark text-danger"></i>
+
+                            </td>
+                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'experiencia')">
+                                <img v-if="myRol !=='Admin'" src="../assets/svg/eye.svg" width="18">
+                                <i v-else class="fa-solid fa-xmark text-danger"></i>
+                                
+                            </td>
+                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'informacion')">
+                                <img v-if="myRol !=='Admin'" src="../assets/svg/eye.svg" width="18">
+                                <i v-else class="fa-solid fa-xmark text-danger"></i>
+                            </td>
+                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
+                                <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
+                                <i v-else class="fa-solid fa-video"></i>
+                            </td>
+                            <td v-if="user.rol == 'Null'" class="text-center eye text-secondary" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
+                                <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
+                                <i v-else class="fa-solid fa-video"></i>
+                            </td>
+                           
+                            <td v-if="user.rol == 'Inversionista' || user.rol == 'Admin'" class="text-center text-danger">
+                                <i class="fa-solid fa-xmark"></i>
+                            </td>
+
+                        
                             <td>
                                 {{ user.rol }}
                             </td>
@@ -155,13 +197,14 @@ const deleteUSer = (id, estado)=>{
                                     </div>
                                 </div>
                             </td>
-                            <td v-if="user.estado == '1'">
-                                <span class="badge text-bg-success">Activo</span>
+                            <td v-if="user.estado == '1'" >
+                                <span class="badge text-bg-success cursor"  @mouseover="toggleStatus" 
+                                @mouseout="toggleStatus">Activo</span>
                             </td>
-                            <td v-if="user.estado == '0'" class="m-auto">
-                                <span class="badge text-bg-danger">No activo</span>
+                            <td v-if="user.estado == '0'"  >
+                                <span class="badge text-bg-danger cursor">No activo</span>
                             </td>
-                            <td v-if="user.estado == '1'">
+                            <td v-if="user.estado == '1'" >
                                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                                     <img src="../assets/svg/delete.svg" width="25">
                                 </div>
@@ -175,6 +218,9 @@ const deleteUSer = (id, estado)=>{
                         </tr>
                     </tbody>
                 </table>
+                <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId"/>
+        <ModalCreateUserAdmin />
+
             </div>
         </div>
         <div class="footer">
@@ -184,7 +230,10 @@ const deleteUSer = (id, estado)=>{
               :next="next"
               :isLoading="isLoading"
               @nextAction="nextAction"
-              @prevAction="prevAction" />
+              @prevAction="prevAction"
+              :total="total"
+              :myRol="myRol"
+               />
         </div>
     </main>
 </template>

@@ -78,5 +78,5 @@
 
 
 .text-orange {
-  color: var(--yellow-orange); /* Color amarillo de Bootstrap */
+  color: var(--yellow-orange) !important; /* Color amarillo de Bootstrap */
 }

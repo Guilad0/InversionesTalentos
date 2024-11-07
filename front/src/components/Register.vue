@@ -1,5 +1,7 @@
 <template>
-  <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeInLeft ">
+  <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeIn bg-admin" 
+  :class="{ 'bg-user': user.rol === 'Admin', 'bg-admin': user.rol == '' }"
+   >
       <form @submit.prevent="registrar" class="mt-3">
         <div class="card login-card shadow">
       <div class="card-body login-card-body">
@@ -76,6 +78,28 @@
                 </select>
             </div>
         </div>
+
+            <div v-if="user.rol == 'Admin'" class="mb-2 login-text-color d-flex ">
+              <div class="col me-2">
+            <label for="lastName">Rol <label class="text-danger">*</label> </label>
+                <select v-model="rol" class="form-select form-select-sm p-1" aria-label="Multiple select example"
+                  required>
+                  <option  class="btn-gray " value="Inversioniste">Inversor</option>
+                  <option  class="btn-gray " value="Cliente" >Cliente</option>
+                  <option  class="btn-gray " value="Null" >Sin rol</option>
+                </select>
+              </div>
+
+             <div class="col ms-2">
+            <label for="lastName">Categoria <label class="text-danger">*</label> </label>
+                <select v-model="categoria" id="userSelect" class="form-select form-select-sm p-1 " required>
+                  <option v-for="categoria in results" :key="categoria" :value="categoria.categoria_persona_id"  class="btn-gray "> 
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div> 
+
 
         <div class="mb-2 login-text-color d-flex ">
           <div class="col me-2">
@@ -161,30 +185,32 @@
           </div>
           <div class="col ms-2">
             <label >Genero <label class="text-danger">*</label></label>
-            <div className=" d-flex align-items-center gap-3 mt-2">
-              <div className="form-check">
+            <div class="d-flex align-items-center gap-3 mt-2">
+              <div class="form-check">
                 <input
-                  className="form-check-input"
+                  class="form-check-input"
                   type="radio"
                   name="gender"
                   value="mujer"
-                  onChange={handleValidGender}
+                  v-model="gender"
+                  @input="handleValidGender"
                   required
-                  onInvalid={handleInvalid}
+                  @invalid="handleInvalid"
                 />
-                <label className="form-check-label" htmlFor="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
                   Mujer
                 </label>
               </div>
-              <div className="form-check">
+              <div class="form-check">
                 <input
-                  className="form-check-input"
+                  class="form-check-input"
                   type="radio"
                   name="gender"
                   value="hombre"
-                  onChange={handleValidGender}
+                  v-model="gender"
+                  @input="handleValidGender"
                 />
-                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
                   Hombre
                 </label>
               </div>
@@ -233,6 +259,15 @@
           </div>
         </div>
         
+        <div class="form-check text-white custom-terminos py-1">
+            <input class="form-check-input" v-model="acepta_terminos" type="checkbox" id="flexCheckChecked" required   @invalid="handleInvalid"  @input="handleValid"/>
+            <label class="form-check-label" for="flexCheckChecked">
+              He leído y acepto los
+              <span :style="{ color: 'dark' }">Términos y condiciones</span>
+              y la
+              <span :style="{ color: 'dark' }">Política de privacidad</span>
+            </label>
+          </div>
         <div class="row text-center">
           <div class="my-3">
             <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75 ">
@@ -246,7 +281,7 @@
           </div>
         </div>
 
-          <div class="row text-center w-70">
+          <div v-if="user.rol != 'Admin'" class="row text-center w-70">
             <div class="col"><h5 class="login-text-color">¿Ya tienes una cuenta ?</h5></div>
             <div @click="$emit('changePage')" class="col cursor">
               <a class="nav-link registrar-link"> Iniciar Sesion </a>
@@ -266,7 +301,7 @@ import { getAge } from "@/helpers/utilities";
 import { countriesData } from '../helpers/dataCountries';
 import { haveLetterCapital,cleanFileds, haveLetter, validateName, validatePassword, validationEmail, validationNotEmptyFields, validationPass, tieneNumero, tieneCaracterEspecial, resetFileds } from '@/helpers/validatorsForm';
 
-const user = JSON.parse(localStorage.getItem('usuario'))
+const user = JSON.parse(localStorage.getItem('usuario')) || '';
 let baseURL = "http://localhost:3000/users";
 const isLoading = ref(false);
 
@@ -321,6 +356,11 @@ const handleInvalidEmail = (event) => {
 const handleInvalidDate = (event) => {
   event.target.setCustomValidity('Por favor, introduce una fecha valida');
 };
+
+const handleValidGender = (event)=>{
+  event.target.setCustomValidity('');
+
+}
 
 const handleName = (event) => {
   event.target.setCustomValidity('');
@@ -423,7 +463,7 @@ if(validatorForm()){
   const datos = {
     nombre: name.value,
     apellido: lastName.value,
-    edad: fechaCumple.value,
+    edad: edad.value,
     pais_residencia: countryName.value.name,
     rol: rol.value,
     codigo_pais: selectedCountry.value.code,
@@ -432,17 +472,18 @@ if(validatorForm()){
     numero_telefono: numero_telefono.value,
     acepta_terminos: acepta_terminos.value,
     correo: email.value,
-    username:userName,
-    gender:gender.value
+    username:'',
+    gender:gender.value,
+    registrado_por:user.correo || ''
   };
-  console.log('pasa');
-
+  console.log(datos);
+  let msg = ref(( datos.registrado_por == '' )? 'Usuario registrado exitosamente, revisa tu correo electronico':'Usuario registrado exitosamente')
   try {
     isLoading.value = true;
     await axios.post(baseURL, datos);    
     isLoading.value = false;
     emit('changePage');
-    alert("Usuario registrado exitosamente");
+    alert(msg.value);
   } catch (error) {
     isLoading.value = false;
     console.log(error);
@@ -457,6 +498,8 @@ if(validatorForm()){
 const generateUserName = ( emailUser ) =>{
     return emailUser.split('@')[0];
 }
+
+
 
 const validatorForm = () => {
 
@@ -487,6 +530,17 @@ ustom-abs-icon-eye:hover{
   color:#526379
 }
 
+.bg-admin{
+  background-image: url("../assets/images/register8.png");
+  
+}
+.bg-user{
+  background-image: url("../assets/images/2.png");
+
+}
+.custom-terminos{
+  font-size: 0.8rem;
+}
 .custom-abs-icon-eye {
     position: absolute; 
     left: 10px; 
@@ -551,9 +605,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 main {
-  background-image: url("../assets/images/register8.png");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
 }
 .swal-button-confirm {
   background-color: #4caf50;

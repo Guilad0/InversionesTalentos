@@ -47,10 +47,12 @@ const getUsers = (req, res) => {
         u.rol, 
         u.estado,
         i.ocupacion, 
+        i.imagen,
         i.descripcion, 
         i.monto_inversion, 
         i.cantidad_maxima_inversiones,
         i.preparacion, 
+        i.video,
         i.estudios, 
         i.vision,
         c.nombre as categoria
@@ -914,9 +916,16 @@ const getUserById = (req, res) => {
         u.username, 
         u.pais_residencia,
         u.edad, 
-        u.imagen, 
         u.rol, 
         u.estado,
+        u.codigo_pais,
+        u.numero_telefono,
+        u.genero,
+        u.estado,
+        u.created_at,
+        i.imagen,
+        u.verificado,
+        u.aprobado,
         i.ocupacion, 
         i.descripcion, 
         i.monto_inversion, 
@@ -942,7 +951,7 @@ const getUserById = (req, res) => {
       return;
     }
     res.status(200).json({
-      results,
+      results
     });
   });
 };

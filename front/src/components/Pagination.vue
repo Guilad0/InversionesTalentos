@@ -17,6 +17,9 @@
             </li>
             </button>
         </ul>
+        <div class="text-end pe-3">
+            <strong>Total {{ myRol }}s: </strong>{{ total }}
+        </div>
     </nav>
 </template>
 
@@ -37,6 +40,14 @@ defineProps({
     },
     isLoading: {
         type: Boolean,
+        required: true
+    },
+    total: {
+        type: Number,
+        required: true
+    },
+    myRol: {
+        type: String,
         required: true
     }
 });

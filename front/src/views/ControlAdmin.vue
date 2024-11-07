@@ -78,6 +78,7 @@ const showView  = ( typeView )=>{
    .border-custom{
         font-weight: 600;
         background-color: rgba(196, 196, 196, 0.315);
+
    }
  
 </style>
