@@ -9,7 +9,7 @@
             <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
           </div>
           <div class="col-md-6">
-            <p>Total de Tokens por Devolver: {{ tokensRecibidosCliente }} </p>
+            <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
           </div>
         </div>
       </div>
@@ -279,6 +279,7 @@ const dolaresInversionista = ref(0);
 const tokensCompradosInversionista = ref(0);
 const tokensInvertidosInversionista = ref(0);
 const tokensRecibidosCliente = ref(0);
+const tokensDeudasCliente = ref(0);
 
 const monto_tokens_invertir = ref(0);
 const ganancia_estimada = ref(0);
@@ -456,12 +457,16 @@ const inversionistaInvertir = async () => {
     console.error('Error al invertir los tokens:', error);
   }
   monto_tokens_invertir.value = 0;
+  obtenerTokens_Inversionista();
+  obtenerTokens_Inversionista_Invertidos();
+  location.reload();
 };
 
 const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
-    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos;
+    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
+    tokensDeudasCliente.value = data.data[0].totalTokensDeudas;
   } catch (error) {
     console.log(error);
   }
@@ -528,6 +533,11 @@ const solicitarRetiro = async () => {
   montoDolares.value = 0;
   comision_retiro.value = 0;
   dolares.value = 0;
+  obtenerTokens_Cliente();
+  obtenerTokens_Inversionista();
+  obtenerTokens_Inversionista_Invertidos();
+  obtenerSolicitudes();
+  location.reload();
 }
 
 </script>

@@ -54,7 +54,8 @@ router.get("/inversionista_retiros/:id", function (req, res, next) {
 
   var query = ` SELECT *
                 FROM solicitudes_retiro                
-                WHERE usuario_id = ${req.params.id};`;
+                WHERE usuario_id = ${req.params.id}
+                ORDER BY retiro_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -74,7 +75,8 @@ router.get("/inversionista_retiros/:id", function (req, res, next) {
 router.get("/cliente_retiros/:id", function(req, res, next){
   var query = ` SELECT *
                 FROM solicitudes_retiro                
-                WHERE usuario_id = ${req.params.id};`;
+                WHERE usuario_id = ${req.params.id}
+                ORDER BY retiro_id DESC;`;
   connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
@@ -97,7 +99,8 @@ router.get("/inversiones_vencidas/:id", function(req, res, next){
   var query = ` SELECT *
                 FROM inversiones                
                 WHERE cliente_id = ${req.params.id}
-                AND fecha_devolucion <= CURRENT_DATE();`;
+                AND fecha_devolucion <= CURRENT_DATE()
+                ORDER BY inversion_id DESC;`;
   connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
