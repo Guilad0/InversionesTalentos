@@ -6,18 +6,19 @@ import { orderByName, orderByEdad, orderByPrice } from '@/helpers/utilities';
 import CardSm from '@/components/CardSm.vue';
 import FilterClients from '@/components/FilterClients.vue';
 import FilterClientsSm from '@/components/FilterClientsSm.vue';
+import PlaceholderCards from '@/components/placeholder/PlaceholderCards.vue';
 
 const { results: categories, getData: getCategories } = useFetchData(ref('/categories'));
 const activeCategory = ref(null);
 const path = ref('/clients')
-const { results: clients, getData: getClients } = useFetchData(path);
+const { results: clients, getData: getClients,isLoading } = useFetchData(path);
 const name = ref('')
 
 const findByname = (categoryId) => {
-    activeCategory.value = categoryId;
-    path.value = '/clients/findBy/' + categoryId;
-    getClients();
-    name.value = '';
+        activeCategory.value = categoryId;
+        path.value = '/clients/findBy/' + categoryId;
+        getClients();
+        name.value = '';
 };
 
 const getAll = () => {
@@ -47,6 +48,9 @@ const handleName = () => {
         path.value = '/clients/filterByName/' + name.value;
     } else {
         name.value = ''
+        activeCategory.value = 'undefined';
+        path.value = '/clients/';
+        getClients()
     }
 
 }
@@ -98,8 +102,11 @@ onMounted(() => {
         <div class="container mt-3 ">
             <div class="content" v-if="clients.length > 0">
                 <div class="d-none d-sm-block">
-                    <div class="d-flex flex-wrap justify-content-start">
-                        <CardClient v-for="client in clients" :key="client.usuario_id" :client="client" class="fade-in card-client"/>
+                    <div v-if="!isLoading" class="d-flex flex-wrap justify-content-start">
+                        <CardClient  v-for="client in clients" :key="client.usuario_id" :client="client" class="animate__animated animate__fadeIn card-client"/>
+                    </div>
+                    <div v-else class="d-flex flex-wrap justify-content-start" >
+                        <PlaceholderCards  v-for="client in 12"  :key="client" class=""/>
                     </div>
                 </div>
 
@@ -108,9 +115,9 @@ onMounted(() => {
 
                 </div>
             </div>
-            <div class="content mt-4 rounded-2 shadow" v-if="clients.length == 0">
+            <div class="content mt-4 rounded-2 shadow animate__animated animate__fadeIn" v-if="clients.length == 0 && !isLoading ">
                 <div class="alert alert-gray text-center py-3 " role="alert">
-                  <img src="../assets/svg/alert-2-svgrepo-com.svg" width="20" > No se encontraron clientes con el nombre de <strong>{{ name }}</strong>
+                  <img src="../assets/svg/alert-2-svgrepo-com.svg" width="20" > No se encontraron talentos 
                 </div>
             </div>
         </div>
@@ -141,8 +148,13 @@ main {
 input:focus {
     border: 1px solid var(--white-anti-flash-color);
 }
+.card-client {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .card-client:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); */
 }
+
 </style>
