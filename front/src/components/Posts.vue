@@ -46,7 +46,9 @@
                   </button>
                   <button
                     class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
-                    @click="editar(item.post_id)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop"
+                    @click="editar(item)"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
@@ -56,28 +58,84 @@
           </table>
         </div>
       </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Edición de Guía</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="contenido" class="form-label">Contenido</label>
+                <textarea
+                  id="contenido"
+                  class="form-control"
+                  rows="5"
+                  v-model="contenido"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="imagen_portada" class="form-label">Imagen de portada</label>
+                <input
+                  type="file"
+                  id="imagen_portada"
+                  class="form-control"
+                  @change="onFileChange"
+                />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="actualizarPost"
+              >
+                Actualizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
 
 <script setup>
-import router from "@/router";
 import axios from "axios";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const baseURL = "http://localhost:3000/";
 const posts = ref([]);
 
-const usuario_id = ref("");
-const categoria_id = ref("");
 const titulo = ref("");
-const resumen = ref("");
 const imagen_portada = ref(null);
 const contenido = ref("");
 const estado = ref(false);
-const nombreCategoria = ref("");
-
 const seleccionado = ref({});
+
+const router = useRouter();
 
 onMounted(() => {
   cargarDatos();
@@ -99,6 +157,53 @@ const cambiarEstado = async (post_id) => {
   } catch (error) {
     console.error("Error al cambiar el estado:", error);
   }
+};
+
+const onFileChange = (event) => {
+  imagen_portada.value = event.target.files[0];
+};
+
+const actualizarPost = async () => {
+  if (!contenido.value) {
+    alert("El campo de contenido es obligatorio");
+    return;
+  }
+  try {
+    const formData = new FormData();
+    formData.append("titulo", seleccionado.value.titulo);
+    formData.append("contenido", contenido.value);
+    if (imagen_portada.value) {
+      formData.append("imagen_portada", imagen_portada.value);
+    }
+    formData.append("estado", 1);
+
+    const response = await axios.put(
+      `${baseURL}posts/${seleccionado.value.post_id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      alert("Post actualizado exitosamente");
+      cargarDatos();
+
+      const modal = document.getElementById("staticBackdrop");
+      const bsModal = bootstrap.Modal.getInstance(modal);
+      bsModal.hide();
+    }
+  } catch (error) {
+    console.error("Error al actualizar el post:", error);
+  }
+};
+
+const editar = (item) => {
+  seleccionado.value = item;
+  contenido.value = item.contenido;
+  imagen_portada.value = null;
 };
 </script>
 
@@ -147,5 +252,11 @@ td {
 
 .table {
   width: 150%;
+}
+
+.modal-dialog {
+  max-height: 80% !important;
+  max-width: 80% !important;
+  margin: 0 auto;
 }
 </style>

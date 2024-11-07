@@ -100,18 +100,7 @@
                   </button>
                 </td>
                 <td v-if="item.estado == 'Aprobado'">
-                  <button
-                    class="btn btn-warning btn-sm mx-1"
-                    @click="pendiente(item.retiro_id)"
-                  >
-                    <i class="fa fa-clock"></i>
-                  </button>
-                  <button
-                    class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
-                    @click="eliminado(item.retiro_id)"
-                  >
-                    <i class="fa fa-trash"></i>
-                  </button>
+                  <!-- Botones específicos para el estado Aprobado -->
                 </td>
                 <td v-if="item.estado == 'Rechazado'">
                   <button
@@ -134,6 +123,7 @@
 
         <div class="d-flex justify-content-center">
           <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
+            <!-- Los botones de paginación se mantienen, pero se asegura que pase el filtro -->
             <ul class="pagination">
               <li v-if="paginacion.previous == null" class="page-item disabled">
                 <button class="page-link color-gray fw-bolder rounded-5 border border-3">
@@ -142,7 +132,7 @@
               </li>
               <li v-else class="page-item">
                 <button
-                  @click="obtenerDatos(paginacion.previous)"
+                  @click="obtenerDatos(paginacion.previous, search, currentNav)"
                   class="page-link color-gray fw-bolder rounded-5 border border-3"
                 >
                   <i class="fa-solid fa-arrow-left"></i>
@@ -155,7 +145,7 @@
                 :class="paginacion.current === page ? 'active' : ''"
               >
                 <button
-                  @click="obtenerDatos(page)"
+                  @click="obtenerDatos(page, search, currentNav)"
                   class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
                 >
                   {{ page }}
@@ -169,7 +159,7 @@
               </li>
               <li v-else class="page-item">
                 <button
-                  @click="obtenerDatos(paginacion.next)"
+                  @click="obtenerDatos(paginacion.next, search, currentNav)"
                   class="page-link color-gray fw-bolder rounded-5 border border-3"
                 >
                   <i class="fa-solid fa-arrow-right"></i>
@@ -218,7 +208,8 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
 const aprobado = async (retiro_id) => {
   try {
     const { data } = await axios.patch(BaseURL + "/aprobar/" + retiro_id);
-    obtenerDatos();
+    // Al aprobar, se vuelve a cargar la lista de pendientes
+    obtenerDatos(1, "", "Pendiente");
   } catch (error) {
     console.log(error);
   }
@@ -227,7 +218,8 @@ const aprobado = async (retiro_id) => {
 const rechazado = async (retiro_id) => {
   try {
     const { data } = await axios.patch(BaseURL + "/rechazar/" + retiro_id);
-    obtenerDatos();
+    // Al rechazar, se vuelve a cargar la lista de pendientes
+    obtenerDatos(1, "", "Pendiente");
   } catch (error) {
     console.log(error);
   }
@@ -236,7 +228,8 @@ const rechazado = async (retiro_id) => {
 const pendiente = async (retiro_id) => {
   try {
     const { data } = await axios.patch(BaseURL + "/pendiente/" + retiro_id);
-    obtenerDatos();
+    // Al poner en pendiente, se recarga la lista de rechazados
+    obtenerDatos(1, "", "Rechazado");
   } catch (error) {
     console.log(error);
   }
@@ -245,7 +238,8 @@ const pendiente = async (retiro_id) => {
 const eliminado = async (retiro_id) => {
   try {
     const { data } = await axios.patch(BaseURL + "/" + retiro_id);
-    obtenerDatos();
+    // Al eliminar, recargar la lista de pendientes
+    obtenerDatos(1, "", "Pendiente");
   } catch (error) {
     console.log(error);
   }

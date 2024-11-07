@@ -14,7 +14,7 @@
           <img
             :src="item.imagen_portada ? item.imagen_portada : '/assets/empty_img.jpg'"
             class="card-img-top object-fit-cover"
-            style="height: 200px"
+            :style="{ height: '450px' }"
             alt="Image"
           />
           <div class="card-body">
