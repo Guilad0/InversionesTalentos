@@ -44,10 +44,10 @@ const getUsers = (req, res) => {
         u.edad, 
         u.aprobado,
         u.verificado,
+        u.imagen,
         u.rol, 
         u.estado,
         i.ocupacion, 
-        i.imagen,
         i.descripcion, 
         i.monto_inversion, 
         i.cantidad_maxima_inversiones,
@@ -132,6 +132,7 @@ const getUsersByname = (req, res) => {
         u.correo, 
         u.categoria_persona_id,
         u.username, 
+        u.imagen,
         u.pais_residencia,
         u.aprobado,
         u.edad, 
@@ -420,6 +421,7 @@ const postUser = async (req, res) => {
     categoria_persona_id,
     username,
     edad,
+    registrado_por,
     rol,
     gender,
   } = req.body;
@@ -437,7 +439,7 @@ const postUser = async (req, res) => {
       });
     }
     const sql =
-      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion,registrado_por, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
     let passwordHash = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomBytes(20).toString("hex");
     const values = [
@@ -454,6 +456,7 @@ const postUser = async (req, res) => {
       categoria_persona_id,
       rol,
       verificationCode,
+      registrado_por,
       gender
     ];
  

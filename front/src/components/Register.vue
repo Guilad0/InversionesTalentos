@@ -328,7 +328,7 @@ const control_email = ref(null);
 const existsEmail = ref(null)
 
 const rol = ref("Null");
-const categoria = ref(6);
+const categoria = ref(16);
 
 const password = ref("");
 const confirmPassword = ref("");
@@ -472,7 +472,7 @@ if(validatorForm()){
     numero_telefono: numero_telefono.value,
     acepta_terminos: acepta_terminos.value,
     correo: email.value,
-    username:'',
+    username:name.value + ' - ' + lastName.value,
     gender:gender.value,
     registrado_por:user.correo || ''
   };

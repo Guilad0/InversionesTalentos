@@ -2,20 +2,20 @@
 
     <div class="container-fluid">
 
-        <div class="row custom-row ">
+        <div class="d-flex custom-row ">
 
-            <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
+            <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0 ">
 
-                <div class="card text-center position-relative">
+                <div class="card  border-0 text-center position-relative rounded-start">
 
-                    <img src="../assets/images/profesional.png" alt="Profesionales">
+                    <img src="../assets/images/profesional.png" alt="Profesionales" class="rounded-start">
 
                     <div
                         class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
 
                         <h5 class="card-title">Eres un profesional en busca de tu primer capital?</h5>
 
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-6">
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 " @click="$emit('handleRol','Cliente')">
                             Únete Ahora
                             <span></span>
                         </button>
@@ -28,16 +28,16 @@
 
             <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
 
-                <div class="card text-center position-relative">
+                <div class="card  border-0 text-center position-relative rounded-end">
 
-                    <img src="../assets/images/profesional.png" alt="Inversor">
+                    <img src="../assets/images/profesional.png" alt="Inversor" class="rounded-end">
 
                     <div
                         class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
 
                         <h5 class="card-title">Buscas profesionales para invertir?</h5>
 
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-6">
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 border-0" @click="$emit('handleRol','Inversionista')">
                             Únete Ahora
                             <span></span>
                         </button>
@@ -54,15 +54,15 @@
 
 </template>
 
-<script>
-export default {
-    name: "Unete",
-};
+<script setup>
+   
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
+
+
 
 .overlay {
     background-color: rgba(0, 0, 0, 0.5);

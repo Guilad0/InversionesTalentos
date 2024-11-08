@@ -5,9 +5,10 @@ const conexion = require('../database');
 // const path = require('path');
 // const { uploadFile } = require('../helpers/uploadImage');
 // const { v4: uuidv4 } = require('uuid');
-// const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2;
 // const transporter = require('../helpers/mailer');
 // const crypto = require('crypto');
+cloudinary.config(process.env.CLOUDINARY_URL);
 
 
 const getAllClientesWithInfo = (req, res) => {
@@ -152,65 +153,76 @@ const getAllClientesByFilterName =  (req, res) => {
 }
 
 const uploadimageUserCloudinary = (req, res) => {
+    console.log("Archivos recibidos:", req.files);
+
+    // Validación de archivo
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
-        res.status(400).json({
+        return res.status(400).json({
             msg: 'Sin archivos para subir'
         });
-        return;
     }
 
+    // Verifica si el usuario existe
     let query = 'SELECT * FROM usuarios WHERE usuario_id = ?';
-    conexion.query(query, [req.params.id],async (err, results) => {
+    conexion.query(query, [req.params.id], async (err, results) => {
         if (err) {
-            res.status(500).json({
-                err,
-            });
-            return;
+            console.error("Error de consulta SQL:", err);
+            return res.status(500).json({ err });
         }
-        console.log(results);
+
         if (results.length === 0) {
-            return res.status(404).json({
-                msg: 'Usuario no encontrado',
-            });
+            return res.status(404).json({ msg: 'Usuario no encontrado' });
         }
 
         try {
-            let extension = req.files.image.name.split('.');
-            extension = extension[extension.length - 1];
-            if (extension !== 'jpg' && extension !== 'png' && extension !== 'jpeg') {
-                return res.status(404).json({
-                    msg: 'Extensiones de imagen no permitidas',
-                });
+            // Verificación de extensión del archivo
+            console.log('aquiiiiiiiiiiiii', req.files.image);
+            const extension = req.files.image.name.split('.').pop();
+            if (!['jpg', 'png', 'jpeg'].includes(extension)) {
+                return res.status(400).json({ msg: 'Extensiones de imagen no permitidas' });
             }
-            cloudinary.uploader.destroy(`clients/${'clients/'+req.params.id}`);
-            const { tempFilePath } = req.files.image;
-            const result = await cloudinary.uploader.upload(tempFilePath, {
-                    public_id: req.params.id,
-                    folder: 'clients'
+
+            // Destrucción de imagen anterior
+            await cloudinary.uploader.destroy(`clients/${req.params.id}`, (error, result) => {
+                if (error) console.error("Error al eliminar imagen en Cloudinary:", error);
+                else console.log("Imagen eliminada en Cloudinary:", result);
             });
-            const { secure_url } = result;
-            query = 'update usuarios set imagen = ? where usuario_id = ?';
-            conexion.query(query, [secure_url, req.params.id], async (err) => {
+
+            // Subida de nueva imagen
+            const { tempFilePath } = req.files.image;
+            const uploadResult = await cloudinary.uploader.upload(tempFilePath, {
+                public_id: req.params.id,
+                folder: 'clients'
+            });
+
+            // Obtiene la URL segura de Cloudinary
+            const { secure_url } = uploadResult;
+
+            // Actualización de la URL de la imagen en la base de datos
+            query = 'UPDATE usuarios SET imagen = ? WHERE usuario_id = ?';
+            conexion.query(query, [secure_url, req.params.id], (err) => {
                 if (err) {
-                    return res.status(404).json({
-                        msg: 'Usuario no encontrado/Error al guardar nombre de imagen',
+                    console.error("Error al actualizar imagen en la base de datos:", err);
+                    return res.status(500).json({
+                        msg: 'Error al guardar la URL de la imagen',
                     });
                 }
-                
-                res.status(201).json({
-                    url: secure_url
-                })
-            })
 
+                res.status(201).json({
+                    msg: "Imagen actualizada con éxito",
+                    url: secure_url
+                });
+            });
         } catch (error) {
+            console.error("Error al procesar la imagen:", error);
             return res.status(500).json({
                 msg: 'Error al procesar la imagen',
                 error
             });
         }
-
     });
 };
+
 
 /**
  *  Esta funsion modifica los datos mas relevantes de  un inversor/cliente
@@ -349,8 +361,70 @@ const putInvestors = async (req, res) => {
       });
     });
   };
-  
 
+  const changeRolUser = (req,res)=>{
+    const { usuario_id, rol }  = req.body;
+    console.log(req.body);
+    let query = 'select * from usuarios where usuario_id = ?';
+    conexion.query(query,[usuario_id],(err,results) =>{
+        if( err || results.length == 0 ){
+            res.status(500).json({
+                err,
+                msg:'Erro al buscar usuario'
+            })
+            return;
+        }
+        query = 'update usuarios set rol = ? where usuario_id= ?';
+        conexion.query(query,[rol,usuario_id], (err,results) => {
+            if( err ){
+                res.status(500).json({
+                    err,
+                    msg:'Error al actualizar el rol'
+                })
+                return;
+            }
+            res.status(201).json({
+                msg:'Se cambio el rol'
+            })
+        })
+    })
+  }
+  
+  const getRol = (req, res) =>{
+    console.log(req.query);
+    const { id } = req.query;
+    let query = 'select rol from usuarios where usuario_id = ?';
+    conexion.query(query,[id], (err,results) =>{
+        if( err || results.length == 0 ){
+            res.status(500).json({
+                err,
+                msg:'Erro al buscar usuario'
+            })
+            return;
+        }
+        res.status(200).json({
+            rol:results[0].rol
+        })
+    })
+  }
+
+  const getuserById =(req,res)=> {
+    
+    const { id } = req.query;
+    let query = 'select * from usuarios where usuario_id = ?';
+    conexion.query(query,[id], (err,results) =>{
+        if( err || results.length == 0 ){
+            res.status(500).json({
+                err,
+                msg:'Erro al buscar usuario'
+            })
+            return;
+        }
+        res.status(200).json({
+            results
+        })
+    })
+  }
 module.exports = {
     getAllClientesWithInfo, 
     getAllClientesByCategory,
@@ -358,5 +432,8 @@ module.exports = {
     uploadimageUserCloudinary,
     putInvestors,
     addInfinversionista,
-    getExperiencia
+    getExperiencia,
+    changeRolUser,
+    getRol,
+    getuserById
 }
