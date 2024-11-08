@@ -408,6 +408,10 @@ const actualizar = async () => {
       icon: "error",
       title: "Oops...",
       text: "Todos los campos son obligatorios",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)', 
     });
     return;
   }
