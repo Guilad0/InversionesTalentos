@@ -18,8 +18,8 @@
                             <button class="btn  btn-outline-secondary rounded-4 btn-sm "><small>42 Lefts</small></button>
                         </div>
                         <div class="custom-absolute">
-                            <img :src="`http://localhost:3000/categories/image/${props.client.categoria_persona_id}`"
-                                width="25" class=" rounded-circle" alt="">
+                            <!-- <img :src="`http://localhost:3000/categories/image/${props.client.categoria_persona_id}`"
+                                width="25" class=" rounded-circle" alt=""> -->
                         </div>
                       
                     </div>

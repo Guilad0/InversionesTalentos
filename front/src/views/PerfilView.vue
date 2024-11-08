@@ -1,7 +1,9 @@
 <template>
-  <div class="my-5">
-    <div class="d-flex">
+  <div>
+    <div v-if="!loading" class="my-5">
+    <div v-if="rol == 'Cliente'|| rol == 'Inversionista' " class="d-flex">
       <div class="col-2">
+        <label class="px-5"><strong>Rol</strong>: {{ rol }} </label>
         <SidebarProfile />
       </div>
       <div class="col-5 d-flex justify-content-center">
@@ -155,7 +157,7 @@
             <div class="offcanvas-body">
                 <p class="text-white  text-center pb-3">Progreso de registro (0/4)</p>
                 <ul class="text-white">
-                  <li class="mb-3">
+                  <li class="mb-3" v-if="rol== 'Cliente'">
                     <div class="d-flex m-auto align-items-center">
                       <div class="col"> <i class="fa-solid fa-trophy"></i> - logros </div> 
                       <div class="col">
@@ -164,7 +166,7 @@
                       </div>
                     </div>
                   </li>
-                  <li class="mb-3">
+                  <li class="mb-3" v-if="rol== 'Cliente'">
                     <div class="d-flex m-auto align-items-center ">
                       <div class="col"><i class="fa-solid fa-shield-halved"></i> - Experiencia </div> 
                       <div class="col">
@@ -173,7 +175,16 @@
                       </div>
                     </div>
                   </li>
-                  <li class="mb-3">
+                  <li class="mb-3" v-if="rol== 'Cliente'">
+                    <div class="d-flex m-auto align-items-center">
+                      <div class="col">  <i class="fas fa-info-circle"></i> - Informacion </div> 
+                      <div class="col">
+                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
+                        </RouterLink>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="mb-3" v-if="rol == 'Inversionista'">
                     <div class="d-flex m-auto align-items-center">
                       <div class="col">  <i class="fas fa-info-circle"></i> - Informacion </div> 
                       <div class="col">
@@ -184,14 +195,27 @@
                   </li>
                   <li class="mb-3">
                     <div class="d-flex m-auto align-items-center">
-                      <div class="col">  <i class="fa-solid fa-image-portrait"></i> - Selfie </div> 
-                      <div class="col">
-                        <RouterLink to="/" class="nav-link py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
-                        </RouterLink>
+                        <div class="col">
+                          <i class="fa-solid fa-image-portrait"></i> - Imagen
+                        </div> 
+                        <div class="col d-flex align-items-center">
+                          <button v-if="!imagen_portada" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="selectImage">Abrir</button>
+                          <button v-if="imagen_portada" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="saveImage">
+                             <label v-if="!loadingButton">Enviar</label>
+                             <label v-if="loadingButton">
+                              <div class="spinner-border text-primary spinner-border-sm" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+
+                             </label>
+                            </button>
+                        <i v-if="imagen_portada" class="me-2 fa-solid fa-image text-light fs-5" style="color: green;"></i>
+                        <i v-if="imagen_portada" class=" fa-solid fa-ban text-light fs-5 cursor" @click="cleanImage" style="color: green;"></i>
+                        </div>
+                        <input  type="file" ref="fileInput" accept="image/*" style="display: none;"  @change="onFileChange">
                       </div>
-                    </div>
                   </li>
-                  <li class="mb-3">
+                  <li class="mb-3" v-if="rol=='Cliente'">
                     <div class="d-flex m-auto align-items-center justify-content-between">
                       <div class="col "> <i class="fa-solid fa-play"></i> - Presentacion </div> 
                       <div class="col ">
@@ -218,21 +242,41 @@
         </div>
       </div>
     </div>
+    <div v-else >
+      <Unete @handleRol="handleRol"/>
+    </div>
+  </div>
+  <div v-else class="container-custom d-flex justify-content-center align-items-center" >
+      <div class="col text-center">
+        <div class="spinner-grow text-dark" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+      </div>
+  </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import axios from "axios";
+import { handleError, onMounted, ref,watch } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import SidebarProfile from "@/components/SidebarProfile.vue";
+import Unete from "@/components/Unete.vue";
+import axios from 'axios'
+    const route = useRouter();
+    
+    const fileInput = ref(null);
+    const selectImage = () => {
+      fileInput.value.click();
+    };
+    
+    const handleFileChange = () => {
+      isImageSelected.value = fileInput.value.files.length > 0;
+    };
 
-const route = useRouter();
 
 let baseURL = "http://localhost:3000/users";
-
-let miId = ref(0);
+let miId = ref('');
 let nombre = ref("");
 let apellido = ref("");
 let correo = ref("");
@@ -240,19 +284,59 @@ let codigopais = ref("");
 let telefono = ref("");
 let pais = ref("");
 let userName = ref("");
+const rol = ref("");
+const imagen_portada = ref(null);
 
 onMounted(() => {
   obtenerDatos();
-  console.log(userName.value);
-  console.log(pais.value);
-  
-  
-  
+  getRol()
 });
 
+const onFileChange = (event) => {
+  imagen_portada.value = event.target.files[0];
+  console.log("Archivo seleccionado:", imagen_portada.value); // Verificación del archivo
+};
 
+const cleanImage = () => {
+      imagen_portada.value = null; // Limpiar referencia de la imagen
+      if (fileInput.value) {
+        fileInput.value.value = ''; // Limpiar el input de archivo en el DOM
+      }
+    };
+
+const loadingButton = ref(false)
+
+const saveImage = async () => {
+  const formData = new FormData();
+  if (imagen_portada.value) {
+    formData.append("image", imagen_portada.value);
+  } else {
+    console.error("No se ha seleccionado una imagen.");
+    return;
+  }
+
+  try {
+    loadingButton.value = true;
+    const response = await axios.post(`http://localhost:3000/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log('subido ');
+  } catch (error) {
+    console.error("Error al cargar la imagen:", error.response ? error.response.data : error.message);
+  }finally{
+    setTimeout(() => {
+    loadingButton.value = false
+  }, 500);
+  }
+  
+};
+
+
+
+const usuario = JSON.parse(localStorage.getItem("usuario"));
 const obtenerDatos = () => {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
   miId.value = usuario.id;
   nombre.value = usuario.nombre;
   apellido.value = usuario.apellido;
@@ -261,7 +345,55 @@ const obtenerDatos = () => {
   telefono.value = usuario.numero_telefono;
   pais.value = usuario.pais_residencia;
   userName.value = usuario.correo.split("@")[0];
+  
 };
+
+const watchChange = ref('');  
+
+    watch(watchChange, (newValue, oldValue) => {
+      console.log('Cambio');
+      watchChange.value +=1;
+      obtenerDatos()
+
+    });
+
+    const loading = ref(false)
+const getRol = async ()=>{
+  try {
+    loading.value =true
+    const {data} = await axios.get(`http://localhost:3000/clients/getRol/user?id=${usuario.usuario_id}`);
+    rol.value = data.rol;
+  } catch (error) {
+    console.log(error);    
+  }finally{
+    setTimeout(() => {
+      loading.value =false
+    }, 500);
+
+  }
+  
+}
+
+const handleRol = async (role)=>{
+  const datos = {
+    usuario_id:usuario.usuario_id,
+    rol:role
+  }
+    try {
+        await axios.put('http://localhost:3000/clients/changeRol/user',datos)
+        const {data} =  await axios.get( `http://localhost:3000/clients/getUserById/user/?id=${usuario.usuario_id}` )
+        console.log(data.results[0]);
+        rol.value = data.results[0].rol;
+        localStorage.setItem("usuario", JSON.stringify(data.results[0]));
+        alert('Cambio de rol');
+        // window.location.reload();
+
+    } catch (error) {
+      console.log(error);
+    }
+
+ 
+}
 
 const actualizar = async () => {
   if (
@@ -298,6 +430,10 @@ const actualizar = async () => {
 </script>
 
 <style scoped>
+.container-custom{
+  height: 85vh;
+}
+
 .perfilbutton {
   color: white;
   background-color: var(--jet-color);

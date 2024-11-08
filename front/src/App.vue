@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue';
-import Unete from './components/Unete.vue';
+
 import Footer from './components/Footer.vue';
 import WhatsAppIco from './components/WhatsAppIco.vue';
 
@@ -12,7 +12,7 @@ import WhatsAppIco from './components/WhatsAppIco.vue';
     <Navbar />
     <RouterView />     
     <ContactComponent /> 
-    <Unete />     
+      
     <Footer />
     <WhatsAppIco />
   </div>

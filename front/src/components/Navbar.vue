@@ -88,7 +88,7 @@
             <RouterLink
               class="nav-link user-icon pb-1"
               to="perfil"
-              v-if="rol =='Cliente' || rol == 'Inversionista'"
+              v-if="rol =='Cliente' || rol == 'Inversionista' || rol == 'Null' "
             >
              <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`" class="rounded-circle me-2" width="30" alt="">
               
@@ -96,7 +96,7 @@
             </RouterLink>
             <RouterLink class="nav-link user-icon" to="sign-login">
               <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i> 
-              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout()"></i>
+              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
             </RouterLink>
           </div>
         </div>
@@ -107,7 +107,7 @@
 
 <script setup>
 import { isAuthenticated } from '@/helpers/Authenticator';
-
+import axios from 'axios';
 import { ref, onMounted,watch } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -116,8 +116,9 @@ const rol = ref('');
 const nombre = ref('');
 const apellido = ref('');
 
-const updateRole = () => {
-  const storedUser = JSON.parse(localStorage.getItem('usuario'));
+let storedUser = JSON.parse(localStorage.getItem('usuario'));
+const updateRole = async() => {
+  storedUser = JSON.parse(localStorage.getItem('usuario'));
   rol.value = storedUser?.rol || ''; 
   nombre.value = storedUser?.nombre || ''; 
   apellido.value = storedUser?.apellido || ''; 
