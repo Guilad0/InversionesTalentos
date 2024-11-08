@@ -97,6 +97,20 @@ const clearId = ()=>{
     typeForm.value = '';
 }
 
+const updateRol = async (usuario_id, newRol) => {
+    try {
+        const response = await axios.patch(`http://localhost:3000/roles/updateRole/${usuario_id}`, { rol: newRol });
+        if (response.status === 200) {
+            notyf.success("Rol actualizado correctamente");
+            getData();
+        }
+    } catch (err) {
+        console.error(err);
+        notyf.error("Error al actualizar el rol");
+    }
+};
+
+
 </script>
 <template>
     <main class="bg-light">
@@ -203,9 +217,17 @@ const clearId = ()=>{
                             </td>
 
                         
-                            <td>
+                            <!-- <td>
                                 {{ user.rol }}
-                            </td>
+                            </td> -->
+                            <select v-model="user.rol" @change="updateRol(user.usuario_id, user.rol)"
+                                class="form-select">
+                                <option value="Inversionista">Inversionista</option>
+                                <option value="Cliente">Cliente</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Null">Null</option>
+                            </select>
+
                             <td>
                                 <div class="form-check form-switch">
                                     <div class="form-check form-switch ">
