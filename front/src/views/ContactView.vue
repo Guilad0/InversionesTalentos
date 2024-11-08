@@ -1,6 +1,6 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center custom-font ">
-    <form class="card shadow p-5 w-50 m-5 animate__animated animate__fadeIn " >
+  <div class="container d-flex justify-content-center align-items-center custom-font">
+    <form class="card shadow p-5 w-50 m-5 animate__animated animate__fadeIn">
       <h3 class="text-center py-2 text-form-contact">
         Déjanos tu comentario llenando este formulario
       </h3>
@@ -83,14 +83,17 @@
 
       <div class="text-center">
         <button
-        type="submit"
-        @click="registerComment($event)"
-        class="btn btn-form-contact btn-gray rounded-5 w-75"
-      >
-        Enviar
-      </button>
+          type="submit"
+          @click="registerComment($event)"
+          class="btn btn-form-contact btn-gray rounded-5 w-75"
+        >
+          Enviar
+        </button>
       </div>
     </form>
+  </div>
+  <div>
+    <Unete />
   </div>
 </template>
 
@@ -101,6 +104,7 @@ import Swal from "sweetalert2";
 import iziToast from "izitoast";
 
 import { useRouter } from "vue-router";
+import Unete from "../components/Unete.vue";
 const route = useRouter();
 console.log(route.currentRoute.value.path);
 
@@ -171,7 +175,7 @@ const registerComment = async () => {
   event.preventDefault();
   /**
   validarCampo('nombre');
-  validarCampo('apellido');  
+  validarCampo('apellido');
   validarCampo('email');
   */
 

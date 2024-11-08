@@ -1,31 +1,39 @@
 <template>
-  <div class="container py-5">
-    <div class="accordion custom-accordion" id="accordionExample">
-      <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
-        <h2 class="accordion-header" :id="'heading-' + index">
-          <button
-            class="accordion-button custom-accordion-button"
-            type="button"
-            :class="{ collapsed: openIndex !== index }"
-            @click="toggleAccordion(index)"
-            aria-expanded="openIndex === index"
-            :aria-controls="'collapse-' + index"
+  <div>
+    <div class="container py-5">
+      <div class="accordion custom-accordion" id="accordionExample">
+        <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
+          <h2 class="accordion-header" :id="'heading-' + index">
+            <button
+              class="accordion-button custom-accordion-button"
+              type="button"
+              :class="{ collapsed: openIndex !== index }"
+              @click="toggleAccordion(index)"
+              aria-expanded="openIndex === index"
+              :aria-controls="'collapse-' + index"
+            >
+              {{ faq.pregunta }}
+            </button>
+          </h2>
+          <div
+            :id="'collapse-' + index"
+            class="accordion-collapse collapse"
+            :class="{ show: openIndex === index }"
+            :aria-labelledby="'heading-' + index"
+            data-bs-parent="#accordionExample"
           >
-            {{ faq.pregunta }}
-          </button>
-        </h2>
-        <div
-          :id="'collapse-' + index"
-          class="accordion-collapse collapse"
-          :class="{ show: openIndex === index }"
-          :aria-labelledby="'heading-' + index"
-          data-bs-parent="#accordionExample"
-        >
-          <div class="accordion-body custom-accordion-body" v-html="faq.respuesta"></div>
+            <div
+              class="accordion-body custom-accordion-body"
+              v-html="faq.respuesta"
+            ></div>
+          </div>
         </div>
       </div>
+      <Contact />
     </div>
-    <Contact />
+    <div>
+      <Unete />
+    </div>
   </div>
 </template>
 
@@ -33,7 +41,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import Contact from "../components/ContactComponent.vue";
-
+import Unete from "../components/Unete.vue";
 const faqs = ref([]);
 const openIndex = ref(null);
 
