@@ -20,6 +20,10 @@
                     :class="{'border-custom': view === 'categorias'}" >
                     <img src="../assets/svg/tags-category-categories-labels-svgrepo-com.svg" width="25" class="me-2">Categorias
                     </li>
+                    <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('coment')"
+                    :class="{'border-custom': view === 'coment'}" >
+                    <img src="../assets/svg/like.svg" width="25" class="me-2">Comentarios y Reseñas
+                    </li>
                     <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('reclamos')"
                     :class="{'border-custom': view === 'reclamos'}" >
                     <img src="../assets/svg/consultas.svg" width="25" class="me-2">Consultas y Reclamos
@@ -36,6 +40,7 @@
                 <Posts v-if="view == 'posts'"/>
                 <Ajustes v-if="view == 'ajustes'" />
                 <Categories v-if="view == 'categorias'" />
+                <Coment v-if="view == 'coment'" />
                 <ConsultasReclamos v-if="view == 'reclamos'" />
             </div>
         </div>
@@ -50,6 +55,7 @@ import Posts from '../components/Posts.vue'
 import Ajustes from '@/components/Ajustes.vue';
 import Categories from './Categories.vue';
 import ConsultasReclamos from '@/components/ConsultasReclamos.vue';
+import Coment from '../components/Coment.vue';
 const view = ref('users');
 
 
