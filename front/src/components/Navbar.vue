@@ -1,6 +1,8 @@
 <template>
   <div class="bg-dark">
-    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn">
+    <nav
+      class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn"
+    >
       <div class="container-fluid mx-3">
         <button
           class="navbar-toggler"
@@ -23,79 +25,91 @@
             />
           </RouterLink>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="/"
-              >Inicio</RouterLink>
+                >Inicio</RouterLink
+              >
             </li>
-            <li class="nav-item"  v-if="rol !== 'Cliente'">
+            <li class="nav-item" v-if="rol !== 'Cliente'">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="marketplace"
-              >Markeplace</RouterLink>
+                >Markeplace</RouterLink
+              >
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
-                to="/view1"
-              >Proposito</RouterLink>
+                to="/proposito"
+                >Proposito</RouterLink
+              >
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="como-funciona"
-              >Cómo funciona</RouterLink>
+                >Cómo funciona</RouterLink
+              >
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="posts"
-              >Guias de usuario</RouterLink>
+                >Guias de usuario</RouterLink
+              >
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="contact"
-              >Contactos</RouterLink>
+                >Contactos</RouterLink
+              >
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
               <RouterLink
                 exact-active-class="active"
                 class="nav-link underline-dynamic"
                 to="faq"
-              >Faqs</RouterLink>
+                >Faqs</RouterLink
+              >
             </li>
           </ul>
           <div class="d-flex align-items-center">
             <RouterLink class="nav-link wallet-icon" to="/billetera">
-              <i v-if="rol == 'Cliente' || rol=='Inversionista'" class="fa fa-wallet fs-3"></i>
+              <i
+                v-if="rol == 'Cliente' || rol == 'Inversionista'"
+                class="fa fa-wallet fs-3"
+              ></i>
             </RouterLink>
-            <RouterLink
-              class="nav-link user-icon pb-1"
-              to="/admin"
-            >
-              <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
-              
-
+            <RouterLink class="nav-link user-icon pb-1" to="/admin">
+              <img
+                v-if="rol == 'Admin'"
+                src="../assets/svg/admin-svgrepo-com.svg"
+                width="25"
+              />
             </RouterLink>
             <RouterLink
               class="nav-link user-icon pb-1"
               to="perfil"
-              v-if="rol =='Cliente' || rol == 'Inversionista' || rol == 'Null' "
+              v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'"
             >
-             <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`" class="rounded-circle me-2" width="30" alt="">
-              
-
+              <img
+                :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
+                class="rounded-circle me-2"
+                width="30"
+                alt=""
+              />
             </RouterLink>
             <RouterLink class="nav-link user-icon" to="sign-login">
-              <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i> 
+              <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
               <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
             </RouterLink>
           </div>
@@ -106,22 +120,22 @@
 </template>
 
 <script setup>
-import { isAuthenticated } from '@/helpers/Authenticator';
-import axios from 'axios';
-import { ref, onMounted,watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { isAuthenticated } from "@/helpers/Authenticator";
+import axios from "axios";
+import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
-const rol = ref('');
-const nombre = ref('');
-const apellido = ref('');
+const rol = ref("");
+const nombre = ref("");
+const apellido = ref("");
 
-let storedUser = JSON.parse(localStorage.getItem('usuario'));
-const updateRole = async() => {
-  storedUser = JSON.parse(localStorage.getItem('usuario'));
-  rol.value = storedUser?.rol || ''; 
-  nombre.value = storedUser?.nombre || ''; 
-  apellido.value = storedUser?.apellido || ''; 
+let storedUser = JSON.parse(localStorage.getItem("usuario"));
+const updateRole = async () => {
+  storedUser = JSON.parse(localStorage.getItem("usuario"));
+  rol.value = storedUser?.rol || "";
+  nombre.value = storedUser?.nombre || "";
+  apellido.value = storedUser?.apellido || "";
 };
 
 onMounted(() => {
@@ -131,17 +145,16 @@ onMounted(() => {
 watch(
   () => router.currentRoute.value,
   () => {
-    updateRole(); 
+    updateRole();
   }
 );
 
-
 const logout = () => {
   localStorage.clear();
-  rol.value = '';
-  nombre.value = '';
-  apellido.value = '';
-  router.push("/sign-login"); 
+  rol.value = "";
+  nombre.value = "";
+  apellido.value = "";
+  router.push("/sign-login");
 };
 
 const navLinks = ref([
@@ -153,8 +166,6 @@ const navLinks = ref([
   { name: "Contactos", path: "/contact" },
   { name: "FAQs", path: "/faq" },
 ]);
-
-
 </script>
 
 <style scoped>

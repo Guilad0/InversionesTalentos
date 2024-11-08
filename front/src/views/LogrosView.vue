@@ -1,136 +1,148 @@
 <template>
   <div class="container form-container">
-    <h2>Formulario</h2>
-    <h3>Ingresa tus logros</h3>
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <label for="date" class="label">Fecha</label>
-            <input
-              type="date"
-              id="date"
-              v-model="formData.date"
-              class="form-control"
-              required
-              :min="minDate"
-              :max="maxDate"
-            />
-          </div>
+    <div class="container col-md-6 mt-5 mb-5">
+      <form @submit.prevent="registrarLogro">
+        <div class="card shadow">
+          <div class="card-body py-5 align-items-center">
+            <h5 class="fw-bold text-center mb-3 custom-color">Registra tu logro</h5>
+            <div class="mb-3">
+              <label for="date" class="form-label">Fecha</label>
+              <input
+                type="date"
+                v-model="fecha"
+                id="date"
+                class="form-control text-dark"
+                required
+                :min="minDate"
+                :max="maxDate"
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="description" class="label">Logros</label>
-            <textarea
-              id="description"
-              v-model="formData.description"
-              class="form-control"
-              rows="3"
-              placeholder="Ingresa tus logros"
-              required
-            ></textarea>
+            <div class="mb-3">
+              <label for="description" class="form-label">Logros</label>
+              <textarea
+                v-model="descripcion"
+                id="description"
+                class="form-control"
+                rows="3"
+                placeholder="Ingresa tus logros"
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn custom-button rounded-3">
+              Registrar Logro
+            </button>
           </div>
-          <br />
-          <button type="submit" class="btn btn-submit">Registrar Logros</button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
-export default {
-  data() {
-    return {
-      formData: {
-        date: "",
-        description: "",
-      },
-      minDate: "1990-01-01",
-      maxDate: new Date().toISOString().split("T")[0],
-    };
-  },
-  methods: {
-    async submitForm() {
-      const clienteId = localStorage.getItem("cliente_id");
+const cliente_id = ref("");
+const descripcion = ref("");
+const fecha = ref("");
+const minDate = "01-01-1990";
+const maxDate = new Date().toISOString().split("T")[0];
 
-      if (!clienteId) {
-        alert("Error: No se encontró el 'cliente_id' en localStorage.");
-        return;
-      }
+onMounted(() => {
+  const user = JSON.parse(localStorage.getItem("usuario"));
+  console.log(user);
+  if (user) {
+    cliente_id.value = user.usuario_id;
+  } else {
+    alert("Error: No se encontró el 'cliente_id' en localStorage.");
+  }
+});
 
-      try {
-        await axios.post("http://localhost:3000/api/logros", {
-          cliente_id: clienteId,
-          descripcion: this.formData.description,
-          fecha: this.formData.date,
-        });
+// Función para registrar el logro
+const registrarLogro = async () => {
+  try {
+    const response = await axios.post("http://localhost:3000/logros", {
+      cliente_id: cliente_id.value,
+      descripcion: descripcion.value,
+      fecha: fecha.value,
+    });
+    alert(response.data.message);
 
-        alert("Logro registrado exitosamente.");
-        this.resetForm();
-      } catch (error) {
-        console.error("Error al registrar el logro:", error);
-        alert(
-          "Ocurrió un error al registrar el logro: " +
-            (error.response?.data?.message || error.message)
-        );
-      }
-    },
-    resetForm() {
-      this.formData.date = "";
-      this.formData.description = "";
-    },
-  },
+    // Resetear los campos del formulario
+    descripcion.value = "";
+    fecha.value = "";
+  } catch (error) {
+    console.error(error);
+    alert("Error al registrar");
+  }
+
+  const datos = {
+    cliente_id: cliente_id.value,
+    descripcion: descripcion.value,
+    fecha: fecha.value,
+  };
+  console.log(datos);
 };
 </script>
 
 <style scoped>
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: var(--white-color);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px var(--smoky-dark-color);
+.custom-background {
+  background-color: var(--violet-2-color);
+  height: 100vh;
 }
 
-h2,
-h3 {
-  color: var(--gray-color);
-}
-
-.label {
-  color: var(--gray-color);
-  font-weight: bold;
-}
-
-.form-control {
-  border-radius: 5px;
-  padding: 10px;
-  border: 1px solid var(--gray-color);
-  background-color: var(--white-anti-flash-color);
-  color: var(--dark-anti-flash-color);
-}
-
-.form-control:focus {
-  border-color: var(--yellow-orange);
-  box-shadow: 0 0 0 0.2rem rgba(243, 121, 38, 0.25);
-}
-
-.btn-submit {
-  background-color: var(--yellow-orange);
-  color: var(--white-anti-flash-color);
+.custom-card {
+  background-color: #34312d;
   border: none;
-  padding: 12px 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: #d9c5b2;
 }
 
-.btn-submit:hover {
-  background-color: var(--gray-color);
-  color: var(--white-anti-flash-color);
+.custom-text {
+  color: #d9c5b2;
+}
+
+.custom-button {
+  background-color: #17223b;
+  color: #f3f3f4;
+  border: none;
+}
+
+.custom-button:hover {
+  background-color: #f37926;
+  color: #fff;
+}
+
+input,
+textarea {
+  background-color: #7e7f8352;
+  color: #ffffff;
+  border: none;
+}
+
+input::placeholder {
+  color: #d9c5b2;
+}
+
+.form-check-label span {
+  color: #14110f;
+}
+
+.custom-link {
+  color: #14110f;
+}
+
+.custom-link:hover {
+  color: #7e7f83;
+  text-decoration: underline;
+}
+
+.custom-color {
+  color: rgba(44, 43, 43, 0.753) !important;
+}
+
+.d-block {
+  text-align: center;
 }
 </style>

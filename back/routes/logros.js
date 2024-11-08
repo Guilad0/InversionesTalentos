@@ -2,30 +2,37 @@ const connection = require("../database");
 var express = require('express');
 var router = express.Router();
 
+// Obtener logros (opcionalmente filtrado por cliente_id)
 router.get("/", (req, res) => {
-    var logros = "SELECT * FROM logros";
-    connection.query(logros, function(err, results)  {
+    const { cliente_id } = req.query;  // Obtener el cliente_id desde los parámetros de consulta
+    let query = "SELECT * FROM logros";
+    
+    // Si se pasa cliente_id, filtramos los resultados
+    if (cliente_id) {
+        query += " WHERE cliente_id = ?";
+    }
+
+    connection.query(query, [cliente_id], function(err, results) {
         if (err) {
-            //console.log(err);
             res.status(500).send({
                 error: err,
-                message: "Error en la peticion",
+                message: "Error en la petición",
             });
         } else {
-            //console.log(result);
             res.status(200).json({
                 data: results,
                 message: "Lista de logros",
             });
         }
-    })
+    });
 });
 
+// Crear un nuevo logro
 router.post("/", (req, res) => {
-    const { cliente_id, descripcion, fecha } = req.body; // Agregue fecha aquí
-    var logros = `INSERT INTO logros(cliente_id, descripcion, fecha) VALUES ("${cliente_id}", "${descripcion}", "${fecha}");`; 
-    
-    connection.query(logros, (err, results) => {
+    const { cliente_id, descripcion, fecha } = req.body;
+    const query = "INSERT INTO logros(cliente_id, descripcion, fecha) VALUES (?, ?, ?)";
+
+    connection.query(query, [cliente_id, descripcion, fecha], (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -39,66 +46,63 @@ router.post("/", (req, res) => {
     });
 });
 
-
+// Actualizar un logro existente
 router.put("/:id", (req, res) => {
     const { cliente_id, descripcion } = req.body;
     const { id } = req.params;
-    const logros = `UPDATE logros SET cliente_id = "${cliente_id}", descripcion = "${descripcion}" WHERE id = "${id}";`;
-    connection.query(logros, (err, results) => {
+    const query = "UPDATE logros SET cliente_id = ?, descripcion = ? WHERE id = ?";
+
+    connection.query(query, [cliente_id, descripcion, id], (err, results) => {
         if (err) {
-            //console.log(err);
             res.status(500).send({
                 error: err,
-                message: "Error en la peticion",
+                message: "Error en la petición",
             });
         } else {
-            //console.log(result);
             res.status(200).send({
-                message: "Registro exitoso",
+                message: "Registro actualizado correctamente",
             });
         }
-    })
+    });
 });
 
+// Eliminar un logro
 router.delete("/:id", (req, res) => {
     const { id } = req.params;
-    const logros = `DELETE FROM logros WHERE id = "${id}";`;
-    connection.query(logros, (err, results) => {
+    const query = "DELETE FROM logros WHERE id = ?";
+
+    connection.query(query, [id], (err, results) => {
         if (err) {
-            //console.log(err);
             res.status(500).send({
                 error: err,
-                message: "Error en la peticion",
+                message: "Error en la petición",
             });
         } else {
-            //console.log(result);
             res.status(200).send({
-                message: "Registro exitoso",
+                message: "Registro eliminado correctamente",
             });
         }
-    })
+    });
 });
 
-router.patch('/estado/:id', function (req, res, next) {
-    // res.send('estas eliminando productos');
-    const { cliente_id,descripcion, estado } = req.body;
-    var query = `UPDATE logros SET estado= !estado WHERE logro_id = ${req.params.id};`;
+// Actualizar el estado de un logro
+router.patch('/estado/:id', function (req, res) {
+    const { id } = req.params;
+    const query = "UPDATE logros SET estado = !estado WHERE logro_id = ?";
 
-    connection.query(query, function (error, results, fields) {
+    connection.query(query, [id], function (error, results) {
         if (error) {
-            console.log(error);
             res.status(500).send({
                 error: error,
-                message: 'Error al realizar la peticion'
+                message: 'Error al realizar la petición'
             });
         } else {
-            console.log(req.results);
             res.status(200).send({
                 data: results,
                 message: 'Estado actualizado correctamente'
             });
         }
-    })
+    });
 });
 
 module.exports = router;
