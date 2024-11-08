@@ -19,6 +19,7 @@ import ComoFunciona from '@/components/ComoFunciona.vue'
 import ComentariosView from '@/views/ComentariosView.vue'
 import PropositoView from '@/views/PropositoView.vue'
 import LogrosView from '@/views/LogrosView.vue'
+import AddInfInversionista from '@/views/AddInfInversionista.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,6 +117,11 @@ const router = createRouter({
     { path: '/logros',
       name: 'logors', 
       component: LogrosView
+    },
+
+    { path: '/addInfInversionista', 
+      name: 'addInfInversionista',
+      component: AddInfInversionista
     },
 
   ]
