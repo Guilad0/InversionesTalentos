@@ -1,3 +1,314 @@
 <template>
-    <div>Consutlas</div>
+  <main class="bg-light">
+    <div class="content">
+      <h4 class="d-block mb-2 text-center underline py-2">CONSULTAS Y RECLAMOS</h4>
+      <div class="table-responsive col-md-10 offset-md-1">
+        <div class="col-3 px-5 mb-3">
+          <input
+            name="search"
+            type="text"
+            v-model="search"
+            class="form-control"
+            placeholder="Buscar ..."
+            @input="fetchContacts(1)"
+          />
+        </div>
+        <div class="table-responsive table-container-contact">
+          <table class="table overflow-x-scroll fs-9">
+            <thead>
+              <tr class="table-secondary">
+                <th scope="col" class="custom-size">ID</th>
+                <th scope="col" class="custom-size">Nombre</th>
+                <th scope="col" class="custom-size">Apellido</th>
+                <th scope="col" class="custom-size">Email</th>
+                <th scope="col" class="custom-size">Telefono</th>
+                <th scope="col" class="custom-size">Mensaje</th>
+                <th scope="col" class="custom-size">Respuesta</th>
+                <th scope="col" class="custom-size">Responder</th>
+                <th scope="col" class="custom-size">Estado</th>
+                <th scope="col" class="custom-size">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="" v-for="item in contacts" :key="item.id">
+                <td>{{ item.contacto_id }}</td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.apellido }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.telefono }}</td>
+                <td>{{ item.comentarios }}</td>
+                <td>{{ item.respuesta }}</td>
+                <td v-if="item.respuesta === '' || item.respuesta === null">
+                  <button class="btn btn-info text-white btn-sm" @click="openModal(item)">
+                    Responder
+                  </button>
+                  <!-- {{ console.log(item.estado) }} -->
+                </td>
+                <td v-else>
+                  <span class="badge text-bg-success">Contestado</span>
+                </td>
+
+                <td v-if="item.estado == '1'">
+                  <button
+                    @click="deleted(item.contacto_id)"
+                    class="btn bg-success btn-sm text-white"
+                  >
+                    Activo
+                  </button>
+                </td>
+                <td v-else>
+                  <button
+                    @click="deleted(item.contacto_id)"
+                    class="bg-danger btn btn-sm text-white"
+                  >
+                    Inactivo
+                  </button>
+                </td>
+
+                <td>
+                  <button class="btn btn-danger" @click="deleted(item.contacto_id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  <!-- <button class="btn btn-success">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination-container-contact d-flex justify-content-center mt-3">
+        <nav v-if="pagination.totalPages > 0" aria-label="Page navigation">
+          <ul class="pagination">
+            <li v-if="pagination.currentPage === 1" class="page-item disabled">
+              <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+            </li>
+            <li v-else class="page-item">
+              <button
+                @click="fetchContacts(pagination.currentPage - 1)"
+                class="page-link color-gray fw-bolder rounded-5 border border-3"
+              >
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+            </li>
+
+            <li
+              v-for="page in pagination.totalPages"
+              :key="page"
+              class="page-item"
+              :class="{ active: pagination.currentPage === page }"
+            >
+              <button
+                @click="fetchContacts(page)"
+                class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
+              >
+                {{ page }}
+              </button>
+            </li>
+
+            <li
+              v-if="pagination.currentPage === pagination.totalPages"
+              class="page-item disabled"
+            >
+              <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </li>
+            <li v-else class="page-item">
+              <button
+                @click="fetchContacts(pagination.currentPage + 1)"
+                class="page-link color-gray fw-bolder rounded-5 border border-3"
+              >
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div
+        class="modal fade"
+        id="answerModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="answerModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">RESPONDER COMENTARIOS</h5>
+            </div>
+            <div class="modal-body">
+              <p>{{ contactActive.nombre + ": " }} {{ contactActive.email }}</p>
+              <label class="form-label"> Responder Usuario </label>
+              <input
+                class="form-control"
+                type="text"
+                id="respuesta"
+                v-model="userResponse"
+                placeholder="Escribe la respuesta"
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="answer(userResponse, contactActive.contacto_id)"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import useFetchData from "@/helpers/UseFetchData";
+import { Modal } from "bootstrap";
+import iziToast from "izitoast";
+
+const { results: contacts, getData: getContact } = useFetchData(ref("/contact"));
+console.log("results", contacts);
+const BaseURL = "http://localhost:3000/contact";
+const search = ref("");
+const isModalVisible = ref(false);
+const contactActive = ref({});
+console.log(contactActive);
+
+const contact = ref([]);
+const pagination = ref({
+  currentPage: 1,
+  totalPages: 0,
+  totalItems: 0,
+  itemsPerPage: 7,
+});
+
+const userResponse = ref("");
+const iduser = ref("");
+
+onMounted(() => {
+  // getContact();
+  // fetchContacts();
+  fetchContacts();
+});
+
+const fetchContacts = async (page = 1) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/contact`, {
+      params: {
+        page,
+        limit: pagination.value.itemsPerPage,
+        search: search.value,
+      },
+    });
+    contacts.value = response.data.results;
+    pagination.value.currentPage = response.data.currentPage;
+    pagination.value.totalPages = response.data.totalPages;
+    pagination.value.totalItems = response.data.totalItems;
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+  }
+};
+
+const deleted = async (id) => {
+  try {
+    await axios.put(`http://localhost:3000/contact/stateContact/${id}`);
+    fetchContacts(pagination.value.currentPage);
+
+    iziToast.success({
+      title: "Exito",
+      message: "Estado cambiado con exito",
+      position: "topRight",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const answer = async (response, iduser) => {
+  const datos = {
+    respuesta: response,
+  };
+  console.log(iduser);
+  console.log(response);
+
+  try {
+    const res = await axios.put(
+      "http://localhost:3000/contact/response/" + iduser,
+      datos
+    );
+
+    if (res.status === 200) {
+      console.log("Respuesta actualizada correctamente", res.data);
+
+      iziToast.success({
+        title: "Exito",
+        message: "Respuesta actualizada correctamente",
+        position: "topRight",
+        backgroundColor: "green",
+        color: "white",
+      });
+      await fetchContacts(pagination.value.currentPage);
+
+      const answerModalElement = document.getElementById("answerModal");
+      const answerModal = bootstrap.Modal.getInstance(answerModalElement);
+      answerModal.hide();
+    } else {
+      console.error("Error al actualizar la respuesta:", res);
+    }
+  } catch (error) {
+    console.error("Hubo un error al hacer la solicitud:", error);
+  }
+
+  // const answerModalElement = document.getElementById("answerModal");
+  // const answerModal = bootstrap.Modal.getInstance(answerModalElement);
+  // answerModal.hide();
+};
+
+const openModal = (item) => {
+  contactActive.value = item;
+  const answerModal = new Modal(document.getElementById("answerModal"));
+  answerModal.show();
+};
+</script>
+
+<style scoped>
+.custom-size {
+  font-size: 0.9rem;
+  font-weight: 630;
+}
+
+.content {
+  height: 70vh;
+  width: 100%;
+}
+.table-container-contact {
+  max-height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagination-container-contact {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
