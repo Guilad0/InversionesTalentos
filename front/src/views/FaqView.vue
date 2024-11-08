@@ -1,105 +1,116 @@
 <template>
   <div class="container py-5">
-    <div v-if="!loading" class="card sh animate__animated animate__fadeIn">
-      <div class="card-body p-1 bg-gray rounded-2">
-        <div class="accordion  " id="accordionExample">
-          <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
-            <h2 class="accordion-header" :id="'heading-' + index">
-              <button class="accordion-button collapsed custom-accordion-button " type="button"
-                :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + index" aria-expanded="false"
-                :aria-controls="'collapse-' + index">
-                {{ faq.pregunta }}
-              </button>
-            </h2>
-            <div :id="'collapse-' + index" class="accordion-collapse collapse btn-gray p-1 rounded-0 "
-              :aria-labelledby="'heading-' + index" data-bs-parent="#accordionExample">
-              <div class="accordion-body custom-accordion-body bg-light " v-html="faq.respuesta"></div>
-            </div>
-          </div>
+    <div class="accordion custom-accordion" id="accordionExample">
+      <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
+        <h2 class="accordion-header" :id="'heading-' + index">
+          <button
+            class="accordion-button custom-accordion-button"
+            type="button"
+            :class="{ collapsed: openIndex !== index }"
+            @click="toggleAccordion(index)"
+            aria-expanded="openIndex === index"
+            :aria-controls="'collapse-' + index"
+          >
+            {{ faq.pregunta }}
+          </button>
+        </h2>
+        <div
+          :id="'collapse-' + index"
+          class="accordion-collapse collapse"
+          :class="{ show: openIndex === index }"
+          :aria-labelledby="'heading-' + index"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body custom-accordion-body" v-html="faq.respuesta"></div>
         </div>
       </div>
-    </div>
-    <div v-if="loading" class="d-flex justify-content-center align-items-center min-vh-100">
-    <div  class="spinner-grow text-dark" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
     </div>
     <Contact />
   </div>
 </template>
 
-
-
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import Contact from '../components/ContactComponent.vue';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Contact from "../components/ContactComponent.vue";
 
-const loading = ref(false)
 const faqs = ref([]);
+const openIndex = ref(null);
+
+const toggleAccordion = (index) => {
+  openIndex.value = openIndex.value === index ? null : index;
+};
 
 onMounted(async () => {
   try {
-    loading.value = true;
-    const response = await axios.get('http://localhost:3000/faq');
+    const response = await axios.get("http://localhost:3000/faq");
     faqs.value = response.data.data;
   } catch (error) {
-    console.error('Error al cargar las preguntas:', error);
-  } finally {
-    loading.value = false
+    console.error("Error al cargar las preguntas:", error);
   }
 });
 </script>
 
-
-
-
 <style scoped>
-.custom-accordion-button {
-  background-color: #17223B;
-  color: #f1faee;
-  border: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+.custom-accordion {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
+.custom-accordion-button {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: bold;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 .custom-accordion-button:not(.collapsed) {
-  background-color: #17223B;
-  color: #f1faee;
+  background-color: var(--yellow-orange);
+  color: var(--jet-color);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-
 .custom-accordion-button:hover {
-  background-color: #d95a00c7;
-  color: wheat;
+  background-color: var(--dark-gray-color);
+  color: var(--white-anti-flash-color);
 }
 
-
 .custom-accordion-body {
-  background-color: rgb(217, 197, 178);
-  /* border: 1px solid #a8dadc;  */
-  border-top: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid var(--light-gray-color);
   padding: 20px;
-  color: #1d3557;
-
-}
-
-
-.custom-accordion-body {
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  color: var(--dark-anti-flash-color);
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .custom-accordion-body:hover {
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
-
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.custom-accordion-button:focus {
-  outline: none;
-  box-shadow: none;
+.accordion-collapse {
+  transition: height 0.4s ease;
+}
+
+.accordion-item {
+  border: none;
+  margin-bottom: 10px;
+}
+
+.accordion-item:last-child .custom-accordion-body {
+  border-radius: 0 0 5px 5px;
+}
+
+h2 {
+  text-align: left;
+  margin: 0;
+  font-size: 1.1rem;
+  font-family: "Arial", sans-serif;
 }
 </style>
