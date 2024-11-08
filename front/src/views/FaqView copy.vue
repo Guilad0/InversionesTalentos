@@ -1,36 +1,31 @@
 <template>
-  <div>
-    <div class="container py-5">
-      <div class="accordion custom-accordion" id="accordionExample">
-        <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
-          <h2 class="accordion-header" :id="'heading-' + index">
-            <button
-              class="accordion-button custom-accordion-button"
-              type="button"
-              :class="{ collapsed: openIndex !== index }"
-              @click="toggleAccordion(index)"
-              aria-expanded="openIndex === index"
-              :aria-controls="'collapse-' + index"
-            >
-              {{ faq.pregunta }}
-            </button>
-          </h2>
-          <div
-            :id="'collapse-' + index"
-            class="accordion-collapse collapse"
-            :class="{ show: openIndex === index }"
-            :aria-labelledby="'heading-' + index"
-            data-bs-parent="#accordionExample"
+  <div class="container py-5">
+    <div class="accordion custom-accordion" id="accordionExample">
+      <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
+        <h2 class="accordion-header" :id="'heading-' + index">
+          <button
+            class="accordion-button custom-accordion-button"
+            type="button"
+            :class="{ collapsed: openIndex !== index }"
+            @click="toggleAccordion(index)"
+            aria-expanded="openIndex === index"
+            :aria-controls="'collapse-' + index"
           >
-            <div
-              class="accordion-body custom-accordion-body"
-              v-html="faq.respuesta"
-            ></div>
-          </div>
+            {{ faq.pregunta }}
+          </button>
+        </h2>
+        <div
+          :id="'collapse-' + index"
+          class="accordion-collapse collapse"
+          :class="{ show: openIndex === index }"
+          :aria-labelledby="'heading-' + index"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body custom-accordion-body" v-html="faq.respuesta"></div>
         </div>
       </div>
-      <Contact />
     </div>
+    <Contact />
     <div>
       <Unete />
     </div>
@@ -80,10 +75,8 @@ onMounted(async () => {
 }
 
 .custom-accordion-button:hover {
-  background-color: var(--dark-gray-color);
-  /* Color de fondo en hover */
-  color: #f37926;
-  /* Cambia el color del texto en hover */
+  background-color: var(--dark-gray-color); /* Color de fondo en hover */
+  color: #f37926; /* Cambia el color del texto en hover */
 }
 
 .custom-accordion-body {
