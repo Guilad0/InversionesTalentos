@@ -75,7 +75,7 @@
                           </div>
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label class="form-label">Tokens</label>
+                              <label class="form-label" required>Tokens</label>
                               <p>{{ tokens }}</p>
                             </div>
                           </div>
@@ -360,18 +360,29 @@ const calcularTokens = async () => {
 };
 
 const comprarTokens = async () => {
-
-  if (usuario_rol.value == 'Inversionista') {
+  if(montoUsd.value > 0 && tokens.value > 0)
+  {
+    if (usuario_rol.value == 'Inversionista') {
     const datos = {  
     monto: montoUsd.value,
     tokens: tokens.value,
     usuario_id: inversionista_ID.value,
     tipo: 'Ingreso',
     descripcion: 'Compra de tokens',
+    color: 'var(--gray-color)',
+    confirmButtonColor: 'var(--yellow-orange)',
   };
   try {
     await axios.post(baseURL + 'comprarTokens', datos);
-    alert('Tokens comprados exitosamente');
+    Swal.fire({
+        title: "¡Felicidades!",
+        text: "Tokens comprados exitosamente",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)', 
+      }); 
     var myModalEl = document.getElementById('modalTokens');
     var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
     modal.hide();
@@ -380,6 +391,8 @@ const comprarTokens = async () => {
   }
   obtenerDolares_Inversionista();
   obtenerTokens_Inversionista();
+  montoUsd.value = 0;
+  tokens.value = 0;
   }
   if (usuario_rol.value == 'Cliente') {
     const datos = {  
@@ -391,7 +404,15 @@ const comprarTokens = async () => {
   };
   try {
     await axios.post(baseURL + 'comprarTokens', datos);
-    alert('Tokens comprados exitosamente');
+    Swal.fire({
+        title: "¡Felicidades!",
+        text: "Tokens comprados exitosamente",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)', 
+      }); 
     var myModalEl = document.getElementById('modalTokens');
     var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
     modal.hide();
@@ -399,9 +420,22 @@ const comprarTokens = async () => {
     console.error('Error al guardar los tokens:', error);
   }
   obtenerTokens_Cliente();
-  }
   montoUsd.value = 0;
   tokens.value = 0;
+}
+  }
+  else
+  {
+    Swal.fire({
+    title: "¡Error!",
+    text: "Ingrese un valor mayor a 0 para comprar tokens",
+    icon: "error",
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    color: 'var(--gray-color)',
+    confirmButtonColor: 'var(--yellow-orange)', 
+  });
+  }
 };
 
 const obtenerListaClientes = async () => {
@@ -428,7 +462,9 @@ try {
 }
 };
 const inversionistaInvertir = async () => {
-  ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
+
+  if (monto_tokens_invertir.value > 0) {
+    ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
   const fecha_devolucion = ref('');
   const fecha = new Date();
   fecha.setMonth(fecha.getMonth() + tiempo_inversion.value);
@@ -449,7 +485,15 @@ const inversionistaInvertir = async () => {
   console.log(datos);
   try {
     await axios.post(baseURL + 'invertirTokens', datos);
-    alert('Tokens comprados exitosamente');
+    Swal.fire({
+        title: "¡Felicidades!",
+        text: "Inversión realizada exitosamente",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)', 
+      }); 
     var myModalEl = document.getElementById('modalInversion');
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
@@ -460,6 +504,20 @@ const inversionistaInvertir = async () => {
   obtenerTokens_Inversionista();
   obtenerTokens_Inversionista_Invertidos();
   location.reload();
+  }
+  else
+  {
+    Swal.fire({
+    title: "¡Error!",
+    text: "Por favor, ingrese una cantidad de tokens a invertir",
+    icon: "error",
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    color: 'var(--gray-color)',
+    confirmButtonColor: 'var(--yellow-orange)', 
+  });
+  }
+  
 };
 
 const obtenerTokens_Cliente = async () => {
@@ -488,8 +546,8 @@ try {
 };
 
 const solicitarRetiro = async () => {
-  
-  if (usuario_rol.value == 'Inversionista') {
+  if(cambioTokens.value > 0){
+    if (usuario_rol.value == 'Inversionista') {
     const datos = {
       tipo: 'inversor',
       usuario_id: inversionista_ID.value,
@@ -501,13 +559,24 @@ const solicitarRetiro = async () => {
     };
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
-      alert('Solicitud de Retiro realizada exitosamente');
+      Swal.fire({
+        title: "¡Felicidades!",
+        text: "Solicitud de Retiro realizada exitosamente",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)', 
+      }); 
       var myModalEl = document.getElementById('modalSolicitud');
       var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
       modal.hide();
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
-    }  
+    }
+    obtenerTokens_Inversionista();
+    obtenerTokens_Inversionista_Invertidos();
+    location.reload();
   }
   if (usuario_rol.value == 'Cliente') {
     const datos = {
@@ -521,23 +590,43 @@ const solicitarRetiro = async () => {
     };
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
-      alert('Solicitud de Retiro realizada exitosamente');
+      Swal.fire({
+        title: "¡Felicidades!",
+        text: "Solicitud de Retiro realizada exitosamente",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)', 
+      });      
       var myModalEl = document.getElementById('modalSolicitud');
       var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
       modal.hide();
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
-    }  
+    }
+    obtenerTokens_Cliente();
+    obtenerSolicitudes();
+    location.reload();
   }
   cambioTokens.value = 0;
   montoDolares.value = 0;
   comision_retiro.value = 0;
   dolares.value = 0;
-  obtenerTokens_Cliente();
-  obtenerTokens_Inversionista();
-  obtenerTokens_Inversionista_Invertidos();
-  obtenerSolicitudes();
   location.reload();
+}
+else
+  {
+    Swal.fire({
+    title: "¡Error!",
+    text: "Ingrese un valor mayor a 0 para solicitar retiro",
+    icon: "error",
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    color: 'var(--gray-color)',
+    confirmButtonColor: 'var(--yellow-orange)', 
+  });
+  }
 }
 
 </script>

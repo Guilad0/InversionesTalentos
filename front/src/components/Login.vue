@@ -82,13 +82,13 @@ const ingresar = async () => {
     // });
 
     Swal.fire({
-
-title: "¡Error!",
-
-text: "Ingrese sus credenciales",
-
-icon: "error",
-
+      title: "¡Error!",
+      text: "Ingrese sus credenciales",
+      icon: "error",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)', 
 });
 
 
@@ -113,6 +113,9 @@ icon: "error",
       text: "Estás de regreso :) " + data.user.nombre + " " + data.user.apellido,
       icon: "success",
       showConfirmButton: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
       timer: 1000,
     });
     setTimeout(() => {
@@ -128,7 +131,11 @@ icon: "error",
     Swal.fire({ 
       title: "¡Error!", 
       text: errorMessage, 
-      icon: "warning", 
+      icon: "warning",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)', 
     });
 
   }

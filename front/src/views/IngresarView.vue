@@ -79,6 +79,10 @@ const ingresar = async () => {
       title: "¡Error!",
       text: "Ingrese sus credenciales",
       icon: "error",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)', 
     });
   }
 
@@ -100,6 +104,9 @@ const ingresar = async () => {
       text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
       icon: "success",
       showConfirmButton: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',      
       timer: 1000,
     });
     setTimeout(() => {
@@ -112,6 +119,10 @@ const ingresar = async () => {
       title: "¡Error!",
       text: error.response.data.message,
       icon: "error",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)', 
     });
   }
 };
