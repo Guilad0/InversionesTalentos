@@ -17,6 +17,8 @@ import ResetPassword from '@/views/ResetPassword.vue'
 import Experiencia from '@/views/Experiencia.vue'
 import ComoFunciona from '@/components/ComoFunciona.vue'
 import ComentariosView from '@/views/ComentariosView.vue'
+import PropositoView from '@/views/PropositoView.vue'
+import LogrosView from '@/views/LogrosView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -107,6 +109,15 @@ const router = createRouter({
       name: 'comentarios', 
       component: ComentariosView
     },
+    { path: '/proposito',
+      name: 'proposito', 
+      component: PropositoView
+    },
+    { path: '/logros',
+      name: 'logors', 
+      component: LogrosView
+    },
+
   ]
 })
 

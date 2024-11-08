@@ -22,23 +22,23 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    const {cliente_id, descripcion}= req.body;
-    var logros = `INSERT INTO logros(cliente_id, descripcion) VALUES ("${cliente_id}", "${descripcion}");`;
+    const { cliente_id, descripcion, fecha } = req.body; // Agregue fecha aquí
+    var logros = `INSERT INTO logros(cliente_id, descripcion, fecha) VALUES ("${cliente_id}", "${descripcion}", "${fecha}");`; 
+    
     connection.query(logros, (err, results) => {
         if (err) {
-            //console.log(err);
             res.status(500).send({
                 error: err,
-                message: "Error en la peticion",
+                message: "Error en la petición",
             });
         } else {
-            //console.log(result);
             res.status(200).send({
                 message: "Registro exitoso",
             });
         }
-    })
+    });
 });
+
 
 router.put("/:id", (req, res) => {
     const { cliente_id, descripcion } = req.body;
