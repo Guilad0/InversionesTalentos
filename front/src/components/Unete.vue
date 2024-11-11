@@ -119,4 +119,48 @@ button {
   width: 225%;
   height: 562.5px;
 }
+
+
+@media screen and (max-width: 428px) {
+  .custom-row {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+  }
+
+  .btn-6 {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  img {
+    height: 300px;
+    object-fit: cover;
+  }
+}
+
+
+@media screen and (max-width: 412px) {
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  img {
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  img {
+    height: 275px;
+  }
+}
 </style>
