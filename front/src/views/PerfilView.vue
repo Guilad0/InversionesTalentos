@@ -304,6 +304,7 @@
   <span class="visually-hidden">Loading...</span>
 </div>
       </div>
+      
   </div>
   </div>
 </template>
@@ -318,8 +319,8 @@ import axios from 'axios'
 import ProgresBar from '../components/ProgressBar.vue'
 import { confirmAlert, loadingAlert, messageAlert, timerAlert } from "@/helpers/sweetAlerts";
 import { porcentajeTrue } from "@/helpers/utilities";
+import iziToast from "izitoast";
     const route = useRouter();
-    
     const fileInput = ref(null);
     const selectImage = () => {
       fileInput.value.click();
@@ -348,11 +349,24 @@ const onFileChange = (event) => {
   imagen_portada.value = event.target.files[0];
   console.log("Archivo seleccionado:", imagen_portada.value); 
   let extension = imagen_portada.value.name.split('.');
-  if( extension[1] !== 'jpeg' || extension[1] !== 'jpg' || extension[1] !== 'png' ){
-    console.log('Formato no permitido');
+  console.log(extension);
+  if( extension[1] == 'jpeg' || extension[1] == 'jpg' || extension[1] == 'png' ){
+    console.log('Formato permitido');
+  }else{
+    iziToast.warning({
+    title: 'Caution',
+    message: 'Formato de imagen no permitida',
+    position:'center',
+    theme:'dark',
+    color:'#ef4444',
+    // icon:'<i class="fa-regular fa-user"></i>',
+    progressBarColor:'#FFFFFF',
+    messageColor:'#FFFFFF',
+    titleColor:'#FFFFFF',
+    iconColor:'#FFFFFF',
+});
+    // timerAlert('¡Formato de imagen no permitida!','center',2500,'warning')
     cleanImage();
-    timerAlert('¡Formato de imagen no permitida!','center',2500,'warning')
-
   }
 };
 
