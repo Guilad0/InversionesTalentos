@@ -350,7 +350,7 @@ const onFileChange = (event) => {
   console.log("Archivo seleccionado:", imagen_portada.value); 
   let extension = imagen_portada.value.name.split('.');
   console.log(extension);
-  if( extension[1] == 'jpeg' || extension[1] == 'jpg' || extension[1] == 'png' ){
+  if( extension[extension.length-1] == 'jpeg' || extension[extension.length-1] == 'jpg' || extension[extension.length-1] == 'png' ){
     console.log('Formato permitido');
   }else{
     iziToast.warning({
@@ -507,8 +507,20 @@ const doubleCheckIcon2 =
       rol.value = updatedUser.rol;
       localStorage.setItem("usuario", JSON.stringify(updatedUser));      
       verifyFormInfClient();
-      messageAlert( 'Felicidades!', `Tu rol actual es ${rol.value}`,'success',doubleCheckIcon2)
+      Swal.close();
+      Swal.fire({
+        title: "Proceso terminado",
+        text: "Tu rol actual es " + role,
+        icon: "success",
+        confirmButtonColor: "#17223B",
+        confirmButtonText: "Aceptar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload()
+        }
+      });
     } catch (error) {
+      Swal.close();
       console.error("Error al actualizar el rol:", error);
       messageAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'error')
     }
