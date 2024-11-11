@@ -234,27 +234,31 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.patch("/aprobar/:id", function (req, res, next) { //aprobar la solicitud de retiro
-  var query = `UPDATE solicitudes_retiro SET 
-  estado = 'Aprobado'
+router.put("/aprobar/:id", function (req, res, next) { //aprobar la solicitud de retiro
+  const { monto_solicitud, inversion_id, retiro_id, usuario_id, tokens_cambio } = req.body;
+  console.log(req.body);
+  let query = `UPDATE solicitudes_retiro SET 
+  estado = 'Aprobado', fecha_aprobacion = ?
   WHERE retiro_id = '${req.params.id}';`;
-
-  connection.query(query, function (error, results, fields) {
+  let date = new Date();
+  connection.query(query,[date], function (error, results) {
     if (error) {
-      console.log(error);
       res.status(500).send({
         error: error,
         message: "Error al realizar la petición",
       });
-    } else {
-      console.log(results.insertId);
+      return
+    } 
+    // query = 'insert into movimientos (tipo, monto, fecha_solicitud,inversiones_id,solicitudes_retiro_id,usuario_id,token) values (?,?,?,?,?,?,?,?)';
+    const data = ['Egreso', monto_solicitud, date, inversion_id, retiro_id, usuario_id, tokens_cambio ]
       res.status(200).send({
         data: results.insertId,
         message: "Inversión aprobada correctamente",
       });
-    }
+    
   });
 });
+
 
 router.patch("/rechazar/:id", function (req, res, next) { //rechazar la solicitud de retiro
   var query = `UPDATE solicitudes_retiro SET 

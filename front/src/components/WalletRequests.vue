@@ -88,7 +88,7 @@
                 <td v-if="item.estado == 'Pendiente'">
                   <button
                     class="btn btn-success btn-sm mx-1"
-                    @click="aprobado(item.retiro_id)"
+                    @click="aprobado(item)"
                   >
                     <i class="fa fa-check"></i>
                   </button>
@@ -205,9 +205,10 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
   }
 };
 
-const aprobado = async (retiro_id) => {
+const aprobado = async (retiro) => { 
+
   try {
-    const { data } = await axios.patch(BaseURL + "/aprobar/" + retiro_id);
+    await axios.put(BaseURL + "/aprobar/" + retiro.retiro_id,retiro);
     // Al aprobar, se vuelve a cargar la lista de pendientes
     obtenerDatos(1, "", "Pendiente");
   } catch (error) {
