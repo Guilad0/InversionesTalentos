@@ -27,6 +27,7 @@ var rolesRouter = require('./routes/roles');
 var comentariosRouter = require('./routes/comentarios');
 var utilitiesRouter = require('./routes/utilities');
 var reportesRouter = require('./routes/reportes');
+var perfilRouter = require('./routes/perfil');
 
 
 var app = express();
@@ -71,5 +72,6 @@ app.use('/roles', rolesRouter);
 app.use('/comentarios', comentariosRouter);
 app.use('/utilities', utilitiesRouter);
 app.use('/reportes', reportesRouter);
+app.use('/perfil', perfilRouter);
 
 module.exports = app;

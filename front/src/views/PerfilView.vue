@@ -9,102 +9,133 @@
       <div class="col-5 d-flex justify-content-center">
         <div class="card  shadow w-75">
           <div class="card-body">
-            
-            <p :style="{ fontSize: '1rem' }" class="text-secondary text-center "
-              >Bienvenid@!!! <strong>{{nombre+' '+apellido}}</strong>  </p>
-            <h5 class=" fs-6 text-secondary ">Datos Personales</h5>
-              
-            
-        
-            <label for="nombre" class="form-label">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              v-model="nombre"
-              id="nombre"
-              class="form-control opacity-75"
-              disabled
-            />
-            <label for="apellido" class="form-label">Apellido</label>
-            <input
-              type="text"
-              name="apellido"
-              v-model="apellido"
-              id="apellido"
-              class="form-control opacity-75"
-              disabled
-            />
-            <label for="correo" class="form-label">Correo</label>
-            <input
-              type="correo"
-              name="correo"
-              v-model="correo"
-              id="correo"
-              class="form-control opacity-75"
-              disabled
-            />
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="codigopais" class="form-label">Codigo del pais</label>
-                <select
-                  name="codigopais"
-                  v-model="codigopais"
-                  class="form-select opacity-75"
-                  id="codigopais" 
-                  disabled
-                >
-                  <option>{{codigopais}}</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="telefono" class="form-label">Numero de telefono</label>
-                <input
-                  type="text"
-                  name="telefono"
-                  v-model="telefono"
-                  id="telefono"
-                  class="form-control opacity-75"
-                  disabled
-                />
-              </div>
-            </div>
-            <div class="form-check form-switch mb-3">
+              <p :style="{ fontSize: '1rem' }" class="text-secondary text-center">
+                Bienvenid@!!! <strong>{{ nombre + " " + apellido }}</strong>
+              </p>
+              <h5 class="fs-6 text-secondary">Datos Personales</h5>
+
+              <label for="nombre" class="form-label">Nombre</label>
               <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
+                type="text"
+                name="nombre"
+                v-model="nombre"
+                id="nombre"
+                class="form-control opacity-75"
+                disabled
               />
-              <label class="form-check-label" for="flexSwitchCheckDefault"
-                >KYC - Se necesita validar</label
-              >
-            </div>
-            
-            <input type="text" name="tag" id="tag" class="form-control" />
-            <div class="row">
-              <div class="col-md-6">
-                <label for="idioma" class="form-label">Nombre de usuario</label>
-                  <input type="text" id="idioma" v-model="userName" class="form-control mb-2">
-              </div>
-              <div class="col-md-6">
-                <label for="pais" class="form-label">Pais de Residencia</label>
-                <select name="pais" v-model="pais_residencia" class="form-select" id="">
-                  <option >{{pais}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col text-center "> 
-                <div class="">
-                    <button
-                type="button"
-                class="btn col btn-gray perfilbutton rounded-5 px-4 mt-5"
-                @click="actualizar()"
-              >
-                Actualizar
-              </button>
+              <label for="apellido" class="form-label">Apellido</label>
+              <input
+                type="text"
+                name="apellido"
+                v-model="apellido"
+                id="apellido"
+                class="form-control opacity-75"
+                disabled
+              />
+              <label for="correo" class="form-label">Correo</label>
+              <input
+                type="correo"
+                name="correo"
+                v-model="correo"
+                id="correo"
+                class="form-control opacity-75"
+                disabled
+              />
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="codigopais" class="form-label">Codigo del pais</label>
+                  <!-- <select
+                    name="codigopais"
+                    v-model="codigopais"
+                    class="form-select opacity-75"
+                    id="codigopais"
+                  >
+                    <option>{{ codigopais }}</option>
+                  </select> -->
+                  <select
+                    name="codigopais"
+                    v-model="codigopais"
+                    class="form-select"
+                    id="codigopais"
+                  >
+                    <option>{{ codigopais }}</option>
+                    <option
+                      v-for="country in countries"
+                      :key="country.code"
+                      :value="country.code"
+                      class="btn-gray"
+                    >
+                      {{ country.code }} - {{ country.abbreviation }}
+                    </option>
+                  </select>
                 </div>
+                <div class="col-md-6 mb-3">
+                  <label for="telefono" class="form-label">Numero de telefono</label>
+                  <input
+                    type="text"
+                    name="telefono"
+                    v-model="telefono"
+                    id="telefono"
+                    class="form-control opacity-75"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+                <label class="form-check-label" for="flexSwitchCheckDefault"
+                  >KYC - Se necesita validar</label
+                >
+              </div>
+
+              <input type="text" name="tag" id="tag" class="form-control" />
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="idioma" class="form-label">Nombre de usuario</label>
+                  <input
+                    type="text"
+                    id="idioma"
+                    v-model="userName"
+                    class="form-control mb-2"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="pais" class="form-label">Pais de Residencia</label>
+                  <select
+                    name="pais_residencia"
+                    v-model="pais_residencia"
+                    class="form-select"
+                    id=""
+                  >
+                    <option>{{ pais }}</option>
+                    <option
+                      v-for="country in countries"
+                      :key="country.abbreviation"
+                      :value="country"
+                      class="btn-gray"
+                    >
+                      {{ country.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col text-center">
+                <div class="">
+                  <button
+                    type="button"
+                    class="btn col btn-gray perfilbutton rounded-5 px-4 mt-5"
+                    @click="actualizar()"
+                  >
+                    Actualizar
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
         </div>
       </div>
 
@@ -325,6 +356,7 @@ import iziToast from "izitoast";
     const selectImage = () => {
       fileInput.value.click();
     };
+import { countriesData } from "../helpers/dataCountries";
 
 let baseURL = "http://localhost:3000/";
 let miId = ref('');
@@ -338,6 +370,7 @@ let pais = ref("");
 let userName = ref("");
 const rol = ref("");
 const imagen_portada = ref(null);
+const countries = ref(countriesData);
 
 onMounted(() => {
   obtenerDatos();
@@ -449,7 +482,7 @@ const verifyRegisterInversor = ref([
 
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const obtenerDatos = () => {
-  miId.value = usuario.id;
+  miId.value = usuario.usuario_id;
   nombre.value = usuario.nombre;
   apellido.value = usuario.apellido;
   correo.value = usuario.correo;
@@ -459,7 +492,41 @@ const obtenerDatos = () => {
   pais.value = usuario.pais_residencia;
   userName.value = usuario.correo.split("@")[0];
 };
+const actualizar = async () => {
+  if (
+    codigopais.value == "" ||
+    telefono.value == "" ||
+    userName.value == "" ||
+    pais_residencia.value == ""
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Ooops...",
+      text: "Todos los campos son obligatorios",
+    });
+    return;
+  }
+  const datos = {
+    codigopais: codigopais.value,
+    telefono: telefono.value,
+    userName: userName.value,
+    pais_residencia: pais_residencia.value,
+  };
+  console.log(datos);
+  console.log(miId.value);
 
+  try {
+    const { data } = await axios.put(baseURL + "perfil/actualizarPerfil/" + miId.value,datos);
+    console.log(data);
+    Swal.fire({
+      icon: "success",
+      title: "Credenciales actualizadas",
+      timer: 1500,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 const watchChange = ref('');  
 
     watch(watchChange, (newValue, oldValue) => {
@@ -525,12 +592,6 @@ const doubleCheckIcon2 =
       messageAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'error')
     }
   }
-};
-
-
-
-const actualizar = async () => {
- 
 };
 
 
