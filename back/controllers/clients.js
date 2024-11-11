@@ -39,7 +39,7 @@ const getAllClientesWithInfo = (req, res) => {
          LEFT JOIN 
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
     WHERE 
-        u.rol = "cliente";
+        u.rol = "cliente" and u.aprobado = 1;
     `;
     
     conexion.query(query, (err, results) => {

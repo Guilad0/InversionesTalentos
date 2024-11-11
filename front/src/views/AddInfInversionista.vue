@@ -143,7 +143,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import { useRouter } from 'vue-router';
+const router = useRouter(); 
 const id_inversionista = ref(""); 
 const nombre_completo= ref("");
 const dni = ref("");
@@ -182,6 +183,7 @@ const addInfoInversionista = async () => {
   try {
     const response = await axios.post("http://localhost:3000/clients/addInfoInversionista", datos);
     alert('Información registrada correctamente');
+    router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
     alert("Error al registrar");

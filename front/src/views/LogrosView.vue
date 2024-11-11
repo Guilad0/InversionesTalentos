@@ -43,7 +43,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import { useRouter } from 'vue-router';
+const router = useRouter(); 
 const cliente_id = ref("");
 const descripcion = ref("");
 const fecha = ref("");
@@ -68,16 +69,14 @@ const registrarLogro = async () => {
       descripcion: descripcion.value,
       fecha: fecha.value,
     });
-    alert(response.data.message);
-
-    // Resetear los campos del formulario
     descripcion.value = "";
     fecha.value = "";
+    alert('logro regsitrado')
+    router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
     alert("Error al registrar");
   }
-
   const datos = {
     cliente_id: cliente_id.value,
     descripcion: descripcion.value,
