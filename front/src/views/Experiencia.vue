@@ -77,7 +77,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import { useRouter } from 'vue-router';
+const router = useRouter(); 
 const cliente_id = ref(""); 
 const institucion = ref("");
 const cargo = ref("");
@@ -109,6 +110,7 @@ const registrarExperiencia = async () => {
       fecha_final: fecha_final.value
     });
     alert(response.data.message);
+    router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
     alert("Error al registrar");

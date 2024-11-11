@@ -6,6 +6,7 @@ import { notyf } from '@/helpers/NotifyAlerts';
 import axios from 'axios';
 import ModalInforUser from '../components/ModalInforUser.vue'
 import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
+import ModalMedia from './ModalMedia.vue';
 const user = JSON.parse(localStorage.getItem("usuario"));
 const page = ref(1);
 const search = ref('')
@@ -29,12 +30,17 @@ onMounted(() => {
 
 });
 
-
+const image = ref('')
 const clearSearch = () => {
     search.value = '';
     page.value = 1;
     baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
     getData();
+}
+
+const selectImage = (img,user) =>{
+    image.value = img
+    console.log(user);
 }
 
 const handleName = () => {
@@ -62,6 +68,19 @@ const deleteUSer = (id, estado) => {
     }
 
 }
+
+const updateRol = async (usuario_id, newRol) => {
+    try {
+        const response = await axios.patch(`http://localhost:3000/roles/updateRole/${usuario_id}`, { rol: newRol });
+        if (response.status === 200) {
+            notyf.success("Rol actualizado correctamente");
+            getData();
+        }
+    } catch (err) {
+        console.error(err);
+        notyf.error("Error al actualizar el rol");
+    }
+};
 
 const handleAproved =async (id, name, event)=>{
     if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
@@ -96,20 +115,6 @@ const clearId = ()=>{
     id.value = -1;
     typeForm.value = '';
 }
-
-const updateRol = async (usuario_id, newRol) => {
-    try {
-        const response = await axios.patch(`http://localhost:3000/roles/updateRole/${usuario_id}`, { rol: newRol });
-        if (response.status === 200) {
-            notyf.success("Rol actualizado correctamente");
-            getData();
-        }
-    } catch (err) {
-        console.error(err);
-        notyf.error("Error al actualizar el rol");
-    }
-};
-
 
 </script>
 <template>
@@ -169,7 +174,8 @@ const updateRol = async (usuario_id, newRol) => {
                                 </div>
                             </td>
                             <td class="text-secondary text-center">
-                                <i v-if="user.rol !=='Admin' ||user.rol =='Inversionista' " class="fas fa-image "></i>
+                                <i v-if="user.rol !=='Admin' ||user.rol =='Inversionista' " class="fas fa-image " data-bs-toggle="modal"
+                                data-bs-target="#media" @click="selectImage(user.imagen, user)"></i>
                                 <i v-else class="fa-solid fa-xmark text-danger"></i>
                             </td>
                             <td class="text-center "  >
@@ -216,10 +222,6 @@ const updateRol = async (usuario_id, newRol) => {
                                 <i class="fa-solid fa-xmark"></i>
                             </td>
 
-                        
-                            <!-- <td>
-                                {{ user.rol }}
-                            </td> -->
                             <select v-model="user.rol" @change="updateRol(user.usuario_id, user.rol)"
                                 class="form-select">
                                 <option value="Inversionista">Inversionista</option>
@@ -227,7 +229,6 @@ const updateRol = async (usuario_id, newRol) => {
                                 <option value="Admin">Admin</option>
                                 <option value="Null">Null</option>
                             </select>
-
                             <td>
                                 <div class="form-check form-switch">
                                     <div class="form-check form-switch ">
@@ -267,6 +268,7 @@ const updateRol = async (usuario_id, newRol) => {
             </div>
         </div>
         <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol"/>
+        <ModalMedia :image="image"/>
         <ModalCreateUserAdmin />
         <div class="footer">
             <Pagination

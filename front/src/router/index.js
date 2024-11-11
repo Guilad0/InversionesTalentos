@@ -20,6 +20,7 @@ import ComentariosView from '@/views/ComentariosView.vue'
 import PropositoView from '@/views/PropositoView.vue'
 import LogrosView from '@/views/LogrosView.vue'
 import AddInfInversionista from '@/views/AddInfInversionista.vue'
+import InformacionView from '@/views/InformacionView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,7 +124,15 @@ const router = createRouter({
       name: 'addInfInversionista',
       component: AddInfInversionista
     },
-
+    { path: '/addInfCliente', 
+      name: 'addInfCliente',
+      component: InformacionView
+    },
+    {
+      path:'/:name',
+      name:'client',
+      component:ClientView
+    },
   ]
 })
 

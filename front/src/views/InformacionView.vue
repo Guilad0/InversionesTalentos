@@ -105,7 +105,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import { useRouter } from 'vue-router';
+const router = useRouter(); 
 const cliente_id = ref(""); 
 const ocupacion = ref("");
 const descripcion = ref("");
@@ -115,7 +116,6 @@ const preparacion = ref("");
 const estudios = ref("");
 const vision = ref("");
 const nombre = ref("Usuario");
-
 // Cliente_id desde localStorage
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("usuario"));
@@ -145,14 +145,13 @@ console.log(datos);
 try {
   const response = await axios.post("http://localhost:3000/users/info", datos);
     alert('Información registrada correctamente');
+    router.push({ name: 'perfil' });
+
 } catch (error) {
   console.error(error);
   alert("Error al registrar");
 }
-    
-    // Mover la creación de 'datos' dentro de la función para que esté en el alcance adecuado
-   
- 
+
 };
 
   

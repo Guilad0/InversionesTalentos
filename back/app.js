@@ -25,6 +25,7 @@ var inversionesRetirosRoutes = require('./routes/inversionesRetiros');
 var ajustesAdminRouter = require('./routes/ajustesAdmin');
 var rolesRouter = require('./routes/roles');
 var comentariosRouter = require('./routes/comentarios');
+var utilitiesRouter = require('./routes/utilities');
 
 
 var app = express();
@@ -53,7 +54,7 @@ app.use('/contact', contactRouter);
 app.use('/posts', postsRouter);
 app.use('/categoria_posts', categoria_postsRouter);
 app.use('/logros', logrosRouter);
-app.use('/categories',categoriesRouter )
+app.use('/categories',categoriesRouter)
 app.use('/links', linksRouter); 
 app.use('/faq', faqRouter);
 app.use('/auth', authRouter);
@@ -67,6 +68,7 @@ app.use('/ajustesAdmin', ajustesAdminRouter);
 app.use('/api/experiencia', experienciaRoutes);
 app.use('/roles', rolesRouter);
 app.use('/comentarios', comentariosRouter);
+app.use('/utilities', utilitiesRouter);
 
 
 

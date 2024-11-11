@@ -27,3 +27,8 @@ export const getAge = ( date )=>{
   
     return edad;
   }
+
+  export const porcentajeTrue = (verifyRegister) => {
+    const totalTrue = verifyRegister.value.filter(item => item.status === true).length;
+    return (totalTrue / verifyRegister.value.length) * 100 + '%';
+  };
