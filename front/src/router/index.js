@@ -21,6 +21,7 @@ import PropositoView from '@/views/PropositoView.vue'
 import LogrosView from '@/views/LogrosView.vue'
 import AddInfInversionista from '@/views/AddInfInversionista.vue'
 import InformacionView from '@/views/InformacionView.vue'
+import RecoverPass from '@/views/RecoverPass.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -133,6 +134,11 @@ const router = createRouter({
       name:'client',
       component:ClientView
     },
+    { path: '/RecoverPass', 
+      name: 'RecoverPass',
+      component: RecoverPass
+    },
+
   ]
 })
 
