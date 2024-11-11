@@ -9,7 +9,8 @@
           <div class="container-fluid m-3">
             <div class="tabs me-auto mb-2 mb-lg-0">
               <button v-for="(tabCli, index) in tabsCli" :key="index"
-                :class="['underline-dynamic', 'btn','tabs', { active: activeTabCli === index }]" @click="activeTabCli = index">
+                :class="['underline-dynamic', 'btn', 'tabs', { active: activeTabCli === index }]"
+                @click="activeTabCli = index">
                 {{ tabCli }}
               </button>
             </div>
@@ -21,11 +22,18 @@
         <div class="tab-content" v-if="activeTabCli === 0">
 
           <div class="bg-white p-4  " v-for="inversion_recibida in inversiones_recibidas" :key="inversion_recibida">
-            <p>Inversion ID: {{ inversion_recibida.inversion_id }}</p>
-            <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
-            <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
-            <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
-            <hr/>
+            <div class="row">
+              <div class="col-md-4">
+                <p>Inversion ID: {{ inversion_recibida.inversion_id }}</p>
+                <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
+                <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
+                <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
+                <hr />
+              </div>
+              <div class="col-4">
+                <img :src="inversion_recibida.imagen" width="150" class=" rounded-circle" alt="">
+              </div>
+            </div>
           </div>
         </div>
         <!---->
@@ -40,7 +48,7 @@
             <p v-if="cliente_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
             </p>
-            <hr/>
+            <hr />
           </div>
         </div>
         <!---->
@@ -52,7 +60,8 @@
             <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
             <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
             <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
-            <hr/>
+            <button class="btn btn-secondary" @click="devolverTokens(inversion_vencida)">Devolver Inversión</button>
+            <hr />
           </div>
         </div>
         <!---->
@@ -68,7 +77,8 @@
           <div class="container-fluid m-3">
             <div class="tabs me-auto mb-2 mb-lg-0">
               <button v-for="(tabInv, index) in tabsInv" :key="index"
-                :class="['underline-dynamic', 'tabs', { active: activeTabInv === index }]" @click="activeTabInv = index">
+                :class="['underline-dynamic', 'tabs', { active: activeTabInv === index }]"
+                @click="activeTabInv = index">
                 {{ tabInv }}
               </button>
             </div>
@@ -79,13 +89,20 @@
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-            <p>Inversion ID: {{ inversion.inversion_id }}</p>
-            <p>Cliente: {{ inversion.nombre_cliente }}</p>
-            <p>Tokens Invertidos: {{ inversion.monto }}</p>
-            <p>Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}</p>
-            <p>Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
-            <p>Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>            
-            <hr />
+            <div class="row">
+              <div class="col-5">
+                <p>Inversion ID: {{ inversion.inversion_id }}</p>
+                <p>Cliente: {{ inversion.nombre_cliente }}</p>
+                <p>Tokens Invertidos: {{ inversion.monto }}</p>
+                <p>Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}</p>
+                <p>Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
+                <p>Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>
+                <hr />
+              </div>
+              <div class="col-4">
+                <img :src="inversion.imagen" width="200" class=" rounded-circle" alt="">
+              </div>
+            </div>
           </div>
         </div>
         <!---->
@@ -133,7 +150,7 @@ if (usuario_rol.value == "Inversionista") {
   inversionista_ID.value = usuario_id.value;
   onMounted(() => {
     obtenerInversiones_Inversionista();
-    obtenerInversionista_retiro();    
+    obtenerInversionista_retiro();
   });
 }
 if (usuario_rol.value == "Cliente") {
@@ -142,6 +159,7 @@ if (usuario_rol.value == "Cliente") {
     obtenerInversiones_Clientes();
     obtenerCliente_retiro();
     obtenerInversiones_Clientes_Vencidas();
+    obtenerTokens_Cliente();
   });
 }
 
@@ -151,6 +169,8 @@ const inversiones_recibidas = ref([]);
 const clientes_retiros = ref([]);
 const inversiones_vencidas = ref([]);
 
+const tokensRecibidosCliente = ref(0);
+const tokensDeudasCliente = ref(0);
 
 
 const obtenerInversiones_Inversionista = async () => {
@@ -159,6 +179,7 @@ const obtenerInversiones_Inversionista = async () => {
       baseURL + "inversionista/" + inversionista_ID.value
     );
     inversiones.value = data.data;
+    console.log(inversiones.value);
   } catch (error) {
     console.log(error);
   }
@@ -205,6 +226,66 @@ const obtenerInversiones_Clientes_Vencidas = async () => {
   }
 };
 
+const obtenerTokens_Cliente = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
+    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
+    tokensDeudasCliente.value = data.data[0].totalTokensDeudas;
+    console.log(tokensRecibidosCliente.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const devolverTokens = async (inversion) => {
+  console.log(inversion);
+  console.log(inversion.monto);
+  console.log(tokensRecibidosCliente.value);
+
+  if (inversion.monto < tokensRecibidosCliente.value) {
+    const datos = {
+      inversion_id: inversion.inversion_id,
+      token: inversion.monto,
+      usuario_id: inversion.inversor_id,
+      cliente_id: cliente_ID.value,
+      inversor_id: inversion.inversor_id,
+      tipo: 'Egreso',
+      descripcion: 'Devolucion de tokens'
+    };
+    console.log(datos);
+    try {
+      await axios.post(baseURL + 'devolverTokens', datos);
+      Swal.fire({
+        title: "¡Felicidades!",
+        text: "Devolución de tokens realizada con éxito",
+        icon: "success",
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)',
+      });
+      var myModalEl = document.getElementById('modalInversion');
+      var modal = bootstrap.Modal.getInstance(myModalEl);
+      modal.hide();
+    } catch (error) {
+      console.error('Error al invertir los tokens:', error);
+    }
+  }
+  else {
+    Swal.fire({
+      title: "¡Error!",
+      text: "La cantidad de tokens es insuficiente",
+      icon: "error",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)',
+    });
+  }
+  obtenerInversiones_Clientes_Vencidas();
+
+};
+
 </script>
 
 <style scoped>
@@ -213,6 +294,18 @@ const obtenerInversiones_Clientes_Vencidas = async () => {
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;
+}
+
+.btn-secondary {
+  background-color: var(--gray-color);
+  color: var(--white-color);
+  border-color: var(--white-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary);
+  color: var(--yellow-orange);
+  border-color: var(--yellow-orange);
 }
 
 .active::after {
@@ -239,7 +332,7 @@ p {
   background: #ffffff;
   border-color: #ffffff;
   border-radius: 10px !important;
-  
+
   margin-right: 15px;
   transition: color 0.3s ease;
 }
