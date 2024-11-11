@@ -459,7 +459,7 @@ const registrar = async () => {
   // console.log(validationPass([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm]));
   console.log(gender.value);
 if(validatorForm()){
-  let userName = generateUserName(email.value);
+  
   const datos = {
     nombre: name.value,
     apellido: lastName.value,
@@ -489,9 +489,10 @@ if(validatorForm()){
     console.log(error);
     alert('Error al regsitrar')
   }finally{
-    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,categoria,password,confirmPassword,numero_telefono,acepta_terminos,email,selectedCountryname,gender]);
-    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm,countryConfirmname])
+    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,password,confirmPassword,numero_telefono,acepta_terminos,email,gender]);
+    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm,gender])
   }
+
 }
 };
 
