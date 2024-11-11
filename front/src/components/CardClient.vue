@@ -43,7 +43,7 @@ const showClient = (user) => {
         </div>
         <div class="text-center">
           <label class="card-text token py-3 m-auto"
-            >Token price: ${{
+            >Precio de token: ${{
               props.client.monto_inversion == null
                 ? "00.00"
                 : props.client.monto_inversion
@@ -52,7 +52,7 @@ const showClient = (user) => {
         </div>
         <div class="row mt-2">
           <button class="btn btn-gray" @click="showClient(props.client)">
-            Buy my Token
+            Ver detalles
           </button>
         </div>
       </div>

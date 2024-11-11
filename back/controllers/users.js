@@ -920,6 +920,7 @@ const getUserById = (req, res) => {
         u.pais_residencia,
         u.edad, 
         u.rol, 
+        u.aprobado,
         u.estado,
         u.codigo_pais,
         u.numero_telefono,
