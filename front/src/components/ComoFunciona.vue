@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container mt-5">
+    <div v-if="!loading">
+      <div class="container mt-5">
     <div class="row">
       <div class="col-md-6">
         <h2 class="title">Cómo Funciona</h2>
@@ -19,32 +20,31 @@
       </div>
     </div>
   </div>
-  <div v-if="user && user.rol !== 'Inversionista' && user.rol !== 'Cliente'">
+  <div v-if="user == null || user?.rol == 'Null'">
     <Unete />
    </div>
+    </div>
+    <div v-else >
+      <Spinner/>
+    </div>
   </div>
 </template>
 
-<script>
-import { getUser } from "@/helpers/utilities";
-import Unete from "./Unete.vue";
+<script setup>
+import { ref, onMounted } from 'vue';
+import { getUser } from '@/helpers/utilities';
+import Unete from './Unete.vue';
+import Spinner from '../components/Spinner.vue'
+const loading = ref(false)
+const user = ref(null);
 
-export default {
-  name: "ComoFunciona",
-  components: {
-    Unete,
-  },
-  data() {
-    return {
-      user: null
-    };
-  },
-  async mounted() {
-    this.user = await getUser();
-  }
-};
+onMounted(async () => {
+  loading.value =true;
+  user.value = await getUser();
+  console.log(user.value);
+  loading.value = false
+});
 </script>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
@@ -53,7 +53,7 @@ export default {
   background: #ffffff;
   padding: 30px;
   border-radius: 15px;
-  animation: fadeIn 3s ease-in-out;
+  animation: fadeIn 3s ease;
 }
 
 @keyframes fadeIn {

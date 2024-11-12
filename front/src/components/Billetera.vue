@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+    <div class="container mx-auto p-4  "  v-if="usuario_rol == 'Cliente'">
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
       <div>
         <div class="row">
