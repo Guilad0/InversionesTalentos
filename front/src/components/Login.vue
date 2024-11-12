@@ -98,6 +98,7 @@ const ingresar = async () => {
       position: 'topRight',
       theme: 'dark',
       color: '#f00', 
+
     })
 
 
@@ -135,6 +136,7 @@ const ingresar = async () => {
       theme: 'dark',
       color: '#5ce65c',
       closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
           })
     setTimeout(() => {
       route.push({ path: "/" });
@@ -162,6 +164,8 @@ const ingresar = async () => {
       position: 'topRight',
       theme: 'dark',
       color: '#f00',
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
     })
 
   }
