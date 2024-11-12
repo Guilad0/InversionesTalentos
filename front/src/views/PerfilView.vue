@@ -290,15 +290,25 @@
                     <div class="d-flex m-auto align-items-center justify-content-between">
                       <div class="col "> <i class="fa-solid fa-play"></i> &nbsp; Presentacion </div> 
                       <div class="col d-flex align-items-center position-relative">
-                        <button  :disabled="verifyRegister[4].status" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" >
+                        <button v-if="!videoPresentacion" :disabled="verifyRegister[4].status" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="selectVideo">
                           <label v-if="verifyRegister[4].status">Enviado</label>
-                          <label v-if="!verifyRegister[4].status">Enviar</label>
-                          </button>
+                          <label v-if="!verifyRegister[4].status">Abrir</label>
+                        </button>
+                        <button v-if="videoPresentacion" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="saveVideo">
+                          <label v-if="!loadingButtonVideo">Enviar</label>
+                          <label v-if="loadingButtonVideo">
+                            <div class="spinner-border text-primary spinner-border-sm" role="status">
+                              <span class="visually-hidden">Cargando...</span>
+                            </div>
+                          </label>
+                        </button>
                         <label v-if="verifyRegister[4].status" class="custom-abs">
                         <img src="../assets/svg/check1.svg " width="25" alt="">
                         </label>
                       </div>
+                      <input type="file" ref="videoFile" accept="video/*" style="display: none;" @change="onVideoChange">
                     </div>
+
                   </li>
                   <li v-if="bar == '100%'" class="pt-2 ">
                     <strong>Nota: </strong> Su proceso de registro está completo. Nuestro equipo de administración revisará sus datos para habilitar su cuenta en breve.
@@ -354,6 +364,11 @@ const fileInput = ref(null);
     const selectImage = () => {
       fileInput.value.click();
     };
+    const videoFile = ref(null);
+    const selectVideo = () => {
+      videoFile.value.click();
+    };
+
 let currentPath = useRoute();
  currentPath = currentPath.name;
  
@@ -370,6 +385,7 @@ let userName = ref("");
 const rol = ref("");
 const imagen_portada = ref(null);
 const countries = ref(countriesData);
+const videoPresentacion = ref(null);
 const router = useRouter()
 onMounted(() => {
   obtenerDatos();
@@ -640,6 +656,83 @@ const openOffcanvas = () => {
     isOffcanvasOpen.value = false;
   });
 };
+
+const loadingButtonVideo = ref(false)
+
+
+    const onVideoChange = (event) => {
+    videoPresentacion.value = event.target.files[0];
+    console.log("Archivo seleccionado:", videoPresentacion.value);
+
+    // No es necesario verificar la extensión aquí, ya que se maneja en el backend
+    if (videoPresentacion.value) {
+        iziToast.success({
+            title: 'Éxito',
+            message: 'Archivo de video seleccionado correctamente',
+            position: 'center',
+            theme: 'dark',
+            color: '#34D399',
+            progressBarColor: '#FFFFFF',
+            messageColor: '#FFFFFF',
+            titleColor: '#FFFFFF',
+            iconColor: '#FFFFFF',
+        });
+    } else {
+        iziToast.warning({
+            title: 'Caution',
+            message: 'No se seleccionó ningún archivo',
+            position: 'center',
+            theme: 'dark',
+            color: '#ef4444',
+            progressBarColor: '#FFFFFF',
+            messageColor: '#FFFFFF',
+            titleColor: '#FFFFFF',
+            iconColor: '#FFFFFF',
+        });
+        cleanVideo();
+    }
+};
+const cleanVideo = () => {
+      videoPresentacion.value = null; 
+      if (videoFile.value) {
+        videoFile.value.value = ''; 
+      }
+    };
+
+  const saveVideo = async () => {
+  const formData = new FormData();
+
+  if (videoPresentacion.value) {
+    formData.append("video", videoPresentacion.value); 
+    formData.append("cliente_id", usuario.usuario_id); 
+  } else {
+    console.error("No se ha seleccionado un video.");
+    return;
+  }
+
+  try {
+    loadingButtonVideo.value = true;
+    await axios.post('http://localhost:3000/informacion/videoUpload', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log('Video subido exitosamente');
+    timerAlert('¡El video se cargó correctamente!', 'center', 2500, 'success');
+    
+    // Puedes limpiar el video seleccionado o actualizar el estado después de la subida
+    videoPresentacion.value = null;
+    verifyFormInfClient();
+  } catch (error) {
+    console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
+    timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
+  } finally {
+    setTimeout(() => {
+      loadingButtonVideo.value = false;
+    }, 500);
+  }
+};
+
 
 </script>
 

@@ -1,5 +1,7 @@
 const { response: res, request: req } = require("express");
 const conexion = require("../database");
+const { uploadVideo } = require('../helpers/uploadVideo');
+
 const getInformacion = (req, res) => {
   conexion.query("SELECT * FROM informacion", (error, results) => {
     if (error) {
@@ -24,9 +26,81 @@ const postInformacion = (req, res) => {
   });
 };
  
+const saveVideo = (req, res) => {
+  
+  if (!req.files || Object.keys(req.files).length === 0 || !req.files.video) {
+      return res.status(400).json({
+          msg: "Sin archivos para subir",
+      });
+  } 
+
+  const { cliente_id } = req.body;
+  console.log('Cliente ID:', cliente_id);
+    console.log('Archivos:', req.files);
+  let query = 'SELECT * FROM informacion WHERE cliente_id = ?';
+  conexion.query(query, [cliente_id], async (err, data) => {
+    if (err) {
+      console.error('Error en consulta de cliente:', err);
+      return res.status(500).json({ err, msg: 'Error al buscar cliente' });
+  }
+      if (data.length === 0) {
+          res.status(404).json({
+              msg: 'Cliente no encontrado'
+          });
+          return;
+      }
+      try {
+          const videoFile = req.files.video;
+          const videoPath = await uploadVideo({ file: videoFile }, ['mp4', 'avi', 'mkv'], 'videos');
+          query = 'UPDATE informacion SET video = ? WHERE cliente_id = ?';
+          conexion.query(query, [videoPath, cliente_id], (err) => {
+            if (err) {
+              console.error('Error en actualización de cliente:', err);
+              return res.status(500).json({ err });
+          }
+              res.status(201).json({
+                  ok: 'Video cargado',
+              });
+          });
+      } catch (error) {
+        console.error('Error al subir video:', error);
+          res.status(400).json({
+              error
+          });
+      }
+  });
+};
+
+const getClienteIdByUsuarioId = (req, res) => {
+  const { usuario_id } = req.params;
+  let query = `SELECT i.cliente_id
+              FROM usuarios u
+              JOIN informacion i ON u.usuario_id = i.cliente_id
+              WHERE u.usuario_id = ?;`;
+  conexion.query(query, [usuario_id], (err, data) => {
+      if (err) {
+          console.error('Error al buscar cliente_id:', err);
+          return res.status(500).json({
+              msg: 'Error al buscar cliente_id'
+          });
+      }
+      if (data.length === 0) {
+          return res.status(404).json({
+              msg: 'Cliente no encontrado'
+          });
+      }
+      res.status(200).json({
+          cliente_id: data[0].cliente_id
+      });
+  });
+};
+
  
 
 module.exports = {
   getInformacion,
   postInformacion,
+  saveVideo,
+  getClienteIdByUsuarioId
 };
+

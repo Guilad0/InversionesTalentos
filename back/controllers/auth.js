@@ -171,10 +171,52 @@ const resetPasswordForm = (req, res) => {
     res.json({ valid: true, token }); // Indica que el token es válido y envía el token al frontend
 };
 
+const updatePassword = (req, res) => {
+    const { correo, oldPassword, newPassword } = req.body;
+
+    if (!correo || !oldPassword || !newPassword) {
+        return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+
+    const query = 'SELECT * FROM usuarios WHERE correo = ?';
+    conexion.query(query, [correo], async (err, results) => {
+        if (err) {
+            console.error('Error en la consulta:', err);
+            return res.status(500).json({ error: 'Error en la consulta a la base de datos' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        const usuario = results[0];
+        const validPassword = await bcrypt.compare(oldPassword, usuario.password);
+
+        if (!validPassword) {
+            return res.status(400).json({ error: 'Contraseña antigua incorrecta' });
+        }
+
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        const updateQuery = 'UPDATE usuarios SET password = ? WHERE correo = ?';
+        conexion.query(updateQuery, [hashedNewPassword, correo], (updateErr) => {
+            if (updateErr) {
+                console.error('Error al actualizar la contraseña:', updateErr);
+                return res.status(500).json({ error: 'Error al actualizar la contraseña' });
+            }
+
+            res.json({ message: 'Contraseña actualizada exitosamente' });
+        });
+    });
+};
+
       
 module.exports = {
     auth,
     forgotPassword, 
     resetPassword,
-    resetPasswordForm
+    resetPasswordForm,
+    updatePassword
 }
+
+      
+

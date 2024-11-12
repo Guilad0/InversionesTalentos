@@ -28,7 +28,7 @@ var comentariosRouter = require('./routes/comentarios');
 var utilitiesRouter = require('./routes/utilities');
 var reportesRouter = require('./routes/reportes');
 var perfilRouter = require('./routes/perfil');
-
+var informacionRoutes = require('./routes/informacionRoutes');
 
 var app = express();
 
@@ -73,5 +73,6 @@ app.use('/comentarios', comentariosRouter);
 app.use('/utilities', utilitiesRouter);
 app.use('/reportes', reportesRouter);
 app.use('/perfil', perfilRouter);
+app.use('/informacion', informacionRoutes);
 
 module.exports = app;
