@@ -10,7 +10,7 @@
     </div>
     <div class="destacados-section">
       <h3 class="py-5 text-center">Destacados</h3>
-      <div class="d-flex flex-wrap justify-content-center">
+      <div class="d-flex flex-wrap justify-content-center flex-wrap ">
         <CardClient
           v-for="client in primerosCinco"
           :key="client.usuario_id"
@@ -100,25 +100,24 @@ console.log(primerosCinco);
 
 @media (min-width: 600px) {
   .card-client {
-    flex: 1 1 calc(50% - 2rem);
-    max-width: calc(50% - 2rem);
-    margin: 1rem;
-    min-height: 450px;
+    flex: 1 1 calc( 35% - 2rem) !important;
+    max-width: calc(35% - 2rem) !important;
+    min-height: 500px !important;    
   }
 }
 
 @media (min-width: 900px) {
   .card-client {
-    flex: 1 1 calc(33.33% - 2rem);
-    max-width: calc(33.33% - 2rem);
+    flex: 1 1 calc( 30.33% - 2rem)!important;
+    max-width: calc(30.33% - 2rem)!important;
     min-height: 500px;
   }
 }
 
 @media (min-width: 1200px) {
   .card-client {
-    flex: 1 1 calc(25% - 2rem);
-    max-width: calc(25% - 2rem);
+    flex: 1 1 calc(20% - 2rem)  !important;
+    max-width: calc(20% - 2rem) !important;
   }
 }
 

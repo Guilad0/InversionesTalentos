@@ -1,5 +1,5 @@
 <template>
-  <div class="container auto">
+  <div class="container animate__animated animate__fadeInLeftBig">
     <div class="col">
       <div class="card">
         <div class="card-body">
