@@ -1,8 +1,12 @@
 <template>
+
   <div class="col-7 col-xl-8 col-md-12 col-sm-10 d-none d-md-block">
+
     <p class="m-0 pb-3">
+
       <RouterLink to="/marketplace" class="custom-link">Marketplace</RouterLink> |
       <label>{{ client.rol }}</label>
+
     </p>
 
     <div class="card banner-card z-1">
@@ -16,63 +20,50 @@
       <!-- Imagen de perfil -->
       <div class="card-body">
         <div class="profile-section">
-          <img
-            src="../assets/images/fotoperfil.png"
-            class="profile-image"
-            alt="Profile Image"
-          />
+
+          <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
+
         </div>
         <!-- nombre y datos -->
         <div class="mt-5">
-          <h3 class="card-title">{{ client.nombre }} {{ client.apellido }}</h3>
+
+          <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
+          <h6>{{ client.rol }}</h6>
 
           <div class="row">
-            <button
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              @click="toggleInformacion()"
-            >
+
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
               <i class="fas fa-info-circle"></i> Información<span></span>
             </button>
 
-            <button
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              @click="toggleLogros()"
-            >
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
               <i class="fas fa-trophy"></i> Logros<span></span>
             </button>
 
-            <button
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              @click="toggleExperiencia()"
-            >
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarExperiencia }" @click="toggleExperiencia()">
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
-              @click="isAuthenticatedAlert()"
-            >
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+              @click="isAuthenticatedAlert()">
               <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
             </button>
 
-            <button
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              data-bs-toggle="modal"
-              data-bs-target="#modalInversion"
-            >
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+              data-bs-target="#modalInversion">
               <i class="fas fa-dollar-sign"></i> Invertir<span></span>
             </button>
+
           </div>
 
           <div>
             <h5 class="title text-center">Descripcion</h5>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-              accusamus fugit ipsam possimus dignissimos magni, voluptates expedita quod
-              minima consequuntur eaque placeat in temporibus sapiente dolor maxime velit
-              impedit non!{{ client.descripcion }}
-            </p>
+            <p>{{ client.vision }}</p>
           </div>
+
         </div>
       </div>
     </div>
@@ -86,14 +77,12 @@
         <h6>Género: {{ client.genero }}</h6>
         <h6>Ocupación: {{ client.ocupacion }}</h6>
         <h6>Estudios: {{ client.estudios }}</h6>
+        <h6>Descripcion: {{ client.descripcion }}</h6>
         <h6>Monto de inversión: {{ client.monto_inversion }}</h6>
         <h6>Categoría: {{ client.categoria }}</h6>
 
-        <button
-          class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
-          data-bs-toggle="modal"
-          data-bs-target="#modalVideoPresentacion"
-        >
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 col-3" data-bs-toggle="modal"
+          data-bs-target="#modalVideoPresentacion">
           <i class="fas fa-video"></i> Video presentación<span></span>
         </button>
       </div>
@@ -112,19 +101,12 @@
           </thead>
 
           <tbody>
-            <tr>
-              <td>Reconocimiento por aportes en Google</td>
-              <td>2024-08-01</td>
-            </tr>
 
-            <tr>
-              <td>Reconocimiento por aportes en Meta</td>
-              <td>2024-08-08</td>
-            </tr>
+            <tr v-for="logro in logros" :key="logro.id">
 
-            <tr>
-              <td>Reconocimiento por aportes en SpaceX</td>
-              <td>2024-08-15</td>
+              <td>{{ logro.descripcion }}</td>
+              <td>{{ convertirFecha(logro.fecha) }}</td>
+
             </tr>
           </tbody>
         </table>
@@ -132,15 +114,17 @@
     </div>
 
     <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in">
+
       <div class="card-body">
+
         <h3 class="text-center">Experiencia</h3>
 
-        <div class="card p-3">
-          <h4 class="">L. Orias Corp</h4>
-          <h6>Cargo: Desarrollador</h6>
-          <h6>Actividades: Desarrollo de Software</h6>
-          <h6>Fecha de inicio: 2020-01-01</h6>
-          <h6>Fecha final: 2024-01-01</h6>
+        <div class="card p-3" v-for="exp in experiencia" :key="exp.id">
+          <h4 class="">{{ exp.institucion }}</h4>
+          <h6>Cargo: {{ exp.cargo }}</h6>
+          <h6>Actividades: {{ exp.actividades }}</h6>
+          <h6>Fecha de inicio: {{ convertirFecha(exp.fecha_inicio) }}</h6>
+          <h6>Fecha final: {{ convertirFecha(exp.fecha_final) }}</h6>
         </div>
       </div>
     </div>
@@ -152,15 +136,13 @@
     </div> -->
 
     <!-- Modal Video Presentación -->
-    <div
-      class="modal fade"
-      id="modalVideoPresentacion"
-      tabindex="-1"
-      aria-labelledby="videoModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+    <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
+      aria-hidden="true">
+
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content bg-dark text-white">
+
           <div class="modal-header">
             <h5 class="modal-title" id="videoModalLabel">
               {{ client.nombre }} {{ client.apellido }}
@@ -174,37 +156,26 @@
           </div>
 
           <div class="modal-body">
-            <video width="100%" height="315" controls>
-              <source src="../assets/images/video_presentacion.webm" type="video/webm" />
+
+            <video width="100%" height="500" autoplay unmuted controls>
+              <source src="../assets/images/video_presentacion.webm" type="video/webm">
               Tu navegador no soporta el elemento de video.
             </video>
           </div>
 
           <div class="modal-footer">
-            <button
-              type="button"
-              class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
-              data-bs-dismiss="modal"
-            >
-              Cerrar <span></span>
-            </button>
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+              data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Modal Inversión -->
-    <div
-      class="modal fade"
-      id="modalInversion"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
+    <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content bg-dark text-white">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
@@ -218,18 +189,16 @@
           </div>
           <div class="modal-body">
             <form action="#" class="needs-validation" novalidate>
-              <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                  <div class="card m-1">
+              <div class="container text-center">
+                <div class="col-md-12">
+                  <div class="card m-1 modal-card">
                     <div class="card-body">
                       <div class="form">
                         <div class="row d-flex justify-content-around">
                           <div class="col-md-8">
                             <div class="mb-3">
-                              <label for="cliente_id" class="form-label">Cliente</label
-                              ><br />
-                              <p>{{ client.nombre }}</p>
+                              <label for="cliente_id" class="form-label fs-5 fw-bold">Cliente</label><br />
+                              <p class="fs-4 fw-bolder">{{ client.nombre }}</p>
                             </div>
                           </div>
                         </div>
@@ -237,17 +206,9 @@
                         <div class="row d-flex justify-content-around">
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="monto_tokens_invertir" class="form-label"
-                                >Tokens a invertir</label
-                              >
-                              <input
-                                type="number"
-                                v-model="monto_tokens_invertir"
-                                id="monto_tokens_invertir"
-                                class="form-control"
-                                @change="calcularGanancias()"
-                                required
-                              />
+                              <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
+                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
+                                class="form-control text-center" @change="calcularGanancias()" required />
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -268,13 +229,10 @@
 
                         <hr />
                         <div class="text-center">
-                          <button
-                            type="button"
-                            @click="inversionistaInvertir()"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                          >
-                            Invertir
+                          <button type="button" @click="inversionistaInvertir()"
+                            class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+                            data-bs-dismiss="modal">
+                            Invertir <span></span>
                           </button>
                         </div>
                       </div>
@@ -287,8 +245,9 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cerrar
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+              data-bs-dismiss="modal">
+              Cerrar <span></span>
             </button>
           </div>
         </div>
@@ -436,23 +395,66 @@ const inversionistaInvertir = async () => {
 const mostrarInformacion = ref(false);
 const mostrarLogros = ref(false);
 const mostrarExperiencia = ref(false);
+const logros = ref([]);
+const experiencia = ref([]);
+
 
 const toggleInformacion = () => {
   mostrarInformacion.value = !mostrarInformacion.value;
+  mostrarLogros.value = false;
+  mostrarExperiencia.value = false;
 };
 
-const toggleLogros = () => {
+const toggleLogros = async () => {
+  try {
+    const { data } = await axios.get(`http://localhost:3000/logros/logrosfechas/${userId.value}`);
+    console.log(data);
+    logros.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+  mostrarInformacion.value = false;
   mostrarLogros.value = !mostrarLogros.value;
+  mostrarExperiencia.value = false;
 };
 
-const toggleExperiencia = () => {
+const toggleExperiencia = async () => {
+  try {
+    const { data } = await axios.get(`http://localhost:3000/logros/experiencia/${userId.value}`);
+    console.log(data);
+    experiencia.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+  mostrarInformacion.value = false;
+  mostrarLogros.value = false;
   mostrarExperiencia.value = !mostrarExperiencia.value;
 };
+
+const convertirFecha = (fecha) => {
+  const fechaFinal = new Date(fecha).toISOString().slice(0, 10);
+  return fechaFinal;
+
+}
+
+const pauseVideo = () => {
+  const videoElement = document.querySelector('#modalVideoPresentacion video');
+  if (videoElement) {
+    videoElement.pause();
+  }
+};
+
 </script>
 
 <style scoped>
+
+.custom-link {
+  text-decoration: none;
+  color: black;
+}
+
 button {
-  color: white;
+  color: rgb(128, 159, 245);
   font-size: 0.8rem;
   padding: 5px 10px;
   border-radius: 25px;
@@ -495,7 +497,6 @@ button {
 }
 
 .banner-card {
-  /* background-color: red; */
   border: none;
   border-radius: 10px;
   overflow: hidden;
@@ -531,6 +532,7 @@ button {
 }
 
 .card {
+  position: relative;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
@@ -553,4 +555,14 @@ button {
     opacity: 1;
   }
 }
+
+.modal-card {
+  background-color: rgb(187, 184, 181)
+}
+
+.active-button {
+  background-color: var(--gray-color);
+  color: white;
+}
+
 </style>
