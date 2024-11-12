@@ -4,10 +4,10 @@ main {
   background-color: var(--white-anti-flash-color);
 }
 
-.profile {
+/* .profile {
   height: 70vh;
   width: 100%;
-}
+} */
 
 li {
   font-size: 0.8rem;

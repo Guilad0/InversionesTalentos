@@ -6,13 +6,13 @@ var router = express.Router();
 router.get("/", (req, res) => {
     const { cliente_id } = req.query;  // Obtener el cliente_id desde los parámetros de consulta
     let query = "SELECT * FROM logros";
-    
+
     // Si se pasa cliente_id, filtramos los resultados
     if (cliente_id) {
         query += " WHERE cliente_id = ?";
     }
 
-    connection.query(query, [cliente_id], function(err, results) {
+    connection.query(query, [cliente_id], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -100,6 +100,45 @@ router.patch('/estado/:id', function (req, res) {
             res.status(200).send({
                 data: results,
                 message: 'Estado actualizado correctamente'
+            });
+        }
+    });
+});
+
+router.get('/logrosfechas/:id', function (req, res, next) {
+    const clienteId = req.params.id;
+    const logros = `SELECT l.fecha, l.descripcion FROM usuarios u INNER JOIN logros l ON u.usuario_id = l.cliente_id WHERE l.cliente_id = ?`;
+
+    connection.query(logros, [clienteId], function (err, results) {
+        if (err) {
+            res.status(500).send({
+                error: err,
+                message: "Error en la petición",
+            });
+        } else {
+            res.status(200).json({
+                data: results,
+                message: "Lista de perfil",
+            });
+        }
+    });
+});
+
+router.get('/experiencia/:id', function (req, res, next) {
+    const clienteId = req.params.id;
+    const logros = `SELECT e.institucion, e.cargo, e.actividades, e.fecha_inicio, e.fecha_final 
+FROM usuarios u 
+INNER JOIN experiencia e ON e.cliente_id = u.usuario_id WHERE e.cliente_id = ?`;
+    connection.query(logros, [clienteId], function (err, results) {
+        if (err) {
+            res.status(500).send({
+                error: err,
+                message: "Error en la petición",
+            });
+        } else {
+            res.status(200).json({
+                data: results,
+                message: "Lista de perfil",
             });
         }
     });
