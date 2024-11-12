@@ -300,6 +300,7 @@ import useFetchData from "../helpers/UseFetchData";
 import { getAge } from "@/helpers/utilities";
 import { countriesData } from '../helpers/dataCountries';
 import { haveLetterCapital,cleanFileds, haveLetter, validateName, validatePassword, validationEmail, validationNotEmptyFields, validationPass, tieneNumero, tieneCaracterEspecial, resetFileds } from '@/helpers/validatorsForm';
+import iziToast from 'izitoast';
 
 const user = JSON.parse(localStorage.getItem('usuario')) || '';
 let baseURL = "http://localhost:3000/users";
@@ -459,7 +460,7 @@ const registrar = async () => {
   // console.log(validationPass([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm]));
   console.log(gender.value);
 if(validatorForm()){
-  
+  let userName = generateUserName(email.value);
   const datos = {
     nombre: name.value,
     apellido: lastName.value,
@@ -483,16 +484,24 @@ if(validatorForm()){
     await axios.post(baseURL, datos);    
     isLoading.value = false;
     emit('changePage');
-    alert(msg.value);
+
+    iziToast.success({
+      title: 'Exito',
+      message: msg.value
+    })
+    // alert(msg.value);
   } catch (error) {
     isLoading.value = false;
     console.log(error);
-    alert('Error al regsitrar')
+    iziToast.error({
+      title: 'Error',
+      message: 'Error al registrar'
+    })
+    // alert('Error al regsitrar')
   }finally{
-    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,password,confirmPassword,numero_telefono,acepta_terminos,email,gender]);
-    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm,gender])
+    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,categoria,password,confirmPassword,numero_telefono,acepta_terminos,email,selectedCountryname,gender]);
+    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm,countryConfirmname])
   }
-
 }
 };
 
