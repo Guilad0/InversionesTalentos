@@ -7,99 +7,111 @@
 
     <div class="card banner-card z-1">
       <!-- Imagen superior (ej. imagen de fondo) -->
-      <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
+      <img
+        src="../assets/images/ejemplodeperfil.png"
+        class="card-img-top"
+        alt="Background Image"
+      />
 
       <!-- Imagen de perfil -->
       <div class="card-body">
-
         <div class="profile-section">
-
-          <img src="../assets/images/fotoperfil.png" class="profile-image" alt="Profile Image" />
-
+          <img
+            src="../assets/images/fotoperfil.png"
+            class="profile-image"
+            alt="Profile Image"
+          />
         </div>
         <!-- nombre y datos -->
         <div class="mt-5">
-
           <h3 class="card-title">{{ client.nombre }} {{ client.apellido }}</h3>
 
           <div class="row">
-
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" @click="toggleInformacion()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              @click="toggleInformacion()"
+            >
               <i class="fas fa-info-circle"></i> Información<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" @click="toggleLogros()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              @click="toggleLogros()"
+            >
               <i class="fas fa-trophy"></i> Logros<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" @click="toggleExperiencia()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              @click="toggleExperiencia()"
+            >
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" @click="isAuthenticatedAlert()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+              @click="isAuthenticatedAlert()"
+            >
               <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalInversion">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              data-bs-toggle="modal"
+              data-bs-target="#modalInversion"
+            >
               <i class="fas fa-dollar-sign"></i> Invertir<span></span>
-            </button>            
-
+            </button>
           </div>
 
           <div>
-              <h5 class="title text-center">Descripcion</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores accusamus fugit ipsam possimus dignissimos magni, voluptates expedita quod minima consequuntur eaque placeat in temporibus sapiente dolor maxime velit impedit non!{{ client.descripcion }}</p>
-            </div>
-
+            <h5 class="title text-center">Descripcion</h5>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
+              accusamus fugit ipsam possimus dignissimos magni, voluptates expedita quod
+              minima consequuntur eaque placeat in temporibus sapiente dolor maxime velit
+              impedit non!{{ client.descripcion }}
+            </p>
+          </div>
         </div>
-
       </div>
-
     </div>
 
     <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in">
-
       <div class="card-body">
-
         <h3 class="text-center">Información</h3>
         <h6>Edad: {{ client.edad }}</h6>
         <h6>Número de teléfono: {{ client.numero_telefono }}</h6>
         <h6>Correo: {{ client.correo }}</h6>
         <h6>Género: {{ client.genero }}</h6>
-        <h6>Ocupación: {{ client.ocupacion }}</h6>        
+        <h6>Ocupación: {{ client.ocupacion }}</h6>
         <h6>Estudios: {{ client.estudios }}</h6>
         <h6>Monto de inversión: {{ client.monto_inversion }}</h6>
         <h6>Categoría: {{ client.categoria }}</h6>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 col-3" data-bs-toggle="modal" data-bs-target="#modalVideoPresentacion">
+        <button
+          class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+          data-bs-toggle="modal"
+          data-bs-target="#modalVideoPresentacion"
+        >
           <i class="fas fa-video"></i> Video presentación<span></span>
         </button>
-
       </div>
-
     </div>
 
     <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in">
-
       <div class="card-body">
-
         <h3 class="text-center">Logros</h3>
 
         <table class="table table-striped table-bordered">
-
           <thead class="table-dark">
-
             <tr>
-
               <th>Descripción</th>
               <th>Fecha</th>
-
             </tr>
-
           </thead>
 
           <tbody>
-
             <tr>
               <td>Reconocimiento por aportes en Google</td>
               <td>2024-08-01</td>
@@ -114,13 +126,9 @@
               <td>Reconocimiento por aportes en SpaceX</td>
               <td>2024-08-15</td>
             </tr>
-
           </tbody>
-
         </table>
-
       </div>
-
     </div>
 
     <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in">
@@ -144,49 +152,69 @@
     </div> -->
 
     <!-- Modal Video Presentación -->
-    <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
-      aria-hidden="true">
-
+    <div
+      class="modal fade"
+      id="modalVideoPresentacion"
+      tabindex="-1"
+      aria-labelledby="videoModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
-
         <div class="modal-content">
-
           <div class="modal-header">
-
-            <h5 class="modal-title" id="videoModalLabel">{{ client.nombre }} {{ client.apellido }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+            <h5 class="modal-title" id="videoModalLabel">
+              {{ client.nombre }} {{ client.apellido }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
 
           <div class="modal-body">
-
             <video width="100%" height="315" controls>
-              <source src="../assets/images/video_presentacion.webm" type="video/webm">
+              <source src="../assets/images/video_presentacion.webm" type="video/webm" />
               Tu navegador no soporta el elemento de video.
             </video>
-
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3" data-bs-dismiss="modal">Cerrar <span></span></button>
+            <button
+              type="button"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+              data-bs-dismiss="modal"
+            >
+              Cerrar <span></span>
+            </button>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
     <!-- Modal Inversión -->
-    <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="modalInversion"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
             </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <form action="#" class="needs-validation" novalidate>
@@ -199,7 +227,8 @@
                         <div class="row d-flex justify-content-around">
                           <div class="col-md-8">
                             <div class="mb-3">
-                              <label for="cliente_id" class="form-label">Cliente</label><br />
+                              <label for="cliente_id" class="form-label">Cliente</label
+                              ><br />
                               <p>{{ client.nombre }}</p>
                             </div>
                           </div>
@@ -208,9 +237,17 @@
                         <div class="row d-flex justify-content-around">
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
-                                class="form-control" @change="calcularGanancias()" required />
+                              <label for="monto_tokens_invertir" class="form-label"
+                                >Tokens a invertir</label
+                              >
+                              <input
+                                type="number"
+                                v-model="monto_tokens_invertir"
+                                id="monto_tokens_invertir"
+                                class="form-control"
+                                @change="calcularGanancias()"
+                                required
+                              />
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -221,7 +258,9 @@
                           </div>
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+                              <label class="form-label"
+                                >Ganancia del {{ porcentaje_inversion }}%</label
+                              >
                               <p>{{ ganancia_tokens_inv }}</p>
                             </div>
                           </div>
@@ -229,8 +268,12 @@
 
                         <hr />
                         <div class="text-center">
-                          <button type="button" @click="inversionistaInvertir()" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                          <button
+                            type="button"
+                            @click="inversionistaInvertir()"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
                             Invertir
                           </button>
                         </div>
@@ -259,6 +302,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
+import iziToast from "izitoast";
 const route = useRoute();
 const userId = ref("");
 
@@ -338,14 +382,25 @@ const inversionistaInvertir = async () => {
     console.log(datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
-      Swal.fire({
+      // Swal.fire({
+      //   title: "¡Felicidades!",
+      //   text: "Inversión realizada exitosamente",
+      //   icon: "success",
+      //   allowOutsideClick: true,
+      //   allowEscapeKey: true,
+      //   color: "var(--gray-color)",
+      //   confirmButtonColor: "var(--yellow-orange)",
+      // });
+      iziToast.success({
         title: "¡Felicidades!",
-        text: "Inversión realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: "var(--gray-color)",
-        confirmButtonColor: "var(--yellow-orange)",
+        message: "Inversión realizada exitosamente",
+        position: "topRight",
+        theme: "dark",
+        progressBarColor: "#FFFFFF",
+        messageColor: "#FFFFFF",
+        iconColor: "#FFFFFF",
+        color: "#5ce65c",
+        closeOnEscape: true,
       });
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
@@ -355,14 +410,25 @@ const inversionistaInvertir = async () => {
     }
     monto_tokens_invertir.value = 0;
   } else {
-    Swal.fire({
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Por favor, ingrese una cantidad de tokens a invertir",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: "var(--gray-color)",
+    //   confirmButtonColor: "var(--yellow-orange)",
+    // });
+    iziToast.error({
       title: "¡Error!",
-      text: "Por favor, ingrese una cantidad de tokens a invertir",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: "var(--gray-color)",
-      confirmButtonColor: "var(--yellow-orange)",
+      message: "Por favor, ingrese una cantidad de tokens a invertir",
+      position: "topRight",
+      theme: "dark",
+      progressBarColor: "#FFFFFF",
+      messageColor: "#FFFFFF",
+      iconColor: "#FFFFFF",
+      color: "#f00",
+      closeOnEscape: true,
     });
   }
 };
@@ -385,7 +451,6 @@ const toggleExperiencia = () => {
 </script>
 
 <style scoped>
-
 button {
   color: white;
   font-size: 0.8rem;
