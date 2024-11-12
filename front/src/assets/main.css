@@ -125,3 +125,20 @@
 .colored-toast .swal2-html-container {
   color: white;
 }
+
+
+
+.blink-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  animation: blink 1s infinite; 
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; } 
+  50% { opacity: 0; }     
+}

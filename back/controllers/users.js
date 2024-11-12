@@ -927,7 +927,7 @@ const getUserById = (req, res) => {
         u.genero,
         u.estado,
         u.created_at,
-        i.imagen,
+        u.imagen,
         u.verificado,
         u.aprobado,
         i.ocupacion, 

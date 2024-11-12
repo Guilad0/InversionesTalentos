@@ -2,7 +2,7 @@
 import useFetchData from "../helpers/UseFetchData";
 import CardClient from "../components/CardClient.vue";
 import { ref, onMounted } from "vue";
-import { orderByName, orderByEdad, orderByPrice } from "@/helpers/utilities";
+import { orderByName, orderByEdad, orderByPrice, getUser } from "@/helpers/utilities";
 import CardSm from "@/components/CardSm.vue";
 import FilterClients from "@/components/FilterClients.vue";
 import FilterClientsSm from "@/components/FilterClientsSm.vue";
@@ -53,17 +53,20 @@ const handleName = () => {
     getClients();
   }
 };
+const user = ref(null)
 
-onMounted(() => {
+onMounted( async() => {
   getCategories();
   getClients();
+  user.value = await getUser();
+  
 });
 </script>
 <template>
   <main class="min-vh-100">
     <div class="container">
       <h1 class="text-center fs-3 pt-5">Marketplace</h1>
-      <p class="mt-5 fw-bold fs-5">Talentos</p>
+      <p class="mt-5 fw-bold fs-5">Players</p>
       <div class="d-flex justify-content-between">
         <div class="d-flex">
           <div class="position-relative">
@@ -155,7 +158,9 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <div v-if="user && user.rol !== 'Inversionista' && user.rol !== 'Cliente'">
     <Unete />
+   </div>
   </main>
 </template>
 <style scoped>

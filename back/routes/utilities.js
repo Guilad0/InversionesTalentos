@@ -8,7 +8,8 @@ const {
   isClientVideo,
   isClientPhoto,
   isInversorInfo,
-  isInversorPhoto
+  isInversorPhoto,
+  getFeatured
 } = require("../controllers/utilities");
 
 router.get("/informacion", isClientFormInfoRegistered);
@@ -18,5 +19,6 @@ router.get("/video", isClientVideo);
 router.get("/imagen", isClientPhoto);
 router.get("/informacionInversionista", isInversorInfo);
 router.get("/isInversorPhoto", isInversorPhoto);
+router.get("/getFeatured", getFeatured);
 
 module.exports = router;

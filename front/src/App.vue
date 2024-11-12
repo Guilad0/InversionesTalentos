@@ -4,6 +4,15 @@ import Navbar from './components/Navbar.vue';
 
 import Footer from './components/Footer.vue';
 import WhatsAppIco from './components/WhatsAppIco.vue';
+import {ref,onMounted} from 'vue'
+import { getUser } from './helpers/utilities';
+
+const user = ref({})
+onMounted(async()=>{
+  user.value = await getUser()
+  localStorage.setItem('usuario',JSON.stringify(user.value));
+  console.log('actualizado usuario');
+})
 
 </script>
 
@@ -22,4 +31,5 @@ import WhatsAppIco from './components/WhatsAppIco.vue';
   div{
     width: 100%;
   }
+
 </style>

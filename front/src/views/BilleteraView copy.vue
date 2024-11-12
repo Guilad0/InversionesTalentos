@@ -1,7 +1,7 @@
 <template>
-<div class="row my-4">
-  <div class="col-2 d-flex align-items-center" v-if="user.aprobado == 1 && isLoading == false" >
-    <SidebarProfile  :currentPath="currentPath"/>
+<div class="d-flex-custom">
+  <div class="col-2" v-if="user.aprobado == 1 && isLoading == false" >
+    <SidebarProfile />
   </div>
   <div class="col-9" v-if="user.aprobado == 1 && isLoading == false" >
     <Billetera />
@@ -34,15 +34,12 @@ import SidebarProfile from "@/components/SidebarProfile.vue";
 import Spinner from '@/components/Spinner.vue';
 import { getUser } from '@/helpers/utilities';
 import { onMounted,ref } from 'vue';
-import { useRoute } from "vue-router";
-
-let currentPath = useRoute();
- currentPath = currentPath.name;
 const user = ref({})
 const isLoading = ref(false)
 onMounted( async()=>{
   isLoading.value = true
   user.value = await getUser();  
+  localStorage.setItem('usuario',JSON.stringify(user.value))
   isLoading.value = false
 })
 

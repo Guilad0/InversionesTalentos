@@ -1,4 +1,4 @@
-const { response: res, request: req } = require("express");
+const { response: res, request: req, query, json } = require("express");
 const conexion = require("../database");
 const bcrypt = require("bcrypt");
 
@@ -240,6 +240,31 @@ const isInversorPhoto = (req, res) =>{
     })
 }
 
+/**
+ * Obtener destacados
+ */
+const getFeatured = (req,res) =>{
+    let sql = `SELECT cliente_id, COUNT(*) AS total_inversiones
+        FROM inversiones 
+        WHERE estado = 1 
+        GROUP BY cliente_id
+        ORDER BY total_inversiones DESC
+        LIMIT 5`;
+        conexion.query(sql,(err,results) =>{
+            console.log(results);
+            if( err ){
+                res.status(500)-json({
+                    results:[],
+                    err
+                })
+                return
+            }
+            res.status(200).json({
+                results,
+            })
+        })
+    }
+
 module.exports = {
     isClientFormInfoRegistered,
     isClientFormAchievements,
@@ -247,5 +272,6 @@ module.exports = {
     isClientVideo,
     isClientPhoto,
     isInversorInfo,
-    isInversorPhoto
+    isInversorPhoto,
+    getFeatured
 }

@@ -1,26 +1,105 @@
 <template>
-    <ul>
-        <RouterLink class="nav-link" to="control-panel">
-            <li class="py-3 ps-2 rounded  nav-link  my-3 ">
-                <img src="../assets/svg/wallet.svg" width="25" class="me-2">Panel de Control
-            </li>
-        </RouterLink>
-        <RouterLink class="nav-link" to="perfil">
-            <li class="py-3 ps-2 rounded  nav-link  my-3 ">
-                <img src="../assets/svg/users.svg" width="25" class="me-2">Perfil
-            </li>
-        </RouterLink>
-        <RouterLink class="nav-link" to="billetera">
-            <li class="py-3 ps-2 rounded nav-link my-3 ">
-                <img src="../assets/svg/post.svg" width="25" class="me-2">Billetera
-            </li>
-        </RouterLink>
-    </ul>
+  <div class="container auto">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <ul>
+            <div class="text-center my-4">
+              <img :src="user?.imagen" alt="" width="150" class="rounded-circle">
+            </div>
+            
+            <!-- RouterLink para Perfil -->
+            <RouterLink class="nav-link my-3" to="perfil" >
+              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'perfil' }">
+                <i class="fa-regular fa-user me-3"></i>Perfil
+              </li>
+            </RouterLink>
 
+            <!-- RouterLink para Billetera -->
+            <RouterLink class="nav-link my-3" to="billetera" >
+              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'billetera' }">
+                <i class="fa-solid fa-wallet me-3"></i>Billetera
+              </li>
+            </RouterLink>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { getUser } from '@/helpers/utilities';
+import { ref, onMounted } from 'vue';
 
+const user = ref(null);
+
+onMounted(async () => {
+  user.value = await getUser();
+  console.log(user.value);
+});
+
+defineProps({
+  currentPath: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  transition: all 0.3s ease;
+  border: none; 
+}
+
+.nav-link li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link li img {
+  filter: grayscale(50%);
+  transition: filter 0.3s ease;
+}
+
+.nav-link:hover li {
+  background-color: #e2e6ea;
+}
+
+.nav-link:hover img {
+  filter: grayscale(0%);
+}
+
+.nav-link:active li {
+  transform: translateY(1px);
+}
+
+.nav-link li:hover {
+  cursor: pointer;
+}
+
+.active {
+  border-bottom: 3px solid #D95C00; 
+  color: #D95C00 !important; 
+}
+
+.my-3 {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
-  <div class="container mt-5">
+  <div>
+    <div class="container mt-5">
     <div class="row">
       <div class="col-md-6">
         <h2 class="title">Cómo Funciona</h2>
@@ -18,10 +19,14 @@
       </div>
     </div>
   </div>
-  <Unete />
+  <div v-if="user && user.rol !== 'Inversionista' && user.rol !== 'Cliente'">
+    <Unete />
+   </div>
+  </div>
 </template>
 
 <script>
+import { getUser } from "@/helpers/utilities";
 import Unete from "./Unete.vue";
 
 export default {
@@ -29,8 +34,17 @@ export default {
   components: {
     Unete,
   },
+  data() {
+    return {
+      user: null
+    };
+  },
+  async mounted() {
+    this.user = await getUser();
+  }
 };
 </script>
+
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
