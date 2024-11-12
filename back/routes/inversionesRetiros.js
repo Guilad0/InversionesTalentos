@@ -33,6 +33,7 @@ router.get("/cliente/:id", function (req, res, next) {
                 INNER JOIN usuarios
                 ON inversiones.inversor_id = usuarios.usuario_id
                 WHERE inversiones.cliente_id = ${req.params.id}
+                AND inversiones.estado = 1
                 ORDER BY inversiones.inversion_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
