@@ -31,5 +31,12 @@ onMounted(async()=>{
   div{
     width: 100%;
   }
-
+  
+  /* #app{
+    font-family: "Monoton", sans-serif;
+   } */
+   #app{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+   }   
 </style>

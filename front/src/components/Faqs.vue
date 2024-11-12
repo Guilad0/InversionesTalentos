@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-5">
+  <div class="container py-5 font">
     <!-- Botón para agregar nuevo FAQ (moverlo a la parte superior) -->
     <div class="mt-4">
       <button @click="openModal" class="btn btn-success">Agregar nuevo FAQ</button>
@@ -203,7 +203,18 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+/* .font{
+  font-family: 'Monoton'!important;
+} */
+ .font{
+  font-family: 'Montserrat'!important;
+ }
 .custom-accordion-button {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--gray-color);
   color: var(--white-anti-flash-color);
   font-weight: bold;
@@ -227,6 +238,7 @@ onMounted(async () => {
 }
 
 .custom-accordion-body {
+  font-family: 'Montserrat';
   background-color: rgba(255, 255, 255, 0.9);
   border-top: 1px solid var(--light-gray-color);
   padding: 20px;
@@ -243,6 +255,7 @@ onMounted(async () => {
 /* Ajuste del ancho del acordeón */
 /* Cambiado */
 .custom-accordion-item {
+  
   max-width: 700px;
   /* Establece el ancho máximo para hacerlo más estrecho */
   margin: 0 auto;
@@ -269,4 +282,5 @@ button.btn-warning.mt-2.me-2 {
   overflow-y: auto;
   padding-right: 15px;
 }
+
 </style>

@@ -134,6 +134,7 @@ const ingresar = async () => {
       position: 'topRight',
       theme: 'dark',
       color: '#5ce65c',
+      closeOnEscape: true,
           })
     setTimeout(() => {
       route.push({ path: "/" });

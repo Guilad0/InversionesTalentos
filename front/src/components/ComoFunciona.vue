@@ -47,7 +47,7 @@ export default {
 
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 
 .container {
   background: #ffffff;
@@ -68,7 +68,7 @@ export default {
 }
 
 .title {
-  font-family: "Roboto", sans-serif;
+  font-family: "Monoton", sans-serif;
   font-size: 2.5em;
   color: #2c3e50;
   margin-bottom: 15px;
@@ -76,7 +76,7 @@ export default {
 }
 
 .description {
-  font-family: "Roboto", sans-serif;
+  font-family: "Monoton", sans-serif;
   font-size: 1.2em;
   color: #7f8c8d;
   font-weight: 400;
