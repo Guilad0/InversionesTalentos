@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const orderByName = ( clients )=>{
     return clients.sort((a, b) => {
         let nombreA = a.nombre.toLowerCase();
@@ -31,4 +33,22 @@ export const getAge = ( date )=>{
   export const porcentajeTrue = (verifyRegister) => {
     const totalTrue = verifyRegister.value.filter(item => item.status === true).length;
     return (totalTrue / verifyRegister.value.length) * 100 + '%';
+  };
+
+  export const getUser = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem('usuario'));
+      if (!user || !user.usuario_id) {
+        return null;
+      }
+      const { data } = await axios.get('http://localhost:3000/users/getUserById/' + user.usuario_id);
+      
+      localStorage.setItem('usuario', JSON.stringify(data.results[0]));
+
+      return data.results[0] ;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return null;
+    }finally{
+    }
   };

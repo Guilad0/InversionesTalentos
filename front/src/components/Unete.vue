@@ -16,7 +16,7 @@
 
             <button
               class="animate__animated animate__fadeInUp animate__slow btn-6"
-              @click="$emit('handleRol', 'Cliente')"
+   @click="handleRol('Cliente')"
             >
               Únete Ahora
               <span></span>
@@ -40,7 +40,7 @@
 
             <button
               class="animate__animated animate__fadeInUp animate__slow btn-6 border-0"
-              @click="$emit('handleRol', 'Inversionista')"
+              @click="handleRol('Inversionista')"
             >
               Únete Ahora
               <span></span>
@@ -164,3 +164,79 @@ button {
   }
 }
 </style>
+
+<script setup >
+import Swal from "sweetalert2";
+import { confirmAlert, loadingAlert, messageAlert, timerAlert } from "@/helpers/sweetAlerts";
+import axios from 'axios'
+import { getUser } from '../helpers/utilities';
+import {ref, onMounted} from 'vue'
+import { useRouter,useRoute  } from 'vue-router';
+const user = ref(null)
+const router = useRouter()
+const route = useRoute()
+
+onMounted( async ()=>{
+  user.value =await getUser()
+  console.log(user.value);
+  console.log(route.name)
+})
+
+const doubleCheckIcon =
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="32" fill="#71717a" style="border: none;">
+  <path d="M80 160c0-35.3 28.7-64 64-64l32 0c35.3 0 64 28.7 64 64l0 3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74l0 1.4c0 17.7 14.3 32 32 32s32-14.3 32-32l0-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7l0-3.6c0-70.7-57.3-128-128-128l-32 0C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/>
+</svg>`;
+
+const handleRol = async (role) => {
+  console.log(user.value);
+  if( user.value != null){
+    const result = await confirmAlert(`¿Está seguro de que desea seleccionar este rol? Su rol se actualizará a ${role}.`,'question',doubleCheckIcon);
+
+if (result.isConfirmed) {
+  loadingAlert('Procesando datos','Por favor espere mientras actualizamos su rol.')
+  const datos = {
+    usuario_id: user.value.usuario_id,
+    rol: role,
+  };
+  try {
+    await axios.put('http://localhost:3000/clients/changeRol/user', datos);
+    const { data } = await axios.get(`http://localhost:3000/clients/getUserById/user/?id=${user.value.usuario_id}`);
+    const updatedUser = data.results[0];  
+    localStorage.setItem("usuario", JSON.stringify(updatedUser));      
+    Swal.close();
+    Swal.fire({
+      title: "Proceso terminado",
+      text: "Tu rol actual es " + role,
+      icon: "success",
+      confirmButtonColor: "#17223B",
+      confirmButtonText: "Aceptar"
+    }).then((result) => {
+      if (result.isConfirmed && route.name == 'perfil') {
+        window.location.reload()
+      }else{
+        router.push('perfil')
+      }
+    });
+  } catch (error) {
+    Swal.close();
+    console.error("Error al actualizar el rol:", error);
+    messageAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'error')
+  }
+}
+  }else{
+    Swal.fire({
+  title: "iniciar sesion",
+  text: "Primero debe registrarte o iniciar sesion con tu cuenta!",
+  icon: "warning",
+  
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Aceptar"
+}).then((result) => {
+  if (result.isConfirmed) {
+    router.push('sign-login')
+  }
+});
+  }
+};
+</script>

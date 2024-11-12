@@ -234,8 +234,8 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.put("/aprobar/:id", function (req, res, next) { //aprobar la solicitud de retiro
-  const { monto_solicitud, inversion_id, retiro_id, usuario_id, tokens_cambio } = req.body;
+router.put("/aprobar/:id", function (req, res, next) { 
+  const { monto_recibir, inversion_id, retiro_id, usuario_id, tokens_cambio } = req.body;
   console.log(req.body);
   let query = `UPDATE solicitudes_retiro SET 
   estado = 'Aprobado', fecha_aprobacion = ?
@@ -249,8 +249,16 @@ router.put("/aprobar/:id", function (req, res, next) { //aprobar la solicitud de
       });
       return
     } 
-    // query = 'insert into movimientos (tipo, monto, fecha_solicitud,inversiones_id,solicitudes_retiro_id,usuario_id,token) values (?,?,?,?,?,?,?,?)';
-    const data = ['Egreso', monto_solicitud, date, inversion_id, retiro_id, usuario_id, tokens_cambio ]
+    query = 'insert into movimientos (tipo, monto, fecha_solicitud,inversiones_id,solicitudes_retiro_id,usuario_id,token) values (?,?,?,?,?,?,?)';
+    const data = ['Egreso', monto_recibir, date, inversion_id, retiro_id, usuario_id, tokens_cambio ]
+      connection.query(query,data,(err,results) =>{
+        if( err ){
+          res.status(500).json({
+          message: "Error al crear la tabla movimientos",
+          })
+        }
+        return
+      })
       res.status(200).send({
         data: results.insertId,
         message: "Inversión aprobada correctamente",

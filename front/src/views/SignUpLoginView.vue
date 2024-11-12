@@ -88,10 +88,12 @@ main {
 </style>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
-
+onMounted(()=>{
+  localStorage.clear()
+})
 
 const currentPage = ref(0);
 const changePage = () => {

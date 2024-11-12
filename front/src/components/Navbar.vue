@@ -121,6 +121,7 @@
 
 <script setup>
 import { isAuthenticated } from "@/helpers/Authenticator";
+import { getUser } from "@/helpers/utilities";
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
@@ -132,7 +133,7 @@ const apellido = ref("");
 
 let storedUser = JSON.parse(localStorage.getItem("usuario"));
 const updateRole = async () => {
-  storedUser = JSON.parse(localStorage.getItem("usuario"));
+  storedUser = await getUser();
   rol.value = storedUser?.rol || "";
   nombre.value = storedUser?.nombre || "";
   apellido.value = storedUser?.apellido || "";
