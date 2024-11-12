@@ -499,11 +499,21 @@ const actualizar = async () => {
     userName.value == "" ||
     pais_residencia.value == ""
   ) {
-    Swal.fire({
-      icon: "error",
-      title: "Ooops...",
-      text: "Todos los campos son obligatorios",
-    });
+    // Swal.fire({
+    //   icon: "error",
+    //   title: "Ooops...",
+    //   text: "Todos los campos son obligatorios",
+    // });
+    iziToast.warning({
+      title: 'Caution',
+      message: 'Todos los campos son obligatorios',
+      position:'topRight',
+      theme:'dark',
+      progressBarColor:'#FFFFFF',
+      messageColor:'#FFFFFF',
+      iconColor:'#FFFFFF',
+      closeOnEscape:true
+    })
     return;
   }
   const datos = {
@@ -518,11 +528,17 @@ const actualizar = async () => {
   try {
     const { data } = await axios.put(baseURL + "perfil/actualizarPerfil/" + miId.value,datos);
     console.log(data);
-    Swal.fire({
-      icon: "success",
-      title: "Credenciales actualizadas",
-      timer: 1500,
-    });
+    iziToast.success({
+      title: 'Exito!!', 
+      message: 'Se actualizo sus datos correctamente',
+      position:'topRight',
+      theme:'dark',
+      progressBarColor:'#FFFFFF',
+      messageColor:'#FFFFFF',
+      iconColor:'#FFFFFF',
+      color:'#5ce65c',
+      closeOnEscape:true
+    })
   } catch (error) {
     console.log(error);
   }

@@ -60,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
-// import iziToast from "izitoast";
+import iziToast from "izitoast";
 import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
 
@@ -81,16 +81,24 @@ const ingresar = async () => {
     //   message: "What would you like to add?",
     // });
 
-    Swal.fire({
-      title: "¡Error!",
-      text: "Ingrese sus credenciales",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)', 
-});
-
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Ingrese sus credenciales",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   confirmButtonColor: 'var(--yellow-orange)', 
+      
+    // });
+    iziToast.error({
+      title: 'Error',
+      message: 'Ingrese sus credenciales',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00', 
+    })
 
 
   }
@@ -108,16 +116,25 @@ const ingresar = async () => {
     localStorage.setItem("usuario", JSON.stringify(data.user));
     console.log(data.user);
 
-    Swal.fire({
-      title: "Bienvenido!",
-      text: "Estás de regreso :) " + data.user.nombre + " " + data.user.apellido,
-      icon: "success",
-      showConfirmButton: false,
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      timer: 1000,
-    });
+    // Swal.fire({
+    //   title: "Bienvenido!",
+    //   text: "Estás de regreso :) " + data.user.nombre + " " + data.user.apellido,
+    //   icon: "success",
+    //   showConfirmButton: false,
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   timer: 1000,
+    // });
+
+    iziToast.success({
+      title: 'Bienvenido!',
+      message: 'Estas de regreso :) ' + data.user.nombre + ' ' + data.user.apellido,
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#5ce65c',
+          })
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
@@ -128,15 +145,23 @@ const ingresar = async () => {
   } catch (error) {
     console.log(error);
     const errorMessage = error.response?.data?.msg;
-    Swal.fire({ 
-      title: "¡Error!", 
-      text: errorMessage, 
-      icon: "warning",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)', 
-    });
+    // Swal.fire({ 
+    //   title: "¡Error!", 
+    //   text: errorMessage, 
+    //   icon: "warning",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   confirmButtonColor: 'var(--yellow-orange)', 
+    // });
+    iziToast.error({
+      title: 'Error',
+      message: errorMessage,
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00',
+    })
 
   }
 };

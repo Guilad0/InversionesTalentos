@@ -267,6 +267,7 @@ import axios from 'axios';
 
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
+import iziToast from 'izitoast';
 const route = useRouter();
 
 let baseURL = 'http://localhost:3000/billetera/';
@@ -374,15 +375,24 @@ const comprarTokens = async () => {
   };
   try {
     await axios.post(baseURL + 'comprarTokens', datos);
-    Swal.fire({
-        title: "¡Felicidades!",
-        text: "Tokens comprados exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)', 
-      }); 
+    // Swal.fire({
+    //     title: "¡Felicidades!",
+    //     text: "Tokens comprados exitosamente",
+    //     icon: "success",
+    //     allowOutsideClick: true,
+    //     allowEscapeKey: true,
+    //     color: 'var(--gray-color)',
+    //     confirmButtonColor: 'var(--yellow-orange)', 
+    //   }); 
+    iziToast.success({
+      title: 'Felicidades',
+      message: 'Tokens comprados exitosamente',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      progressBarColor: '#FFFFFF',
+      closeOnEscape: true
+    })
     var myModalEl = document.getElementById('modalTokens');
     var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
     modal.hide();
@@ -404,15 +414,25 @@ const comprarTokens = async () => {
   };
   try {
     await axios.post(baseURL + 'comprarTokens', datos);
-    Swal.fire({
-        title: "¡Felicidades!",
-        text: "Tokens comprados exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)', 
-      }); 
+    // Swal.fire({
+    //     title: "¡Felicidades!",
+    //     text: "Tokens comprados exitosamente",
+    //     icon: "success",
+    //     allowOutsideClick: true,
+    //     allowEscapeKey: true,
+    //     color: 'var(--gray-color)',
+    //     confirmButtonColor: 'var(--yellow-orange)', 
+    //   }); 
+    iziToast.success({
+      title: 'Felicidades',
+      message: 'Tokens comprados exitosamente',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#5ce65c',
+      progressBarColor: '#FFFFFF',
+      closeOnEscape: true
+    })
     var myModalEl = document.getElementById('modalTokens');
     var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
     modal.hide();
@@ -426,15 +446,25 @@ const comprarTokens = async () => {
   }
   else
   {
-    Swal.fire({
-    title: "¡Error!",
-    text: "Ingrese un valor mayor a 0 para comprar tokens",
-    icon: "error",
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    color: 'var(--gray-color)',
-    confirmButtonColor: 'var(--yellow-orange)', 
-  });
+    // Swal.fire({
+    // title: "¡Error!",
+    // text: "Ingrese un valor mayor a 0 para comprar tokens",
+    // icon: "error",
+    // allowOutsideClick: true,
+    // allowEscapeKey: true,
+    // color: 'var(--gray-color)',
+  //   // confirmButtonColor: 'var(--yellow-orange)', 
+  // });
+  iziToast.error({
+    title: 'Error',
+    message: 'Ingrese un valor mayor a 0 para comprar tokens',
+    messageColor: 'white',
+    position: 'topRight',
+    theme: 'dark',
+    color: '#f00',
+    progressBarColor: '#FFFFFF',
+    closeOnEscape: true,
+  })
   }
 };
 
@@ -485,15 +515,24 @@ const inversionistaInvertir = async () => {
   console.log(datos);
   try {
     await axios.post(baseURL + 'invertirTokens', datos);
-    Swal.fire({
-        title: "¡Felicidades!",
-        text: "Inversión realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)', 
-      }); 
+    // Swal.fire({
+    //     title: "¡Felicidades!",
+    //     text: "Inversión realizada exitosamente",
+    //     icon: "success",
+    //     allowOutsideClick: true,
+    //     allowEscapeKey: true,
+    //     color: 'var(--gray-color)',
+    //     confirmButtonColor: 'var(--yellow-orange)', 
+      // }); 
+      iziToast.success({
+        title: 'Felicidades',
+        message: 'Inversión realizada exitosamente',
+        messageColor: 'white',
+        theme: 'dark',
+        color: '#5ce65c',
+        progressBarColor: '#FFFFFF',
+        closeOnEscape: true
+      })
     var myModalEl = document.getElementById('modalInversion');
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
@@ -507,15 +546,25 @@ const inversionistaInvertir = async () => {
   }
   else
   {
-    Swal.fire({
-    title: "¡Error!",
-    text: "Por favor, ingrese una cantidad de tokens a invertir",
-    icon: "error",
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    color: 'var(--gray-color)',
-    confirmButtonColor: 'var(--yellow-orange)', 
-  });
+  //   Swal.fire({
+  //   title: "¡Error!",
+  //   text: "Por favor, ingrese una cantidad de tokens a invertir",
+  //   icon: "error",
+  //   allowOutsideClick: true,
+  //   allowEscapeKey: true,
+  //   color: 'var(--gray-color)',
+  //   confirmButtonColor: 'var(--yellow-orange)', 
+  // });
+  iziToast.error({
+    title: 'Error',
+    message: 'Por favor, ingrese una cantidad de tokens a invertir',
+    messageColor: 'white',
+    position: 'topRight',
+    theme: 'dark',
+    color: '#f00',
+    progressBarColor: '#FFFFFF',
+    closeOnEscape: true
+  })
   }
   
 };
@@ -559,15 +608,25 @@ const solicitarRetiro = async () => {
     };
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
-      Swal.fire({
-        title: "¡Felicidades!",
-        text: "Solicitud de Retiro realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)', 
-      }); 
+      // Swal.fire({
+      //   title: "¡Felicidades!",
+      //   text: "Solicitud de Retiro realizada exitosamente",
+      //   icon: "success",
+      //   allowOutsideClick: true,
+      //   allowEscapeKey: true,
+      //   color: 'var(--gray-color)',
+      //   confirmButtonColor: 'var(--yellow-orange)', 
+      // }); 
+      iziToast.success({
+        title: 'Felicidades',
+        message: 'Solicitud de Retiro realizada exitosamente',
+        messageColor: 'white',
+        theme: 'dark',
+        color: '#5ce65c',
+        position: 'topRight',
+        progressBarColor: '#FFFFFF',
+        closeOnEscape: true
+      })
       var myModalEl = document.getElementById('modalSolicitud');
       var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
       modal.hide();
@@ -590,15 +649,25 @@ const solicitarRetiro = async () => {
     };
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
-      Swal.fire({
-        title: "¡Felicidades!",
-        text: "Solicitud de Retiro realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)', 
-      });      
+      // Swal.fire({
+      //   title: "¡Felicidades!",
+      //   text: "Solicitud de Retiro realizada exitosamente",
+      //   icon: "success",
+      //   allowOutsideClick: true,
+      //   allowEscapeKey: true,
+      //   color: 'var(--gray-color)',
+      //   confirmButtonColor: 'var(--yellow-orange)', 
+      // });      
+      iziToast.success({
+        title: 'Felicidades',
+        message: 'Solicitud de Retiro realizada exitosamente',
+        messageColor: 'white',
+        theme: 'dark',
+        color: '#5ce65c',
+        position: 'topRight',
+        progressBarColor: '#FFFFFF',
+        closeOnEscape: true
+      })
       var myModalEl = document.getElementById('modalSolicitud');
       var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
       modal.hide();
@@ -617,15 +686,25 @@ const solicitarRetiro = async () => {
 }
 else
   {
-    Swal.fire({
-    title: "¡Error!",
-    text: "Ingrese un valor mayor a 0 para solicitar retiro",
-    icon: "error",
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    color: 'var(--gray-color)',
-    confirmButtonColor: 'var(--yellow-orange)', 
-  });
+  //   Swal.fire({
+  //   title: "¡Error!",
+  //   text: "Ingrese un valor mayor a 0 para solicitar retiro",
+  //   icon: "error",
+  //   allowOutsideClick: true,
+  //   allowEscapeKey: true,
+  //   color: 'var(--gray-color)',
+  //   confirmButtonColor: 'var(--yellow-orange)', 
+  // });
+  iziToast.error({
+    title: 'Error',
+    message: 'Ingrese un valor mayor a 0 para solicitar retiro',
+    messageColor: 'white',
+    position: 'topRight',
+    theme: 'dark',
+    color: '#f00',
+    progressBarColor: '#FFFFFF',
+    closeOnEscape: true
+  })
   }
 }
 
