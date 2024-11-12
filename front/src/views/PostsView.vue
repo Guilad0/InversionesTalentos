@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container my-5">
+    <div v-if="!loading">
+      <div class="container my-5">
       <div class="text-center">
         <h3 class="text-center underline fs-4">Guías de Usuarios</h3>
       </div>
@@ -39,8 +40,12 @@
         </div>
       </div>
     </div>
-    <div>
-      <Unete />
+    <div v-if="user == null || user?.rol == 'Null'">
+    <Unete />
+   </div>
+    </div>
+    <div v-else>
+      <Spinner/>
     </div>
   </div>
 </template>
@@ -50,13 +55,20 @@ import router from "@/router";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import Unete from "../components/Unete.vue";
+import { getUser } from '@/helpers/utilities';
+import Spinner from '../components/Spinner.vue'
 
 const baseURL = "http://localhost:3000/";
-
+const loading = ref(false)
+const user = ref(null);
 const posts = ref([]);
 
-onMounted(() => {
+onMounted(async() => {
+  loading.value =true;
+  user.value = await getUser();
+  console.log(user.value);
   cargarDatos();
+  loading.value = false
 });
 
 const leerPost = (post_id) => {

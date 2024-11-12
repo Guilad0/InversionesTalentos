@@ -16,7 +16,7 @@ const showClient = (user) => {
 };
 </script>
 <template>
-  <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-4 col-6">
+  <div class="col-xxl-3-custom  col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 ">
     <div class="card m-2 rounded-3 position-relative p-2 shadow">
       <img :src="client.imagen || 'https://cdn-icons-png.flaticon.com/512/6429/6429059.png'"  class="rounded-circle border m-auto border-2"
         width="150"
@@ -71,5 +71,11 @@ const showClient = (user) => {
 
 .card {
   border: 1px solid var(--gray-color);
+}
+
+@media (min-width: 1400px) {
+  .col-xxl-3-custom {
+    width:20%; 
+  }
 }
 </style>

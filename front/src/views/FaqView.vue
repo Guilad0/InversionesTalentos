@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container py-5">
+  <div v-if="!loading">
+    <div class="container py-5 animate__animated animate__fadeIn">
       <div class="accordion custom-accordion" id="accordionExample">
         <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
           <h2 class="accordion-header" :id="'heading-' + index">
@@ -31,9 +32,13 @@
       </div>
       <Contact />
     </div>
-    <div>
-      <Unete />
-    </div>
+    <div v-if="user == null || user?.rol == 'Null'">
+    <Unete />
+   </div>
+  </div>
+  <div v-else>
+    <Spinner/>
+  </div>
   </div>
 </template>
 
@@ -42,7 +47,11 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import Contact from "../components/ContactComponent.vue";
 import Unete from "../components/Unete.vue";
+import { getUser } from '@/helpers/utilities';
+import Spinner from '../components/Spinner.vue'
 
+const loading = ref(false)
+const user = ref(null);
 const faqs = ref([]);
 const openIndex = ref(null);
 
@@ -52,10 +61,14 @@ const toggleAccordion = (index) => {
 
 onMounted(async () => {
   try {
+    loading.value =true;
+    user.value = await getUser(); 
     const response = await axios.get("http://localhost:3000/faq");
     faqs.value = response.data.data;
   } catch (error) {
     console.error("Error al cargar las preguntas:", error);
+  }finally{
+    loading.value = false
   }
 });
 </script>

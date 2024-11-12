@@ -1,9 +1,9 @@
 <template>
-<div class="row my-4">
-  <div class="col-2 d-flex align-items-center" v-if="user.aprobado == 1 && isLoading == false" >
+<div class="row my-4 ">
+  <div class="col-2 d-flex" v-if="user.aprobado == 1 && isLoading == false" >
     <SidebarProfile  :currentPath="currentPath"/>
   </div>
-  <div class="col-9" v-if="user.aprobado == 1 && isLoading == false" >
+  <div class="col-9 animate__animated animate__fadeIn" v-if="user.aprobado == 1 && isLoading == false" >
     <Billetera />
     <InversionesRetiro /> 
   </div> 

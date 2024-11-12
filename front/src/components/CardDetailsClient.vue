@@ -11,11 +11,14 @@
 
     <div class="card banner-card z-1">
       <!-- Imagen superior (ej. imagen de fondo) -->
-      <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
+      <img
+        src="../assets/images/ejemplodeperfil.png"
+        class="card-img-top"
+        alt="Background Image"
+      />
 
       <!-- Imagen de perfil -->
       <div class="card-body">
-
         <div class="profile-section">
 
           <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
@@ -62,15 +65,11 @@
           </div>
 
         </div>
-
       </div>
-
     </div>
 
     <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in">
-
       <div class="card-body">
-
         <h3 class="text-center">Información</h3>
         <h6>Edad: {{ client.edad }}</h6>
         <h6>Número de teléfono: {{ client.numero_telefono }}</h6>
@@ -86,28 +85,19 @@
           data-bs-target="#modalVideoPresentacion">
           <i class="fas fa-video"></i> Video presentación<span></span>
         </button>
-
       </div>
-
     </div>
 
     <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in">
-
       <div class="card-body">
-
         <h3 class="text-center">Logros</h3>
 
         <table class="table table-striped table-bordered">
-
           <thead class="table-dark">
-
             <tr>
-
               <th>Descripción</th>
               <th>Fecha</th>
-
             </tr>
-
           </thead>
 
           <tbody>
@@ -118,13 +108,9 @@
               <td>{{ convertirFecha(logro.fecha) }}</td>
 
             </tr>
-
           </tbody>
-
         </table>
-
       </div>
-
     </div>
 
     <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in">
@@ -158,10 +144,15 @@
         <div class="modal-content bg-dark text-white">
 
           <div class="modal-header">
-
-            <h5 class="modal-title" id="videoModalLabel">{{ client.nombre }} {{ client.apellido }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+            <h5 class="modal-title" id="videoModalLabel">
+              {{ client.nombre }} {{ client.apellido }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
 
           <div class="modal-body">
@@ -170,18 +161,14 @@
               <source src="../assets/images/video_presentacion.webm" type="video/webm">
               Tu navegador no soporta el elemento de video.
             </video>
-
           </div>
 
           <div class="modal-footer">
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
               data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
     <!-- Modal Inversión -->
@@ -193,7 +180,12 @@
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
             </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <form action="#" class="needs-validation" novalidate>
@@ -227,7 +219,9 @@
                           </div>
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+                              <label class="form-label"
+                                >Ganancia del {{ porcentaje_inversion }}%</label
+                              >
                               <p>{{ ganancia_tokens_inv }}</p>
                             </div>
                           </div>
@@ -267,6 +261,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
+import iziToast from "izitoast";
 const route = useRoute();
 const userId = ref("");
 
@@ -346,14 +341,25 @@ const inversionistaInvertir = async () => {
     console.log(datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
-      Swal.fire({
+      // Swal.fire({
+      //   title: "¡Felicidades!",
+      //   text: "Inversión realizada exitosamente",
+      //   icon: "success",
+      //   allowOutsideClick: true,
+      //   allowEscapeKey: true,
+      //   color: "var(--gray-color)",
+      //   confirmButtonColor: "var(--yellow-orange)",
+      // });
+      iziToast.success({
         title: "¡Felicidades!",
-        text: "Inversión realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: "var(--gray-color)",
-        confirmButtonColor: "var(--yellow-orange)",
+        message: "Inversión realizada exitosamente",
+        position: "topRight",
+        theme: "dark",
+        progressBarColor: "#FFFFFF",
+        messageColor: "#FFFFFF",
+        iconColor: "#FFFFFF",
+        color: "#5ce65c",
+        closeOnEscape: true,
       });
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
@@ -363,14 +369,25 @@ const inversionistaInvertir = async () => {
     }
     monto_tokens_invertir.value = 0;
   } else {
-    Swal.fire({
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Por favor, ingrese una cantidad de tokens a invertir",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: "var(--gray-color)",
+    //   confirmButtonColor: "var(--yellow-orange)",
+    // });
+    iziToast.error({
       title: "¡Error!",
-      text: "Por favor, ingrese una cantidad de tokens a invertir",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: "var(--gray-color)",
-      confirmButtonColor: "var(--yellow-orange)",
+      message: "Por favor, ingrese una cantidad de tokens a invertir",
+      position: "topRight",
+      theme: "dark",
+      progressBarColor: "#FFFFFF",
+      messageColor: "#FFFFFF",
+      iconColor: "#FFFFFF",
+      color: "#f00",
+      closeOnEscape: true,
     });
   }
 };

@@ -86,9 +86,10 @@ router.put('/:id', function (req, res, next) {
     });
 });
 
-//DELETE eliminar links
+
+// DELETE marcar FAQ como inactivo (estado = 0)
 router.delete('/:id', function (req, res, next) {
-    var query = `UPDATE faq SET eliminado = 1 WHERE faq_id = ?`;
+    var query = `UPDATE faq SET estado = 0 WHERE faq_id = ?`;  // 0 indica inactivo
 
     // Ejecutamos la consulta
     conexion.query(query, [req.params.id], function (error, results, fields) {
@@ -102,15 +103,15 @@ router.delete('/:id', function (req, res, next) {
             console.log(results);
             res.status(200).send({
                 data: results,
-                message: 'faq eliminado lógicamente'
+                message: 'FAQ marcado como inactivo'
             });
         }
     });
 });
 
-// RUTA PARA RESTABLECER ELIMINACIÓN LÓGICA
+// RUTA PARA RESTABLECER ELIMINACIÓN LÓGICA (marcar FAQ como activo, estado = 1)
 router.patch('/:id/restaurar', function (req, res, next) {
-    var query = `UPDATE faq SET eliminado = 0 WHERE faq_id = ?`;
+    var query = `UPDATE faq SET estado = 1 WHERE faq_id = ?`;  // 1 indica eliminado lógicamente (activo)
 
     // Ejecutamos la consulta
     conexion.query(query, [req.params.id], function (error, results, fields) {
@@ -124,11 +125,33 @@ router.patch('/:id/restaurar', function (req, res, next) {
             console.log(results);
             res.status(200).send({
                 data: results,
-                message: 'faq restaurado correctamente'
+                message: 'FAQ marcado como eliminado lógicamente (activo)'
             });
         }
     });
 });
+
+// DELETE definitivo
+router.delete('/definitivo/:id', function (req, res, next) {
+    var query = `DELETE FROM faq WHERE faq_id = ?`;
+
+    conexion.query(query, [req.params.id], function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.status(500).send({
+                error: error,
+                message: 'Error al realizar la petición'
+            });
+        } else {
+            res.status(200).send({
+                data: results,
+                message: 'FAQ eliminado definitivamente'
+            });
+        }
+    });
+});
+
+
 
  
 

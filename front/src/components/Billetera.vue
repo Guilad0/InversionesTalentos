@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+    <div class="container mx-auto p-4  "  v-if="usuario_rol == 'Cliente'">
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
       <div>
         <div class="row">
@@ -587,8 +587,9 @@ try {
   let valor = parseFloat(data.data[0].valor_token);
   let interes = parseFloat(data.data[0].comision_retiros);
   comision_retiro.value = interes
-  montoDolares.value = cambioTokens.value / valor;
+  montoDolares.value = parseInt(cambioTokens.value) / valor;
   dolares.value = montoDolares.value - (montoDolares.value * (interes/100));
+  console.log(cambioTokens.value);
 } catch (error) {
   console.log(error);
 }
@@ -601,11 +602,13 @@ const solicitarRetiro = async () => {
       tipo: 'inversor',
       usuario_id: inversionista_ID.value,
       monto_solicitud: montoDolares.value,
-      tokens_cambio: cambioTokens.value,
+      tokens_cambio: parseInt(cambioTokens.value),
       comision_aplicar: montoDolares.value * (comision_retiro.value/100),
       monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
       estado: 'Pendiente'
     };
+    console.log(datos);
+
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
       // Swal.fire({
@@ -633,9 +636,10 @@ const solicitarRetiro = async () => {
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
     }
+
     obtenerTokens_Inversionista();
     obtenerTokens_Inversionista_Invertidos();
-    location.reload();
+
   }
   if (usuario_rol.value == 'Cliente') {
     const datos = {
@@ -647,6 +651,7 @@ const solicitarRetiro = async () => {
       monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
       estado: 'Pendiente'
     };
+    console.log(datos);
     try {
       await axios.post(baseURL + 'solicitarRetiro', datos);
       // Swal.fire({
@@ -675,8 +680,7 @@ const solicitarRetiro = async () => {
       console.error('Error al realizar la solicitud:', error);
     }
     obtenerTokens_Cliente();
-    obtenerSolicitudes();
-    location.reload();
+    obtenerSolicitudes();    
   }
   cambioTokens.value = 0;
   montoDolares.value = 0;
