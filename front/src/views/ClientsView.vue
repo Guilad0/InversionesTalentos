@@ -158,7 +158,7 @@ onMounted( async() => {
         </div>
       </div>
     </div>
-    <div v-if="user && user.rol !== 'Inversionista' && user.rol !== 'Cliente'">
+    <div v-if="user == null || user?.rol == 'Null'">
     <Unete />
    </div>
   </main>
