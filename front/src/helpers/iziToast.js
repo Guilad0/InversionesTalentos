@@ -1,10 +1,11 @@
 import iziToast from "izitoast";
 
-export const succesAlert = (message, title, position ) => {
+export const successAlert = (message, title, position ) => {
     iziToast.success({
+      //position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
         title, 
          message,
-        position,
+        position: position || 'topRight',
         theme:'dark',
         progressBarColor:'#FFFFFF',
         messageColor:'#FFFFFF',
@@ -19,7 +20,7 @@ export const errorAlert = (message, title, position) => {
     iziToast.error({
         title, 
         message,
-        position,
+        position: position || 'topRight',
         theme:'dark',
         progressBarColor:'#FFFFFF',
         messageColor:'#FFFFFF',
