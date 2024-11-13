@@ -9,7 +9,9 @@ const {
   isClientPhoto,
   isInversorInfo,
   isInversorPhoto,
-  getFeatured
+  getFeatured,
+  uploadimageUserCloudinaryHome,
+  getAllImageHome
 } = require("../controllers/utilities");
 
 router.get("/informacion", isClientFormInfoRegistered);
@@ -20,5 +22,7 @@ router.get("/imagen", isClientPhoto);
 router.get("/informacionInversionista", isInversorInfo);
 router.get("/isInversorPhoto", isInversorPhoto);
 router.get("/getFeatured", getFeatured);
+router.post("/uploadimageUserCloudinaryHome/:fieldImage", uploadimageUserCloudinaryHome);
+router.get("/getAllImageHome/", getAllImageHome);
 
 module.exports = router;

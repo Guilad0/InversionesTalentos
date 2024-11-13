@@ -1,5 +1,5 @@
 <template>
-  <div id="carouselExampleCaptions" class="carousel slide">
+  <div id="carouselExampleCaptions" class="carousel slide ">
     <div class="carousel-indicators">
       <button class="rounded-circle ancho active" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" 
         aria-current="true" aria-label="Slide 1"></button>
@@ -10,63 +10,231 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="../assets/images/1.1.png" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <!-- <h5>First slide label</h5>
-          <p>Some representative placeholder content for the first slide.</p> -->
+        <div class="position-relative">
+        <img :src="images[0]?.image1" class="d-block w-100 " alt="...">
+          <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image1')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="../assets/images/2.2.png" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <!-- <h5>Second slide label</h5>
-          <p>Some representative placeholder content for the second slide.</p> -->
+        <div>
+        <img :src="images[0]?.image2"  class="d-block w-100" alt="...">
+          <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image2')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
         </div>
+    
       </div>
       <div class="carousel-item">
-        <img src="../assets/images/3.3.png" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <!-- <h5>Third slide label</h5>
-          <p>Some representative placeholder content for the third slide.</p> -->
+        <div>
+        <img :src="images[0]?.image3"  class="d-block w-100" alt="...">
+        <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image3')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
         </div>
+     
       </div>
     </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-6 text-center m-auto" id="exampleModalLabel">Selecciona una imagen para la pantalla de inicio</h1>
+            </div>
+            <div class="modal-body">
+              <div class="custom-file-upload text-center m-auto d-flex justify-content-center position-relative">
+              <label for="file" class="btn btn-outline-primary border-3 px-4 me-3">
+                <i class="fa-solid fa-upload"></i>
+              </label>
+              <input
+                  type="file"
+                  id="file"
+                  class="form-control"
+                  @change="onFileChange"
+                  accept="image/*"
+                  style="display: none;"
+                />
+                <i v-if="file" class="cursor mx-2 fa-solid fa-image fs-1"></i>
+                <i v-if="file" class="cursor mx-2 text-danger fa-solid fa-ban fs-1" @click="cleanImage()"></i>
+            </div>
+                        </div> 
+            <div class="modal-footer text-center m-auto">
+              <Button message="Cerrar" data-bs-dismiss="modal" typeButton="btn-red"/>
+              <Button v-if="!loading" message="Subir imagen"  typeButton="btn-blue" @click="saveImage()"/> 
+              <LoadingButton v-else /> 
+            </div>
+          </div>
+        </div>
+      </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
       data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+    <button  class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
       data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
   </div>
+
 </template>
 
 
 <script setup>
-</script>
+import EditIcon from './Icons/EditIcon.vue';
+import Button from '../components/Buttons/Button.vue';
+import { ref, onMounted, defineProps } from 'vue';
+import axios from 'axios';
+import LoadingButton from './Buttons/LoadingButton.vue';
+const fieldName = ref('')
+const file = ref(null);
+const images = ref([])
+const openModal = ( field )=>{
+  fieldName.value = field; 
+}
+const onFileChange = (event) => {
+  const fileInput = event.target.files[0];
+      if (fileInput) {
+        const img = new Image();
+        const objectURL = URL.createObjectURL(fileInput);
 
-<style scoped>
-.carousel-item {
-  height: 93vh;
-  transition: transform 0.5s ease-in-out;
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+
+          if (width >= 1980 && height >= 1000) {
+            file.value = fileInput; // Guardar el archivo si cumple el tamaño
+          } else {
+            alert(`La imagen debe ser de ${width}x${height} píxeles o superior.`);
+            file.value = null; // No guardar el archivo
+          }
+
+          // Liberar el objeto URL
+          URL.revokeObjectURL(objectURL);
+        };
+
+        // Asignar el src para activar el evento onload
+        img.src = objectURL;
+      }
+};
+
+const cleanImage = () =>{
+  file.value = ''
+}
+const props = defineProps({
+  rol:{
+    type:String,
+    required:true
+  }
+})
+const loading = ref(false);
+
+const saveImage = async() =>{
+  const formData = new FormData();
+  if( file.value ){
+    loading.value = true
+    formData.append("image", file.value);
+    console.log(file.value);
+    try {
+      await axios.post(`http://localhost:3000/utilities/uploadimageUserCloudinaryHome/${fieldName.value}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+      )
+      console.log('imagen cargada');
+      cleanImage()
+    } catch (error) {
+        console.log(error);
+        cleanImage()
+        alert('Error al subir la imagen')
+
+    }finally{
+      loading.value = false
+      getImages();
+    }
+  }else{
+    alert('Debes seleccionar una imagen')
+  }
+
+
+}
+onMounted(()=>{
+  getImages();
+})
+
+const getImages =async ()=>{
+  const {data} = await axios.get('http://localhost:3000/utilities/getAllImageHome');
+  images.value = data.results;
+  console.log('IMAGENES',images.value);
 }
 
+</script>
+
+
+
+<style scoped>
+.abs-custom{
+  position: absolute;
+  top:  25px;
+  left: 25px;
+}
+.carousel-item {
+  height: 90vh;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+}
+
+.file-name {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
 .carousel-item img {
   filter: brightness(0.7);
-  object-fit: cover;
-  height: 100%;
+  object-fit: cover; 
   width: 100%;
-  max-width: 100%;
+  height: 100%; 
+  max-height: 100%;
 }
 
 .carousel-caption {
-  background: rgba(0, 0, 0, 0.5);
   padding: 1rem;
   border-radius: 10px;
   animation: fadeIn 1s ease-in-out;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  top: 50%; 
+  transform: translateY(-50%);
+  z-index: 2; 
 }
 
 .carousel-control-prev-icon,
@@ -95,63 +263,32 @@
   transform: scale(1.2);
 }
 
+@media (max-width: 1500px) {
+  .carousel-item {
+    height: auto;
+  }
+.abs-custom{
+  position: absolute;
+  top:  25px;
+  left: 25px;
+}
+  .carousel-item img {
+    height: auto;
+    max-height: 100%;
+  }
+}
 @media (max-width: 768px) {
   .carousel-item {
-    height: 40vh;
+    height: auto;
   }
-
-  .carousel-item img {
-    height: 40vh;
-  }
-
-  .carousel-caption {
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    padding: 5px;
-  }
+.abs-custom{
+  position: absolute;
+  top:  15px;
+  left: 15px;
 }
-
-@media (max-width: 411px) and (max-height: 731px) {
-  .carousel-item {
-    height: 50vh;
-  }
-
   .carousel-item img {
-    height: 50vh;
-  }
-}
-
-@media (max-width: 428px) and (max-height: 926px) {
-  .carousel-item {
-    height: 55vh;
-  }
-
-  .carousel-item img {
-    height: 55vh;
-  }
-}
-
-@media (max-width: 900px) and (max-height: 1440px) {
-  .carousel-item {
-    height: 70vh;
-  }
-
-  .carousel-item img {
-    height: 70vh;
-  }
-}
-
-@media (max-width: 412px) and (max-height: 915px) {
-  .carousel-item {
-    height: 55vh;
-  }
-
-  .carousel-item img {
-    height: 55vh;
+    height: auto;
+    max-height: 100%;
   }
 }
 
@@ -163,4 +300,5 @@
     opacity: 1;
   }
 }
+
 </style>
