@@ -1,36 +1,32 @@
 <template>
 
-  <div class="col-7 col-xl-8 col-md-12 col-sm-10 d-none d-md-block">
+  <div class="col-7 col-xl-9 col-md-12 col-sm-10 d-none d-md-block">
 
-    <p class="m-0 pb-3">
-
-      <RouterLink to="/marketplace" class="custom-link">Marketplace</RouterLink> |
-      <label>{{ client.rol }}</label>
-
-    </p>
-
-    <div class="card banner-card z-1">
+    <div class="card banner-card z-1 bg-degrade text-white">
       <!-- Imagen superior (ej. imagen de fondo) -->
-      <img
-        src="../assets/images/ejemplodeperfil.png"
-        class="card-img-top"
-        alt="Background Image"
-      />
+      <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
 
       <!-- Imagen de perfil -->
-      <div class="card-body">
+      <div class="card-body p-5">
+
         <div class="profile-section">
 
           <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
 
         </div>
         <!-- nombre y datos -->
-        <div class="mt-5">
+        <div class="mt-5 ">
 
           <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
-          <h6>{{ client.rol }}</h6>
+          <h5>{{ client.ocupacion }}</h5>
+          <h6>{{ client.pais_residencia }}</h6>
 
           <div class="row">
+
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
+              data-bs-target="#modalVideoPresentacion">
+              <i class="fas fa-video"></i> Video presentación<span></span>
+            </button>
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
@@ -59,74 +55,92 @@
 
           </div>
 
-          <div>
+          <div class="mt-3">
+
             <h5 class="title text-center">Descripcion</h5>
-            <p>{{ client.vision }}</p>
+            <p class="font">{{ client.vision }}</p>
+
           </div>
 
         </div>
+
       </div>
+
     </div>
 
-    <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in">
-      <div class="card-body">
-        <h3 class="text-center">Información</h3>
-        <h6>Edad: {{ client.edad }}</h6>
-        <h6>Número de teléfono: {{ client.numero_telefono }}</h6>
-        <h6>Correo: {{ client.correo }}</h6>
-        <h6>Género: {{ client.genero }}</h6>
-        <h6>Ocupación: {{ client.ocupacion }}</h6>
-        <h6>Estudios: {{ client.estudios }}</h6>
-        <h6>Descripcion: {{ client.descripcion }}</h6>
-        <h6>Monto de inversión: {{ client.monto_inversion }}</h6>
-        <h6>Categoría: {{ client.categoria }}</h6>
+    <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in bg-degrade text-white">
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 col-3" data-bs-toggle="modal"
-          data-bs-target="#modalVideoPresentacion">
-          <i class="fas fa-video"></i> Video presentación<span></span>
-        </button>
+      <div class="card-body p-5 text-center">
+
+        <h3>Información</h3>
+
+        <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> Monto de inversión: ${{ client.monto_inversion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
+        <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}</h6>
+        <h6 class="mt-3"><i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> Edad: {{ client.edad }}</h6>
+        <h6 class="mt-3"><i class="fas fa-venus-mars"></i> Género: {{ client.genero }}</h6>
+        <h6 class="mt-3"><i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}</h6>
+        <h6 class="mt-3"><i class="fas fa-envelope"></i> Correo: {{ client.correo }}</h6>
+
       </div>
+
     </div>
 
-    <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in">
-      <div class="card-body">
+    <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in bg-degrade text-white">
+
+      <div class="card-body p-5">
+
         <h3 class="text-center">Logros</h3>
 
         <table class="table table-striped table-bordered">
+
           <thead class="table-dark">
+
             <tr>
+
               <th>Descripción</th>
               <th>Fecha</th>
+
             </tr>
+
           </thead>
 
           <tbody>
 
             <tr v-for="logro in logros" :key="logro.id">
 
-              <td>{{ logro.descripcion }}</td>
-              <td>{{ convertirFecha(logro.fecha) }}</td>
+              <td class="font">{{ logro.descripcion }}</td>
+              <td class="font">{{ convertirFecha(logro.fecha) }}</td>
 
             </tr>
+
           </tbody>
+
         </table>
+
       </div>
+
     </div>
 
-    <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in">
+    <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in bg-degrade text-white">
 
-      <div class="card-body">
+      <div class="card-body p-5">
 
         <h3 class="text-center">Experiencia</h3>
 
-        <div class="card p-3" v-for="exp in experiencia" :key="exp.id">
+        <div class="card p-4" v-for="exp in experiencia" :key="exp.id">
+
           <h4 class="">{{ exp.institucion }}</h4>
           <h6>Cargo: {{ exp.cargo }}</h6>
           <h6>Actividades: {{ exp.actividades }}</h6>
           <h6>Fecha de inicio: {{ convertirFecha(exp.fecha_inicio) }}</h6>
           <h6>Fecha final: {{ convertirFecha(exp.fecha_final) }}</h6>
+
         </div>
+
       </div>
+
     </div>
 
     <!-- <div class="card banner-card mt-2">
@@ -141,23 +155,18 @@
 
       <div class="modal-dialog modal-dialog-centered modal-lg">
 
-        <div class="modal-content bg-dark text-white">
+        <div class="modal-content bg-degrade text-white">
 
           <div class="modal-header">
             <h5 class="modal-title" id="videoModalLabel">
               {{ client.nombre }} {{ client.apellido }}
             </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
           <div class="modal-body">
 
-            <video width="100%" height="500" autoplay unmuted controls>
+            <video width="100%" height="500" controls>
               <source src="../assets/images/video_presentacion.webm" type="video/webm">
               Tu navegador no soporta el elemento de video.
             </video>
@@ -175,17 +184,12 @@
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <div class="modal-content bg-dark text-white">
+        <div class="modal-content bg-degrade text-white">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
             </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form action="#" class="needs-validation" novalidate>
@@ -219,9 +223,7 @@
                           </div>
                           <div class="col-md-4">
                             <div class="mb-3">
-                              <label class="form-label"
-                                >Ganancia del {{ porcentaje_inversion }}%</label
-                              >
+                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
                               <p>{{ ganancia_tokens_inv }}</p>
                             </div>
                           </div>
@@ -448,6 +450,14 @@ const pauseVideo = () => {
 
 <style scoped>
 
+.bg-degrade {
+  background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
+}
+
+.font {
+  font-size: 0.8rem
+}
+
 .custom-link {
   text-decoration: none;
   color: black;
@@ -565,4 +575,25 @@ button {
   color: white;
 }
 
+/* Estilos para la tabla de logros */
+.table-striped {
+  background-color: #f8f9fa; /* Color de fondo claro */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #e9ecef; /* Color de fondo para filas impares */
+}
+
+.table-striped tbody tr:hover {
+  background-color: #d1e7dd; /* Color de fondo al pasar el mouse */
+}
+
+.table-dark {
+  background-color: #343a40; /* Color de fondo oscuro para el encabezado */
+  color: white; /* Color de texto blanco para el encabezado */
+}
+
+.table-dark th {
+  background-color: #495057; /* Color de fondo para las celdas del encabezado */
+}
 </style>
