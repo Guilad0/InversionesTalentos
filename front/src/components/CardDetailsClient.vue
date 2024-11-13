@@ -578,6 +578,8 @@ button {
 /* Estilos para la tabla de logros */
 .table-striped {
   background-color: #f8f9fa; /* Color de fondo claro */
+  border-radius: 5px; /* Añadir radio a la tabla */
+  overflow: hidden; /* Asegura que el radio se aplique correctamente */
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
