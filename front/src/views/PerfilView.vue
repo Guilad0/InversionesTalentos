@@ -360,6 +360,7 @@ import { countriesData } from "../helpers/dataCountries";
 import Spinner from "@/components/Spinner.vue";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import { successAlert, errorAlert } from "@/helpers/iziToast";
 const fileInput = ref(null);
     const selectImage = () => {
       fileInput.value.click();
@@ -536,11 +537,7 @@ const actualizar = async () => {
     userName.value == "" ||
     pais_residencia.value == ""
   ) {
-    Swal.fire({
-      icon: "error",
-      title: "Ooops...",
-      text: "Todos los campos son obligatorios",
-    });
+    errorAlert('Todos los campos son obligatorios','error','topRight');
     return;
   }
 
@@ -557,12 +554,7 @@ const actualizar = async () => {
     formLoading.value = true
     const { data } = await axios.put(baseURL + "perfil/actualizarPerfil/" + miId.value,datos);
     console.log(data);
-    Swal.fire({
-      icon: "success",
-      title: "Credenciales actualizadas",
-      showConfirmButton:false,
-      timer: 2000,
-    });
+    successAlert('Se actualizo los datos del perfil con exito','EXITO','topRight');
   } catch (error) {
     console.log(error);
   }finally{
