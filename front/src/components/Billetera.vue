@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="container mx-auto p-4  "  v-if="usuario_rol == 'Cliente'">
+    <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
       <div>
         <div class="row">
@@ -16,7 +16,8 @@
 
       <div class="d-flex justify-content-around mb-6">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro</button>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
+          Retiro</button>
         <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
     </div>
@@ -41,7 +42,8 @@
       <div class="d-flex justify-content-around mb-6">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens</button>
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInversion">Invertir</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro</button>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
+          Retiro</button>
       </div>
 
     </div>
@@ -57,6 +59,27 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
+            <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
+                </div>
+                <div class="col-md-6">
+                  <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
+                </div>
+              </div>
+            </div>
+            <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
+              <div class="row">
+                <div class="col-md-4">
+                  <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+                </div>
+                <div class="col-md-4">
+                  <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista
+                    }}</p>
+                </div>
+              </div>
+            </div>
             <form action="#" class="needs-validation" novalidate>
               <div class="row">
                 <div class="col-md-2"></div>
@@ -82,7 +105,8 @@
                         </div>
                         <hr>
                         <div class="text-center">
-                          <button type="button" @click="comprarTokens()" class="btn btn-secondary" data-bs-dismiss="modal">Comprar</button>
+                          <button type="button" @click="comprarTokens()" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Comprar</button>
                         </div>
                       </div>
                     </div>
@@ -111,11 +135,12 @@
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
-            </h1>
+            </h1>            
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form action="#" class="needs-validation" novalidate>
+              <p class="text-xl align-self-center">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
               <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
@@ -126,7 +151,7 @@
 
                           <div class="col-md-8">
                             <div class="mb-3">
-                              <label for="cliente_id" class="form-label">Cliente</label><br>
+                              <label for="cliente_Invertir_ID" class="form-label">Cliente</label><br>
                               <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select"
                                 required>
                                 <option disabled>Seleccione un Cliente</option>
@@ -143,8 +168,8 @@
                           <div class="col-md-4">
                             <div class="mb-3">
                               <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control" @change="calcularGanancias()"
-                                required />
+                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
+                                class="form-control" @change="calcularGanancias()" required />
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -164,8 +189,8 @@
 
                         <hr>
                         <div class="text-center">
-                          <button type="button" @click="inversionistaInvertir()"
-                            class="btn btn-secondary" data-bs-dismiss="modal">Invertir</button>
+                          <button type="button" @click="inversionistaInvertir()" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Invertir</button>
                         </div>
                       </div>
                     </div>
@@ -236,7 +261,8 @@
                         </div>
                         <hr>
                         <div class="text-center">
-                          <button type="button" @click="solicitarRetiro()" class="btn btn-secondary" data-bs-dismiss="modal">Solicitar Retiro</button>
+                          <button type="button" @click="solicitarRetiro()" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Solicitar Retiro</button>
                         </div>
                       </div>
                     </div>
@@ -303,7 +329,7 @@ if (usuario_rol.value == 'Inversionista') {
 }
 if (usuario_rol.value == 'Cliente') {
   cliente_ID.value = usuario_id.value;
-  onMounted(() => {    
+  onMounted(() => {
     obtenerTokens_Cliente();
   });
 }
@@ -361,91 +387,89 @@ const calcularTokens = async () => {
 };
 
 const comprarTokens = async () => {
-  if(montoUsd.value > 0 && tokens.value > 0)
-  {
+  if (montoUsd.value > 0 && tokens.value > 0) {
     if (usuario_rol.value == 'Inversionista') {
-    const datos = {  
-    monto: montoUsd.value,
-    tokens: tokens.value,
-    usuario_id: inversionista_ID.value,
-    tipo: 'Ingreso',
-    descripcion: 'Compra de tokens',
-    color: 'var(--gray-color)',
-    confirmButtonColor: 'var(--yellow-orange)',
-  };
-  try {
-    await axios.post(baseURL + 'comprarTokens', datos);
-    // Swal.fire({
-    //     title: "¡Felicidades!",
-    //     text: "Tokens comprados exitosamente",
-    //     icon: "success",
-    //     allowOutsideClick: true,
-    //     allowEscapeKey: true,
-    //     color: 'var(--gray-color)',
-    //     confirmButtonColor: 'var(--yellow-orange)', 
-    //   }); 
-    iziToast.success({
-      title: 'Felicidades',
-      message: 'Tokens comprados exitosamente',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      progressBarColor: '#FFFFFF',
-      closeOnEscape: true
-    })
-    var myModalEl = document.getElementById('modalTokens');
-    var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
-    modal.hide();
-  } catch (error) {
-    console.error('Error al guardar los tokens:', error);
+      const datos = {
+        monto: montoUsd.value,
+        tokens: tokens.value,
+        usuario_id: inversionista_ID.value,
+        tipo: 'Ingreso',
+        descripcion: 'Compra de tokens',
+        color: 'var(--gray-color)',
+        confirmButtonColor: 'var(--yellow-orange)',
+      };
+      try {
+        await axios.post(baseURL + 'comprarTokens', datos);
+        // Swal.fire({
+        //     title: "¡Felicidades!",
+        //     text: "Tokens comprados exitosamente",
+        //     icon: "success",
+        //     allowOutsideClick: true,
+        //     allowEscapeKey: true,
+        //     color: 'var(--gray-color)',
+        //     confirmButtonColor: 'var(--yellow-orange)', 
+        //   }); 
+        iziToast.success({
+          title: 'Felicidades',
+          message: 'Tokens comprados exitosamente',
+          messageColor: 'white',
+          position: 'topRight',
+          theme: 'dark',
+          progressBarColor: '#FFFFFF',
+          closeOnEscape: true
+        })
+        var myModalEl = document.getElementById('modalTokens');
+        var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+        modal.hide();
+      } catch (error) {
+        console.error('Error al guardar los tokens:', error);
+      }
+      obtenerDolares_Inversionista();
+      obtenerTokens_Inversionista();
+      montoUsd.value = 0;
+      tokens.value = 0;
+    }
+    if (usuario_rol.value == 'Cliente') {
+      const datos = {
+        monto: montoUsd.value,
+        tokens: tokens.value,
+        usuario_id: cliente_ID.value,
+        tipo: 'Ingreso',
+        descripcion: 'Compra de tokens',
+      };
+      try {
+        await axios.post(baseURL + 'comprarTokens', datos);
+        // Swal.fire({
+        //     title: "¡Felicidades!",
+        //     text: "Tokens comprados exitosamente",
+        //     icon: "success",
+        //     allowOutsideClick: true,
+        //     allowEscapeKey: true,
+        //     color: 'var(--gray-color)',
+        //     confirmButtonColor: 'var(--yellow-orange)', 
+        //   }); 
+        iziToast.success({
+          title: 'Felicidades',
+          message: 'Tokens comprados exitosamente',
+          messageColor: 'white',
+          position: 'topRight',
+          theme: 'dark',
+          color: '#5ce65c',
+          progressBarColor: '#FFFFFF',
+          closeOnEscape: true
+        })
+        var myModalEl = document.getElementById('modalTokens');
+        var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+        modal.hide();
+      } catch (error) {
+        console.error('Error al guardar los tokens:', error);
+      }
+      obtenerTokens_Cliente();
+      montoUsd.value = 0;
+      tokens.value = 0;
+    }
   }
-  obtenerDolares_Inversionista();
-  obtenerTokens_Inversionista();
-  montoUsd.value = 0;
-  tokens.value = 0;
-  }
-  if (usuario_rol.value == 'Cliente') {
-    const datos = {  
-    monto: montoUsd.value,
-    tokens: tokens.value,
-    usuario_id: cliente_ID.value,
-    tipo: 'Ingreso',
-    descripcion: 'Compra de tokens',
-  };
-  try {
-    await axios.post(baseURL + 'comprarTokens', datos);
-    // Swal.fire({
-    //     title: "¡Felicidades!",
-    //     text: "Tokens comprados exitosamente",
-    //     icon: "success",
-    //     allowOutsideClick: true,
-    //     allowEscapeKey: true,
-    //     color: 'var(--gray-color)',
-    //     confirmButtonColor: 'var(--yellow-orange)', 
-    //   }); 
-    iziToast.success({
-      title: 'Felicidades',
-      message: 'Tokens comprados exitosamente',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#5ce65c',
-      progressBarColor: '#FFFFFF',
-      closeOnEscape: true
-    })
-    var myModalEl = document.getElementById('modalTokens');
-    var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
-    modal.hide();
-  } catch (error) {
-    console.error('Error al guardar los tokens:', error);
-  }
-  obtenerTokens_Cliente();
-  montoUsd.value = 0;
-  tokens.value = 0;
-}
-  }
-  else
-  {
+  else {
     // Swal.fire({
     // title: "¡Error!",
     // text: "Ingrese un valor mayor a 0 para comprar tokens",
@@ -453,18 +477,18 @@ const comprarTokens = async () => {
     // allowOutsideClick: true,
     // allowEscapeKey: true,
     // color: 'var(--gray-color)',
-  //   // confirmButtonColor: 'var(--yellow-orange)', 
-  // });
-  iziToast.error({
-    title: 'Error',
-    message: 'Ingrese un valor mayor a 0 para comprar tokens',
-    messageColor: 'white',
-    position: 'topRight',
-    theme: 'dark',
-    color: '#f00',
-    progressBarColor: '#FFFFFF',
-    closeOnEscape: true,
-  })
+    //   // confirmButtonColor: 'var(--yellow-orange)', 
+    // });
+    iziToast.error({
+      title: 'Error',
+      message: 'Ingrese un valor mayor a 0 para comprar tokens',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00',
+      progressBarColor: '#FFFFFF',
+      closeOnEscape: true,
+    })
   }
 };
 
@@ -479,50 +503,51 @@ const obtenerListaClientes = async () => {
 
 const calcularGanancias = async () => {
 
-try {
-  const { data } = await axios.get(baseURL + 'valores');  
-  monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
-  console.log(monto_tokens_invertir.value);
-  tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
-  porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
-  console.log(porcentaje_inversion.value);
-  ganancia_tokens_inv.value = monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
-} catch (error) {
-  console.log(error);
-}
+  try {
+    const { data } = await axios.get(baseURL + 'valores');
+    monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
+    console.log(monto_tokens_invertir.value);
+    tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
+    porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
+    console.log(porcentaje_inversion.value);
+    ganancia_tokens_inv.value = monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
+  } catch (error) {
+    console.log(error);
+  }
 };
 const inversionistaInvertir = async () => {
-
-  if (monto_tokens_invertir.value > 0) {
+  const tokens_invertir = parseFloat(monto_tokens_invertir.value);
+  const tokens_inversionista = parseFloat(tokensCompradosInversionista.value)-parseFloat(tokensInvertidosInversionista.value);
+  if (tokens_invertir > 0 && tokens_invertir <= tokens_inversionista || cliente_Invertir_ID.value == 0) {
     ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
-  const fecha_devolucion = ref('');
-  const fecha = new Date();
-  fecha.setMonth(fecha.getMonth() + tiempo_inversion.value);
-  fecha_devolucion.value = new Date(fecha).toISOString().slice(0, 10);
-  console.log(fecha_devolucion.value);
-  
-  const datos = {
-    token: monto_tokens_invertir.value,
-    usuario_id: inversionista_ID.value,
-    cliente_id: cliente_Invertir_ID.value,
-    inversor_id: inversionista_ID.value,
-    tipo: 'Egreso',
-    descripcion: 'Tokens invertidos',
-    monto: monto_tokens_invertir.value,
-    ganancia_estimada: ganancia_estimada.value,
-    fecha_devolucion: fecha_devolucion.value
-  };
-  console.log(datos);
-  try {
-    await axios.post(baseURL + 'invertirTokens', datos);
-    // Swal.fire({
-    //     title: "¡Felicidades!",
-    //     text: "Inversión realizada exitosamente",
-    //     icon: "success",
-    //     allowOutsideClick: true,
-    //     allowEscapeKey: true,
-    //     color: 'var(--gray-color)',
-    //     confirmButtonColor: 'var(--yellow-orange)', 
+    const fecha_devolucion = ref('');
+    const fecha = new Date();
+    fecha.setMonth(fecha.getMonth() + tiempo_inversion.value);
+    fecha_devolucion.value = new Date(fecha).toISOString().slice(0, 10);
+    console.log(fecha_devolucion.value);
+
+    const datos = {
+      token: monto_tokens_invertir.value,
+      usuario_id: inversionista_ID.value,
+      cliente_id: cliente_Invertir_ID.value,
+      inversor_id: inversionista_ID.value,
+      tipo: 'Egreso',
+      descripcion: 'Tokens invertidos',
+      monto: monto_tokens_invertir.value,
+      ganancia_estimada: ganancia_estimada.value,
+      fecha_devolucion: fecha_devolucion.value
+    };
+    console.log(datos);
+    try {
+      await axios.post(baseURL + 'invertirTokens', datos);
+      // Swal.fire({
+      //     title: "¡Felicidades!",
+      //     text: "Inversión realizada exitosamente",
+      //     icon: "success",
+      //     allowOutsideClick: true,
+      //     allowEscapeKey: true,
+      //     color: 'var(--gray-color)',
+      //     confirmButtonColor: 'var(--yellow-orange)', 
       // }); 
       iziToast.success({
         title: 'Felicidades',
@@ -533,40 +558,39 @@ const inversionistaInvertir = async () => {
         progressBarColor: '#FFFFFF',
         closeOnEscape: true
       })
-    var myModalEl = document.getElementById('modalInversion');
-    var modal = bootstrap.Modal.getInstance(myModalEl);
-    modal.hide();
-  } catch (error) {
-    console.error('Error al invertir los tokens:', error);
+      var myModalEl = document.getElementById('modalInversion');
+      var modal = bootstrap.Modal.getInstance(myModalEl);
+      modal.hide();
+    } catch (error) {
+      console.error('Error al invertir los tokens:', error);
+    }
+    monto_tokens_invertir.value = 0;
+    obtenerTokens_Inversionista();
+    obtenerTokens_Inversionista_Invertidos();
+    location.reload();
   }
-  monto_tokens_invertir.value = 0;
-  obtenerTokens_Inversionista();
-  obtenerTokens_Inversionista_Invertidos();
-  location.reload();
+  else {
+       Swal.fire({
+       title: "¡Error!",
+       text: "Por favor, ingrese una cantidad de tokens a invertir",
+       icon: "error",
+       allowOutsideClick: true,
+       allowEscapeKey: true,
+       color: 'var(--gray-color)',
+       confirmButtonColor: 'var(--yellow-orange)', 
+     });
+    /* iziToast.error({
+      title: 'Error',
+      message: 'Por favor, ingrese una cantidad de tokens a invertir',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00',
+      progressBarColor: '#FFFFFF',
+      closeOnEscape: true
+    }) */
   }
-  else
-  {
-  //   Swal.fire({
-  //   title: "¡Error!",
-  //   text: "Por favor, ingrese una cantidad de tokens a invertir",
-  //   icon: "error",
-  //   allowOutsideClick: true,
-  //   allowEscapeKey: true,
-  //   color: 'var(--gray-color)',
-  //   confirmButtonColor: 'var(--yellow-orange)', 
-  // });
-  iziToast.error({
-    title: 'Error',
-    message: 'Por favor, ingrese una cantidad de tokens a invertir',
-    messageColor: 'white',
-    position: 'topRight',
-    theme: 'dark',
-    color: '#f00',
-    progressBarColor: '#FFFFFF',
-    closeOnEscape: true
-  })
-  }
-  
+
 };
 
 const obtenerTokens_Cliente = async () => {
@@ -581,134 +605,133 @@ const obtenerTokens_Cliente = async () => {
 
 const calcularDolares = async () => {
 
-try {
-  const { data } = await axios.get(baseURL + 'valores');
-  valores.value = data.data;
-  let valor = parseFloat(data.data[0].valor_token);
-  let interes = parseFloat(data.data[0].comision_retiros);
-  comision_retiro.value = interes
-  montoDolares.value = parseInt(cambioTokens.value) / valor;
-  dolares.value = montoDolares.value - (montoDolares.value * (interes/100));
-  console.log(cambioTokens.value);
-} catch (error) {
-  console.log(error);
-}
+  try {
+    const { data } = await axios.get(baseURL + 'valores');
+    valores.value = data.data;
+    let valor = parseFloat(data.data[0].valor_token);
+    let interes = parseFloat(data.data[0].comision_retiros);
+    comision_retiro.value = interes
+    montoDolares.value = parseInt(cambioTokens.value) / valor;
+    dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+    console.log(cambioTokens.value);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const solicitarRetiro = async () => {
-  if(cambioTokens.value > 0){
+  if (cambioTokens.value > 0) {
     if (usuario_rol.value == 'Inversionista') {
-    const datos = {
-      tipo: 'inversor',
-      usuario_id: inversionista_ID.value,
-      monto_solicitud: montoDolares.value,
-      tokens_cambio: parseInt(cambioTokens.value),
-      comision_aplicar: montoDolares.value * (comision_retiro.value/100),
-      monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
-      estado: 'Pendiente'
-    };
-    console.log(datos);
+      const datos = {
+        tipo: 'inversor',
+        usuario_id: inversionista_ID.value,
+        monto_solicitud: montoDolares.value,
+        tokens_cambio: parseInt(cambioTokens.value),
+        comision_aplicar: montoDolares.value * (comision_retiro.value / 100),
+        monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value / 100)),
+        estado: 'Pendiente'
+      };
+      console.log(datos);
 
-    try {
-      await axios.post(baseURL + 'solicitarRetiro', datos);
-      // Swal.fire({
-      //   title: "¡Felicidades!",
-      //   text: "Solicitud de Retiro realizada exitosamente",
-      //   icon: "success",
-      //   allowOutsideClick: true,
-      //   allowEscapeKey: true,
-      //   color: 'var(--gray-color)',
-      //   confirmButtonColor: 'var(--yellow-orange)', 
-      // }); 
-      iziToast.success({
-        title: 'Felicidades',
-        message: 'Solicitud de Retiro realizada exitosamente',
-        messageColor: 'white',
-        theme: 'dark',
-        color: '#5ce65c',
-        position: 'topRight',
-        progressBarColor: '#FFFFFF',
-        closeOnEscape: true
-      })
-      var myModalEl = document.getElementById('modalSolicitud');
-      var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
-      modal.hide();
-    } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+      try {
+        await axios.post(baseURL + 'solicitarRetiro', datos);
+        // Swal.fire({
+        //   title: "¡Felicidades!",
+        //   text: "Solicitud de Retiro realizada exitosamente",
+        //   icon: "success",
+        //   allowOutsideClick: true,
+        //   allowEscapeKey: true,
+        //   color: 'var(--gray-color)',
+        //   confirmButtonColor: 'var(--yellow-orange)', 
+        // }); 
+        iziToast.success({
+          title: 'Felicidades',
+          message: 'Solicitud de Retiro realizada exitosamente',
+          messageColor: 'white',
+          theme: 'dark',
+          color: '#5ce65c',
+          position: 'topRight',
+          progressBarColor: '#FFFFFF',
+          closeOnEscape: true
+        })
+        var myModalEl = document.getElementById('modalSolicitud');
+        var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+        modal.hide();
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+
+      obtenerTokens_Inversionista();
+      obtenerTokens_Inversionista_Invertidos();
+
     }
-
-    obtenerTokens_Inversionista();
-    obtenerTokens_Inversionista_Invertidos();
-
-  }
-  if (usuario_rol.value == 'Cliente') {
-    const datos = {
-      tipo: 'cliente',
-      usuario_id: cliente_ID.value,
-      monto_solicitud: montoDolares.value,
-      tokens_cambio: cambioTokens.value,
-      comision_aplicar: montoDolares.value * (comision_retiro.value/100),
-      monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value/100)),
-      estado: 'Pendiente'
-    };
-    console.log(datos);
-    try {
-      await axios.post(baseURL + 'solicitarRetiro', datos);
-      // Swal.fire({
-      //   title: "¡Felicidades!",
-      //   text: "Solicitud de Retiro realizada exitosamente",
-      //   icon: "success",
-      //   allowOutsideClick: true,
-      //   allowEscapeKey: true,
-      //   color: 'var(--gray-color)',
-      //   confirmButtonColor: 'var(--yellow-orange)', 
-      // });      
-      iziToast.success({
-        title: 'Felicidades',
-        message: 'Solicitud de Retiro realizada exitosamente',
-        messageColor: 'white',
-        theme: 'dark',
-        color: '#5ce65c',
-        position: 'topRight',
-        progressBarColor: '#FFFFFF',
-        closeOnEscape: true
-      })
-      var myModalEl = document.getElementById('modalSolicitud');
-      var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
-      modal.hide();
-    } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+    if (usuario_rol.value == 'Cliente') {
+      const datos = {
+        tipo: 'cliente',
+        usuario_id: cliente_ID.value,
+        monto_solicitud: montoDolares.value,
+        tokens_cambio: cambioTokens.value,
+        comision_aplicar: montoDolares.value * (comision_retiro.value / 100),
+        monto_recibir: montoDolares.value - (montoDolares.value * (comision_retiro.value / 100)),
+        estado: 'Pendiente'
+      };
+      console.log(datos);
+      try {
+        await axios.post(baseURL + 'solicitarRetiro', datos);
+        // Swal.fire({
+        //   title: "¡Felicidades!",
+        //   text: "Solicitud de Retiro realizada exitosamente",
+        //   icon: "success",
+        //   allowOutsideClick: true,
+        //   allowEscapeKey: true,
+        //   color: 'var(--gray-color)',
+        //   confirmButtonColor: 'var(--yellow-orange)', 
+        // });      
+        iziToast.success({
+          title: 'Felicidades',
+          message: 'Solicitud de Retiro realizada exitosamente',
+          messageColor: 'white',
+          theme: 'dark',
+          color: '#5ce65c',
+          position: 'topRight',
+          progressBarColor: '#FFFFFF',
+          closeOnEscape: true
+        })
+        var myModalEl = document.getElementById('modalSolicitud');
+        var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+        modal.hide();
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+      obtenerTokens_Cliente();
+      obtenerSolicitudes();
     }
-    obtenerTokens_Cliente();
-    obtenerSolicitudes();    
+    cambioTokens.value = 0;
+    montoDolares.value = 0;
+    comision_retiro.value = 0;
+    dolares.value = 0;
+    location.reload();
   }
-  cambioTokens.value = 0;
-  montoDolares.value = 0;
-  comision_retiro.value = 0;
-  dolares.value = 0;
-  location.reload();
-}
-else
-  {
-  //   Swal.fire({
-  //   title: "¡Error!",
-  //   text: "Ingrese un valor mayor a 0 para solicitar retiro",
-  //   icon: "error",
-  //   allowOutsideClick: true,
-  //   allowEscapeKey: true,
-  //   color: 'var(--gray-color)',
-  //   confirmButtonColor: 'var(--yellow-orange)', 
-  // });
-  iziToast.error({
-    title: 'Error',
-    message: 'Ingrese un valor mayor a 0 para solicitar retiro',
-    messageColor: 'white',
-    position: 'topRight',
-    theme: 'dark',
-    color: '#f00',
-    progressBarColor: '#FFFFFF',
-    closeOnEscape: true
-  })
+  else {
+    //   Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Ingrese un valor mayor a 0 para solicitar retiro",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   confirmButtonColor: 'var(--yellow-orange)', 
+    // });
+    iziToast.error({
+      title: 'Error',
+      message: 'Ingrese un valor mayor a 0 para solicitar retiro',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00',
+      progressBarColor: '#FFFFFF',
+      closeOnEscape: true
+    })
   }
 }
 
@@ -732,6 +755,7 @@ p {
   color: var(--yellow-orange);
   border-color: var(--yellow-orange);
 }
+
 .btn-secondary:hover {
   background-color: var(--gray-color);
   color: var(--white-color);
@@ -748,5 +772,4 @@ input {
   border-color: var(--input);
   background-color: var(--background);
 }
-
 </style>
