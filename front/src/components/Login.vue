@@ -40,8 +40,9 @@
             </button>
           </div>
           <div class="mb-3">
-            <GoogleLogin :callback="callback" />
+            <GoogleLogin :callback="callback" prompt auto-login/>
           </div>
+
         </div>
 
         <div class="mb-3">
@@ -63,6 +64,7 @@ import axios from "axios";
 import iziToast from "izitoast";
 import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
+import { decodeCredential } from "vue3-google-login";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
@@ -72,6 +74,9 @@ const route = useRouter();
 
 const correo = ref("");
 const password = ref("");
+const loggedIn = ref(false);
+const user = ref(null);
+
 let baseURL = "http://localhost:3000/auth";
 
 const ingresar = async () => {
@@ -173,11 +178,36 @@ const ingresar = async () => {
 
 
 //login con google
-const callback = (response) => {
-  // This callback will be triggered when the user selects or login to
-  // his Google account from the popup
-  console.log("Handle the response", response);
+const callback =async (response) => {
+  console.log("Logged in", response);
+  try {
+    const { data } = await axios.post(baseURL + "/google-login", { token: response.credential });
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("usuario", JSON.stringify(data.user));
+    loggedIn.value = true;
+    user.value = data.user;
+    route.push({ path: "/" });
+  } catch (error) {
+    console.log(error);
+    let errorMessage = 'Error al autenticar con Google';
+    if (error.response?.data?.msg) {
+      errorMessage = error.response.data.msg;
+    } else if (error.message.includes('NetworkError')) {
+      errorMessage = 'Error de red al intentar autenticar con Google. Por favor, inténtalo de nuevo.';
+    }
+    iziToast.error({
+      title: 'Error',
+      message: errorMessage,
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#f00',
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
+  }
 };
+
 </script>
 
 <style scoped>

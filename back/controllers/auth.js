@@ -6,7 +6,8 @@ const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotallySecretKey');
 const crypto = require('crypto');
 const transporter = require('../helpers/mailer');
-
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const auth = (req, res) => {
     const { correo, password, storeCredentials } = req.body;
@@ -68,6 +69,48 @@ const auth = (req, res) => {
 
 
 }
+
+async function verifyGoogleToken(token) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    return payload;
+}
+
+const googleLogin = async (req, res) => {
+    const { token } = req.body;
+    try {
+        const payload = await verifyGoogleToken(token);
+        const sql = 'SELECT * FROM usuarios WHERE correo = ?';
+        conexion.query(sql, [payload.email], (error, results) => {
+            if (error) {
+                return res.status(500).json({
+                    msg: 'Error en la petición',
+                    error: error.message,
+                });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({
+                    msg: 'Usuario no encontrado',
+                });
+            }
+            const user = results[0];
+            const jwtToken = jsonWebToken.sign({ user }, 'secretkey', { expiresIn: '1h' });
+            res.status(200).json({
+                msg: 'Login correcto',
+                token: jwtToken,
+                user,
+            });
+        });
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Error al autenticar con Google',
+        });
+    }
+};
+
 
 
 const forgotPassword = (req, res) => {
@@ -212,11 +255,13 @@ const updatePassword = (req, res) => {
       
 module.exports = {
     auth,
+    googleLogin,
     forgotPassword, 
     resetPassword,
     resetPasswordForm,
     updatePassword
 }
+
 
       
 
