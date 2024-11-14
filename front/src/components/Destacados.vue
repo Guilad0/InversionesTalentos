@@ -2,9 +2,11 @@
   <main>
     <div class="proposito bg-dark d-flex align-items-center justify-content-center">
       <div class="text-container">
-        <h1 class="text-center text-white">
-          Nuestro propósito es ayudar a que todos los profesionales puedan desarrollar su
-          carrera a través del poder de financiamiento de sus fans.
+        <h1 class="text-center text-white  fs-custom position-relative ">
+          {{ text }}
+        <EditIcon v-if="rol == 'Admin'" class="mt-3"  data-bs-toggle="modal" data-bs-target="#textHome"/>
+        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar campo</label>
+        
         </h1>
       </div>
     </div>
@@ -26,23 +28,110 @@
         ></RouterLink>
       </div>
     </div>
+    <div class="modal fade" id="textHome" tabindex="-1" aria-labelledby="textHomeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title  fs-custom-text m-auto text-center" id="textHomeLabel">Introduce el texto de almenos 50 caracteres</h1>
+      </div>
+      <div class="modal-body">
+          <input type="text" class="form-control"  v-model="text">         
+      </div>
+      <div class="modal-footer m-auto">
+        <Button message="Cerrar" typeButton="btn-red" data-bs-dismiss="modal" />
+        <Button v-if="!loading" message="Actualizar" typeButton="btn-blue" @click="saveText()" />
+        <LoadingButton v-if="loading"/>
+
+      </div>
+    </div>
+  </div>
+
+</div>
   </main>
 </template>
 
 <script setup>
 import useFetchData from "../helpers/UseFetchData";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import CardClient from "../components/CardClient.vue";
 import { RouterLink } from "vue-router";
+import EditIcon from '../components/Icons/EditIcon.vue'
+import Button from '../components/Buttons/Button.vue'
+import axios from "axios";
+import LoadingButton from "./Buttons/LoadingButton.vue";
 
 const path = ref("/clients");
 const { results: clients, getData: getClients } = useFetchData(path);
-
 const primerosCinco = computed(() => clients.value.slice(0, 5));
-console.log(primerosCinco);
+const text = ref('')
+
+
+onMounted(()=>{
+  getTextHome()
+})
+
+const getTextHome = async() =>{  
+  try {
+    const {data} = await axios.get('http://localhost:3000/utilities/getTextHome');
+    text.value = data.text;
+  } catch (error) {
+      console.log(error);
+  }
+}
+const loading = ref(false)
+const saveText =async() =>{
+  loading.value = true;
+  try {
+    await axios.patch('http://localhost:3000/utilities/putTextHome/'+text.value);
+    getTextHome()
+    alert('Texto arreglado')
+  } catch (error) {
+      console.log(error);
+  }finally{
+    setTimeout(() => {
+      loading.value = false
+    }, 500);
+  }
+}
+const props = defineProps({
+  rol:{
+    type:String,
+  required:true
+  }
+})
+
 </script>
 
 <style scoped>
+@media (max-width: 1500px) {
+  .abs-custom-label{
+  position: absolute;
+  bottom:  -20px;
+  left: 130px;
+  font-size: 1rem;
+
+}
+}
+@media (max-width: 768px) {
+  .abs-custom-label{
+  position: absolute;
+  bottom:  -20px;
+  left: 100px;
+  font-size: 1rem;
+
+}
+}
+@media (max-width: 400px) {
+  .abs-custom-label{
+  position: absolute;
+  bottom:  -20px;
+  left: 70px;
+  font-size: 0.8rem;
+
+}
+}
+
+
 .proposito {
   width: 100%;
   height: 30vh;
@@ -102,7 +191,15 @@ console.log(primerosCinco);
   .card-client {
     flex: 1 1 calc( 35% - 2rem) !important;
     max-width: calc(35% - 2rem) !important;
-    min-height: 500px !important;    
+    min-height: 500px !important;  
+
+  }
+  .fs-custom{
+    font-size: 1.5rem;
+  }
+  .fs-custom-text{
+    font-size: 1rem;
+
   }
 }
 
@@ -111,6 +208,15 @@ console.log(primerosCinco);
     flex: 1 1 calc( 30.33% - 2rem)!important;
     max-width: calc(30.33% - 2rem)!important;
     min-height: 500px;
+
+  }
+  .fs-custom{
+    font-size: 1.5rem;
+
+  }
+    .fs-custom-text{
+    font-size: 1rem;
+
   }
 }
 
@@ -118,6 +224,37 @@ console.log(primerosCinco);
   .card-client {
     flex: 1 1 calc(20% - 2rem)  !important;
     max-width: calc(20% - 2rem) !important;
+
+  }
+  .fs-custom{
+    font-size: 1.8rem !important;
+
+  }
+    .fs-custom-text{
+    font-size: 1rem;
+
+  }
+}
+@media (max-width: 600px) {
+
+  .fs-custom{
+    font-size: 1.3rem !important;
+
+  }
+  .fs-custom-text{
+    font-size: 1rem;
+
+  }
+}
+@media (max-width: 400px) {
+
+.fs-custom{
+  font-size: 0.9rem !important;
+
+}
+.fs-custom-text{
+    font-size: 0.9rem;
+
   }
 }
 

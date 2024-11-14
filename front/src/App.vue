@@ -21,7 +21,6 @@ onMounted(async()=>{
     <Navbar />
     <RouterView />     
     <ContactComponent /> 
-      
     <Footer />
     <WhatsAppIco />
   </div>

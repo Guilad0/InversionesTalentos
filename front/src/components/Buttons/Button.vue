@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class=" btn fs-6" :class="typeButton">
+        <button class=" btn fs-6" :class="typeButton " >
             {{ message }}
         </button>    
     </div>    
@@ -14,6 +14,7 @@ const props = defineProps({
     typeButton:{
         type:String,
         required:true
-    }
+    },
+    
 })
 </script>

@@ -9,16 +9,18 @@
         aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-      <div class="carousel-item active">
+      <div class="carousel-item active animate__animated">
         <div class="position-relative">
         <img :src="images[0]?.image1" class="d-block w-100 " alt="...">
           <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image1')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+          <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Cambiar imagen</label>
         </div>
       </div>
       <div class="carousel-item">
         <div>
         <img :src="images[0]?.image2"  class="d-block w-100" alt="...">
           <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image2')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+          <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Cambiar imagen</label>
         </div>
     
       </div>
@@ -26,6 +28,7 @@
         <div>
         <img :src="images[0]?.image3"  class="d-block w-100" alt="...">
         <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image3')" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+        <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Cambiar imagen</label>
         </div>
      
       </div>
@@ -98,18 +101,14 @@ const onFileChange = (event) => {
           const width = img.width;
           const height = img.height;
 
-          if (width >= 1980 && height >= 1000) {
-            file.value = fileInput; // Guardar el archivo si cumple el tamaño
+          if (width >= 1980 && height >= 1080) {
+            file.value = fileInput;
           } else {
-            alert(`La imagen debe ser de ${width}x${height} píxeles o superior.`);
-            file.value = null; // No guardar el archivo
+            alert(`La imagen debe ser de 1980x1980 píxeles o superior.`);
+            file.value = null; 
           }
-
-          // Liberar el objeto URL
           URL.revokeObjectURL(objectURL);
         };
-
-        // Asignar el src para activar el evento onload
         img.src = objectURL;
       }
 };
@@ -141,6 +140,7 @@ const saveImage = async() =>{
       }
       )
       console.log('imagen cargada');
+      alert('Imagen cargada')
       cleanImage()
     } catch (error) {
         console.log(error);
@@ -176,6 +176,11 @@ const getImages =async ()=>{
   position: absolute;
   top:  25px;
   left: 25px;
+}
+.abs-custom-label{
+  position: absolute;
+  top:  15px;
+  left: 15px;
 }
 .carousel-item {
   height: 90vh;
@@ -276,6 +281,13 @@ const getImages =async ()=>{
     height: auto;
     max-height: 100%;
   }
+  .abs-custom-label{
+  position: absolute;
+  top:  8px;
+  left: 8px;
+  font-size: 0.8rem;
+
+}
 }
 @media (max-width: 768px) {
   .carousel-item {
@@ -290,6 +302,12 @@ const getImages =async ()=>{
     height: auto;
     max-height: 100%;
   }
+  .abs-custom-label{
+  position: absolute;
+  top:  5px;
+  left: 5px;
+  font-size: 0.5rem;
+}
 }
 
 @keyframes fadeIn {

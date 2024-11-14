@@ -2,8 +2,8 @@
   <main class="">
     <div v-if="!loading">
       <Carrusel :rol="user?.rol"/>
-    <Destacados />
-    <Partners />
+    <Destacados :rol="user?.rol" />
+    <Partners :rol="user?.rol"/>
     <ComoFunciona />
     </div>
     <div v-else>
