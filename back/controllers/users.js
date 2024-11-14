@@ -937,6 +937,7 @@ const getUserById = (req, res) => {
         i.preparacion, 
         i.estudios, 
         i.vision,
+        i.video,
         c.nombre as categoria
     FROM 
         usuarios AS u
