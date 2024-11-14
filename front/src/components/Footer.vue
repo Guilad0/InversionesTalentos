@@ -2,7 +2,7 @@
 
     <footer class="text-center text-lg-start p-3 custom-footer">
 
-        <div class="container-fluid p-4">            
+        <div class="container-fluid p-4">
 
             <div class="row">
 
@@ -23,12 +23,30 @@
 
                             <div class="d-flex flex-column">
 
-                                <a href="/link1">Marketplace</a>
-                                <a href="/link1">Propósito</a>
-                                <a href="/link1">Cómo funciona</a>
-                                <a href="/link1">Noticias</a>
-                                <a href="/link1">Contacto</a>
-                                <a href="/link1">FAQs</a>
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="marketplace">Markeplace</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="/proposito">Proposito</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="como-funciona">Cómo funciona</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">
+                                    Guias de usuario</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="contact">
+                                    Contactos</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">
+                                    Faqs</RouterLink>
+
 
                             </div>
 
@@ -40,9 +58,17 @@
 
                             <div class="d-flex flex-column ">
 
-                                <a href="/link1">Acuerdo de compra de token</a>
-                                <a href="/link1">Términos y Condiciones</a>
-                                <a href="/link1">Política de Privacidad</a>
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="/compra-token">Compra Token</RouterLink>
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="/terminos-condiciones">Términos y Condiciones</RouterLink>
+
+
+                                <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
+                                    to="/politica-privacidad">Política de Privacidad</RouterLink>
+
 
                             </div>
 
@@ -94,7 +120,6 @@ export default {
 </script>
 
 <style scoped>
-
 .custom-footer {
     background-color: var(--smoky-dark-color);
 }
@@ -106,6 +131,18 @@ export default {
 a {
     text-decoration: none;
     color: var(--white-anti-flash-color);
+}
+
+.nav-link {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link:hover {
+    color: #F37926;
+}
+
+.nav-link.active {
+    color: #F37926 !important;
 }
 
 .pie {
