@@ -160,6 +160,7 @@ try {
 <style scoped>
 .custom-background {
   background-color: var(--violet-2-color);
+  background-image: url('C:\Users\CECILIA\Downloads\fotos pag\otro-fondo2.png');
   height: 100vh;
 }
 
