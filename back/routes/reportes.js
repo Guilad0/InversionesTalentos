@@ -21,21 +21,207 @@ router.get("/usuariosCantidad", function (req, res, next) {
 });
 
 router.get("/inversionesCantidad", function (req, res, next) {
-        var query = ` SELECT rol, COUNT(*) AS cantidadInversiones FROM inversiones;`;
-        connection.query(query, function (error, results, fields) {
-          if (error) {
-            console.log(error);
-            res.status(500).send({
-              error: error,
-              message: "Error al realizar la petición",
-            });
-          } else {
-            res.status(200).send({
-              data: results,
-              message: "Cantidad de inversiones consultados correctamente",
-            });
-          }
-        });
+  var query = `
+  SELECT 
+    CASE 
+        WHEN estado = 0 THEN 'Saldado' 
+        WHEN estado = 1 THEN 'Pendiente' 
+        ELSE 'Otro Estado' -- Opcional: para manejar otros posibles valores
+    END AS estado_descripcion, 
+    COUNT(*) AS cantidad 
+FROM inversiones 
+GROUP BY estado_descripcion;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
       });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de inversiones consultados correctamente",
+      });
+    }
+  });
+});
+
+router.get("/solicitudesCantidad", function (req, res, next) {
+  var query = ` SELECT estado, COUNT(*) AS cantidad FROM solicitudes_retiro GROUP BY estado;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de inversiones consultados correctamente",
+      });
+    }
+  });
+});
+
+router.get("/tokensInvertidos", function (req, res, next) {
+  var query = ` SELECT SUM(token) as tokens_invertidos FROM movimientos
+WHERE descripcion = 'Tokens invertidos';`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de inversiones consultados correctamente",
+      });
+    }
+  });
+});
+
+router.get("/sumaComisiones", function (req, res, next) {
+  var query = `SELECT estado,SUM(comision_aplicar) AS total_comisiones FROM solicitudes_retiro GROUP BY estado;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de inversiones consultados correctamente",
+      });
+    }
+  });
+});
+
+router.get("/totalCompras", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var queryCompraTokens = `
+                SELECT SUM(token) as tokens_comprados, MONTH(fecha_solicitud) AS mes
+                FROM movimientos
+                WHERE YEAR(fecha_solicitud) = ${anho} 
+                AND descripcion = 'Compra de tokens'
+                GROUP BY MONTH(fecha_solicitud);
+                `;
+
+  connection.query(queryCompraTokens, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Total compras por mes",
+      });
+    }
+  });
+});
+
+router.get("/totalInversiones", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var queryInversionToken = `
+                SELECT SUM(token) as tokens_invertidos, MONTH(fecha_solicitud) AS mes
+                FROM movimientos
+                WHERE YEAR(fecha_solicitud) = ${anho} 
+                AND descripcion = 'Tokens invertidos'
+                GROUP BY MONTH(fecha_solicitud);
+  `;
+
+  connection.query(queryInversionToken, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Total inversiones por mes",
+      });
+    }
+  });
+});
+
+router.get("/gananciasPendientes", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var query = `                              
+SELECT 
+    estado, 
+    MONTH(fecha_solicitud) AS mes, 
+    SUM(comision_aplicar) AS total_comisiones
+FROM 
+    solicitudes_retiro
+WHERE 
+    YEAR(fecha_solicitud) = 2024
+AND estado = 'Pendiente'
+GROUP BY MONTH(fecha_solicitud);
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Ganacias por mes",
+      });
+    }
+  });
+});
+
+router.get("/gananciasAprobadas", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var query = `                              
+SELECT 
+    estado, 
+    MONTH(fecha_solicitud) AS mes, 
+    SUM(comision_aplicar) AS total_comisiones
+FROM 
+    solicitudes_retiro
+WHERE 
+    YEAR(fecha_solicitud) = 2024
+AND estado = 'Aprobado'
+GROUP BY MONTH(fecha_solicitud);
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Ganacias por mes",
+      });
+    }
+  });
+});
 
 module.exports = router;
