@@ -1,91 +1,93 @@
 <template>
-  <div>
+  <div class="m-3">
     <h2 class="text-xl font-bold mb-4">Reportes</h2>
 
-    <div class="row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="row my-3">
+      <div class="col-md-5">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Compras e Inversiones de Tokens</h5>
+            <apexchart width="100%" type="area" :options="options" :series="series"></apexchart>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Ganancias en Dólares</h5>
+            <apexchart width="100%" type="bar" :options="options2" :series="series2"></apexchart>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row my-3">
+      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Cantidad de Usuarios</h5>
-              <table class="table">
-                <tbody v-for="(cantUsuario, index) in cantUsuarios" :key="index">
-                  <tr>
-                    <td>{{ cantUsuario.rol }}s: </td>
-                    <td>{{ cantUsuario.cantidad }} </td>
-                  </tr>                  
-                </tbody>
-              </table>
+            <table class="table">
+              <tbody v-for="(cantUsuario, index) in cantUsuarios" :key="index">
+                <tr>
+                  <td>{{ cantUsuario.rol }}s: </td>
+                  <td>{{ cantUsuario.cantidad }} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-5 col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Inversiones</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h5 class="card-title">Cantidad de Inversiones</h5>
+            <table class="table">
+              <tbody v-for="(cantInversion, index) in cantInversiones" :key="index">
+                <tr>
+                  <td>{{ cantInversion.estado_descripcion }}s: </td>
+                  <td>{{ cantInversion.cantidad }} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-    <!-- Contenedor de tabs -->
-    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
-      <div class="container-fluid m-3">
-        <div class="tabs me-auto mb-2 mb-lg-0">
-          <button v-for="(tabCli, index) in tabsCli" :key="index"
-            :class="['underline-dynamic', 'btn', 'tabs', { active: activeTabCli === index }]"
-            @click="activeTabCli = index">
-            {{ tabCli }}
-          </button>
-        </div>
-      </div>
-    </nav>
 
-    <!-- Contenido de los tabs -->
-    <!-- Lista Inversiones -->
-    <div class="tab-content" v-if="activeTabCli === 0">
-      <div class="bg-white p-4  " v-for="inversion_recibida in inversiones_recibidas" :key="inversion_recibida">
-        <div class="row">
-          <div class="col-md-4">
-            <p>Inversion ID: {{ inversion_recibida.inversion_id }}</p>
-            <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
-            <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
-            <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
-            <hr />
+    <div class="row my-3">
+      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Cantidad de Solicitudes de Retiro</h5>
+            <table class="table">
+              <tbody v-for="(cantSolicitud, index) in cantSolicitudes" :key="index">
+                <tr>
+                  <td>{{ cantSolicitud.estado }}s: </td>
+                  <td>{{ cantSolicitud.cantidad }} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="col-md-4">
-            <img :src='inversion_recibida.imagen' width="25" class="img-fluid rounded" alt="">
+        </div>
+      </div>
+      <div class="col-md-5 col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Ganancia en Dólares de la página</h5>
+            <table class="table">
+              <tbody v-for="(cantSumComision, index) in cantSumComisiones" :key="index">
+                <tr>
+                  <td>{{ cantSumComision.estado }}s: </td>
+                  <td>$US {{ cantSumComision.total_comisiones }} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-    <!---->
-    <!-- Lista de solicitudes de retiro -->
-    <div class="tab-content" v-if="activeTabCli === 1">
 
-      <div class="bg-white p-4" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
-        <p>Solicitud: {{ cliente_retiro.retiro_id }}</p>
-        <p>Monto: ${{ cliente_retiro.monto_recibir }}</p>
-        <p>Fecha Solicitud: {{ cliente_retiro.fecha_solicitud }}</p>
-        <p>Estado: {{ cliente_retiro.estado }}</p>
-        <p v-if="cliente_retiro.estado == 'Aprobado'">
-          Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
-        </p>
-        <hr />
-      </div>
-    </div>
-    <!---->
-    <!-- Lista de Devoluciones Pendientes-->
-    <div class="tab-content" v-if="activeTabCli === 2">
-      <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_vencida in inversiones_vencidas"
-        :key="inversion_vencida">
-        <p>Solicitud: {{ inversion_vencida.inversion_id }}</p>
-        <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
-        <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
-        <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
-        <hr />
-      </div>
-    </div>
+
 
   </div>
 
@@ -95,13 +97,22 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import apexchart from "vue3-apexcharts";
 const route = useRouter();
 let baseURL = "http://localhost:3000/reportes/";
 
 const cantUsuarios = ref(0);
+const cantInversiones = ref(0);
+const cantSolicitudes = ref(0);
+const cantSumComisiones = ref(0);
 
 onMounted(() => {
   obtenerCantUsuarios();
+  obtenerCantInversiones();
+  obtenerCantSolicitudes();
+  obtenerCantSumComisiones();
+  obtenerTotales();
+  obtenerGanancias();
 })
 const obtenerCantUsuarios = async () => {
   try {
@@ -112,6 +123,196 @@ const obtenerCantUsuarios = async () => {
     console.log(error);
   }
 };
+
+const obtenerCantInversiones = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "inversionesCantidad/");
+    cantInversiones.value = data.data;
+    console.log(cantInversiones.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const obtenerCantSolicitudes = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "solicitudesCantidad/");
+    cantSolicitudes.value = data.data;
+    console.log(cantSolicitudes.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const obtenerCantSumComisiones = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "sumaComisiones/");
+    cantSumComisiones.value = data.data;
+    console.log(cantSumComisiones.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const series = ref([]);
+const series2 = ref([]);
+const meses = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+];
+
+const options = ref({
+  chart: {
+    id: "vuechart-example",
+  },
+  xaxis: {
+    categories: meses,
+  },
+});
+
+const options2 = ref({
+  chart: {
+    type: 'bar', height: 250, stacked: true,
+  },
+  plotOptions: {
+        bar: {
+          horizontal: true,
+          dataLabels: {
+            total: {
+              enabled: true,
+              offsetX: 0,
+              style: {
+                fontSize: '13px',
+                fontWeight: 900
+              }
+            }
+          }
+        },
+      },
+      xaxis: {
+        categories: meses,
+        labels: {
+          formatter: function (val) {
+            return val
+          }
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40
+      }
+});
+
+const obtenerTotales = async () => {
+  series.value = [];
+  try {
+    const { data } = await axios.get(baseURL + "totalCompras");
+
+    var datosMesCompra = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesCompra[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesCompra[i] = data.data[j].tokens_comprados;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Compra de Tokens",
+      data: datosMesCompra,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    const { data } = await axios.get(baseURL + "totalInversiones");
+
+    var datosMesVenta = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesVenta[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesVenta[i] = data.data[j].tokens_invertidos;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Inversiones de Tokens",
+      data: datosMesVenta,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const obtenerGanancias = async () => {
+  series2.value = [];
+  try {
+    const { data } = await axios.get(baseURL + "gananciasPendientes");
+
+    var datosMesPendientes = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesPendientes[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesPendientes[i] = data.data[j].total_comisiones;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Ganancias Pendientes",
+      data: datosMesPendientes,
+    };
+    series2.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    const { data } = await axios.get(baseURL + "gananciasAprobadas");
+
+    var datosMesAprobado = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesAprobado[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesAprobado[i] = data.data[j].total_comisiones;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Ganancias Aprobadas",
+      data: datosMesAprobado,
+    };
+    series2.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 </script>
 
 <style scoped>
@@ -141,7 +342,7 @@ nav {
 
 td {
   font-size: 1rem;
-  color: var(--gray-color);  
+  color: var(--gray-color);
 }
 
 .tabs {
