@@ -77,14 +77,14 @@
                     @click="cambiarEstado(categoria.categoria_persona_id)"
                     class="btn btn-danger btn-sm"
                   >
-                    <i class="fa fa-ban"></i>
+                    <i class="fa fa-times"></i>
                   </button>
                   <button
                     v-else
                     @click="cambiarEstado(categoria.categoria_persona_id)"
                     class="btn btn-success btn-sm"
                   >
-                    <i class="fa-solid fa-rotate-left"></i>
+                    <i class="fa fa-check"></i>
                   </button>
                 </td>
               </tr>

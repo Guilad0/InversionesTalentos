@@ -45,7 +45,7 @@
                     <i class="fa fa-check"></i>
                   </button>
                   <button
-                    class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
+                    class="btn btn-warning btn-sm mx-1"
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop"
                     @click="editar(item)"
