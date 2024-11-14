@@ -11,7 +11,12 @@ const {
   isInversorPhoto,
   getFeatured,
   uploadimageUserCloudinaryHome,
-  getAllImageHome
+  getAllImageHome,
+  putTextHome,
+  getTextHome,
+  getImagePartners,
+  getTextProposito,
+  putTextPurpose
 } = require("../controllers/utilities");
 
 router.get("/informacion", isClientFormInfoRegistered);
@@ -24,5 +29,10 @@ router.get("/isInversorPhoto", isInversorPhoto);
 router.get("/getFeatured", getFeatured);
 router.post("/uploadimageUserCloudinaryHome/:fieldImage", uploadimageUserCloudinaryHome);
 router.get("/getAllImageHome/", getAllImageHome);
+router.patch("/putTextHome/:text", putTextHome);
+router.patch("/putTextPurpose/:text", putTextPurpose);
+router.get("/getTextHome/", getTextHome);
+router.get("/getImagePartners/", getImagePartners);
+router.get("/getTextProposito/", getTextProposito);
 
 module.exports = router;

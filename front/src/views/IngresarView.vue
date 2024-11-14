@@ -63,6 +63,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
+import {successAlert,errorAlert} from "@/helpers/iziToast";
 
 const switchValue = ref(false);
 
@@ -75,15 +76,16 @@ let baseURL = "http://localhost:3000/auth";
 
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
-    Swal.fire({
-      title: "¡Error!",
-      text: "Ingrese sus credenciales",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)', 
-    });
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Ingrese sus credenciales",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   confirmButtonColor: 'var(--yellow-orange)', 
+    // });
+    errorAlert('ingrese sus credenciales', 'Error!!')
   }
 
   var datos = {
@@ -99,31 +101,35 @@ const ingresar = async () => {
     localStorage.setItem("usuario", JSON.stringify(data.user));
     console.log(data.user);
     
-    Swal.fire({
-      title: "Bienvenido!",
-      text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
-      icon: "success",
-      showConfirmButton: false,
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',      
-      timer: 1000,
-    });
+    // Swal.fire({
+    //   title: "Bienvenido!",
+    //   text: "Estás de regreso :)" + data.user.nombre + data.user.apellido,
+    //   icon: "success",
+    //   showConfirmButton: false,
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',      
+    //   timer: 1000,
+    // });
+    successAlert("Estás de regreso :)" + data.user.nombre + data.user.apellido,'center')
+
+
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
   } catch (error) {
     console.log(error);
     console.log(error.response.data);
-    Swal.fire({
-      title: "¡Error!",
-      text: error.response.data.message,
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)', 
-    });
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: error.response.data.message,
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: 'var(--gray-color)',
+    //   confirmButtonColor: 'var(--yellow-orange)', 
+    // });
+    errorAlert(error.response.data.message, 'Error!!')
   }
 };
 
@@ -142,13 +148,9 @@ const callback = (response) => {
 .login-card {
   width: 30rem;
   padding: 2rem;
-
   margin-top: 5%;
   margin-bottom: 5%;
-
   background-color: var(--smoky-dark-color) !important;
-  
-
 }
 .login-text-color{
   color: var(--white-anti-flash-color);

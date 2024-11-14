@@ -346,6 +346,87 @@ const getAllImageHome = (req, res) =>{
     })
 }
 
+const putTextHome = (req, res) =>{
+    
+    let query = `update ajustes set textHome = ? where ajuste_id = 6`;
+    conexion.query(query,[req.params.text], (err, results) =>{
+        if(err){
+            res.status(500).json({
+                err,
+                msg:'error al guardar el texto'
+            })
+            return
+        }
+        res.status(201).json({
+            ok:'texto editado'
+        })
+    })
+}
+const getTextHome = (req, res) =>{
+    let query = 'select textHome from ajustes where ajuste_id = 6';
+    conexion.query(query, (err, results) =>{
+        if(err){
+            res.status(500).json({
+                err,
+                msg:'error al buscar el texto'
+            })
+            return
+        }
+        res.status(200).json({
+            text:results[0].textHome
+        })
+    })
+}
+const getImagePartners = (req, res) =>{
+    let query = 'select partners from ajustes where ajuste_id = 6';
+    conexion.query(query, (err, results) =>{
+        if(err){
+            res.status(500).json({
+                err,
+                msg:'error al buscar el texto'
+            })
+            return
+        }
+        res.status(200).json({
+            results
+        })
+    })
+}
+
+const getTextProposito = (req, res) =>{
+    let query = 'select propositoText,proposito_imagen from ajustes where ajuste_id = 6';
+    conexion.query(query, (err, results) =>{
+        if(err){
+            res.status(500).json({
+                err,
+                msg:'error al buscar el texto'
+            })
+            return
+        }
+        res.status(200).json({
+            results
+        })
+    })
+}
+
+
+const putTextPurpose = (req, res) =>{
+    
+    let query = `update ajustes set propositoText = ? where ajuste_id = 6`;
+    conexion.query(query,[req.params.text], (err, results) =>{
+        if(err){
+            res.status(500).json({
+                err,
+                msg:'error al guardar el texto'
+            })
+            return
+        }
+        res.status(201).json({
+            ok:'texto editado'
+        })
+    })
+}
+
 module.exports = {
     isClientFormInfoRegistered,
     isClientFormAchievements,
@@ -356,5 +437,10 @@ module.exports = {
     isInversorPhoto,
     getFeatured,
     uploadimageUserCloudinaryHome,
-    getAllImageHome
+    getAllImageHome,
+    putTextHome,
+    getTextHome,
+    getImagePartners,
+    getTextProposito,
+    putTextPurpose
 }

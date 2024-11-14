@@ -34,6 +34,15 @@ const saveVideo = (req, res) => {
       });
   } 
 
+  const videoFile = req.files.video;
+  const maxSize = 100 * 1024 * 1024; // 100MB en bytes
+
+  if (videoFile.size > maxSize) {
+      return res.status(400).json({
+          msg: `"El archivo supera el tamaño máximo permitido de ${maxSize / 1024 / 1024}MB"`,
+      });
+  }
+
   const { cliente_id } = req.body;
   console.log('Cliente ID:', cliente_id);
     console.log('Archivos:', req.files);
@@ -51,7 +60,7 @@ const saveVideo = (req, res) => {
       }
       try {
           const videoFile = req.files.video;
-          const videoPath = await uploadVideo({ file: videoFile }, ['mp4', 'avi', 'mkv'], 'videos');
+          const videoPath = await uploadVideo({ file: videoFile }, ['mp4', 'avi', 'mov', 'wmv'], 'videos');
           query = 'UPDATE informacion SET video = ? WHERE cliente_id = ?';
           conexion.query(query, [videoPath, cliente_id], (err) => {
             if (err) {

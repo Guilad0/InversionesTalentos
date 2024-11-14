@@ -269,7 +269,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
-
+import { errorAlert, successAlert } from "@/helpers/iziToast";
 const route = useRoute();
 const userId = ref("");
 const client = ref({});
@@ -398,15 +398,18 @@ const inversionistaInvertir = async () => {
     console.log(datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
-      Swal.fire({
-        title: "¡Felicidades!",
-        text: "Inversión realizada exitosamente",
-        icon: "success",
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        color: "var(--gray-color)",
-        confirmButtonColor: "var(--yellow-orange)",
-      });
+      // Swal.fire({
+      //   title: "¡Felicidades!",
+      //   text: "Inversión realizada exitosamente",
+      //   icon: "success",
+      //   allowOutsideClick: true,
+      //   allowEscapeKey: true,
+      //   color: "var(--gray-color)",
+      //   confirmButtonColor: "var(--yellow-orange)",
+      // });
+      successAlert('Inversion realizada exitosamente','Felicidades!!!');
+      
+
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
       modal.hide();
@@ -415,15 +418,16 @@ const inversionistaInvertir = async () => {
     }
     monto_tokens_invertir.value = 0;
   } else {
-    Swal.fire({
-      title: "¡Error!",
-      text: "Por favor, ingrese una cantidad valida de tokens a invertir",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: "var(--gray-color)",
-      confirmButtonColor: "var(--yellow-orange)",
-    });
+    // Swal.fire({
+    //   title: "¡Error!",
+    //   text: "Por favor, ingrese una cantidad valida de tokens a invertir",
+    //   icon: "error",
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: true,
+    //   color: "var(--gray-color)",
+    //   confirmButtonColor: "var(--yellow-orange)",
+    // });
+    errorAlert('Por favor, ingrese una cantidad valida de tokens a invertir', 'Error!!')
   }
 };
 

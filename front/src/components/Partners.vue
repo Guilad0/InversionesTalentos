@@ -1,24 +1,164 @@
 <template>
     <div>
         <main>
-        <div class="partners bg-dark d-flex align-items-center align-content-center">
-            <div class="col-3"></div>
-            <div class="col-6">
-                <h1 class="text-center text-white">PARTNERS
-                </h1>
-            </div>
-            <div class="col-3"></div>
+        <div class="partners bg-dark d-flex align-items-center justify-content-center position-relative">
+            <img :src="image">
+            <EditIcon v-if="rol == 'Admin'" class="abs-custom "   data-bs-toggle="modal" data-bs-target="#updatePartners"/>
+        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar Imagen</label>
+
         </div>
-    </main>
+
+        <div class="modal fade" id="updatePartners" tabindex="-1" aria-labelledby="updatePartnersLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-6 text-center m-auto" id="updatePartnersLabel">Selecciona una imagen para la pantalla de inicio</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="custom-file-upload text-center m-auto d-flex justify-content-center position-relative">
+                            <label for="filePartner" class="btn btn-outline-primary border-3 px-4 me-3">
+                                <i class="fa-solid fa-upload"></i>
+                            </label>
+                            <input
+                                type="file"
+                                id="filePartner"
+                                class="form-control"
+                                @change="onFileChange"
+                                accept="image/*"
+                                style="display: none;"
+                            />
+                            <i v-if="file" class="cursor mx-2 fa-solid fa-image fs-1"></i>
+                            <i v-if="file" class="cursor mx-2 text-danger fa-solid fa-ban fs-1" @click="cleanImage()"></i>
+                        </div>
+                    </div> 
+                    <div class="modal-footer text-center m-auto">
+                        <Button message="Cerrar" data-bs-dismiss="modal" typeButton="btn-red"/>
+                        <Button v-if="!loading" message="Subir imagen" typeButton="btn-blue" @click="saveImage()"/> 
+                        <LoadingButton v-else /> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Button from './Buttons/Button.vue';
+import EditIcon from './Icons/EditIcon.vue';
+import { ref, onMounted, defineProps } from 'vue';
+import axios from 'axios';
+import LoadingButton from './Buttons/LoadingButton.vue';
+
+const props = defineProps({
+    rol:{
+        type:String,
+        required:true
+    }
+})
+
+
+
+const file = ref(null);
+const image = ref({})
+
+const onFileChange = (event) => {
+  const fileInput = event.target.files[0];
+      if (fileInput) {
+        const img = new Image();
+        const objectURL = URL.createObjectURL(fileInput);
+
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+
+          if (width >= 1800 && height <= 500) {
+            file.value = fileInput; // Guardar el archivo si cumple el tamaño
+          } else {
+            alert(`La imagen debe ser de 1800x500 píxeles o superior.`);
+            file.value = null; 
+            console.log('object');
+          }
+
+          URL.revokeObjectURL(objectURL);
+        };
+
+        img.src = objectURL;
+      }
+};
+
+const cleanImage = () =>{
+  file.value = ''
+}
+
+const loading = ref(false);
+
+const saveImage = async() =>{
+  const formData = new FormData();
+  if( file.value ){
+    loading.value = true
+    formData.append("image", file.value);
+    console.log(file.value);
+    try {
+      await axios.post(`http://localhost:3000/utilities/uploadimageUserCloudinaryHome/partners`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+      )
+      console.log('imagen cargada');
+      cleanImage()
+    } catch (error) {
+        console.log(error);
+        cleanImage()
+        alert('Error al subir la imagen')
+
+    }finally{
+      loading.value = false
+      getImagePartner();
+    }
+  }else{
+    alert('Debes seleccionar una imagen')
+  }
+
+
+}
+onMounted(()=>{
+    getImagePartner();
+})
+
+const getImagePartner =async ()=>{
+  const {data} = await axios.get('http://localhost:3000/utilities/getImagePartners');
+  image.value = data.results[0].partners
+  
+}
+
+
+
+</script>
 
 <style scoped>
 .partners {
     width: 100%;
-    height: 30vh;
+    height: 300px;
+    overflow: hidden;
 }
 
+.partners img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.abs-custom{
+    position: absolute;
+    top: 12px;
+    right: 50px;
+}
+.abs-custom-label{
+    position: absolute;
+    top:   70px;
+    right: 70px;
+}
 </style>
