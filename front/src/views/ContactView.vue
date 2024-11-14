@@ -1,100 +1,104 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center custom-font">
-    <form class="card shadow p-5 w-50 m-5 animate__animated animate__fadeIn">
-      <h3 class="text-center py-2 text-form-contact">
-        Déjanos tu comentario llenando este formulario
-      </h3>
-
-      <div class="mb-3">
-        <label for="nombre" class="form-label text-form-contact"
-          >Nombres<span class="text-danger"><strong>*</strong></span></label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="nombre"
-          v-model="nombre"
-          v-bind:class="{ 'is-valid': nombreVal, 'is-invalid': errors.nombre }"
-          placeholder="Escriba sus nombres"
-          @input="validarCampo('nombre')"
-          required
-        />
-        <span v-if="errors.nombre" class="position-absolute text-danger">
-          <i class="bi bi-x-circle"></i>
-        </span>
-        <span class="text-danger">{{ errors.nombre }}</span>
-      </div>
-
-      <div class="mb-3">
-        <label for="apellido" class="form-label text-form-contact"
-          >Apellidos<span class="text-danger"><strong>*</strong></span></label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="apellido"
-          v-model="apellido"
-          v-bind:class="{ 'is-valid': apellidoVal, 'is-invalid': errors.apellido }"
-          placeholder="Escriba sus apellidos"
-          @input="validarCampo('apellido')"
-          required
-        />
-        <span v-if="errors.apellido" class="position-absolute text-danger">
-          <i class="bi bi-x-circle"></i>
-        </span>
-        <span class="text-danger">{{ errors.apellido }}</span>
-      </div>
-
-      <div class="mb-3">
-        <label for="correo" class="form-label text-form-contact"
-          >Correo Electrónico<span class="text-danger"><strong>*</strong></span></label
-        >
-        <input
-          type="email"
-          class="form-control"
-          id="correo"
-          v-model="email"
-          v-bind:class="{ 'is-valid': emailVal, 'is-invalid': errors.email }"
-          placeholder="Escriba su correo"
-          @input="validarCampo('email')"
-          required
-        />
-        <span v-if="errors.email" class="position-absolute text-danger">
-          <i class="bi bi-x-circle"></i>
-        </span>
-        <span class="text-danger">{{ errors.email }}</span>
-      </div>
-
-      <div class="mb-3">
-        <label for="telefono" class="form-label text-form-contact">Teléfono</label>
-        <input
-          type="tel"
-          id="telefono"
-          class="form-control text-form-contact"
-          placeholder="123-456-7890"
-          v-model="telefono"
-        />
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label text-form-contact">Comentarios</label>
-        <textarea class="form-control mb-3" v-model="comentarios"></textarea>
-      </div>
-
-      <div class="text-center">
-        <button
-          type="submit"
-          @click="registerComment($event)"
-          class="btn btn-form-contact btn-gray rounded-5 w-75"
-        >
-          Enviar
-        </button>
-      </div>
-    </form>
-    <!-- <div>
-    <Unete />
-  </div> -->
+  <div class="background">
+    <div class="overlay"></div>
+    <div class="container d-flex justify-content-center align-items-center custom-font">
+    <form class="card shadow p-5 w-50 m-5 animate__animated animate__fadeIn custom-card">
+        <h3 class="text-center py-2 text-form-title">
+          Déjanos tu comentario llenando este formulario
+        </h3>
+  
+        <div class="mb-3">
+          <label for="nombre" class="form-label text-form-contact"
+            >Nombres<span class="text-danger"><strong>*</strong></span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            v-model="nombre"
+            v-bind:class="{ 'is-valid': nombreVal, 'is-invalid': errors.nombre }"
+            placeholder="Escriba sus nombres"
+            @input="validarCampo('nombre')"
+            required
+          />
+          <span v-if="errors.nombre" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.nombre }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="apellido" class="form-label text-form-contact"
+            >Apellidos<span class="text-danger"><strong>*</strong></span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="apellido"
+            v-model="apellido"
+            v-bind:class="{ 'is-valid': apellidoVal, 'is-invalid': errors.apellido }"
+            placeholder="Escriba sus apellidos"
+            @input="validarCampo('apellido')"
+            required
+          />
+          <span v-if="errors.apellido" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.apellido }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="correo" class="form-label text-form-contact"
+            >Correo Electrónico<span class="text-danger"><strong>*</strong></span></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="correo"
+            v-model="email"
+            v-bind:class="{ 'is-valid': emailVal, 'is-invalid': errors.email }"
+            placeholder="Escriba su correo"
+            @input="validarCampo('email')"
+            required
+          />
+          <span v-if="errors.email" class="position-absolute text-danger">
+            <i class="bi bi-x-circle"></i>
+          </span>
+          <span class="text-danger">{{ errors.email }}</span>
+        </div>
+  
+        <div class="mb-3">
+          <label for="telefono" class="form-label text-form-contact">Teléfono</label>
+          <input
+            type="tel"
+            id="telefono"
+            class="form-control"
+            placeholder="123-456-7890"
+            v-model="telefono"
+          />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label text-form-contact">Comentarios</label>
+          <textarea class="form-control mb-3" v-model="comentarios"></textarea>
+        </div>
+  
+        <div class="text-center">
+          <button
+            type="submit"
+            @click="registerComment($event)"
+            class="btn btn-form-contact btn-gray rounded-5 w-75"
+          >
+            Enviar
+          </button>
+        </div>
+      </form>
+      <!-- <div>
+      <Unete />
+    </div> -->
+    </div>
   </div>
+  
   
 </template>
 
@@ -260,6 +264,74 @@ const resetForm = () => {
 </script>
 
 <style scoped>
+
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Corregir el error de sintaxis */
+  margin: 0;
+  position: relative; /* Asegura que el overlay se posicione bien dentro de este contenedor */
+  background-image: url('@/assets/images/otro-fondo2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Asegura que el overlay cubra toda la altura del fondo */
+  background-color: rgba(4, 4, 4, 0.563); /* Fondo negro con opacidad */
+  z-index: 1; /* Asegura que el overlay esté debajo del formulario */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif; /* Asegúrate de definir tu fuente personalizada */
+}
+
+.custom-card {
+  padding: 3rem;
+  width: 50%;
+  margin: 3rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease;
+}
+
+.card {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.871);
+  border-radius: none;
+  box-sizing: border-box;
+  padding: 30px;
+  width: 500px;
+  z-index: 2; /* Asegura que el formulario esté encima del overlay */
+}
+
+.form-control {
+  border-radius: 12px;
+  background-color: rgba(44, 46, 51, 0.8); /* Color de fondo personalizado */
+  color: #F3F3F4;
+}
+
+.text-form-title{
+  font-size: 26px;
+  font-weight: bold;
+  color:  #17223B;
+
+}
+
+.text-form-contact {
+  font-size: 18px;
+  font-weight: bold;
+  color:  #17223B; /* Personaliza según tu tema */
+}
+
 .is-valid {
   border-color: green;
 }
@@ -271,17 +343,11 @@ const resetForm = () => {
 .text-danger {
   font-size: 0.8rem;
 }
-.button-form {
-  background-color: var(--white-anti-flash-color);
-  color: black;
+
+.form-control::placeholder {
+  color: #F3F3F4; /* Color claro para el placeholder */
 }
-.button-form:hover {
-  background-color: var(--smoky-dark-color);
-  color: var(--yellow-orange);
-}
-.test {
-  background-color: red;
-  color: black !important;
-  border-color: black !important;
-}
+
+
+
 </style>
