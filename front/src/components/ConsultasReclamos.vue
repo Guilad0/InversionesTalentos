@@ -45,29 +45,29 @@
                   <!-- {{ console.log(item.estado) }} -->
                 </td>
                 <td v-else>
-                  <span class="badge text-bg-success">Contestado</span>
+                  <span class="badge text-bg-dark">Contestado</span>
                 </td>
 
                 <td v-if="item.estado == '1'">
-                  <button
+                  <span
                     @click="deleted(item.contacto_id)"
-                    class="btn bg-success btn-sm text-white"
+                    class="badge text-bg-success"
                   >
                     Activo
-                  </button>
+                  </span>
                 </td>
                 <td v-else>
-                  <button
+                  <span
                     @click="deleted(item.contacto_id)"
-                    class="bg-danger btn btn-sm text-white"
+                    class="badge text-bg-danger"
                   >
                     Inactivo
-                  </button>
+                  </span>
                 </td>
 
                 <td>
-                  <button class="btn btn-danger" @click="deleted(item.contacto_id)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
+                    <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <!-- <button class="btn btn-success">
                     <i class="fa fa-check" aria-hidden="true"></i>

@@ -3,7 +3,7 @@
       <div class="content">
         <h2 class="d-block text-start mb-5 mt-5 text-center underline">Datos de Usuarios</h2>
         <div class="mt-5">
-            <div class="table-responsive">
+            <div class="table-responsive table-center col-md-10 offset-md-1">
                 <table class="table overflow-x-scroll">
                   <thead>
                     <tr class="table-secondary">
@@ -23,7 +23,7 @@
                       <td>{{ combinedData.tiempo_maximo_inversion }}</td>
                       <td>{{ combinedData.valor_token }}</td>
                       <td>
-                        <button class="btn btn-dark btn-sm" @click="editUser(combinedData)">Editar</button>
+                        <button class="btn btn-warning btn-sm" @click="editUser(combinedData)"><i class="fa fa-edit"></i></button>
                       </td>
                     </tr>
                   </tbody>
