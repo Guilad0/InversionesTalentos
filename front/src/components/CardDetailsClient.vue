@@ -1,183 +1,185 @@
 <template>
- <div class="col-7 col-xl-9 col-md-12 col-sm-10 d-none d-md-block">
 
-<div class="card banner-card z-1 bg-degrade text-white">
-  <!-- Imagen superior (ej. imagen de fondo) -->
-  <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
+  <div class="col-7 col-xl-9 col-md-12 col-sm-10 d-none d-md-block">
 
-  <!-- Imagen de perfil -->
-  <div class="card-body p-5">
+    <div class="card banner-card z-1 bg-degrade text-white">
+      <!-- Imagen superior (ej. imagen de fondo) -->
+      <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
 
-    <div class="profile-section">
+      <!-- Imagen de perfil -->
+      <div class="card-body p-5">
 
-      <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
+        <div class="profile-section">
 
-    </div>
-    <!-- nombre y datos -->
-    <div class="mt-5 ">
+          <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
 
-      <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
-      <h5>{{ client.ocupacion }}</h5>
-      <h6>{{ client.pais_residencia }}</h6>
+        </div>
+        <!-- nombre y datos -->
+        <div class="mt-5 ">
 
-      <div class="row">
+          <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
+          <h5>{{ client.ocupacion }}</h5>
+          <h6>{{ client.pais_residencia }}</h6>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
-          data-bs-target="#modalVideoPresentacion">
-          <i class="fas fa-video"></i> Video presentación<span></span>
-        </button>
+          <div class="row">
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-          :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
-          <i class="fas fa-info-circle"></i> Información<span></span>
-        </button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
+              data-bs-target="#modalVideoPresentacion">
+              <i class="fas fa-video"></i> Video presentación<span></span>
+            </button>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-          :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
-          <i class="fas fa-trophy"></i> Logros<span></span>
-        </button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
+              <i class="fas fa-info-circle"></i> Información<span></span>
+            </button>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-          :class="{ 'active-button': mostrarExperiencia }" @click="toggleExperiencia()">
-          <i class="fas fa-briefcase"></i> Experiencia<span></span>
-        </button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
+              <i class="fas fa-trophy"></i> Logros<span></span>
+            </button>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
-          @click="isAuthenticatedAlert()">
-          <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
-        </button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarExperiencia }" @click="toggleExperiencia()">
+              <i class="fas fa-briefcase"></i> Experiencia<span></span>
+            </button>
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
-          data-bs-target="#modalInversion">
-          <i class="fas fa-dollar-sign"></i> Invertir<span></span>
-        </button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+              @click="isAuthenticatedAlert()">
+              <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
+            </button>
+
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+              data-bs-target="#modalInversion">
+              <i class="fas fa-dollar-sign"></i> Invertir<span></span>
+            </button>
+
+          </div>
+
+          <div class="mt-3">
+
+            <h5 class="title text-center">Descripcion</h5>
+            <p class="font">{{ client.vision }}</p>
+
+          </div>
+
+        </div>
 
       </div>
-
-      <div class="mt-3">
-
-        <h5 class="title text-center">Descripcion</h5>
-        <p class="font">{{ client.vision }}</p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in bg-degrade text-white">
-
-  <div class="card-body p-5 text-center">
-
-    <h3>Información</h3>
-
-    <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> Monto de inversión: ${{ client.monto_inversion }}</h6>
-    <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
-    <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}</h6>
-    <h6 class="mt-3"><i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}</h6>
-    <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> Edad: {{ client.edad }}</h6>
-    <h6 class="mt-3"><i class="fas fa-venus-mars"></i> Género: {{ client.genero }}</h6>
-    <h6 class="mt-3"><i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}</h6>
-    <h6 class="mt-3"><i class="fas fa-envelope"></i> Correo: {{ client.correo }}</h6>
-
-  </div>
-
-</div>
-
-<div v-if="mostrarLogros" class="card banner-card mt-2 fade-in bg-degrade text-white">
-
-  <div class="card-body p-5">
-
-    <h3 class="text-center">Logros</h3>
-
-    <table class="table table-striped table-bordered">
-
-      <thead class="table-dark">
-
-        <tr>
-
-          <th>Descripción</th>
-          <th>Fecha</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        <tr v-for="logro in logros" :key="logro.id">
-
-          <td class="font">{{ logro.descripcion }}</td>
-          <td class="font">{{ convertirFecha(logro.fecha) }}</td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-<div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in bg-degrade text-white">
-
-  <div class="card-body p-5">
-
-    <h3 class="text-center">Experiencia</h3>
-
-    <div class="card p-4" v-for="exp in experiencia" :key="exp.id">
-
-      <h4 class="">{{ exp.institucion }}</h4>
-      <h6>Cargo: {{ exp.cargo }}</h6>
-      <h6>Actividades: {{ exp.actividades }}</h6>
-      <h6>Fecha de inicio: {{ convertirFecha(exp.fecha_inicio) }}</h6>
-      <h6>Fecha final: {{ convertirFecha(exp.fecha_final) }}</h6>
 
     </div>
 
-  </div>
+    <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in bg-degrade text-white">
 
-</div>
+      <div class="card-body p-5 text-center">
 
-<!-- <div class="card banner-card mt-2">
-  <div class="card-body">
-    {{ client }}
-  </div>
-</div> -->
+        <h3>Información</h3>
 
-<!-- Modal Video Presentación -->
-<div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
-  aria-hidden="true">
+        <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> Monto de inversión: ${{ client.monto_inversion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
+        <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}</h6>
+        <h6 class="mt-3"><i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> Edad: {{ client.edad }}</h6>
+        <h6 class="mt-3"><i class="fas fa-venus-mars"></i> Género: {{ client.genero }}</h6>
+        <h6 class="mt-3"><i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}</h6>
+        <h6 class="mt-3"><i class="fas fa-envelope"></i> Correo: {{ client.correo }}</h6>
 
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-
-    <div class="modal-content bg-degrade text-white">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="videoModalLabel">
-          {{ client.nombre }} {{ client.apellido }}
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <div class="modal-body">
+    </div>
 
-        <video width="100%" height="500" controls>
-          <source src="../assets/images/video_presentacion.webm" type="video/webm">
-          Tu navegador no soporta el elemento de video.
-        </video>
+    <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in bg-degrade text-white">
+
+      <div class="card-body p-5">
+
+        <h3 class="text-center">Logros</h3>
+
+        <table class="table table-striped table-bordered">
+
+          <thead class="table-dark">
+
+            <tr>
+
+              <th class="fs-5">Descripción</th>
+              <th class="fs-5">Fecha</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr v-for="logro in logros" :key="logro">
+
+              <td class="font">{{ logro.descripcion }}</td>
+              <td class="font">{{ formatDate(logro.fecha) }}</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
-          data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
+    </div>
+
+    <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in bg-degrade text-white">
+
+      <div class="card-body p-5">
+
+        <h3 class="text-center">Experiencia</h3>
+
+        <div class="card p-4 bg-degrade-inverso text-white text-center" v-for="exp in experiencia" :key="exp.id">
+
+          <h4 class="text-uppercase">{{ exp.institucion }}</h4>
+          <h6>Cargo: {{ exp.cargo }}</h6>
+          <h6>Actividades: {{ exp.actividades }}</h6>
+          <h6>Fecha de inicio: {{ formatDate(exp.fecha_inicio) }}</h6>
+          <h6>Fecha final: {{ formatDate(exp.fecha_final) }}</h6>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card banner-card mt-2">
+      <div class="card-body">
+        {{ client }}
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- Modal Video Presentación -->
+    <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
+      aria-hidden="true">
+
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content bg-degrade text-white">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="videoModalLabel">
+              {{ client.nombre }} {{ client.apellido }}
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+
+            <video controls>
+              <source :src="client.video" type="video/mp4"> <!-- Asegúrate de que el tipo de video sea correcto -->
+              Tu navegador no soporta el elemento de video.
+            </video>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+              data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <!-- Modal Inversión -->
@@ -256,18 +258,22 @@
         </div>
       </div>
     </div>
+
   </div>
+
 </template>
 
 <script setup>
+
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
+
 const route = useRoute();
 const userId = ref("");
-
 const client = ref({});
+
 
 const getUser = async () => {
   try {
@@ -281,11 +287,35 @@ const getUser = async () => {
   }
 };
 
+const logros = ref([]);
+const experiencia = ref([]);
+
+const obtenerLogros = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:3000/logros/logrosFechas/" + userId.value);
+    logros.value = data.data || [];
+    console.log(logros.value, "logros");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const obtenerExperiencia = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:3000/logros/experiencia/" + userId.value);
+    experiencia.value = data.data || [];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 onMounted(() => {
   userId.value = route.query.user;
   getUser();
   obtenerTokens_Inversionista();
   obtenerTokens_Inversionista_Invertidos();
+  obtenerLogros();
+  obtenerExperiencia();
 });
 
 let baseURL = "http://localhost:3000/billetera/";
@@ -403,15 +433,26 @@ const mostrarExperiencia = ref(false);
 
 const toggleInformacion = () => {
   mostrarInformacion.value = !mostrarInformacion.value;
+  mostrarLogros.value = false;
+  mostrarExperiencia.value = false;
 };
 
 const toggleLogros = () => {
+  mostrarInformacion.value = false;
   mostrarLogros.value = !mostrarLogros.value;
+  mostrarExperiencia.value = false;
 };
 
 const toggleExperiencia = () => {
+  mostrarInformacion.value = false;
+  mostrarLogros.value = false;
   mostrarExperiencia.value = !mostrarExperiencia.value;
 };
+
+const formatDate = (date) => {
+  return new Date(date).toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (YYYY-MM-DD)
+};
+
 </script>
 
 <style scoped>
@@ -419,8 +460,12 @@ const toggleExperiencia = () => {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
 
+.bg-degrade-inverso {
+  background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
+}
+
 .font {
-  font-size: 0.8rem
+  font-size: 1rem
 }
 
 .custom-link {
@@ -538,29 +583,5 @@ button {
 .active-button {
   background-color: var(--gray-color);
   color: white;
-}
-
-/* Estilos para la tabla de logros */
-.table-striped {
-  background-color: #f8f9fa; /* Color de fondo claro */
-  border-radius: 5px; /* Añadir radio a la tabla */
-  overflow: hidden; /* Asegura que el radio se aplique correctamente */
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #e9ecef; /* Color de fondo para filas impares */
-}
-
-.table-striped tbody tr:hover {
-  background-color: #d1e7dd; /* Color de fondo al pasar el mouse */
-}
-
-.table-dark {
-  background-color: #343a40; /* Color de fondo oscuro para el encabezado */
-  color: white; /* Color de texto blanco para el encabezado */
-}
-
-.table-dark th {
-  background-color: #495057; /* Color de fondo para las celdas del encabezado */
 }
 </style>
