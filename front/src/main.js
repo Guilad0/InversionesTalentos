@@ -23,9 +23,11 @@ app.config.globalProperties.$swal = Swal;
 app.config.globalProperties.$notyf = new Notyf();
 app.config.globalProperties.$izitoast = iziToast;
 
+const GOOGLE_CLIENT_ID= "18305282873-51499fj6ktbfddhu8odib1hhd7tf5iug.apps.googleusercontent.com"
 app.use(vue3GoogleLogin, {
-  clientId: 'YOUR_GOOGLE_CLIENT_ID'
+  clientId: GOOGLE_CLIENT_ID
 });
+
 
 app.use(pinia);
 app.use(router)

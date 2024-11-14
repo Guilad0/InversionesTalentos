@@ -290,6 +290,9 @@
                     <div class="d-flex m-auto align-items-center justify-content-between">
                       <div class="col "> <i class="fa-solid fa-play"></i> &nbsp; Presentacion </div> 
                       <div class="col d-flex align-items-center position-relative">
+                        <label v-if="verifyRegister[4].status" class="custom-abs">
+                        <img src="../assets/svg/check1.svg " width="25" alt="">
+                        </label>
                         <button v-if="!videoPresentacion" :disabled="verifyRegister[4].status" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="selectVideo">
                           <label v-if="verifyRegister[4].status">Enviado</label>
                           <label v-if="!verifyRegister[4].status">Abrir</label>
@@ -298,13 +301,12 @@
                           <label v-if="!loadingButtonVideo">Enviar</label>
                           <label v-if="loadingButtonVideo">
                             <div class="spinner-border text-primary spinner-border-sm" role="status">
-                              <span class="visually-hidden">Cargando...</span>
+                              <span class="visually-hidden"></span>
                             </div>
                           </label>
                         </button>
-                        <label v-if="verifyRegister[4].status" class="custom-abs">
-                        <img src="../assets/svg/check1.svg " width="25" alt="">
-                        </label>
+                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-image text-light fs-5" style="color: green;"></i>
+                        <i v-if="videoPresentacion" class=" fa-solid fa-ban text-light fs-5 cursor" @click="cleanVideo" style="color: green;"></i>
                       </div>
                       <input type="file" ref="videoFile" accept="video/*" style="display: none;" @change="onVideoChange">
                     </div>
@@ -691,7 +693,7 @@ const cleanVideo = () => {
       }
     };
 
-  const saveVideo = async () => {
+    const saveVideo = async () => {
   const formData = new FormData();
 
   if (videoPresentacion.value) {
@@ -716,14 +718,19 @@ const cleanVideo = () => {
     videoPresentacion.value = null;
     verifyFormInfClient();
   } catch (error) {
-    console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
-    timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
-  } finally {
-    setTimeout(() => {
-      loadingButtonVideo.value = false;
-    }, 500);
-  }
+        console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
+        if (error.response && error.response.data.msg === "El archivo supera el tamaño máximo permitido de 100MB") {
+            timerAlert('¡El archivo supera el tamaño máximo permitido de 100MB!', 'center', 2500, 'error');
+        } else {
+            timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
+        }
+    } finally {
+        setTimeout(() => {
+            loadingButtonVideo.value = false;
+        }, 500);
+    }
 };
+
 
 
 </script>
