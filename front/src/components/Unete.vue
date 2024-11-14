@@ -172,6 +172,8 @@ import axios from 'axios'
 import { getUser } from '../helpers/utilities';
 import {ref, onMounted} from 'vue'
 import { useRouter,useRoute  } from 'vue-router';
+import { errorAlert, successAlert } from "@/helpers/iziToast";
+import iziToast from "izitoast";
 const user = ref(null)
 const router = useRouter()
 const route = useRoute()
@@ -220,7 +222,9 @@ if (result.isConfirmed) {
   } catch (error) {
     Swal.close();
     console.error("Error al actualizar el rol:", error);
-    messageAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'error')
+    
+    // messageAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'error')
+    errorAlert('Error al procesar la accion','Un error ocurrio durante el cambio de rol', 'Error!!!')
   }
 }
   }else{
