@@ -24,6 +24,16 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { Filter } from 'bad-words';
+
+const badWords = [
+    "idiota", "imbécil", "estúpido", "tonto", "gilipollas", "pendejo", 
+    "tarado", "cabrón", "joder", "mierda", "maldito", "asqueroso", 
+    "carajo", "coño", "puta", "puto", "zorro", "bastardo", "malnacido", 
+    "desgraciado", "huevón", "boludo", "petardo", "lameculos", "baboso", 
+    "mamón", "perra", "maricón", "soplapollas", "pajero", "pelotudo", 
+    "cornudo", "guarra"
+];
 
 const baseURL = "http://localhost:3000/";
 
@@ -31,6 +41,9 @@ const inversorNombre = 'Nombre del Inversor';
 const clienteNombre = 'Nombre del Cliente'; 
 const nuevoComentario = ref('');
 const calificacion = ref(0);
+
+const filtro = new Filter();
+filtro.addWords(...badWords);
 
 function calificar(puntaje) {
     calificacion.value = puntaje;
@@ -46,10 +59,15 @@ const enviarComentario = async () => {
     return;
   }
 
+  if (filtro.isProfane(nuevoComentario.value)) {
+    alert('Su comentario contiene lenguaje inapropiado y no puede ser enviado.');
+    return;
+  }
+
   try {
     await axios.post(`${baseURL}comentarios`, {
-      cliente_id: 4,
-      inversor_id: 5,
+      cliente_id: 90,
+      inversor_id: 85,
       comentario: nuevoComentario.value,
       calificacion: calificacion.value,
     });
@@ -59,6 +77,7 @@ const enviarComentario = async () => {
     console.error('Error al enviar el comentario:', error);
   }
 };
+
 </script>
 
 <style scoped>
