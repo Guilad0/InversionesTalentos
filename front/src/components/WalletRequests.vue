@@ -3,32 +3,20 @@
     <div class="d-flex">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li
-            :class="{ 'active-button': currentNav === 'General' }"
-            @click="setActive('General')"
-            class="nav-link mx-2"
-          >
+          <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"
+            class="nav-link mx-2">
             <label>General</label>
           </li>
-          <li
-            :class="{ 'active-button': currentNav === 'Pendiente' }"
-            @click="setActive('Pendiente')"
-            class="nav-link mx-2"
-          >
+          <li :class="{ 'active-button': currentNav === 'Pendiente' }" @click="setActive('Pendiente')"
+            class="nav-link mx-2">
             <label>Pendientes</label>
           </li>
-          <li
-            :class="{ 'active-button': currentNav === 'Aprobado' }"
-            @click="setActive('Aprobado')"
-            class="nav-link mx-2"
-          >
+          <li :class="{ 'active-button': currentNav === 'Aprobado' }" @click="setActive('Aprobado')"
+            class="nav-link mx-2">
             <label>Aprobados</label>
           </li>
-          <li
-            :class="{ 'active-button': currentNav === 'Rechazado' }"
-            @click="setActive('Rechazado')"
-            class="nav-link mx-2"
-          >
+          <li :class="{ 'active-button': currentNav === 'Rechazado' }" @click="setActive('Rechazado')"
+            class="nav-link mx-2">
             <label>Rechazados</label>
           </li>
         </ol>
@@ -38,14 +26,8 @@
       <h4 class="d-block mb-2 text-center underline">Solicitudes de retiro</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="col-3 px-5 mb-3">
-          <input
-            name="search"
-            type="text"
-            v-model="search"
-            class="form-control"
-            placeholder="Buscar ..."
-            @input="obtenerDatos(1, search)"
-          />
+          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+            @input="obtenerDatos(1, search)" />
         </div>
         <div class="table-container">
           <table class="table overflow-x-scroll">
@@ -86,16 +68,10 @@
                   }}</span>
                 </td>
                 <td v-if="item.estado == 'Pendiente'">
-                  <button
-                    class="btn btn-success btn-sm mx-1"
-                    @click="aprobado(item)"
-                  >
+                  <button class="btn btn-success btn-sm mx-1" @click="aprobado(item)">
                     <i class="fa fa-check"></i>
                   </button>
-                  <button
-                    class="btn btn-danger btn-sm mx-1"
-                    @click="rechazado(item.retiro_id)"
-                  >
+                  <button class="btn btn-danger btn-sm mx-1" @click="rechazado(item.retiro_id)">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
@@ -103,16 +79,11 @@
                   <!-- Botones específicos para el estado Aprobado -->
                 </td>
                 <td v-if="item.estado == 'Rechazado'">
-                  <button
-                    class="btn btn-warning btn-sm mx-1"
-                    @click="pendiente(item.retiro_id)"
-                  >
+                  <button class="btn btn-warning btn-sm mx-1" @click="pendiente(item.retiro_id)">
                     <i class="fa fa-clock"></i>
                   </button>
-                  <button
-                    class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
-                    @click="eliminado(item.retiro_id)"
-                  >
+                  <button class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
+                    @click="eliminado(item.retiro_id)">
                     <i class="fa fa-trash"></i>
                   </button>
                 </td>
@@ -131,23 +102,15 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button
-                  @click="obtenerDatos(paginacion.previous, search, currentNav)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3"
-                >
+                <button @click="obtenerDatos(paginacion.previous, search, currentNav)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
-              <li
-                v-for="page in paginacion.pages"
-                :key="page"
-                class="page-item"
-                :class="paginacion.current === page ? 'active' : ''"
-              >
-                <button
-                  @click="obtenerDatos(page, search, currentNav)"
-                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
-                >
+              <li v-for="page in paginacion.pages" :key="page" class="page-item"
+                :class="paginacion.current === page ? 'active' : ''">
+                <button @click="obtenerDatos(page, search, currentNav)"
+                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
                   {{ page }}
                 </button>
               </li>
@@ -158,10 +121,8 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button
-                  @click="obtenerDatos(paginacion.next, search, currentNav)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3"
-                >
+                <button @click="obtenerDatos(paginacion.next, search, currentNav)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </li>
@@ -205,10 +166,10 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
   }
 };
 
-const aprobado = async (retiro) => { 
+const aprobado = async (retiro) => {
 
   try {
-    await axios.put(BaseURL + "/aprobar/" + retiro.retiro_id,retiro);
+    await axios.put(BaseURL + "/aprobar/" + retiro.retiro_id, retiro);
     // Al aprobar, se vuelve a cargar la lista de pendientes
     obtenerDatos(1, "", "Pendiente");
   } catch (error) {
