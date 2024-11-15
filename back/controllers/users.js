@@ -220,7 +220,6 @@ const approvedUser = (req, res) => {
   });
 };
 
-
 const getUsersBynameAndRol = (req, res) => {
   middlewareControlAdmin(req.query.rol)(req, res, (err) => {
     if (err) {
@@ -308,7 +307,6 @@ const getUsersBynameAndRol = (req, res) => {
     });
   });
 };
-
 
 
 /**
@@ -403,7 +401,6 @@ const getUsersByRol = (req, res) => {
     });
   });
 };
-
 
 /**
  *  Esta funsion crea un inversor, cliente/ desde la vista sign-login 
@@ -599,7 +596,6 @@ const verifyEmail = (req, res) => {
   
 
 
-
 /**
  *  Esta funsion modificael estado de  un inversor
  */
@@ -646,7 +642,7 @@ const putStateusers = async (req, res) => {
 /**falsta desde aqui
  *  Esta funcion registra la informacion del cliente
  */
-const addInfClient = (req, res) => {
+const addInfClient = async (req, res) => {
   const {
     cliente_id,
     ocupacion,
@@ -656,58 +652,53 @@ const addInfClient = (req, res) => {
     preparacion,
     estudios,
     vision,
+    categoria_persona_id, // Añadimos este campo al cuerpo de la solicitud
   } = req.body;
+
   let query = "select * from usuarios where usuario_id=?";
   conexion.query(query, [cliente_id], (err, results) => {
     if (err) {
-      res.status(500).json({
-        err,
-      });
-      return;
+      return res.status(500).json({ err: err.message });
     }
 
-    if (results.length == 0) {
-      res.status(500).json({
-        msg: "El usuario no existe",
-      });
-      return;
+    if (results.length === 0) {
+      return res.status(404).json({ msg: "El usuario no existe" });
     }
+
     query = "select * from informacion where cliente_id = ?";
     conexion.query(query, [cliente_id], (err, data) => {
       if (err) {
-        res.status(500).json({
-          err,
-        });
-        return;
+        return res.status(500).json({ err: err.message });
       }
 
       if (data.length > 0) {
-        res.status(500).json({
-          msg: "El usuario ya cuenta con una informacion",
-        });
-        return;
+        return res.status(400).json({ msg: "El usuario ya cuenta con una informacion" });
       }
-      query =
-        "insert into informacion (cliente_id, ocupacion, descripcion, monto_inversion, cantidad_maxima_inversiones, preparacion, estudios, vision) values (?,?,?,?,?,?,?,?)";
-      const values = [
-        cliente_id,
-        ocupacion,
-        descripcion,
-        monto_inversion,
-        cantidad_maxima_inversiones,
-        preparacion,
-        estudios,
-        vision,
-      ];
-      conexion.query(query, values, (err) => {
+
+      // Actualizamos la columna categoria_persona_id en la tabla usuarios
+      query = "update usuarios set categoria_persona_id = ? where usuario_id = ?";
+      conexion.query(query, [categoria_persona_id, cliente_id], (err) => {
         if (err) {
-          res.status(500).json({
-            err,
-          });
-          return;
+          return res.status(500).json({ err: err.message });
         }
-        res.status(201).json({
-          msg: "Informacion agregada",
+
+        query = "insert into informacion (cliente_id, ocupacion, descripcion, monto_inversion, cantidad_maxima_inversiones, preparacion, estudios, vision) values (?,?,?,?,?,?,?,?)";
+        const values = [
+          cliente_id,
+          ocupacion,
+          descripcion,
+          monto_inversion,
+          cantidad_maxima_inversiones,
+          preparacion,
+          estudios,
+          vision,
+        ];
+
+        conexion.query(query, values, (err) => {
+          if (err) {
+            return res.status(500).json({ err: err.message });
+          }
+          res.status(201).json({ msg: "Informacion agregada y categoria_persona_id actualizada" });
         });
       });
     });
@@ -937,7 +928,6 @@ const getUserById = (req, res) => {
         i.preparacion, 
         i.estudios, 
         i.vision,
-        i.video,
         c.nombre as categoria
     FROM 
         usuarios AS u
