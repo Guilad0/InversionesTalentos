@@ -121,7 +121,7 @@ const isClientFormAchievements = (req, res) => {
   });
 };
 const isClientVideo = (req, res) => {
-  let query = "select * from usuarios where usuario_id = ?";
+  let query = "SELECT * FROM informacion WHERE cliente_id = ?";
   const { id } = req.query;
   conexion.query(query, [id], (err, results) => {
     if (err || results.length == 0) {
@@ -147,6 +147,7 @@ const isClientVideo = (req, res) => {
     return;
   });
 };
+
 const isClientPhoto = (req, res) => {
   let query = "select * from usuarios where usuario_id = ?";
   const { id } = req.query;
