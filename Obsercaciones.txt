@@ -1,0 +1,18 @@
+home
+1 darle mas estacio al nav, en el widht
+2 agragar padding a "qeremos ayudar"
+3 efecto en las cards forma de los iconos en las card
+4 botón de ir a marketplace darle pading uniforme
+5 mejorar en el mantenimiento de guentes y tipografia
+6 darle mas pading en la parte de necesitas ayuda botones con relación a texto
+
+
+admin panel de control
+1 cons y reclamos mejorar pading
+2 mejorar el estilo (sombras)
+3 igualar a la line el input y botonen en  las tablas
+
+
+otros
+1 el diseño de los formularios deben unificarse
+ 

@@ -1,20 +1,30 @@
 <template>
+
   <div>
+
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+
       <div>
+
         <h2 class="text-xl font-bold mb-4">Inversiones, Retiros y Devoluciones Pendientes</h2>
 
         <!-- Contenedor de tabs -->
         <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
+
           <div class="container-fluid m-3">
+
             <div class="tabs me-auto mb-2 mb-lg-0">
+
               <button v-for="(tabCli, index) in tabsCli" :key="index"
                 :class="['underline-dynamic', 'btn', 'tabs', { active: activeTabCli === index }]"
                 @click="activeTabCli = index">
                 {{ tabCli }}
               </button>
+
             </div>
+
           </div>
+
         </nav>
 
         <!-- Contenido de los tabs -->
@@ -22,25 +32,36 @@
         <div class="tab-content" v-if="activeTabCli === 0">
 
           <div class="bg-white p-4  " v-for="inversion_recibida in inversiones_recibidas" :key="inversion_recibida">
+
             <div class="row">
+
               <div class="col-md-4">
+
                 <p>Inversion ID: {{ inversion_recibida.inversion_id }}</p>
                 <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
                 <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
                 <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
                 <hr />
+
               </div>
+
               <div class="col-4">
+
                 <img :src="inversion_recibida.imagen" width="150" class=" rounded-circle" alt="">
+
               </div>
+
             </div>
+
           </div>
+
         </div>
-        <!---->
+        
         <!-- Lista de solicitudes de retiro -->
         <div class="tab-content" v-if="activeTabCli === 1">
 
           <div class="bg-white p-4" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
+
             <p>Solicitud: {{ cliente_retiro.retiro_id }}</p>
             <p>Monto: ${{ cliente_retiro.monto_recibir }}</p>
             <p>Fecha Solicitud: {{ cliente_retiro.fecha_solicitud }}</p>
@@ -48,69 +69,96 @@
             <p v-if="cliente_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
             </p>
+
             <hr />
+
           </div>
+
         </div>
-        <!---->
+        
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
+
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_vencida in inversiones_vencidas"
             :key="inversion_vencida">
+
             <p>Solicitud: {{ inversion_vencida.inversion_id }}</p>
             <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
             <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
             <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
-            <button class="btn btn-secondary" @click="devolverTokens(inversion_vencida)">Devolver Inversión</button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span></button>
+
             <hr />
+
           </div>
+
         </div>
-        <!---->
+        
       </div>
+
     </div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
-      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
 
+      <div class="bg-zinc-100 p-4 rounded-lg mb-6">
+
+        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
         <!-- Contenedor de tabs -->
         <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
+
           <div class="container-fluid m-3">
+
             <div class="tabs me-auto mb-2 mb-lg-0">
+
               <button v-for="(tabInv, index) in tabsInv" :key="index"
                 :class="['underline-dynamic', 'tabs', { active: activeTabInv === index }]"
                 @click="activeTabInv = index">
                 {{ tabInv }}
               </button>
-            </div>
-          </div>
-        </nav>
 
+            </div>
+
+          </div>
+
+        </nav>
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
+
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
-            <div class="row">
+
+            <div class="row bg-success">
+
               <div class="col-5">
+
                 <p>Inversion ID: {{ inversion.inversion_id }}</p>
                 <p>Cliente: {{ inversion.nombre_cliente }}</p>
                 <p>Tokens Invertidos: {{ inversion.monto }}</p>
                 <p>Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}</p>
                 <p>Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
                 <p>Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>
+
                 <hr />
+
               </div>
+
               <div class="col-4">
+
                 <img :src="inversion.imagen" width="200" class=" rounded-circle" alt="">
+
               </div>
+
             </div>
+
           </div>
-        </div>
-        <!---->
+
+        </div>       
 
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
           <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversionista_retiro in inversionistas_retiros"
             :key="inversionista_retiro">
+
             <p>Solicitud: {{ inversionista_retiro.retiro_id }}</p>
             <p>Monto: ${{ inversionista_retiro.monto_recibir }}</p>
             <p>Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
@@ -118,13 +166,17 @@
             <p v-if="inversionista_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ inversionista_retiro.fecha_aprobacion }}
             </p>
+
           </div>
-        </div>
-        <!---->
+
+        </div>        
 
       </div>
+
     </div>
+
   </div>
+  
 </template>
 
 <script setup>
@@ -296,16 +348,47 @@ const devolverTokens = async (inversion) => {
   z-index: 1 !important;
 }
 
-.btn-secondary {
-  background-color: var(--gray-color);
-  color: var(--white-color);
-  border-color: var(--white-color);
+button {
+  color: rgb(128, 159, 245);
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 25px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.btn-secondary:hover {
-  background-color: var(--secondary);
-  color: var(--yellow-orange);
-  border-color: var(--yellow-orange);
+.animate__slow {
+  animation-duration: 5s;
+}
+
+.btn-6 {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
+
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: var(--gray-color);
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.btn-6:hover {
+  color: var(--white-anti-flash-color);
+}
+
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
 }
 
 .active::after {

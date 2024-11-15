@@ -1,122 +1,91 @@
 <template>
+
   <div class="bg-dark">
-    <nav
-      class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn"
-    >
+
+    <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn">
+
       <div class="container-fluid mx-3">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
+
+        <button class="navbar-toggler" type="button" @click="toggleMenu" aria-controls="navbarNav" aria-expanded="isMenuOpen" aria-label="Toggle navigation">
+
+          <span class="text-white"> <i class="fa fa-bars"></i> </span>
+
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+
+        <div class="collapse navbar-collapse burger-menu " :class="{ show: isMenuOpen }" id="navbarNav">
+
           <RouterLink class="nav-link" to="/">
-            <img
-              src="@/assets/images/logo-manos.png"
-              alt=""
-              width="40"
-              class="rounded me-2"
-            />
+            <img src="@/assets/images/logo-manos.png" alt="" width="40" class="rounded me-2" />
           </RouterLink>
+
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="/"
-                >Inicio</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/">Inicio</RouterLink>
             </li>
+
             <li class="nav-item" v-if="rol !== 'Cliente'">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="marketplace"
-                >Markeplace</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="marketplace">Markeplace
+              </RouterLink>
             </li>
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="/proposito"
-                >Proposito</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/proposito">Proposito
+              </RouterLink>
             </li>
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="como-funciona"
-                >Cómo funciona</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="como-funciona">Cómo
+                funciona</RouterLink>
             </li>
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="posts"
-                >Guias de usuario</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">Guias de usuario
+              </RouterLink>
             </li>
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="contact"
-                >Contactos</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="contact">Contactos
+              </RouterLink>
             </li>
+
             <li class="nav-item">
-              <RouterLink
-                exact-active-class="active"
-                class="nav-link underline-dynamic"
-                to="faq"
-                >Faqs</RouterLink
-              >
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Faqs</RouterLink>
             </li>
+
           </ul>
+
           <div class="d-flex align-items-center">
+
             <RouterLink class="nav-link wallet-icon" to="/billetera">
-              <i
-                v-if="rol == 'Cliente' || rol == 'Inversionista'"
-                class="fa fa-wallet fs-3"
-              ></i>
+              <i v-if="rol == 'Cliente' || rol == 'Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
+
             <RouterLink class="nav-link user-icon pb-1" to="/admin">
-              <img
-                v-if="rol == 'Admin'"
-                src="../assets/svg/admin-svgrepo-com.svg"
-                width="25"
-              />
+              <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
             </RouterLink>
-            <RouterLink
-              class="nav-link user-icon pb-1"
-              to="perfil"
-              v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'"
-            >
-              <img
-                :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
-                class="rounded-circle me-2"
-                width="30"
-                alt=""
-              />
+
+            <RouterLink class="nav-link user-icon pb-1" to="perfil"
+              v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'">
+              <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
+                class="rounded-circle me-2" width="30" alt="" />
             </RouterLink>
+
             <RouterLink class="nav-link user-icon" to="sign-login">
               <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
               <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
             </RouterLink>
+
           </div>
+
         </div>
+
       </div>
+
     </nav>
+
   </div>
+
 </template>
 
 <script setup>
@@ -167,22 +136,37 @@ const navLinks = ref([
   { name: "Contactos", path: "/contact" },
   { name: "FAQs", path: "/faq" },
 ]);
+
+const isMenuOpen = ref(false);
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
 </script>
 
 <style scoped>
+
+/* hacer query para que se vea bien en mobile tewmbnien sacar el icono al centro para inicio de sesion y sacar los iconos */
+.burger-menu {
+  background-color: var(--gray-color);
+  text-align: center;
+  border-radius: 10px;  
+}
+
 .active {
   color: var(--yellow-orange) !important;
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;
 }
+
 .active::after {
   transform: scaleX(1) !important;
   transform-origin: left !important;
 }
 
 nav {
-  height: 7vh;
+  height: 8.5vh;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
