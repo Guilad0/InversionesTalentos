@@ -208,7 +208,7 @@
                     <div class="d-flex m-auto align-items-center">
                       <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Informacion </div> 
                       <div class="col position-relative">
-                        <RouterLink  to="addInfCliente" class=" py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegister[0].status }">
+                        <RouterLink  to="addInfCliente" class=" py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegister[2].status }">
                           <label v-if="verifyRegister[2].status">Enviado</label> 
                           <label v-else>Abrir</label> 
                         </RouterLink>

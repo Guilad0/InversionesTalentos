@@ -64,28 +64,36 @@ const image = ref({})
 
 const onFileChange = (event) => {
   const fileInput = event.target.files[0];
-      if (fileInput) {
-        const img = new Image();
-        const objectURL = URL.createObjectURL(fileInput);
+  if (fileInput) {
+    const validExtensions = ["jpeg", "jpg", "png"];
+    const fileExtension = fileInput.name.split('.').pop().toLowerCase();
+    console.log(fileExtension);
+    if (!validExtensions.includes(fileExtension)) {
+      alert("La imagen debe ser de tipo JPEG, JPG o PNG.");
+      return;
+    }
 
-        img.onload = () => {
-          const width = img.width;
-          const height = img.height;
+    const img = new Image();
+    const objectURL = URL.createObjectURL(fileInput);
 
-          if (width >= 1800 && height <= 500) {
-            file.value = fileInput; // Guardar el archivo si cumple el tamaño
-          } else {
-            alert(`La imagen debe ser de 1800x500 píxeles o superior.`);
-            file.value = null; 
-            console.log('object');
-          }
+    img.onload = () => {
+      const width = img.width;
+      const height = img.height;
 
-          URL.revokeObjectURL(objectURL);
-        };
-
-        img.src = objectURL;
+      if (width >= 1800 && height <= 500) {
+        file.value = fileInput; // Guardar el archivo si cumple con tamaño y formato
+      } else {
+        alert("La imagen debe ser de 1800x500 píxeles o superior.");
+        file.value = null;
       }
+
+      URL.revokeObjectURL(objectURL);
+    };
+
+    img.src = objectURL;
+  }
 };
+
 
 const cleanImage = () =>{
   file.value = ''

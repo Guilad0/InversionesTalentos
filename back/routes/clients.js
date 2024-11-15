@@ -13,7 +13,7 @@ const   {
             getuserById,
             getRol
         } = require("../controllers/clients");
-
+ 
 router.get("/", getAllClientesWithInfo);
 router.get("/findBy/:id", getAllClientesByCategory);
 router.get("/filterByName/:id", getAllClientesByFilterName);
