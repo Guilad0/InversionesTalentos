@@ -406,7 +406,6 @@ const  goToPage = ( path )=>{
 }
 
 
-
 const onFileChange = (event) => {
   imagen_portada.value = event.target.files[0];
   console.log("Archivo seleccionado:", imagen_portada.value); 
@@ -590,7 +589,6 @@ const getRol = async ()=>{
   }
 }
 
-
 const bar = ref('')
 const loadingButtonKYC = ref(false)
 const verifyFormInfClient = async () => {
@@ -607,7 +605,8 @@ const verifyFormInfClient = async () => {
   }
 
   if (rol?.value === 'Cliente') {
-    verifyFields(verifyRegister,usuario.usuario_id, loadingButtonKYC,bar)
+    console.log('verifyRegister antes de verificar:', verifyRegister.value); // Depuración
+    verifyFields(verifyRegister, usuario.usuario_id, loadingButtonKYC, bar);
   }
   if( rol?.value === 'Inversionista' ){
     verifyFields(verifyRegisterInversor,usuario.usuario_id, loadingButtonKYC,bar)
@@ -653,7 +652,6 @@ const openOffcanvas = () => {
 
 const loadingButtonVideo = ref(false)
 
-
     const onVideoChange = (event) => {
     videoPresentacion.value = event.target.files[0];
     console.log("Archivo seleccionado:", videoPresentacion.value);
@@ -697,38 +695,43 @@ const cleanVideo = () => {
   const formData = new FormData();
 
   if (videoPresentacion.value) {
-    formData.append("video", videoPresentacion.value); 
-    formData.append("cliente_id", usuario.usuario_id); 
+    formData.append("video", videoPresentacion.value); // Agrega el archivo de video
+    formData.append("cliente_id", usuario.usuario_id); // Agrega el id del cliente
   } else {
     console.error("No se ha seleccionado un video.");
     return;
   }
 
   try {
-    loadingButtonVideo.value = true;
-    await axios.post('http://localhost:3000/informacion/videoUpload', formData, {
+    loadingButtonVideo.value = true; // Muestra el spinner mientras se carga el video
+    const response = await axios.post('http://localhost:3000/informacion/videoUpload', formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log('Video subido exitosamente');
+
+    console.log('Video subido exitosamente:', response.data);
     timerAlert('¡El video se cargó correctamente!', 'center', 2500, 'success');
     
-    // Puedes limpiar el video seleccionado o actualizar el estado después de la subida
-    videoPresentacion.value = null;
-    verifyFormInfClient();
-  } catch (error) {
-        console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
-        if (error.response && error.response.data.msg === "El archivo supera el tamaño máximo permitido de 100MB") {
-            timerAlert('¡El archivo supera el tamaño máximo permitido de 100MB!', 'center', 2500, 'error');
-        } else {
-            timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
-        }
-    } finally {
-        setTimeout(() => {
-            loadingButtonVideo.value = false;
-        }, 500);
+    // Actualiza el estado del video en verifyRegister a 'true' (completado)
+    if (verifyRegister.value && verifyRegister.value[4]) {
+      console.log('Estado antes de actualizar:', verifyRegister.value[4]);
+      cleanImage()
+      verifyFormInfClient()
+    } else {
+      console.error('verifyRegister[4] no está definido');
     }
+
+    // Llama a la función de verificación de campos después de actualizar el estado del video
+    await verifyFormInfClient(); // Verifica nuevamente todos los campos
+
+    cleanVideo(); // Limpia los datos del video
+  } catch (error) {
+    console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
+    timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
+  } finally {
+    loadingButtonVideo.value = false; // Detiene el spinner
+  }
 };
 
 
