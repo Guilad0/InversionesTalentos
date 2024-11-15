@@ -68,7 +68,7 @@
 
     </div>
 
-    <div v-if="mostrarInformacion" class="card banner-card mt-2 fade-in bg-degrade text-white">
+    <div v-if="mostrarInformacion" class="card banner-card mt-3 fade-in bg-degrade text-white">
 
       <div class="card-body p-5 text-center">
 
@@ -87,20 +87,20 @@
 
     </div>
 
-    <div v-if="mostrarLogros" class="card banner-card mt-2 fade-in bg-degrade text-white">
+    <div v-if="mostrarLogros" class="card banner-card mt-3 fade-in bg-degrade text-white">
 
       <div class="card-body p-5">
 
         <h3 class="text-center">Logros</h3>
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered table-radius">
 
           <thead class="table-dark">
 
             <tr>
 
-              <th class="fs-5">Descripción</th>
-              <th class="fs-5">Fecha</th>
+              <th class="fs-5" style="width: 85%">Descripción</th>
+              <th class="fs-5" style="width: 15%">Fecha</th>
 
             </tr>
 
@@ -110,8 +110,8 @@
 
             <tr v-for="logro in logros" :key="logro">
 
-              <td class="font">{{ logro.descripcion }}</td>
-              <td class="font">{{ formatDate(logro.fecha) }}</td>
+              <td class="font" style="width: 85%">{{ logro.descripcion }}</td>
+              <td class="font" style="width: 15%">{{ formatDate(logro.fecha) }}</td>
 
             </tr>
 
@@ -123,13 +123,13 @@
 
     </div>
 
-    <div v-if="mostrarExperiencia" class="card banner-card mt-2 fade-in bg-degrade text-white">
+    <div v-if="mostrarExperiencia" class="card banner-card mt-3 fade-in bg-degrade text-white">
 
       <div class="card-body p-5">
 
         <h3 class="text-center">Experiencia</h3>
 
-        <div class="card p-4 bg-degrade-inverso text-white text-center" v-for="exp in experiencia" :key="exp.id">
+        <div class="card p-4 bg-degrade-inverso text-white text-center mt-3" v-for="exp in experiencia" :key="exp.id">
 
           <h4 class="text-uppercase">{{ exp.institucion }}</h4>
           <h6>Cargo: {{ exp.cargo }}</h6>
@@ -141,13 +141,7 @@
 
       </div>
 
-    </div>
-
-    <div class="card banner-card mt-2">
-      <div class="card-body">
-        {{ client }}
-      </div>
-    </div>
+    </div>    
 
     <!-- Modal Video Presentación -->
     <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
@@ -164,10 +158,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body text-center">
 
-            <video controls>
-              <source :src="client.video" type="video/mp4"> <!-- Asegúrate de que el tipo de video sea correcto -->
+            <video class="video-presentacion" autoplay controls>
+              <source v-if="url" :src="url" type="video/mp4"> <!-- Asegúrate de que el tipo de video sea correcto -->
               Tu navegador no soporta el elemento de video.
             </video>
 
@@ -273,6 +267,7 @@ import { errorAlert, successAlert } from "@/helpers/iziToast";
 const route = useRoute();
 const userId = ref("");
 const client = ref({});
+const url = ref("");
 
 
 const getUser = async () => {
@@ -282,6 +277,7 @@ const getUser = async () => {
     );
     client.value = data.results[0];
     console.log(client.value);
+    url.value = 'http://localhost:3000/categories/video/' + client.value.usuario_id
   } catch (error) {
     console.log(error);
   }
@@ -407,8 +403,8 @@ const inversionistaInvertir = async () => {
       //   color: "var(--gray-color)",
       //   confirmButtonColor: "var(--yellow-orange)",
       // });
-      successAlert('Inversion realizada exitosamente','Felicidades!!!');
-      
+      successAlert('Inversion realizada exitosamente', 'Felicidades!!!');
+
 
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
@@ -460,6 +456,7 @@ const formatDate = (date) => {
 </script>
 
 <style scoped>
+
 .bg-degrade {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
@@ -475,6 +472,17 @@ const formatDate = (date) => {
 .custom-link {
   text-decoration: none;
   color: black;
+}
+
+.video-presentacion {
+  width: 500px;
+  height: auto;
+  border-radius: 20px;
+}
+
+.table-radius {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 button {

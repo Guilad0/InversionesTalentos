@@ -1,287 +1,482 @@
 <template>
+
   <div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
+
       <div>
+
         <div class="row">
+
           <div class="col-md-6">
+
             <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
+
           </div>
+
           <div class="col-md-6">
+
             <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
+
           </div>
+
         </div>
+
       </div>
 
       <div class="d-flex justify-content-around mb-6">
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
-          Retiro</button>
+
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro <span></span></button>        
         <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
+
     </div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
+
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
+
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
+
         <div class="row">
+
           <div class="col-md-4">
+
             <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+
           </div>
+
           <div class="col-md-4">
+
             <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+
           </div>
+
           <div class="col-md-4">
+
             <p class="text-xl">Total de USD Ingresados: $US {{ dolaresInversionista }}</p>
+
           </div>
+
         </div>
 
       </div>
 
       <div class="d-flex justify-content-around mb-6">
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInversion">Invertir</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar
-          Retiro</button>
+
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalInversion">Invertir<span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
+
       </div>
 
     </div>
     <!-- Modal Tokens -->
     <div class="modal fade" id="modalTokens" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+
         <div class="modal-content">
+
           <div class="modal-header">
+
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Compra de Tokens
             </h1>
+
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
           </div>
+
           <div class="modal-body">
+
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
+
               <div class="row">
+
                 <div class="col-md-6">
+
                   <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
+
                 </div>
+
                 <div class="col-md-6">
+
                   <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
+
                 </div>
+
               </div>
+
             </div>
+
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
+
               <div class="row">
+
                 <div class="col-md-4">
+
                   <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+
                 </div>
+
                 <div class="col-md-4">
-                  <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista
-                    }}</p>
+
+                  <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+
                 </div>
+
               </div>
+
             </div>
+
             <form action="#" class="needs-validation" novalidate>
+
               <div class="row">
+
                 <div class="col-md-2"></div>
+
                 <div class="col-md-8">
+
                   <div class="card m-1">
+
                     <div class="card-body">
+
                       <div class="form">
 
                         <div class="row d-flex justify-content-around">
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label for="montoUsd" class="form-label">Monto en USD</label>
-                              <input type="text" v-model="montoUsd" id="montoUsd" class="form-control"
-                                @change="calcularTokens()" required />
+                              <input type="text" v-model="montoUsd" id="montoUsd" class="form-control" @change="calcularTokens()" required />
+
                             </div>
+
                           </div>
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label class="form-label" required>Tokens</label>
+
                               <p>{{ tokens }}</p>
+
                             </div>
+
                           </div>
+
                         </div>
+
                         <hr>
+
                         <div class="text-center">
-                          <button type="button" @click="comprarTokens()" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Comprar</button>
+
+                          <button type="button" @click="comprarTokens()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Comprar<span></span></button>
+
                         </div>
+
                       </div>
+
                     </div>
+
                   </div>
+
                 </div>
+
                 <div class="col-md-2"></div>
+
               </div>
+
             </form>
+
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cerrar
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">
+              Cerrar<span></span>
             </button>
+
           </div>
 
         </div>
+
       </div>
+      
     </div>
 
     <!-- Modal Inversión -->
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+
         <div class="modal-content">
+
           <div class="modal-header">
+
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos de la Inversión
-            </h1>            
+            </h1>
+
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
           </div>
+
           <div class="modal-body">
+
             <form action="#" class="needs-validation" novalidate>
+
               <p class="text-xl align-self-center">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+
               <div class="row">
+
                 <div class="col-md-2"></div>
+
                 <div class="col-md-8">
+
                   <div class="card m-1">
+
                     <div class="card-body">
+
                       <div class="form">
+
                         <div class="row d-flex justify-content-around">
 
                           <div class="col-md-8">
+
                             <div class="mb-3">
+
                               <label for="cliente_Invertir_ID" class="form-label">Cliente</label><br>
-                              <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select"
-                                required>
+
+                              <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select" required>
+
                                 <option disabled>Seleccione un Cliente</option>
                                 <option v-for="cliente in clientes" :key="cliente" :value="cliente.usuario_id">
                                   <!-- :value="cliente.usuario_id" -->
                                   {{ cliente.nombre + ' ' + cliente.apellido }}
                                 </option>
+
                               </select>
+
                             </div>
+
                           </div>
+
                         </div>
 
                         <div class="row d-flex justify-content-around">
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
-                                class="form-control" @change="calcularGanancias()" required />
+
+                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control" @change="calcularGanancias()" required />
+
                             </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="mb-3">
-                              <label class="form-label">Meses de Inversión</label>
-                              <p>{{ tiempo_inversion }}</p>
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="mb-3">
-                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-                              <p>{{ ganancia_tokens_inv }}</p>
-                            </div>
+
                           </div>
 
+                          <div class="col-md-4">
+
+                            <div class="mb-3">
+
+                              <label class="form-label">Meses de Inversión</label>
+
+                              <p>{{ tiempo_inversion }}</p>
+
+                            </div>
+                            
+                          </div>
+
+                          <div class="col-md-4">
+
+                            <div class="mb-3">
+
+                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+
+                              <p>{{ ganancia_tokens_inv }}</p>
+
+                            </div>
+
+                          </div>
+                          
                         </div>
 
                         <hr>
+
                         <div class="text-center">
-                          <button type="button" @click="inversionistaInvertir()" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Invertir</button>
+
+                          <button type="button" @click="inversionistaInvertir()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Invertir<span></span></button>
+
                         </div>
+
                       </div>
+
                     </div>
+
                   </div>
+
                 </div>
+
                 <div class="col-md-2"></div>
+
               </div>
+
             </form>
+
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cerrar
-            </button>
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Cerrar<span></span></button>
+
           </div>
 
         </div>
+
       </div>
+
     </div>
 
     <!-- Modal Solicitud Retiro -->
     <div class="modal fade" id="modalSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+
         <div class="modal-content">
+
           <div class="modal-header">
+
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos del Retiro
             </h1>
+
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
           </div>
+
           <div class="modal-body">
+
             <form action="#" class="needs-validation" novalidate>
+
               <div class="row">
+
                 <div class="col-md-2"></div>
+
                 <div class="col-md-8">
+
                   <div class="card m-1">
+
                     <div class="card-body">
+
                       <div class="form">
+
                         <div class="row d-flex justify-content-around">
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
-                              <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control"
-                                @change="calcularDolares()" required />
+
+                              <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control" @change="calcularDolares()" required />
+
                             </div>
+
                           </div>
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label class="form-label">Dolares</label>
+
                               <p>$US {{ montoDolares }}</p>
+
                             </div>
+
                           </div>
+
                         </div>
+
                         <div class="row d-flex justify-content-around">
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label class="form-label">Comisión de Retiro</label>
+
                               <p>{{ comision_retiro }}%</p>
+
                             </div>
+
                           </div>
+
                           <div class="col-md-4">
+
                             <div class="mb-3">
+
                               <label for="retiro_inversionista" class="form-label">Total a Retirar</label>
+
                               <p>$US {{ dolares }}</p>
+
                             </div>
+
                           </div>
+
                         </div>
+
                         <hr>
+
                         <div class="text-center">
-                          <button type="button" @click="solicitarRetiro()" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Solicitar Retiro</button>
+
+                          <button type="button" @click="solicitarRetiro()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">Solicitar Retiro<span></span></button>
+
                         </div>
+
                       </div>
+
                     </div>
+
                   </div>
+
                 </div>
+
                 <div class="col-md-2"></div>
+
               </div>
+
             </form>
+
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cerrar
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
+              Cerrar<span></span>
             </button>
+
           </div>
 
         </div>
+
       </div>
+
     </div>
+
   </div>
 
 </template>
@@ -517,7 +712,7 @@ const calcularGanancias = async () => {
 };
 const inversionistaInvertir = async () => {
   const tokens_invertir = parseFloat(monto_tokens_invertir.value);
-  const tokens_inversionista = parseFloat(tokensCompradosInversionista.value)-parseFloat(tokensInvertidosInversionista.value);
+  const tokens_inversionista = parseFloat(tokensCompradosInversionista.value) - parseFloat(tokensInvertidosInversionista.value);
   if (tokens_invertir > 0 && tokens_invertir <= tokens_inversionista || cliente_Invertir_ID.value == 0) {
     ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
     const fecha_devolucion = ref('');
@@ -570,15 +765,15 @@ const inversionistaInvertir = async () => {
     location.reload();
   }
   else {
-       Swal.fire({
-       title: "¡Error!",
-       text: "Por favor, ingrese una cantidad de tokens a invertir",
-       icon: "error",
-       allowOutsideClick: true,
-       allowEscapeKey: true,
-       color: 'var(--gray-color)',
-       confirmButtonColor: 'var(--yellow-orange)', 
-     });
+    Swal.fire({
+      title: "¡Error!",
+      text: "Por favor, ingrese una cantidad de tokens a invertir",
+      icon: "error",
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      color: 'var(--gray-color)',
+      confirmButtonColor: 'var(--yellow-orange)',
+    });
     /* iziToast.error({
       title: 'Error',
       message: 'Por favor, ingrese una cantidad de tokens a invertir',
@@ -744,28 +939,47 @@ p {
   margin-right: 15px;
 }
 
-.btn-primary {
-  background-color: var(--primary);
-  color: var(--yellow-orange);
-  border-color: var(--yellow-orange);
+button {
+  color: rgb(128, 159, 245);
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 25px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.btn-secondary {
-  background-color: var(--secondary);
-  color: var(--yellow-orange);
-  border-color: var(--yellow-orange);
+.animate__slow {
+  animation-duration: 5s;
 }
 
-.btn-secondary:hover {
+.btn-6 {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
+
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
   background-color: var(--gray-color);
-  color: var(--white-color);
-  border-color: var(--white-color);
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
 }
 
+.btn-6:hover {
+  color: var(--white-anti-flash-color);
+}
 
-.btn-danger {
-  background-color: var(--destructive);
-  color: var(--destructive-foreground);
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
 }
 
 input {
