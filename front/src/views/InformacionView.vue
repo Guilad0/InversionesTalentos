@@ -8,89 +8,61 @@
             <h5 class="fw-bold text-center mb-3 custom-color">Registra tu talento</h5>
 
             <div class="row mb-3">
-            
+
               <div class="col-md-6">
                 <label for="ocupacion" class="form-label">Ocupación</label>
-                <input
-                  type="text"
-                  v-model="ocupacion"
-                  id="ocupacion"
-                  class="form-control"
-                  required
-                />
+                <input type="text" v-model="ocupacion" id="ocupacion" class="form-control text-dark" required />
               </div>
-              
+
               <div class="col-md-6">
-                <label for="descripcion" class="form-label">Descripción</label>
-                <input
-                  type="text"
-                  v-model="descripcion"
-                  id="descripcion"
-                  class="form-control text-dark"
-                  required
-                />
+                <label for="categoria_persona_id" class="form-label">Categoria</label>
+                <select id="categoria_persona_id" v-model="categoria_persona_id" class="form-select form-select-sm p-1" aria-label="Multiple select example"
+                required>
+                  <option disabled selected value="">Selecciona tu categoría</option>
+                  <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
               </div>
             </div>
 
             <div class="row mb-3">
-              
+              <div class="col-md-12">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input type="text" v-model="descripcion" id="descripcion" class="form-control text-dark" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+
               <div class="col-md-6">
-                <label for="monto_inversion" class="form-label">Monto de <br> inversión</label>
-                <input
-                  type="text"
-                  v-model="monto_inversion"
-                  id="monto_inversion"
-                  class="form-control text-dark"
-                  required
-                />
+                <label for="monto_inversion" class="form-label">Monto de inversión</label>
+                <input type="text" v-model="monto_inversion" id="monto_inversion" class="form-control text-dark"
+                  required />
               </div>
 
               <div class="col-md-6">
                 <label for="cantidad_maxima_inversiones" class="form-label">Cantidad máxima de inversiones</label>
-                <input
-                  type="text"
-                  v-model="cantidad_maxima_inversiones"
-                  id="cantidad_maxima_inversiones"
-                  class="form-control text-dark"
-                  required
-                />
+                <input type="text" v-model="cantidad_maxima_inversiones" id="cantidad_maxima_inversiones"
+                  class="form-control text-dark" required />
               </div>
             </div>
 
             <div class="row mb-3">
-              
+
               <div class="col-md-6">
                 <label for="preparacion" class="form-label">Preparación</label>
-                <input
-                  type="text"
-                  v-model="preparacion"
-                  id="preparacion"
-                  class="form-control text-dark"
-                  required
-                />
+                <input type="text" v-model="preparacion" id="preparacion" class="form-control text-dark" required />
               </div>
 
               <div class="col-md-6">
                 <label for="estudios" class="form-label">Estudios</label>
-                <input
-                  type="text"
-                  v-model="estudios"
-                  id="estudios"
-                  class="form-control text-dark"
-                  required
-                />
+                <input type="text" v-model="estudios" id="estudios" class="form-control text-dark" required />
               </div>
             </div>
 
             <div class="mb-3">
               <label for="vision" class="form-label">Visión</label>
-              <textarea
-                v-model="vision"
-                id="vision"
-                class="form-control text-dark"
-                rows="3"
-                required
-              ></textarea>
+              <textarea v-model="vision" id="vision" class="form-control text-dark" rows="3" required></textarea>
             </div>
             <button type="submit" class="btn custom-button rounded-3">
               Registrar
@@ -106,8 +78,8 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
-const router = useRouter(); 
-const cliente_id = ref(""); 
+const router = useRouter();
+const cliente_id = ref("");
 const ocupacion = ref("");
 const descripcion = ref("");
 const monto_inversion = ref("");
@@ -116,54 +88,67 @@ const preparacion = ref("");
 const estudios = ref("");
 const vision = ref("");
 const nombre = ref("Usuario");
+const categoria_persona_id = ref(""); // Añadimos este ref
+const categorias = ref([]); // Array para almacenar las categorías
 // Cliente_id desde localStorage
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("usuario"));
   console.log(user);
   if (user) {
     cliente_id.value = user.usuario_id;
-    nombre.value = user.nombre; 
+    nombre.value = user.nombre;
   } else {
     alert("Error: No se encontró el cliente_id en localStorage.");
   }
+  obtenerCategorias(); 
 });
+
+// Función para obtener las categorías
+const obtenerCategorias = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/categories'); // Asegúrate de que este endpoint devuelva las categorías
+    console.log(response.data.results);
+    categorias.value = response.data.results;
+    console.log(categorias.value);
+  } catch (error) {
+    console.error('Error al obtener las categorías:', error);
+  }
+};
 
 // Función registro de información
 const registrarInformacion = async () => {
   const datos = {
-      
-      cliente_id: cliente_id.value,
-      ocupacion: ocupacion.value,
-      descripcion: descripcion.value,
-      monto_inversion: monto_inversion.value,
-      cantidad_maxima_inversiones: cantidad_maxima_inversiones.value,
-      preparacion: preparacion.value,
-      estudios: estudios.value,
-      vision: vision.value
-    };
-console.log(datos);
-try {
-  const response = await axios.post("http://localhost:3000/users/info", datos);
+
+    cliente_id: cliente_id.value,
+    ocupacion: ocupacion.value,
+    descripcion: descripcion.value,
+    monto_inversion: monto_inversion.value,
+    cantidad_maxima_inversiones: cantidad_maxima_inversiones.value,
+    preparacion: preparacion.value,
+    estudios: estudios.value,
+    vision: vision.value,
+    categoria_persona_id: categoria_persona_id.value 
+  };
+  console.log(datos);
+  try {
+    const response = await axios.post("http://localhost:3000/users/info", datos);
     alert('Información registrada correctamente');
     router.push({ name: 'perfil' });
 
-} catch (error) {
-  console.error(error);
-  alert("Error al registrar");
-}
+  } catch (error) {
+    console.error(error);
+    alert("Error al registrar");
+  }
 
 };
 
-  
 </script>
 
 <style scoped>
 .custom-background {
   background-color: var(--violet-2-color);
-  background-image: url('C:\Users\CECILIA\Downloads\fotos pag\otro-fondo2.png');
   height: 100vh;
 }
-
 .custom-card {
   background-color: #34312d;
   border: none;
@@ -189,6 +174,11 @@ input,
 textarea {
   background-color: #7e7f8352;
   color: #ffffff;
+  border: none;
+}
+select{
+  background-color: #7e7f8352;
+  color: var(--smoky-dark-color);
   border: none;
 }
 
