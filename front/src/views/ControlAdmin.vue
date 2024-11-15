@@ -84,7 +84,6 @@ const showView = (typeView) => {
 
 main {
   background-color: var(--white-anti-flash-color);
-  height: 95vh;
   width: 100%;
 }
 

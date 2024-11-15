@@ -111,7 +111,7 @@ const saveText =async () =>{
       <EditIcon v-if="rol =='Admin'" class="ms-5 mt-5"   data-bs-toggle="modal" data-bs-target="#modalImagePurpose"/>
       <label v-if="rol =='Admin'" class="text-white ms-5">Editar Imagen</label>
     <main class="main-content">
-      <h2 class="text-white">
+      <h2 class="text-dark">
         {{ results[0]?.propositoText }}       
       </h2>
       <EditIcon v-if="rol =='Admin'" class="abs-custom"   data-bs-toggle="modal" data-bs-target="#textPurpose"/>

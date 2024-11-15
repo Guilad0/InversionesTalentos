@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // Para leer JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Para leer datos urlencoded
 app.use('/uploads/categories', express.static(path.join(__dirname, 'uploads/categories')));
+app.use('/uploads/videos', express.static(path.join(__dirname, 'uploads/videos')));
 
 
 app.use('/', indexRouter); 

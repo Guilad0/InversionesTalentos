@@ -180,7 +180,7 @@ const uploadimageUserCloudinary = (req, res) => {
         try {
             // Verificación de extensión del archivo
             console.log('aquiiiiiiiiiiiii', req.files.image);
-            const extension = req.files.image.name.split('.').pop();
+            const extension = req.files.image.name.split('.').pop().toLowerCase();
             if (!['jpg', 'png', 'jpeg'].includes(extension)) {
                 return res.status(400).json({ msg: 'Extensiones de imagen no permitidas' });
             }
