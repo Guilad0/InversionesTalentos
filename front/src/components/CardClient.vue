@@ -34,10 +34,10 @@ const showClient = (user) => {
         <h5 class="card-title fs-6 text-center">{{ props.client.nombre }}</h5>
         <div class="d-flex justify-content-center">
           <div class="col">
-            <img src="../assets/svg/cardlogro.svg" width="25" alt="" />
+            <img src="../assets/svg/cardlogro.svg" width="25" alt="" :title="props.client.apellido" />
           </div>
           <div class="col"><img src="../assets/svg/trofeo.svg" width="22" alt="" /></div>
-          <div class="col"><img src="../assets/svg/details.svg" width="22" alt="" /></div>
+          <!-- <div class="col"><img src="../assets/svg/details.svg" width="22" alt="" /></div> -->
           <div class="col"><img src="../assets/svg/links.svg" width="22" alt="" /></div>
           <div class="col"><img src="../assets/svg/like.svg" width="22" alt="" /></div>
         </div>

@@ -29,6 +29,7 @@ var utilitiesRouter = require('./routes/utilities');
 var reportesRouter = require('./routes/reportes');
 var perfilRouter = require('./routes/perfil');
 var informacionRoutes = require('./routes/informacionRoutes');
+var previewRouter = require('./routes/preview');
 
 var app = express();
 
@@ -75,5 +76,6 @@ app.use('/utilities', utilitiesRouter);
 app.use('/reportes', reportesRouter);
 app.use('/perfil', perfilRouter);
 app.use('/informacion', informacionRoutes);
+app.use('/preview', previewRouter);
 
 module.exports = app;
