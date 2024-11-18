@@ -80,7 +80,7 @@
 
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 
-        <div class="modal-content">
+        <div class="modal-content bg-degrade">
 
           <div class="modal-header">
 
@@ -118,15 +118,15 @@
 
               <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-6">
 
-                  <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+                  <p class="text-xl text-white">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
 
-                  <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+                  <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
 
                 </div>
 
