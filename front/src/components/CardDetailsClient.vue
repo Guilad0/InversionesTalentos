@@ -16,10 +16,22 @@
         </div>
         <!-- nombre y datos -->
         <div class="mt-5 ">
+          <div class="row">
+            <div class="col-8">
+              <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
+              <h5>{{ client.ocupacion }}</h5>
+              <h6>{{ client.pais_residencia }}</h6>
+            </div>
+            <div class="col-4 text-end">
+              <div>
+                <span v-if="prom">{{ prom }}</span>
+              </div>
+              <div>
+                <span v-html="generarEstrellas(prom)"></span>
+              </div>
+            </div>
+          </div>
 
-          <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
-          <h5>{{ client.ocupacion }}</h5>
-          <h6>{{ client.pais_residencia }}</h6>
 
           <div class="row">
 
@@ -57,7 +69,7 @@
 
           <div class="mt-3">
 
-            <h5 class="title text-center">Descripcion</h5>
+            <h5 class="title text-center">Descripción</h5>
             <p class="font">{{ client.vision }}</p>
 
           </div>
@@ -141,7 +153,7 @@
 
       </div>
 
-    </div>    
+    </div>
 
     <!-- Modal Video Presentación -->
     <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
@@ -268,6 +280,7 @@ const route = useRoute();
 const userId = ref("");
 const client = ref({});
 const url = ref("");
+const prom = ref("");
 
 
 const getUser = async () => {
@@ -312,6 +325,7 @@ onMounted(() => {
   obtenerTokens_Inversionista_Invertidos();
   obtenerLogros();
   obtenerExperiencia();
+  obtenerPromedio();
 });
 
 let baseURL = "http://localhost:3000/billetera/";
@@ -452,11 +466,33 @@ const toggleExperiencia = () => {
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (YYYY-MM-DD)
 };
+const obtenerPromedio = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:3000/preview/" + userId.value);
 
+    prom.value = data.data[0].promedio;
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+const generarEstrellas = (promedio) => {
+  const cantidadEstrellas = Math.round(promedio);
+  const estrellas = [];
+
+  for (let i = 1; i <= 5; i++) {
+    if (i <= cantidadEstrellas) {
+      estrellas.push("★");
+    } else {
+      estrellas.push("☆");
+    }
+  }
+
+  return estrellas.join("");
+};
 </script>
 
 <style scoped>
-
 .bg-degrade {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
@@ -596,4 +632,7 @@ button {
   background-color: var(--gray-color);
   color: white;
 }
+.col-4 {
+  	font-size: 40px;
+} 
 </style>
