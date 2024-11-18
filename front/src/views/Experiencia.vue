@@ -35,7 +35,7 @@
           
         </div>
        
-        <div class="input-container">
+        <div class="input-container2">
           <label for="actividades" class="label">Actividades</label>
           <textarea
             id="actividades"
@@ -198,6 +198,7 @@ const registrarExperiencia = async () => {
   width: 100%;
   box-sizing: border-box;
   outline: none;
+  height: 38px; /* Altura fija para los inputs */
 }
 
 .submit {
@@ -212,7 +213,9 @@ const registrarExperiencia = async () => {
   text-align: center;
   width: 100%;
 }
-
+textarea.input {
+  height: auto; 
+}
 .submit:active {
   background-color: #F37926;
 }
