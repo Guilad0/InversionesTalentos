@@ -338,7 +338,7 @@
       </div>
     </div>
     <div v-else >
-      <Unete @handleRol="handleRol"/>
+      <Unete />
     </div>
     <p v-if="isOffcanvasOpen">El Offcanvas está abierto.</p>
   </div>
@@ -617,6 +617,7 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   try {
     for (let i = 0; i < verifyRegister.value.length; i++) {
       const item = verifyRegister.value[i];
+      console.log(`http://localhost:3000/utilities/${item.field}/?id=${id}`);
       const { data } = await axios.get(`http://localhost:3000/utilities/${item.field}/?id=${id}`);
       item.status = data.ok;
       item.cant = data.cant;
@@ -625,9 +626,10 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   } catch (error) {
     console.log('Error en la petición:', error);
   } finally {
-    loadingButtonKYC.value = false;
     bar.value = porcentajeTrue(verifyRegister);
+    await axios.patch(`http://localhost:3000/utilities/savePercentajerUser/${usuario.usuario_id}/?porcentaje=${bar.value}`)
     console.log(`Porcentaje de progreso: ${bar.value}%`);
+    loadingButtonKYC.value = false;
   } 
 };
 

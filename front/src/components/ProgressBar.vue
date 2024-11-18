@@ -8,7 +8,7 @@
 <script setup>
     const props = defineProps({
         bar:{
-            type:Number,
+            type:[Number, String],
             required:true
         }
     })

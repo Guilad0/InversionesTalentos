@@ -7,6 +7,7 @@ import axios from 'axios';
 import ModalInforUser from '../components/ModalInforUser.vue'
 import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
 import ModalMedia from './ModalMedia.vue';
+
 const user = JSON.parse(localStorage.getItem("usuario"));
 const page = ref(1);
 const search = ref('')
@@ -40,7 +41,7 @@ const clearSearch = () => {
 
 const selectImage = (img,user) =>{
     image.value = img
-    console.log(user);
+    typeMedia.value = 'image'
 }
 
 const handleName = () => {
@@ -82,7 +83,7 @@ const updateRol = async (usuario_id, newRol) => {
     }
 };
 
-const handleAproved =async (id, name, event)=>{
+const handleAproved =async (id, name, event, porcentaje_registro)=>{
     if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
         try {
            await axios.patch(`http://localhost:3000/users/approved/${id}?rol=${user.rol}`);
@@ -109,6 +110,11 @@ const selecionatedUser = ( idUser, typeModel,rol )=>{
     
 }
 
+const typeMedia = ref('')
+const selecionatedMedia = ( user ) =>{
+    image.value = 'http://localhost:3000/categories/video/'+user.usuario_id;
+    typeMedia.value = 'video'
+}
 
 
 const clearId = ()=>{
@@ -139,19 +145,20 @@ const clearId = ()=>{
                     </button>
                 </div>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive shadow">
                 <table class="table overflow-x-scroll">
                     <thead>
                         <tr class="table-secondary">
                             <th class="custom-size">Nombre</th>
                             <th class="custom-size">Apellido</th>
-                            <th class="custom-size">Correo</th>
+                            <!-- <th class="custom-size">Correo</th> -->
                             <th class="custom-size">Imagen</th>
                             <th class="custom-size">Logros</th>
                             <th class="custom-size">Experiencia</th>
                             <th class="custom-size text-center">informacion</th>
                             <th class="custom-size text-center">Video</th>
                             <th class="custom-size">Rol</th>
+                            <th class="custom-size">% registro</th>
                             <th class="custom-size">Aprobado</th>
                             <th class="custom-size">Estado</th>
                             <th class="custom-size ">Acciones</th>
@@ -161,7 +168,7 @@ const clearId = ()=>{
                         <tr v-for="user in results" :key="user.usuario_id">
                             <td>{{ user.nombre }}</td>
                             <td>{{ user.apellido }}</td>
-                            <td>
+                            <!-- <td>
                                 <div class="d-flex">
                                     <div class="col-1">
                                         <img v-if="user.verificado == 0" src="../assets/svg/cancel.svg" width="20"> 
@@ -172,7 +179,7 @@ const clearId = ()=>{
                                     {{ user.correo }}
                                 </div>
                                 </div>
-                            </td>
+                            </td> -->
                             <td class="text-secondary text-center">
                                 <i v-if="user.rol !=='Admin' ||user.rol =='Inversionista' " class="fas fa-image " data-bs-toggle="modal"
                                 data-bs-target="#media" @click="selectImage(user.imagen, user)"></i>
@@ -212,9 +219,10 @@ const clearId = ()=>{
                                  ></i>
                                 <i v-else  class="fa-solid fa-xmark text-danger"></i>
                             </td>
-                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
+
+                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary" >
                                 <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
-                                <i v-else class="fa-solid fa-video"></i>
+                                <i v-else class="fa-solid fa-video" data-bs-toggle="modal" data-bs-target="#media" @click="selecionatedMedia(user)"></i>
                             </td>
                 
                            
@@ -222,13 +230,18 @@ const clearId = ()=>{
                                 <i class="fa-solid fa-xmark"></i>
                             </td>
 
+                          <td>
                             <select v-model="user.rol" @change="updateRol(user.usuario_id, user.rol)"
                                 class="form-select">
                                 <option value="Inversionista">Inversionista</option>
                                 <option value="Cliente">Cliente</option>
                                 <option value="Admin">Admin</option>
-                                <option value="Null">Null</option>
                             </select>
+                          </td>
+                            <td class="text-center">
+                                <label v-if="user.rol !=='Admin'">{{ user.porcentaje_registro }}</label>
+                                <label v-else>Null</label>
+                            </td>
                             <td>
                                 <div class="form-check form-switch">
                                     <div class="form-check form-switch ">
@@ -236,6 +249,7 @@ const clearId = ()=>{
                                          class="form-check-input"
                                          type="checkbox"
                                          role="switch"
+                                         :disabled="user.porcentaje_registro !== '100%'"
                                          id="aproved"
                                          :checked="user.aprobado === 1"
                                          @change="handleAproved(user.usuario_id, user.nombre, $event)"
@@ -268,13 +282,14 @@ const clearId = ()=>{
             </div>
         </div>
         <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol"/>
-        <ModalMedia :image="image"/>
+        <ModalMedia :image="image" :typeMedia="typeMedia"/>
         <ModalCreateUserAdmin />
         <div class="footer">
             <Pagination
               :page="page"
               :prev="prev"
               :next="next"
+              myRol="usuario"
               :isLoading="isLoading"
               @nextAction="nextAction"
               @prevAction="prevAction"

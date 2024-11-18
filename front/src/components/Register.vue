@@ -1,6 +1,6 @@
 <template>
   <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeIn bg-admin" 
-  :class="{ 'bg-user': user.rol === 'Admin', 'bg-admin': user.rol == '' }"
+  :class="{ 'bg-admin': user, 'bg-user': !user }"
    >
       <form @submit.prevent="registrar" class="mt-3">
         <div class="card login-card shadow">
@@ -207,6 +207,7 @@
                   type="radio"
                   name="gender"
                   value="hombre"
+                  @invalid="handleInvalid"
                   v-model="gender"
                   @input="handleValidGender"
                 />
@@ -499,8 +500,8 @@ if(validatorForm()){
     })
     // alert('Error al regsitrar')
   }finally{
-    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,categoria,password,confirmPassword,numero_telefono,acepta_terminos,email,selectedCountryname,gender]);
-    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword, countryConfirm,countryConfirmname])
+    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,password,confirmPassword,numero_telefono,acepta_terminos,email,gender]);
+    resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword])
   }
 }
 };
@@ -541,11 +542,11 @@ ustom-abs-icon-eye:hover{
 }
 
 .bg-admin{
-  background-image: url("../assets/images/register8.png");
+  background-image: url("../assets/images/prueba.png");
   
 }
 .bg-user{
-  background-image: url("../assets/images/2.png");
+  background-image: url("../assets/images/register8.png");
 
 }
 .custom-terminos{

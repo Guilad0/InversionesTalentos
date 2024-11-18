@@ -25,7 +25,7 @@
 
 <script setup>
 
-defineProps({
+const props = defineProps({
     page: {
         type: Number,
         required: true
@@ -43,7 +43,7 @@ defineProps({
         required: true
     },
     total: {
-        type: Number,
+        type: [String, Number],
         required: true
     },
     myRol: {

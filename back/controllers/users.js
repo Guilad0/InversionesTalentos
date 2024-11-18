@@ -46,6 +46,7 @@ const getUsers = (req, res) => {
         u.verificado,
         u.imagen,
         u.rol, 
+        u.porcentaje_registro,
         u.estado,
         i.ocupacion, 
         i.descripcion, 
@@ -308,6 +309,60 @@ const getUsersBynameAndRol = (req, res) => {
   });
 };
 
+const getInfoInvestor = (req, res) => {
+  let query = `
+          SELECT
+          u.nombre, 
+          u.apellido, 
+          u.correo, 
+          u.categoria_persona_id,
+          u.username, 
+          u.pais_residencia,
+          u.edad, 
+          u.aprobado,
+          u.verificado,
+          u.rol, 
+          u.estado,
+          u.genero,
+          i.nombre_completo, 
+          i.dni, 
+          i.tipo_dni, 
+          i.domicilio,
+          i.ciudad,
+          i.situacion_laboral, 
+          i.fuente_de_ingresos,
+          c.nombre as categoria
+          from usuarios as u
+          LEFT JOIN
+          informacion_inversionista AS i ON u.usuario_id = i.id_inversionista
+          LEFT JOIN
+          categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+          WHERE 
+          u.usuario_id = ?
+          `;
+  conexion.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      res.status(500).json({
+        ok: false,
+        err,
+        nsg: "Error en la transacccion",
+      });
+      return;
+    }
+    if (results.length == 0) {
+      res.status(500).json({
+        ok: false,
+        err,
+        nsg: "Informacion del usuario no enconmtrada",
+      });
+      return;
+    }
+    res.status(200).json({
+      results,
+    });
+  });
+};
+
 
 /**
  * Nesesita el rol de admin enviado en la query
@@ -315,14 +370,12 @@ const getUsersBynameAndRol = (req, res) => {
  * Nesesita el tipo de rola  bsucar enviado mediante  el body
  */
 const getUsersByRol = (req, res) => {
-  // Middleware para control de acceso
   middlewareControlAdmin(req.query.rol)(req, res, (err) => {
     if (err) {
       return res.status(err.status || 403).json({
         msg: err.message || "No tiene permisos para acceder a esta sección.",
       });
     }
-
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
     const offset = (page - 1) * size;
@@ -341,7 +394,9 @@ const getUsersByRol = (req, res) => {
           u.aprobado,
           u.verificado,
           u.rol, 
+          u.porcentaje_registro,
           u.estado,
+          u.imagen,
           i.ocupacion, 
           i.descripcion, 
           i.monto_inversion, 
@@ -349,6 +404,7 @@ const getUsersByRol = (req, res) => {
           i.preparacion, 
           i.estudios, 
           i.vision,
+          i.video,
           c.nombre as categoria
       FROM 
           usuarios AS u
@@ -422,6 +478,7 @@ const postUser = async (req, res) => {
     rol,
     gender,
   } = req.body;
+  let verificadoUser = (registrado_por == '')? 0:1;
 
   if (acepta_terminos == "0") {
     return res.status(500).json({
@@ -436,7 +493,7 @@ const postUser = async (req, res) => {
       });
     }
     const sql =
-      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion,registrado_por, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+      "INSERT INTO usuarios ( nombre, apellido, correo, codigo_pais, numero_telefono,username, pais_residencia, password,edad, acepta_terminos, categoria_persona_id, rol, cod_verificacion,verificado,registrado_por, genero) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
     let passwordHash = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomBytes(20).toString("hex");
     const values = [
@@ -453,23 +510,17 @@ const postUser = async (req, res) => {
       categoria_persona_id,
       rol,
       verificationCode,
+      verificadoUser,
       registrado_por,
       gender
     ];
  
     conexion.query(sql, values, (error, results) => {
-        
-      console.log(values);
       if (error) {
         return res.status(500).send(error);
       } else {
         const verificationLink = `http://localhost:3000/users/verify/${results.insertId}`;
-        const mailOptions = {
-          from: process.env.GG_EMAIL,
-          to: correo,
-          subject: "Verifica tu cuenta",
-           text: `Por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`,
-          html: `<!DOCTYPE html>
+        const msgHtml = (verificadoUser == 0)?`<!DOCTYPE html>
                             <html lang="es">
                             <head>
                                 <meta charset="UTF-8">
@@ -504,7 +555,45 @@ const postUser = async (req, res) => {
                             </div>
                         </body>
                         </html>
-                        `,
+                        `:`<!DOCTYPE html>
+                            <html lang="es">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Bienvenido</title>
+                            </head>
+                            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+                                <div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <div style="background-color: #4CAF50; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; color: white;">
+                                        <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
+                                    </div>
+                                    <div style="padding: 20px;">
+                                        <p>Hola,</p>
+                                        <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
+                                        <p>Sus credenciales son ${correo} y ${password}</p>
+                                    </div>
+                                    <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
+                                        <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
+                                    </div>
+                                </div>
+                                <div style="padding: 20px;">
+                                    <p>Hola,</p>
+                                    <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
+                                    <p>Sus credenciales son ${correo} y ${password}</p>
+                                </div>
+                                <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
+                                    <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
+                                </div>
+                            </div>
+                        </body>
+                        </html>
+                        `
+        const mailOptions = {
+          from: process.env.GG_EMAIL,
+          to: correo,
+          subject: "Verifica tu cuenta",
+           text: `Por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`,
+          html: msgHtml,
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error)
@@ -1000,5 +1089,6 @@ module.exports = {
   handleTelefono,
   handleEmail,
   getUsersBynameAndRol,
-  approvedUser
+  approvedUser,
+  getInfoInvestor
 };
