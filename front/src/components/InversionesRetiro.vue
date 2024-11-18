@@ -125,9 +125,9 @@
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
 
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion in inversiones" :key="inversion">
+          <div class="bg-white p-4 rounded-lg shadow-md text-center" v-for="inversion in inversiones" :key="inversion">
 
-            <div class="row bg-success">
+            <div class="row card bg-degrade-inverso">
 
               <div class="col-5">
 
@@ -341,6 +341,11 @@ const devolverTokens = async (inversion) => {
 </script>
 
 <style scoped>
+
+.bg-degrade-inverso {
+  background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
+}
+
 .active {
   color: var(--yellow-orange) !important;
   border-radius: 10px !important;
