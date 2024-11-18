@@ -139,7 +139,7 @@ const clearId = ()=>{
                     </button>
                 </div>
             </div>
-            <div class="table-responsive shadow">
+            <div class="table-responsive">
                 <table class="table overflow-x-scroll">
                     <thead>
                         <tr class="table-secondary">

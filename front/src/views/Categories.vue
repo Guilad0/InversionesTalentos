@@ -1,5 +1,5 @@
 <template>
-  <main class="bg-light">
+  <main class="bg-light pt-5 ps-4">
     <div class="content">
       <h4 class="d-block mb-2 text-center underline py-4">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
