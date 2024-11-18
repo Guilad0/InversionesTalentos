@@ -1,11 +1,13 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center container">
+  <div class="background"> 
+    <div class="overlay"></div>
+<div class="d-flex justify-content-center align-items-center container">
     <div class="container col-md-6 mt-5 mb-5">
       <form @submit.prevent="registrarInformacion">
         <div class="card shadow">
-          <div class="card-body py-5 align-items-center">
-            <label class="fw-bold text-center d-block w-100">¡Bienvenid@ {{ nombre }} completa tu registro!</label>
-            <h5 class="fw-bold text-center mb-3 custom-color">Registra tu talento</h5>
+          <div class="card-body py-2 align-items-center">
+            <label class="fw-bold text-center d-block w-100">¡Bienvenid@ {{ nombre }} completa tus datos!</label>
+            <h5 class="fw-bold text-center mb-3">Registra tu talento</h5>
 
             <div class="row mb-3">
 
@@ -35,7 +37,7 @@
             <div class="row mb-3">
 
               <div class="col-md-6">
-                <label for="monto_inversion" class="form-label">Monto de inversión</label>
+                <label for="monto_inversion" class="form-label">Monto de <br> inversión</label>
                 <input type="text" v-model="monto_inversion" id="monto_inversion" class="form-control text-dark"
                   required />
               </div>
@@ -72,6 +74,8 @@
       </form>
     </div>
   </div>
+  </div>
+  
 </template>
 
 <script setup>
@@ -145,65 +149,115 @@ const registrarInformacion = async () => {
 </script>
 
 <style scoped>
-.custom-background {
-  background-color: var(--violet-2-color);
-  height: 100vh;
+
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Corregir el error de sintaxis */
+  margin: 0;
+  position: relative; /* Asegura que el overlay se posicione bien dentro de este contenedor */
+  background-image: url('@/assets/images/otro-fondo4.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.custom-card {
-  background-color: #34312d;
-  border: none;
-  color: #d9c5b2;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Asegura que el overlay cubra toda la altura del fondo */
+  background-color: rgba(4, 4, 4, 0.563); /* Fondo negro con opacidad */
+  z-index: 1; /* Asegura que el overlay esté debajo del formulario */
 }
 
-.custom-text {
-  color: #d9c5b2;
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  padding: 30px;
+  z-index: 2;
 }
 
-.custom-button {
-  background-color: #17223B;
-  color: #F3F3F4;
-  border: none;
+.card-body {
+  padding: 20px;
 }
 
-.custom-button:hover {
-  background-color: #F37926;
-  color: #fff;
+label {
+  color: #17223B;
+  font-family: sans-serif;
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+h5 {
+  color: #17223B;
+  font-family:sans-serif;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 input,
+textarea,
+select {
+  background-color: rgba(44, 46, 51, 0.8);
+  color: #F3F3F4;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  padding: 8px 15px;
+  width: 100%;
+  height: 38px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: white;
+  color: black;
+  border: 1px solid #80bdff;
+  outline: none;
+}
+
 textarea {
-  background-color: #7e7f8352;
-  color: #ffffff;
+  resize: none;
+}
+
+button {
+  background-color: #17223B;
+  color: #F3F3F4;
   border: none;
-}
-select{
-  background-color: #7e7f8352;
-  color: var(--smoky-dark-color);
-  border: none;
-}
-
-input::placeholder {
-  color: #d9c5b2;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.form-check-label span {
-  color: #14110f;
+button:hover {
+  background-color: #F37926;
 }
 
-.custom-link {
-  color: #14110f;
-}
-
-.custom-link:hover {
-  color: #7e7f83;
-  text-decoration: underline;
+button:focus {
+  outline: none;
 }
 
 .custom-color {
-  color: rgba(44, 43, 43, 0.753) !important;
+  color: rgba(44, 43, 43, 0.753);
+}
+
+.custom-link:hover {
+  color: #F37926;
+  text-decoration: underline;
 }
 
 .d-block {
   text-align: center;
+  margin-top: 10px;
+  font-size: 26px;
 }
 </style>
