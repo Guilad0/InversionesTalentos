@@ -108,45 +108,67 @@ const isClientFormAchievements = (req, res) => {
           msg: "El usuario ya cuenta con un registro de su logros",
           ok: true,
           cant: results.length,
+          cant: 1,
         });
         return;
       }
       res.status(200).json({
         msg: "El usuario aun no cuenta con un registro de su logros",
         ok: false,
-        cant: 1,
         cant: 0,
       });
     });
   });
 };
+
 const isClientVideo = (req, res) => {
-  let query = "SELECT * FROM informacion WHERE cliente_id = ?";
+  // Valida si el ID está presente
   const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({
+      msg: "El parámetro 'id' es obligatorio",
+      ok: false,
+    });
+  }
+
+  let query = "SELECT * FROM informacion WHERE cliente_id = ?";
+  
   conexion.query(query, [id], (err, results) => {
-    if (err || results.length == 0) {
-      res.status(500).json({
+    if (err) {
+      return res.status(500).json({
         msg: "Error al buscar el cliente",
-        err,
+        err: err.message || err,
+        ok: false,
       });
-      return;
     }
-    if (results[0].video == "" || results[0].video == null) {
-      res.status(200).json({
-        msg: "El usuario no cuenta aun con un video",
+
+    if (results.length === 0) {
+      return res.status(201).json({
+        msg: "Cliente no encontrado",
         ok: false,
         cant: 0,
       });
-      return;
     }
-    res.status(200).json({
+
+    const video = results[0].video;
+
+    if (!video) {
+      return res.status(200).json({
+        msg: "El usuario no cuenta aún con un video",
+        ok: false,
+        cant: 0,
+      });
+    }
+
+    // Si el usuario tiene un video
+    return res.status(200).json({
       msg: "El usuario ya cuenta con un video",
       ok: true,
       cant: 1,
     });
-    return;
   });
 };
+
 
 const isClientPhoto = (req, res) => {
   let query = "select * from usuarios where usuario_id = ?";
@@ -421,6 +443,23 @@ const putTextPurpose = (req, res) => {
   });
 };
 
+const savePercentajerUser = (req, res) =>{
+  let query = 'update usuarios set porcentaje_registro = ? where usuario_id = ?'
+  conexion.query(query, [req.query.porcentaje,req.params.id], (err, results) =>{
+    if (err) {
+      res.status(500).json({
+        err,
+        msg: "error al guardar el texto",
+      });
+      return;
+    }
+    res.status(201).json({
+      ok: "Porcentaje actualzadoi",
+    });
+  })
+}
+
+
 module.exports = {
   isClientFormInfoRegistered,
   isClientFormAchievements,
@@ -437,4 +476,5 @@ module.exports = {
   getImagePartners,
   getTextProposito,
   putTextPurpose,
+  savePercentajerUser
 };

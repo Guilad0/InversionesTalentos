@@ -16,6 +16,7 @@ const {
   getTextHome,
   getImagePartners,
   getTextProposito,
+  savePercentajerUser,
   putTextPurpose
 } = require("../controllers/utilities");
 
@@ -34,5 +35,6 @@ router.patch("/putTextPurpose/:text", putTextPurpose);
 router.get("/getTextHome/", getTextHome);
 router.get("/getImagePartners/", getImagePartners);
 router.get("/getTextProposito/", getTextProposito);
+router.patch("/savePercentajerUser/:id", savePercentajerUser);
 
 module.exports = router;

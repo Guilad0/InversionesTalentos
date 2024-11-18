@@ -17,12 +17,14 @@ const {
         handleTelefono,
         handleEmail, 
         approvedUser,
+        getInfoInvestor,
         getUsersBynameAndRol
         } = require("../controllers/users");
 
 
 
 router.get("/", getUsers);
+router.get("/getInfoInvestor/:id", getInfoInvestor);
 router.get("/filterUsersByName/:id", getUsersByname);
 router.get("/filterUsersByNameAndRol/:nombre", getUsersBynameAndRol);
 router.get("/filterByRol/:rol", getUsersByRol);

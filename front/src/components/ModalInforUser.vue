@@ -1,12 +1,13 @@
 <template>
   <div class="modal fade" id="modalUser" tabindex="1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5 m-auto" id="modalUserl">{{ typeForm }} del usuario</h1>
         </div>
 
-        <div v-if="typeForm == 'informacion'" class="modal-body ">
+    <div class="modal-body">
+      <div v-if="typeForm == 'informacion'" class="modal-body ">
           <div v-if="myRol == 'Cliente'" class="d-flex justify-content-between px-5 ">
             <div class="col">
               <p> <label class="fw-bold">Nombres</label>: {{ client.nombre }}</p>
@@ -29,7 +30,25 @@
 
           </div>
           <div v-if="myRol == 'Inversionista'">
-            Info de inversionista
+            <div class="d-flex justify-content-between px-5">
+              <div class="col">
+              <p> <label class="fw-bold">Nombres</label>: {{ client.nombre }}</p>
+              <p> <label class="fw-bold">apellidos</label>: {{ client.apellido }}</p>
+              <p> <label class="fw-bold">Correo</label>: {{ client.correo }}</p>
+              <p> <label class="fw-bold">Usuario:</label> {{ client.username }}</p>
+              <p> <label class="fw-bold">Telefono</label>: +{{ client.codigo_pais }} {{ client.numero_telefono }} </p>
+              <p> <label class="fw-bold">Genero</label>: {{ client.genero }} </p>
+            </div>
+            <div class="col">
+              <p> <label class="fw-bold">Rol: &nbsp;</label>{{ client.rol }} </p>
+              <p> <label class="fw-bold">Fecha de registro: &nbsp;</label>{{ client.created_at }} </p>
+              <p v-if="client.verificado == '0'"> <label class="fw-bold">Verificado: &nbsp;</label>No </p>
+              <p v-if="client.verificado == '1'"> <label class="fw-bold">Verificado: &nbsp;</label>Si </p>
+              <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>Si </p>
+              <p v-if="client.aprobado == '0'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>No </p>
+            </div>
+
+            </div>
           </div>
         </div>
 
@@ -95,6 +114,7 @@
           <div class="row "><button type="button" class="btn btn-gray rounded-5 px-4"
               data-bs-dismiss="modal" @click="$emit('clearId')">Close</button></div>
         </div>
+    </div>
       </div>
     </div>
   </div>
@@ -126,7 +146,9 @@ const client = ref({})
 const getUser = async () => {
   if (!props.id) return;
   console.log(action.value);
-  if (props.typeForm == 'informacion') {
+  console.log(props.myRol);
+  if( props.myRol == 'Cliente' ){
+    if (props.typeForm == 'informacion') {
     try {
       const { data } = await axios.get('http://localhost:3000/users/getUserById/' + props.id)
       client.value = data.results[0];
@@ -141,6 +163,17 @@ const getUser = async () => {
 
     } catch (error) {
       console.log(error);
+    }
+  }
+  }else{
+    if( props.myRol  == 'Inversionista' ){
+      try {
+        const {data} = await axios.get('http://localhost:3000/users/getInfoInvestor/'+props.id);
+        client.value = data.results[0];
+        console.log(client.value);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

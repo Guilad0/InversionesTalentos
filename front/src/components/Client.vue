@@ -1,17 +1,18 @@
 <script setup>
-    import useFetchData from '../helpers/UseFetchData';
-    import Pagination from '../components/Pagination.vue'
-    import {ref,onMounted,watch} from 'vue'
-    import { notyf } from '@/helpers/NotifyAlerts';
-    import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
-    import ModalInforUser from '../components/ModalInforUser.vue'
+import useFetchData from '../helpers/UseFetchData';
+import Pagination from '../components/Pagination.vue'
+import { ref, onMounted, watch } from 'vue'
+import { notyf } from '@/helpers/NotifyAlerts';
+import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
+import ModalInforUser from '../components/ModalInforUser.vue'
+import ModalMedia from './ModalMedia.vue';
+import axios from 'axios';
 
-
-    const props = defineProps({
+const props = defineProps({
     rol: {
-    type: String,
-    required: true
-  }
+        type: String,
+        required: false
+    }
 });
 
 const myRol = ref('');
@@ -19,114 +20,144 @@ const myRol = ref('');
 const id = ref(-1)
 const typeForm = ref('')
 watch(
-  () => props.rol,
-  (newSelectionated) => {
-    myRol.value = newSelectionated;
-  },
-  { immediate: true }
+    () => props.rol,
+    (newSelectionated) => {
+        myRol.value = newSelectionated;
+    },
+    { immediate: true }
 );
+const image = ref('')
+const selectImage = (img, user) => {
+    image.value = img;
+    typeMedia.value = 'image'
+    console.log(user);
+}
 
-    
-    const user = JSON.parse(localStorage.getItem("usuario"));
-    const page = ref(1);
-    const search= ref('')
-    const baseUrl = ref(`/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`);
-    const { results, prev, next, isLoading, getData,ChangeState, total } = useFetchData(ref(baseUrl));
-    const nextAction = ()=>{
-        page.value+=1;
-        baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
-        getData();
-    }
-    const prevAction = ()=>{
-        page.value-=1;
-        baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
-        getData();
-    }
-    onMounted(() => {
+const user = JSON.parse(localStorage.getItem("usuario"));
+const page = ref(1);
+const search = ref('')
+const baseUrl = ref(`/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`);
+const { results, prev, next, isLoading, getData, ChangeState, total } = useFetchData(ref(baseUrl));
+const nextAction = () => {
+    page.value += 1;
+    baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
+    getData();
+}
+const prevAction = () => {
+    page.value -= 1;
+    baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
+    getData();
+}
+onMounted(() => {
     getData();
     myRol.value = props.rol;
 });
 
 
-const clearSearch = ()=>{
+const clearSearch = () => {
     search.value = '';
-    page.value=1;
+    page.value = 1;
     baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
     getData();
 }
 
-const handleName = ()=>{
+const handleName = () => {
     if (search.value.trim() !== '') {
 
         baseUrl.value = `/users/filterUsersByNameAndRol/${search.value}/?rol=${user.rol}&rolUser=${myRol.value}`;
         console.log(baseUrl.value);
-        
-    } 
-    if( search.value.trim() == '' ){
-        page.value=1;
-    baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
-    getData();
+
     }
-       
+    if (search.value.trim() == '') {
+        page.value = 1;
+        baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
+        getData();
+    }
+
 }
 
-const deleteUSer = (id, estado)=>{
-     baseUrl.value = '/users/Stateinvestors/'+id+`/?rol=${user.rol}`;
-     ChangeState()
+const deleteUSer = (id, estado) => {
+    baseUrl.value = '/users/Stateinvestors/' + id + `/?rol=${user.rol}`;
+    ChangeState()
     baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
-    if( estado == '1' ){
+    if (estado == '1') {
         notyf.error("Usuario inactivo");
-    }else{
+    } else {
         notyf.success("Usuario activo");
     }
 }
 
-const selecionatedUser = ( idUser, typeModel )=>{
+const selecionatedUser = (idUser, typeModel) => {
     id.value = idUser;
     typeForm.value = typeModel;
 }
 
 
-
-const clearId = ()=>{
+const clearId = () => {
     id.value = -1;
     typeForm.value = '';
 }
+
+const typeMedia = ref('')
+
+const handleAproved =async (id, name, event, porcentaje_registro)=>{
+    if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
+        try {
+           await axios.patch(`http://localhost:3000/users/approved/${id}?rol=${user.rol}`);
+           
+            
+        } catch (err) {
+            console.log(err);
+        }finally{
+            baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
+            getData();
+        }
+      } 
+      else{
+        event.target.checked = !event.target.checked;
+      }
+}
+
 
 </script>
 <template>
     <main class="bg-light">
         <div class="content ">
-                    <h4 class="d-block text-start mb-2 text-center underline"> {{ myRol }}s </h4>
+            <h4 class="d-block text-start mb-2 text-center underline"> {{ myRol }}s </h4>
             <div class="d-flex justify-content-between px-5 mt-2 mb-3">
                 <div class="col-2 position-relative">
-                    <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..." @input="handleName">
+                    <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+                        @input="handleName">
                     <div v-if="search !== ''" class="custom-absolute">
-                            <img class="cursor" src="../assets/svg/close.svg" alt="Descripción del SVG" width="25" @click="clearSearch">
+                        <img class="cursor" src="../assets/svg/close.svg" alt="Descripción del SVG" width="25"
+                            @click="clearSearch">
                     </div>
                 </div>
                 <div class="col-8 ">
                 </div>
                 <div class="col-2 text-end">
-                    <button class="btn bg-gray rounded-3 btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalRegisterUser">
+                    <button class="btn bg-gray rounded-3 btn-sm text-white" data-bs-toggle="modal"
+                        data-bs-target="#modalRegisterUser">
                         +<img src="../assets/svg/user-white.svg" width="25" class="img">
                     </button>
                 </div>
             </div>
-           <div class="table-responsive shadow">
+            <div class="table-responsive shadow">
                 <table class="table overflow-x-scroll">
                     <thead>
                         <tr class="table-secondary">
                             <th class="custom-size">Nombre</th>
                             <th class="custom-size">Apellido</th>
-                            <th class="custom-size">Correo</th>
-                            <th class="custom-size">Imagen</th>
-                            <th  class="custom-size">Logros</th>
-                            <th class="custom-size">Experiencia</th>
-                            <th class="custom-size text-center">informacion</th>
-                            <th class="custom-size text-center">Video</th>
+                            <!-- <th class="custom-size">Correo</th> -->
+                            <th v-if="myRol == 'Cliente'" class="custom-size">Imagen</th>
+                            <th v-if="myRol == 'Cliente'" class="custom-size">Logros</th>
+                            <th v-if="myRol == 'Cliente'" class="custom-size">Experiencia</th>
+                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size text-center">
+                                informacion</th>
+                            <th v-if="myRol == 'Cliente'" class="custom-size text-center">Video</th>
                             <th class="custom-size">Rol</th>
-                            <th class="custom-size">Aprobado</th>
+                            <th v-if="myRol !== 'Admin'" class="custom-size">% registro</th>
+                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size">Aprobado</th>
                             <th class="custom-size">Estado</th>
                             <th class="custom-size ">Acciones</th>
                         </tr>
@@ -135,76 +166,73 @@ const clearId = ()=>{
                         <tr v-for="user in results" :key="user.usuario_id">
                             <td>{{ user.nombre }}</td>
                             <td>{{ user.apellido }}</td>
-                            <td>
+                            <!-- <td>
                                 <div class="d-flex">
                                     <div class="col-1">
-                                        <img v-if="user.verificado == 0" src="../assets/svg/cancel.svg" width="20"> 
-                                        <img v-if="user.verificado == 1" src="../assets/svg/confirm.svg" width="20"> 
+                                        <img v-if="user.verificado == 0" src="../assets/svg/cancel.svg" width="20">
+                                        <img v-if="user.verificado == 1" src="../assets/svg/confirm.svg" width="20">
                                     </div>
 
-                                <div class="col-10 ms-1">
-                                    {{ user.correo }}
+                                    <div class="col-10 ms-1">
+                                        {{ user.correo }}
+                                    </div>
                                 </div>
-                                </div>
+                            </td> -->
+                            <td class="text-secondary text-center" v-if="myRol == 'Cliente'">
+                                <i class="fas fa-image cursor" data-bs-toggle="modal" data-bs-target="#media"
+                                    @click="selectImage(user.imagen, user)"></i>
                             </td>
-                            <td class="text-secondary text-center">
-                                <i v-if="user.rol !=='Admin' ||user.rol =='Inversionista' " class="fas fa-image "></i>
-                                <i v-else class="fa-solid fa-xmark text-danger"></i>
-                            </td>
-                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'logros')">
-                                <img v-if="myRol !=='Admin'"  src="../assets/svg/eye.svg" width="18">
-                                <i v-else class="fa-solid fa-xmark text-danger"></i>
+                            <td v-if="myRol == 'Cliente'" class="text-center eye" data-bs-toggle="modal"
+                                data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id, 'logros')">
+                                <img src="../assets/svg/eye.svg" width="18">
 
                             </td>
-                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'experiencia')">
-                                <img v-if="myRol !=='Admin'" src="../assets/svg/eye.svg" width="18">
-                                <i v-else class="fa-solid fa-xmark text-danger"></i>
-                                
+                            <td v-if="myRol == 'Cliente'" class="text-center eye" data-bs-toggle="modal"
+                                data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id, 'experiencia')">
+                                <img src="../assets/svg/eye.svg" width="18">
+
                             </td>
-                            <td class="text-center eye" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id,'informacion')">
-                                <img v-if="myRol !=='Admin'" src="../assets/svg/eye.svg" width="18">
-                                <i v-else class="fa-solid fa-xmark text-danger"></i>
+                            <td class="text-center"  v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
+                                <i
+                                  v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'"
+                                 data-bs-toggle="modal"
+                                  data-bs-target="#modalUser" 
+                                  @click="selecionatedUser(user.usuario_id,'informacion',user.rol)"
+                                  class="fa fa-eye text-secondary cursor"
+                                  aria-hidden="true"
+                                 ></i>
+                                <i v-else  class="fa-solid fa-xmark text-danger"></i>
                             </td>
-                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
+                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary"
+                                data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
                                 <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
                                 <i v-else class="fa-solid fa-video"></i>
                             </td>
-                            <td v-if="user.rol == 'Null'" class="text-center eye text-secondary" data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
-                                <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
-                                <i v-else class="fa-solid fa-video"></i>
-                            </td>
-                           
-                            <td v-if="user.rol == 'Inversionista' || user.rol == 'Admin'" class="text-center text-danger">
-                                <i class="fa-solid fa-xmark"></i>
-                            </td>
-
-                        
                             <td>
                                 {{ user.rol }}
                             </td>
-                            <td>
+                            <td class="text-center" v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
+                                {{ user.porcentaje_registro }}
+                            </td>
+                            <!-- Aprobar -->
+                            <td v-if="myRol == 'Cliente' || myRol == 'Inversionista'">
                                 <div class="form-check form-switch">
                                     <div class="form-check form-switch ">
-                                       <input
-                                         class="form-check-input"
-                                         type="checkbox"
-                                         role="switch"
-                                         id="aproved"
-                                         :checked="user.aprobado === 1"
-                                         @change="handleAproved(user.usuario_id, user.nombre, $event)"
-                                         />
-                                    
+                                        <input class="form-check-input" type="checkbox" role="switch" id="aproved"
+                                            :checked="user.aprobado === 1"
+                                            @change="handleAproved(user.usuario_id, user.nombre, $event)" />
+
                                     </div>
                                 </div>
                             </td>
-                            <td v-if="user.estado == '1'" >
-                                <span class="badge text-bg-success cursor"  @mouseover="toggleStatus" 
-                                @mouseout="toggleStatus">Activo</span>
+                            <td v-if="user.estado == '1'">
+                                <span class="badge text-bg-success cursor" @mouseover="toggleStatus"
+                                    @mouseout="toggleStatus">Activo</span>
                             </td>
-                            <td v-if="user.estado == '0'"  >
+                            <td v-if="user.estado == '0'">
                                 <span class="badge text-bg-danger cursor">No activo</span>
                             </td>
-                            <td v-if="user.estado == '1'" >
+                            <td v-if="user.estado == '1'">
                                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                                     <img src="../assets/svg/delete.svg" width="25">
                                 </div>
@@ -218,22 +246,16 @@ const clearId = ()=>{
                         </tr>
                     </tbody>
                 </table>
-                <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId"/>
-        <ModalCreateUserAdmin />
+                <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol"/>
+                <ModalCreateUserAdmin />
+                <ModalMedia :image="image" :typeMedia="typeMedia"/>
+
 
             </div>
         </div>
         <div class="footer">
-            <Pagination
-              :page="page"
-              :prev="prev"
-              :next="next"
-              :isLoading="isLoading"
-              @nextAction="nextAction"
-              @prevAction="prevAction"
-              :total="total"
-              :myRol="myRol"
-               />
+            <Pagination :page="page" :prev="prev" :next="next" :isLoading="isLoading" @nextAction="nextAction"
+                @prevAction="prevAction" :total="total" :myRol="myRol" />
         </div>
     </main>
 </template>
@@ -256,19 +278,17 @@ main {
     height: 90vh;
 }
 
-td{
+td {
     font-size: 0.9rem;
 }
-.eye{
+
+.eye {
     cursor: pointer;
-    
+
 }
 
-.btn:hover{
+.btn:hover {
 
     background-color: rgba(136, 136, 136, 0.76) !important;
 }
-
-
 </style>
-
