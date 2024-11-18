@@ -7,18 +7,25 @@
             <div class="text-center my-4">
               <img :src="user?.imagen" alt="" width="150" class="rounded-circle">
             </div>
-            
+
             <!-- RouterLink para Perfil -->
-            <RouterLink class="nav-link my-3" to="perfil" >
+            <RouterLink class="nav-link my-3" to="perfil">
               <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'perfil' }">
                 <i class="fa-regular fa-user me-3"></i>Perfil
               </li>
             </RouterLink>
 
             <!-- RouterLink para Billetera -->
-            <RouterLink class="nav-link my-3" to="billetera" >
+            <RouterLink class="nav-link my-3" to="billetera">
               <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'billetera' }">
                 <i class="fa-solid fa-wallet me-3"></i>Billetera
+              </li>
+            </RouterLink>
+
+            <!-- RouterLink para reportes -->
+            <RouterLink class="nav-link my-3" to="reportes">
+              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'reportes' }">
+                <i class="fa-solif fa-chart-line me-3"></i>Reportes
               </li>
             </RouterLink>
 
@@ -60,7 +67,7 @@ ul {
   font-weight: 500;
   display: block;
   transition: all 0.3s ease;
-  border: none; 
+  border: none;
 }
 
 .nav-link li {
@@ -94,8 +101,8 @@ ul {
 }
 
 .active {
-  border-bottom: 3px solid #D95C00; 
-  color: #D95C00 !important; 
+  border-bottom: 3px solid #D95C00;
+  color: #D95C00 !important;
 }
 
 .my-3 {

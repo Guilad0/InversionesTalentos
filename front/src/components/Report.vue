@@ -11,32 +11,6 @@
           </div>
         </div>
       </div>
-      <div class="col-md-5">
-        <div class="card m-1">
-          <div class="card-body">
-            <h5 class="card-title">Ganancias en Dólares</h5>
-            <apexchart width="100%" type="bar" :options="options2" :series="series2"></apexchart>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row my-3">
-      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Cantidad de Usuarios</h5>
-            <table class="table">
-              <tbody v-for="(cantUsuario, index) in cantUsuarios" :key="index">
-                <tr>
-                  <td>{{ cantUsuario.rol }}s: </td>
-                  <td>{{ cantUsuario.cantidad }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
       <div class="col-md-5 col-sm-6">
         <div class="card">
           <div class="card-body">
@@ -54,41 +28,6 @@
       </div>
     </div>
 
-    <div class="row my-3">
-      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Cantidad de Solicitudes de Retiro</h5>
-            <table class="table">
-              <tbody v-for="(cantSolicitud, index) in cantSolicitudes" :key="index">
-                <tr>
-                  <td>{{ cantSolicitud.estado }}s: </td>
-                  <td>{{ cantSolicitud.cantidad }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-5 col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Ganancia en Dólares de la página</h5>
-            <table class="table">
-              <tbody v-for="(cantSumComision, index) in cantSumComisiones" :key="index">
-                <tr>
-                  <td>{{ cantSumComision.estado }}s: </td>
-                  <td>$US {{ cantSumComision.total_comisiones }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
   </div>
 
 </template>
@@ -98,8 +37,31 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import apexchart from "vue3-apexcharts";
-const route = useRouter();
-let baseURL = "http://localhost:3000/reportes/";
+const router = useRouter();
+let baseURL = "http://localhost:3000/report/";
+
+const cliente_ID = ref('');
+const inversionista_ID = ref('');
+const usuario = JSON.parse(localStorage.getItem("usuario"));
+const usuario_id = ref(usuario.usuario_id);
+const usuario_rol = ref(usuario.rol);
+if (usuario_rol.value == 'Inversionista') {
+  inversionista_ID.value = usuario_id.value;  
+  console.log(usuario_id.value);
+  console.log(inversionista_ID.value);
+  onMounted(() => {
+    
+  })
+}
+if (usuario_rol.value == 'Cliente') {
+  cliente_ID.value = usuario_id.value;
+  console.log(usuario_id.value);
+  console.log(cliente_ID.value);
+  onMounted(() => {
+    
+  })
+}
+
 
 const cantUsuarios = ref(0);
 const cantInversiones = ref(0);
@@ -107,24 +69,12 @@ const cantSolicitudes = ref(0);
 const cantSumComisiones = ref(0);
 
 onMounted(() => {
-  obtenerCantUsuarios();
-  obtenerCantInversiones();
-  obtenerCantSolicitudes();
-  obtenerCantSumComisiones();
   obtenerTotales();
   obtenerGanancias();
+  obtenerCantInversiones();
 })
-const obtenerCantUsuarios = async () => {
-  try {
-    const { data } = await axios.get(baseURL + "usuariosCantidad/");
-    cantUsuarios.value = data.data;
-    console.log(cantUsuarios.value);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-const obtenerCantInversiones = async () => {
+const obtenerCantInversiones = async () => { //para cliente
   try {
     const { data } = await axios.get(baseURL + "inversionesCantidad/");
     cantInversiones.value = data.data;
@@ -133,28 +83,6 @@ const obtenerCantInversiones = async () => {
     console.log(error);
   }
 };
-
-const obtenerCantSolicitudes = async () => {
-  try {
-    const { data } = await axios.get(baseURL + "solicitudesCantidad/");
-    cantSolicitudes.value = data.data;
-    console.log(cantSolicitudes.value);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-const obtenerCantSumComisiones = async () => {
-  try {
-    const { data } = await axios.get(baseURL + "sumaComisiones/");
-    cantSumComisiones.value = data.data;
-    console.log(cantSumComisiones.value);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 
 const series = ref([]);
 const series2 = ref([]);
@@ -212,8 +140,8 @@ const options2 = ref({
 const obtenerTotales = async () => {
   series.value = [];
   try {
-    const { data } = await axios.get(baseURL + "totalCompras");
-
+    const { data } = await axios.get(baseURL + "totalCompras/" + usuario_id.value);
+    console.log(data);
     var datosMesCompra = [];
     for (let i = 0; i < meses.length; i++) {
       let mes = i + 1;
@@ -236,7 +164,7 @@ const obtenerTotales = async () => {
     console.log(error);
   }
   try {
-    const { data } = await axios.get(baseURL + "totalInversiones");
+    const { data } = await axios.get(baseURL + "totalInversiones/" + usuario_id.value);
 
     var datosMesVenta = [];
     for (let i = 0; i < meses.length; i++) {
@@ -264,7 +192,7 @@ const obtenerTotales = async () => {
 const obtenerGanancias = async () => {
   series2.value = [];
   try {
-    const { data } = await axios.get(baseURL + "gananciasPendientes");
+    const { data } = await axios.get(baseURL + "gananciasEstimadas/" + usuario_id.value);
 
     var datosMesPendientes = [];
     for (let i = 0; i < meses.length; i++) {
@@ -274,43 +202,20 @@ const obtenerGanancias = async () => {
 
       for (let j = 0; j < data.data.length; j++) {
         if (mes == data.data[j].mes) {
-          datosMesPendientes[i] = data.data[j].total_comisiones;
+          datosMesPendientes[i] = data.data[j].ganancia_tokens;
         }
       }
     }
 
     var datos = {
-      name: "Ganancias Pendientes",
+      name: "Ganancias Estimadas",
       data: datosMesPendientes,
     };
     series2.value.push(datos);
   } catch (error) {
     console.log(error);
   }
-  try {
-    const { data } = await axios.get(baseURL + "gananciasAprobadas");
 
-    var datosMesAprobado = [];
-    for (let i = 0; i < meses.length; i++) {
-      let mes = i + 1;
-
-      datosMesAprobado[i] = 0;
-
-      for (let j = 0; j < data.data.length; j++) {
-        if (mes == data.data[j].mes) {
-          datosMesAprobado[i] = data.data[j].total_comisiones;
-        }
-      }
-    }
-
-    var datos = {
-      name: "Ganancias Aprobadas",
-      data: datosMesAprobado,
-    };
-    series2.value.push(datos);
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 </script>

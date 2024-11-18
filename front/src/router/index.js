@@ -12,6 +12,7 @@ import SignUpLoginView from '@/views/SignUpLoginView.vue'
 import PostView from '@/views/PostView.vue'
 import ContactView from '@/views/ContactView.vue'
 import BilleteraView from '@/views/BilleteraView.vue'
+import ReportesView from '@/views/ReportesView.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
 import Experiencia from '@/views/Experiencia.vue'
@@ -95,6 +96,11 @@ const router = createRouter({
       name:'billetera',
       component:BilleteraView
     },
+    {
+      path:'/reportes',
+      name:'reportes',
+      component:ReportesView
+    },
     { path: '/forgot-password',
       name: 'forgot-password', 
       component: ForgotPassword 
@@ -120,7 +126,7 @@ const router = createRouter({
       component: PropositoView
     },
     { path: '/logros',
-      name: 'logors', 
+      name: 'logros', 
       component: LogrosView
     },
 
