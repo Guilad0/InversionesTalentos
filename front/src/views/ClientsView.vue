@@ -212,8 +212,8 @@ button {
 }
 
 button:disabled {
-  cursor: not-allowed;
   opacity: 0.5;
+  cursor: pointer !important;
 }
 .pagination {
   margin-top: 1rem;
@@ -240,10 +240,6 @@ button:disabled {
   font-weight: 500;
   border-bottom: 1px solid var(--gray-color);
   text-decoration: underline !important;
-}
-
-li {
-  cursor: pointer !important;
 }
 
 </style>
