@@ -493,6 +493,7 @@ const generarEstrellas = (promedio) => {
 </script>
 
 <style scoped>
+
 .bg-degrade {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
@@ -633,6 +634,6 @@ button {
   color: white;
 }
 .col-4 {
-  	font-size: 40px;
+  font-size: 40px;
 } 
 </style>

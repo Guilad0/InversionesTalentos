@@ -8,7 +8,7 @@
 
     </div>
 
-    <div class="col-9 bg-info" v-if="user.aprobado == 1 && isLoading == false">
+    <div class="card bg-degrade col-9 text-white text-center" v-if="user.aprobado == 1 && isLoading == false">
 
       <Billetera />
       <InversionesRetiro />
@@ -73,6 +73,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+.bg-degrade {
+  background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
+}
+
+.card {
+  box-shadow: 0 0 10px 0 black;
+}
+
 .d-flex-custom {
   width: 100%;
   min-height: 56vh;

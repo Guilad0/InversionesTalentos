@@ -6,7 +6,7 @@
 
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
 
-      <div>
+      <div >
 
         <div class="row">
 
@@ -45,19 +45,19 @@
 
           <div class="col-md-4">
 
-            <p class="text-xl">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+            <p class="text-xl text-white">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
 
           </div>
 
           <div class="col-md-4">
 
-            <p class="text-xl">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+            <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
 
           </div>
 
           <div class="col-md-4">
 
-            <p class="text-xl">Total de USD Ingresados: $US {{ dolaresInversionista }}</p>
+            <p class="text-xl text-white">Total de USD Ingresados: $US {{ dolaresInversionista }}</p>
 
           </div>
 
@@ -933,6 +933,11 @@ const solicitarRetiro = async () => {
 </script>
 
 <style scoped>
+
+.bg-degrade {
+  background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
+}
+
 p {
   font-size: 1rem;
   color: var(--gray-color);
