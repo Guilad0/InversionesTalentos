@@ -633,6 +633,7 @@ button {
   background-color: var(--gray-color);
   color: white;
 }
+
 .col-4 {
   font-size: 40px;
 } 

@@ -8,26 +8,16 @@
 
         <h2 class="text-xl font-bold mb-4">Inversiones, Retiros y Devoluciones Pendientes</h2>
 
-        <!-- Contenedor de tabs -->
-        <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
+        <div class="d-flex justify-content-center">
 
-          <div class="container-fluid m-3">
+          <button v-for="(tabCli, index) in tabsCli" :key="index"
+            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabInv === index }]"
+            @click="activeTabCli = index">
+            {{ tabCli }} <span></span>
+          </button>
 
-            <div class="tabs me-auto mb-2 mb-lg-0">
-
-              <button v-for="(tabCli, index) in tabsCli" :key="index"
-                :class="['underline-dynamic', 'btn', 'tabs', { active: activeTabCli === index }]"
-                @click="activeTabCli = index">
-                {{ tabCli }}
-              </button>
-
-            </div>
-
-          </div>
-
-        </nav>
-
-        <!-- Contenido de los tabs -->
+        </div>     
+        
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
 
@@ -56,7 +46,7 @@
           </div>
 
         </div>
-        
+
         <!-- Lista de solicitudes de retiro -->
         <div class="tab-content" v-if="activeTabCli === 1">
 
@@ -75,7 +65,7 @@
           </div>
 
         </div>
-        
+
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
 
@@ -86,14 +76,15 @@
             <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
             <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
             <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span></button>
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+              @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span></button>
 
             <hr />
 
           </div>
 
         </div>
-        
+
       </div>
 
     </div>
@@ -104,45 +95,38 @@
 
         <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
         <!-- Contenedor de tabs -->
-        <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow">
 
-          <div class="container-fluid m-3">
+        <div class="d-flex justify-content-center">
+          <!-- Clase añadida para centrar -->
+          <button v-for="(tabInv, index) in tabsInv" :key="index"
+            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabInv === index }]"
+            @click="activeTabInv = index">
+            {{ tabInv }} <span></span>
+          </button>
 
-            <div class="tabs me-auto mb-2 mb-lg-0">
+        </div>
 
-              <button v-for="(tabInv, index) in tabsInv" :key="index"
-                :class="['underline-dynamic', 'tabs', { active: activeTabInv === index }]"
-                @click="activeTabInv = index">
-                {{ tabInv }}
-              </button>
-
-            </div>
-
-          </div>
-
-        </nav>
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
 
-          <div class="bg-white p-4 rounded-lg shadow-md text-center" v-for="inversion in inversiones" :key="inversion">
+          <div class="p-3 shadow-md text-center" v-for="inversion in inversiones" :key="inversion">
 
-            <div class="row card bg-degrade-inverso">
+            <div class="custom-card row bg-degrade-inverso p-3">
 
-              <div class="col-5">
+              <div class="col-9 text-white text-center border-end p-3">
 
-                <p>Inversion ID: {{ inversion.inversion_id }}</p>
-                <p>Cliente: {{ inversion.nombre_cliente }}</p>
-                <p>Tokens Invertidos: {{ inversion.monto }}</p>
-                <p>Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}</p>
-                <p>Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
-                <p>Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>
-
-                <hr />
+                <p class=" text-white text-center">Inversion ID: {{ inversion.inversion_id }}</p>
+                <p class=" text-white text-center">Cliente: {{ inversion.nombre_cliente }}</p>
+                <p class=" text-white text-center">Tokens Invertidos: {{ inversion.monto }}</p>
+                <p class=" text-white text-center">Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto
+                  }}</p>
+                <p class=" text-white text-center">Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
+                <p class=" text-white text-center">Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>
 
               </div>
 
-              <div class="col-4">
+              <div class="col-3 p-3">
 
                 <img :src="inversion.imagen" width="200" class=" rounded-circle" alt="">
 
@@ -152,7 +136,7 @@
 
           </div>
 
-        </div>       
+        </div>
 
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
@@ -169,14 +153,14 @@
 
           </div>
 
-        </div>        
+        </div>
 
       </div>
 
     </div>
 
   </div>
-  
+
 </template>
 
 <script setup>
@@ -341,16 +325,20 @@ const devolverTokens = async (inversion) => {
 </script>
 
 <style scoped>
-
 .bg-degrade-inverso {
   background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
 }
 
 .active {
+  background-color: var(--gray-color);
   color: var(--yellow-orange) !important;
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;
+}
+
+.custom-card {
+  border-radius: 15px;
 }
 
 button {
@@ -401,65 +389,9 @@ button {
   transform-origin: left !important;
 }
 
-nav {
-  height: 7vh;
-  width: 50vw;
-  border-radius: 10px !important;
-  box-shadow: 0 4px 6px #17223B;
-}
-
 p {
   font-size: 1rem;
   color: var(--gray-color);
   margin-right: 15px;
-}
-
-.tabs {
-  font-size: 1.1rem;
-  color: var(--white-color);
-  background: #ffffff;
-  border-color: #ffffff;
-  border-radius: 10px !important;
-
-  margin-right: 15px;
-  transition: color 0.3s ease;
-}
-
-.tabs:hover {
-  color: var(--yellow-orange) !important;
-}
-
-.nav-link {
-  font-size: 1.1rem;
-  color: #17223B;
-  margin-right: 15px;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: var(--yellow-orange) !important;
-}
-
-.underline-dynamic {
-  display: inline-block;
-  position: relative;
-  padding-bottom: 2px;
-  color: #17223B;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  margin-right: 15px;
-}
-
-.underline-dynamic::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--yellow-orange);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.6s, background-color 0.3s ease;
 }
 </style>
