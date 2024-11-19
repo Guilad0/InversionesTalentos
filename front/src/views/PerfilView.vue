@@ -305,7 +305,7 @@
                             </div>
                           </label>
                         </button>
-                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-image text-light fs-5" style="color: green;"></i>
+                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-video text-light fs-5" style="color: green;"></i>
                         <i v-if="videoPresentacion" class=" fa-solid fa-ban text-light fs-5 cursor" @click="cleanVideo" style="color: green;"></i>
                       </div>
                       <input type="file" ref="videoFile" accept="video/*" style="display: none;" @change="onVideoChange">
