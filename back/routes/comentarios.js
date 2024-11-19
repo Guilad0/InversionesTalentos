@@ -70,6 +70,29 @@ router.get("/", (req, res) => {
     });
 });
 
+// Ruta para obtener comentarios por cliente_id
+router.get("/cliente/:id", function (req, res, next) {
+    const clienteId = req.params.id;
+
+    const comentarios = `
+        SELECT c.comentario, c.calificacion FROM comentarios c WHERE c.cliente_id = ?`;
+
+        connection.query(comentarios, [clienteId], function (err, results) {
+            if (err) {
+                res.status(500).send({
+                    error: err,
+                    message: "Error en la petición",
+                });
+            } else {
+                res.status(200).json({
+                    data: results,
+                    message: "Lista de perfil",
+                });
+            }
+        });
+    });
+
+
 router.post("/", (req, res) => {
     const { cliente_id, inversor_id, comentario, calificacion } = req.body;
 
