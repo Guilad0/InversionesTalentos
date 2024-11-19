@@ -15,9 +15,71 @@
             @click="activeTabCli = index">
             {{ tabCli }} <span></span>
           </button>
+          <button data-bs-toggle="modal" data-bs-target="#exportModalTal">
+            exportar
+          </button>
+        </div>
 
-        </div>     
-        
+        <!-- Modal para extraer para el Talento -->
+        <div class="modal fade" id="exportModalTal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalTalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header m-auto text-dark">
+
+                <h5 class="modal-title" id="exportModalTalLabel">Exportar Reporte</h5>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body">
+                <div class="d-flex justify-content-center text-dark gap-5">
+                  <div class="mx-1"><i @click="getReports" class="fa-regular fa-file fs-1"></i><br><label>Hoy</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports" class="fa-regular fa-file fs-1"></i><br><label>Ayer</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports" class="fa-regular fa-file fs-1"></i><br><label>Semana</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports" class="fa-regular fa-file fs-1"></i><br><label>Mes</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports" class="fa-regular fa-file fs-1"></i><br><label>Año</label>
+                  </div>
+                  <div class="mx-1"><i @click="showCustomDate"
+                      class="fa-regular fa-file fs-1"></i><br><label>Personalizado</label></div>
+                  <div v-if="band == true" class="mx-1"><i class="fa-regular fa-file fs-1"></i><br><label>Personalizar
+                      fecha</label></div>
+                </div>
+                <h3 class="card-title text-center text-dark mt-5 mb-3">Reportes</h3>
+                <div class="px-5">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Talento</th>
+                        <th scope="col">Tokens invertidos</th>
+                        <th scope="col">Ganancia de tokens</th>
+                        <th scope="col">Fecha de Inversion</th>
+                        <th scope="col">Fecha de Retorno(Aprox)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Final modal para extraer para el Talento -->
+
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
 
@@ -103,8 +165,107 @@
             @click="activeTabInv = index">
             {{ tabInv }} <span></span>
           </button>
-
+          <button data-bs-toggle="modal" data-bs-target="#exportModalInv">
+            exportar
+          </button>
         </div>
+
+        <!-- Modal para extraer para el Inversor -->
+        <div class="modal fade" id="exportModalInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalInvLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header m-auto text-dark">
+
+                <h5 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h5>
+                <br>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+
+
+              </div>
+
+              <div class="modal-body">
+                
+                <div class="d-flex justify-content-center text-dark gap-5">
+                  <div class="mx-1"><i @click="getReports('hoy')" class="fa-regular fa-file fs-1"></i><br><label>Hoy</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports('ayer')" class="fa-regular fa-file fs-1"></i><br><label>Ayer</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports('semana')" class="fa-regular fa-file fs-1"></i><br><label>Semana</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports('mes')" class="fa-regular fa-file fs-1"></i><br><label>Mes</label>
+                  </div>
+                  <div class="mx-1"><i @click="getReports('anual')" class="fa-regular fa-file fs-1"></i><br><label>Año</label>
+                  </div>
+                  <div class="mx-1"><i @click="showCustomDate"
+                      class="fa-regular fa-file fs-1"></i><br><label>Personalizado</label></div>
+                  <div v-if="band == true" class="mx-1"><label for="fechaInicio">Fecha de Inicio</label><input id="fechaInicio" v-model="fechaInicio" class="form-control" type="date"><label for="fechaFin">Fecha Final</label><input id="fechaFin" v-model="fechaFin" class="form-control" type="date"><br><label></label></div>
+                </div>
+                <h3 class="card-title text-center text-dark mt-5 mb-3">Reportes</h3>
+                <div class="d-flex float-left px-5 mb-3">
+                  <div class="btn-group dropup">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      {{ typeReport }}
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li @click="showTable('Inversiones')"><a class="dropdown-item" href="#">Inversiones</a></li>
+                      <li @click="showTable('Retiros')"><a class="dropdown-item" href="#">Retiros</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="px-5">
+                  <table v-if="typeReport == 'Inversiones'" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Talento</th>
+                        <th scope="col">Tokens invertidos</th>
+                        <th scope="col">Ganancia de tokens</th>
+                        <th scope="col">Fecha de Inversion</th>
+                        <th scope="col">Fecha de Retorno(Aprox)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table v-if="typeReport == 'Retiros'" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Fecha de Solicitud</th>
+                        <th scope="col">Fecha de Aprobación</th>
+                        <th scope="col">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Final modal para extraer para el Inversor -->
+
+
 
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
@@ -173,6 +334,9 @@ var activeTabInv = ref(0);
 
 const tabsCli = ref(["Inversiones", "Retiros", "Devoluciones"]);
 var activeTabCli = ref(0);
+var typeReport = ref("Inversiones");
+var fechaInicio = ref("");
+var fechaFin = ref("");
 
 let baseURL = "http://localhost:3000/inversionesRetiros/";
 
@@ -321,6 +485,41 @@ const devolverTokens = async (inversion) => {
   obtenerInversiones_Clientes_Vencidas();
 
 };
+
+// funciones de obtener reportes
+const band = ref(false);
+
+const getReports = (report) => {
+  band.value = false
+  switch (report) {
+    case 'hoy': 
+      console.log('hoy');
+      break;
+    case 'ayer':
+      console.log('ayer');
+      break;
+    case 'semana': 
+      console.log('semana');
+      break;
+    case 'mes': 
+      console.log('mes');
+      break;
+    case 'anual': 
+      console.log('anual');
+      break;
+  
+    default:
+      break;
+  }
+}
+const showCustomDate = () => {
+  band.value = true
+}
+
+const showTable = () => {
+  typeReport.value = (typeReport.value === 'Inversiones') ? 'Retiros' : 'Inversiones'
+}
+
 
 </script>
 
