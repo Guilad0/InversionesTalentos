@@ -224,4 +224,170 @@ GROUP BY MONTH(fecha_solicitud);
   });
 });
 
+router.get("/gananciasAprobadas", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var query = `                              
+SELECT 
+    estado, 
+    MONTH(fecha_solicitud) AS mes, 
+    SUM(comision_aplicar) AS total_comisiones
+FROM 
+    solicitudes_retiro
+WHERE 
+    YEAR(fecha_solicitud) = 2024
+AND estado = 'Aprobado'
+GROUP BY MONTH(fecha_solicitud);
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Ganacias por mes",
+      });
+    }
+  });
+});
+
+router.get("/reporteInversionesGnral", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final
+  } = req.body;
+
+  var query = `                              
+SELECT 
+    inversiones.inversion_id, 
+    CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
+    inversiones.fecha_deposito, 
+    inversiones.monto,
+    CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
+    inversiones.fecha_devolucion, 
+    (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
+    inversiones.estado
+FROM inversiones
+INNER JOIN usuarios AS inversores 
+    ON inversiones.inversor_id = inversores.usuario_id
+INNER JOIN usuarios AS clientes 
+    ON inversiones.cliente_id = clientes.usuario_id
+WHERE inversiones.fecha_deposito > '${fecha_inicio}'
+AND inversiones.fecha_deposito < '${fecha_final}'
+ORDER BY inversiones.fecha_deposito DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de inversiones generado",
+      });
+    }
+  });
+});
+
+router.get("/reporteInversionesInversor", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final,
+    inversor_id
+  } = req.body;
+
+  var query = `                              
+SELECT 
+    inversiones.inversion_id, 
+    CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
+    inversiones.fecha_deposito, 
+    inversiones.monto,
+    CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
+    inversiones.fecha_devolucion, 
+    (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
+    inversiones.estado
+FROM inversiones
+INNER JOIN usuarios AS inversores 
+    ON inversiones.inversor_id = inversores.usuario_id
+INNER JOIN usuarios AS clientes 
+    ON inversiones.cliente_id = clientes.usuario_id
+WHERE inversiones.fecha_deposito > '${fecha_inicio}'
+AND inversiones.fecha_deposito < '${fecha_final}'
+AND inversiones.inversor_id = ${inversor_id}
+ORDER BY inversiones.fecha_deposito DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de inversiones generado",
+      });
+    }
+  });
+});
+
+router.get("/reporteInversionesCliente", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final,
+    cliente_id
+  } = req.body;
+
+  var query = `                              
+SELECT 
+    inversiones.inversion_id, 
+    CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
+    inversiones.fecha_deposito, 
+    inversiones.monto,
+    CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
+    inversiones.fecha_devolucion, 
+    (inversiones.ganancia_estimada - inversiones.monto) AS ganancia,  
+    inversiones.estado
+FROM inversiones
+INNER JOIN usuarios AS inversores 
+    ON inversiones.inversor_id = inversores.usuario_id
+INNER JOIN usuarios AS clientes 
+    ON inversiones.cliente_id = clientes.usuario_id
+WHERE inversiones.fecha_deposito > '${fecha_inicio}'
+AND inversiones.fecha_deposito < '${fecha_final}'
+AND inversiones.cliente_id = ${cliente_id}
+ORDER BY inversiones.fecha_deposito DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de inversiones generado",
+      });
+    }
+  });
+});
+
 module.exports = router;
