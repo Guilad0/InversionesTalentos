@@ -59,6 +59,7 @@ import Spinner from '@/components/Spinner.vue';
 import { getUser } from '@/helpers/utilities';
 import { onMounted, ref } from 'vue';
 import { useRoute } from "vue-router";
+import router from '@/router';
 
 let currentPath = useRoute();
 currentPath = currentPath.name;
@@ -68,7 +69,10 @@ onMounted(async () => {
   isLoading.value = true
   user.value = await getUser();
   isLoading.value = false
-})
+  if(user.value.rol == 'inversionista'|| user.value.rol == 'Admin'){
+    router.push('/');
+  }
+});
 
 </script>
 
