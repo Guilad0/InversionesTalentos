@@ -261,7 +261,7 @@ router.get("/reporteInversionesGnral", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final
-  } = req.body;
+  } = req.query;
 
   var query = `                              
 SELECT 
@@ -305,7 +305,7 @@ router.get("/reporteInversionesInversor", function (req, res, next) {
     fecha_inicio,
     fecha_final,
     inversor_id
-  } = req.body;
+  } = req.query;
 
   var query = `                              
 SELECT 
@@ -350,7 +350,7 @@ router.get("/reporteInversionesCliente", function (req, res, next) {
     fecha_inicio,
     fecha_final,
     cliente_id
-  } = req.body;
+  } = req.query;
 
   var query = `                              
 SELECT 
@@ -389,5 +389,121 @@ ORDER BY inversiones.fecha_deposito DESC;
     }
   });
 });
+
+router.get("/reporteSolicitudesGnral", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final
+  } = req.query;
+
+  var query = `                              
+SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
+CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
+solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
+solicitudes_retiro.fecha_aprobacion,
+solicitudes_retiro.monto_recibir
+FROM solicitudes_retiro
+INNER JOIN usuarios
+ON usuarios.usuario_id = solicitudes_retiro.usuario_id
+WHERE solicitudes_retiro.fecha_solicitud > '${fecha_inicio}'
+AND solicitudes_retiro.fecha_solicitud < '${fecha_final}'
+ORDER BY solicitudes_retiro.fecha_solicitud DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de solicitudes de retiro generado",
+      });
+    }
+  });
+});
+
+router.get("/reporteSolicitudesTipo", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final,
+    tipo //puede ser 'inversor' o 'cliente'
+  } = req.query;
+
+  var query = `                              
+SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
+CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
+solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
+solicitudes_retiro.fecha_aprobacion,
+solicitudes_retiro.monto_recibir
+FROM solicitudes_retiro
+INNER JOIN usuarios
+ON usuarios.usuario_id = solicitudes_retiro.usuario_id
+WHERE solicitudes_retiro.fecha_solicitud > '${fecha_inicio}'
+AND solicitudes_retiro.fecha_solicitud < '${fecha_final}'
+AND solicitudes_retiro.tipo = '${tipo}'
+ORDER BY solicitudes_retiro.fecha_solicitud DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de solicitudes de retiro generado",
+      });
+    }
+  });
+});
+
+router.get("/reporteSolicitudesID", function (req, res, next) {
+  const {
+    fecha_inicio,
+    fecha_final,
+    usuario_id // no importa si es cliente o inversor
+  } = req.query;
+
+  var query = `                              
+SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
+CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
+solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
+solicitudes_retiro.fecha_aprobacion,
+solicitudes_retiro.monto_recibir
+FROM solicitudes_retiro
+INNER JOIN usuarios
+ON usuarios.usuario_id = solicitudes_retiro.usuario_id
+WHERE solicitudes_retiro.fecha_solicitud > '${fecha_inicio}'
+AND solicitudes_retiro.fecha_solicitud < '${fecha_final}'
+AND solicitudes_retiro.usuario_id = '${usuario_id}'
+ORDER BY solicitudes_retiro.fecha_solicitud DESC;
+`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Reporte de solicitudes de retiro generado",
+      });
+    }
+  });
+});
+
 
 module.exports = router;
