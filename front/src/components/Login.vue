@@ -40,7 +40,7 @@
             </button>
           </div>
           <div class="mb-3">
-            <GoogleLogin :callback="callback" prompt auto-login/>
+            <GoogleLogin :callback="callback" prompt/>
           </div>
 
         </div>
@@ -74,7 +74,7 @@ const route = useRouter();
 
 const correo = ref("");
 const password = ref("");
-const loggedIn = ref(false);
+const  edIn = ref(false);
 const user = ref(null);
 
 let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
@@ -184,7 +184,6 @@ const callback =async (response) => {
     const { data } = await axios.post(baseURL + "/google-login", { token: response.credential });
     localStorage.setItem("token", data.token);
     localStorage.setItem("usuario", JSON.stringify(data.user));
-    loggedIn.value = true;
     user.value = data.user;
     route.push({ path: "/" });
   } catch (error) {
