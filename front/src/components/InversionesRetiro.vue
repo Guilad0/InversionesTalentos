@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-center">
 
           <button v-for="(tabCli, index) in tabsCli" :key="index"
-            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabInv === index }]"
+            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabCli === index }]"
             @click="activeTabCli = index">
             {{ tabCli }} <span></span>
           </button>
@@ -158,24 +158,25 @@
         </div>
         <!-- Final modal para extraer para el Talento -->
 
+
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
 
-          <div class="bg-white p-4  " v-for="inversion_recibida in inversiones_recibidas" :key="inversion_recibida">
+          <div class="p-3 shadow-md text-center" v-for="inversion_recibida in inversiones_recibidas"
+            :key="inversion_recibida">
 
-            <div class="row">
+            <div class="custom-card row bg-degrade-inverso p-3">
 
-              <div class="col-md-4">
+              <div class="col-9 text-white text-center border-end p-3">
 
-                <p>Inversion ID: {{ inversion_recibida.inversion_id }}</p>
-                <p>Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
-                <p>Tokens Recibidos: {{ inversion_recibida.monto }}</p>
-                <p>Fecha: {{ inversion_recibida.fecha_deposito }}</p>
-                <hr />
+                <p class="text-white text-center">Inversion ID: {{ inversion_recibida.inversion_id }}</p>
+                <p class="text-white text-center">Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
+                <p class="text-white text-center">Tokens Recibidos: {{ inversion_recibida.monto }}</p>
+                <p class="text-white text-center">Fecha: {{ formatDate(inversion_recibida.fecha_deposito) }}</p>
 
               </div>
 
-              <div class="col-4">
+              <div class="col-3 p-3">
 
                 <img :src="inversion_recibida.imagen" width="150" class=" rounded-circle" alt="">
 
@@ -190,17 +191,19 @@
         <!-- Lista de solicitudes de retiro -->
         <div class="tab-content" v-if="activeTabCli === 1">
 
-          <div class="bg-white p-4" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
+          <div class="p-3 shadow-md text-center" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
 
-            <p>Solicitud: {{ cliente_retiro.retiro_id }}</p>
-            <p>Monto: ${{ cliente_retiro.monto_recibir }}</p>
-            <p>Fecha Solicitud: {{ cliente_retiro.fecha_solicitud }}</p>
-            <p>Estado: {{ cliente_retiro.estado }}</p>
-            <p v-if="cliente_retiro.estado == 'Aprobado'">
-              Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
-            </p>
+            <div class="custom-card bg-degrade-inverso p-3">
 
-            <hr />
+              <h3 class="text-white text-center">Monto:<br> ${{ cliente_retiro.monto_recibir }}</h3>
+              <p class="text-white text-center">Solicitud: {{ cliente_retiro.retiro_id }}</p>
+              <p class="text-white text-center">Fecha Solicitud: {{ formatDate(cliente_retiro.fecha_solicitud) }}</p>
+              <p class="text-white text-center">Estado: {{ cliente_retiro.estado }}</p>
+              <p class="text-white text-center" v-if="cliente_retiro.estado == 'Aprobado'">
+                Fecha Aprobación: {{ formatDate(cliente_retiro.fecha_aprobacion) }}
+              </p>
+
+            </div>
 
           </div>
 
@@ -209,17 +212,20 @@
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
 
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversion_vencida in inversiones_vencidas"
+          <div class="p-3 shadow-md text-center" v-for="inversion_vencida in inversiones_vencidas"
             :key="inversion_vencida">
 
-            <p>Solicitud: {{ inversion_vencida.inversion_id }}</p>
-            <p>Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
-            <p>Fecha de Inversion: {{ inversion_vencida.fecha_deposito }}</p>
-            <p>Fecha de Vencimiento: {{ inversion_vencida.fecha_devolucion }}</p>
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
-              @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span></button>
+            <div class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center">
 
-            <hr />
+              <p class="text-white text-center">Solicitud: {{ inversion_vencida.inversion_id }}</p>
+              <p class="text-white text-center">Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
+              <p class="text-white text-center">Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}</p>
+              <p class="text-white text-center">Fecha de Vencimiento: {{ formatDate(inversion_vencida.fecha_devolucion)}}</p>
+              <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span>
+              </button>
+
+            </div>
 
           </div>
 
@@ -402,8 +408,9 @@
                 <p class=" text-white text-center">Tokens Invertidos: {{ inversion.monto }}</p>
                 <p class=" text-white text-center">Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto
                   }}</p>
-                <p class=" text-white text-center">Fecha de Inversion: {{ inversion.fecha_deposito }}</p>
-                <p class=" text-white text-center">Fecha de Retorno Aprox.: {{ inversion.fecha_devolucion }}</p>
+                <p class=" text-white text-center">Fecha de Inversion: {{ formatDate(inversion.fecha_deposito) }}</p>
+                <p class=" text-white text-center">Fecha de Retorno Aprox.: {{ formatDate(inversion.fecha_devolucion) }}
+                </p>
 
               </div>
 
@@ -421,15 +428,16 @@
 
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
-          <div class="bg-white p-4 rounded-lg shadow-md" v-for="inversionista_retiro in inversionistas_retiros"
-            :key="inversionista_retiro">
 
-            <p>Solicitud: {{ inversionista_retiro.retiro_id }}</p>
-            <p>Monto: ${{ inversionista_retiro.monto_recibir }}</p>
-            <p>Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
-            <p>Estado: {{ inversionista_retiro.estado }}</p>
-            <p v-if="inversionista_retiro.estado == 'Aprobado'">
-              Fecha Aprobación: {{ inversionista_retiro.fecha_aprobacion }}
+          <div class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
+            v-for="inversionista_retiro in inversionistas_retiros" :key="inversionista_retiro">
+
+            <p class="text-white">Monto: ${{ inversionista_retiro.monto_recibir }}</p>
+            <p class="text-white">Solicitud: {{ inversionista_retiro.retiro_id }}</p>
+            <p class="text-white">Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
+            <p class="text-white">Estado: {{ inversionista_retiro.estado }}</p>
+            <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
+              Fecha Aprobación: {{ formatDate(inversionista_retiro.fecha_aprobacion) }}
             </p>
 
           </div>
@@ -610,6 +618,11 @@ const devolverTokens = async (inversion) => {
 
 };
 
+
+const formatDate = (date) => {
+  return new Date(date).toISOString().split('T')[0];
+};
+
 // funciones de obtener reportes
 const baseUrl = 'http://localhost:3000/reportes/';
 const band = ref(false);
@@ -720,6 +733,7 @@ const cleanFields = () => {
   selectedReport.value = ''
 }
 
+
 </script>
 
 <style scoped>
@@ -781,7 +795,7 @@ const cleanFields = () => {
 
 .active {
   background-color: var(--gray-color);
-  color: var(--yellow-orange) !important;
+  color: white !important;
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;

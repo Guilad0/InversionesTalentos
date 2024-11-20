@@ -4,21 +4,21 @@
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
 
-      <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
+      <h1 class="font-bold mb-4">Balance de Fondos</h1>
 
-      <div >
+      <div>
 
         <div class="row">
 
           <div class="col-md-6">
 
-            <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
+            <p class="text-white">Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
 
           </div>
 
           <div class="col-md-6">
 
-            <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
+            <p class="text-white">Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
 
           </div>
 
@@ -28,8 +28,10 @@
 
       <div class="d-flex justify-content-around mb-6">
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro <span></span></button>        
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalSolicitud">Solicitar Retiro <span></span></button>
         <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
 
@@ -51,7 +53,8 @@
 
           <div class="col-md-4">
 
-            <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+            <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista -
+              tokensInvertidosInversionista }}</p>
 
           </div>
 
@@ -67,9 +70,12 @@
 
       <div class="d-flex justify-content-around mb-6">
 
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalInversion">Invertir<span></span></button>
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal" data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalInversion">Invertir<span></span></button>
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
 
       </div>
 
@@ -78,7 +84,7 @@
     <div class="modal fade" id="modalTokens" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 
         <div class="modal-content bg-degrade">
 
@@ -92,21 +98,21 @@
 
           </div>
 
-          <div class="modal-body">
-
+          <div class="modal-body">            
+            <!-- Cliente Info -->
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
 
               <div class="row">
 
                 <div class="col-md-6">
 
-                  <p>Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
+                  <p class="text-xl text-white text-center">Total de Tokens Recibidos: {{ tokensRecibidosCliente }}</p>
 
                 </div>
 
                 <div class="col-md-6">
 
-                  <p>Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
+                  <p class="text-xl text-white text-center">Total de Tokens por Devolver: {{ tokensDeudasCliente }}</p>
 
                 </div>
 
@@ -114,84 +120,56 @@
 
             </div>
 
+            <!-- Inversionista Info -->
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
 
               <div class="row">
 
                 <div class="col-md-6">
 
-                  <p class="text-xl text-white">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
+                  <p class="text-xl text-white text-center">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
 
                 </div>
 
                 <div class="col-md-6">
 
-                  <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+                  <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensCompradosInversionista -
+                    tokensInvertidosInversionista }}</p>
 
                 </div>
 
               </div>
 
             </div>
-
+            <!-- Formulario -->
             <form action="#" class="needs-validation" novalidate>
 
               <div class="row">
 
-                <div class="col-md-2"></div>
+                <div class="col-md-5 offset-md-2">
 
-                <div class="col-md-8">
+                  <div class="mb-3">
 
-                  <div class="card m-1">
+                    <label for="montoUsd" class="form-label">Monto en USD</label>
 
-                    <div class="card-body">
-
-                      <div class="form">
-
-                        <div class="row d-flex justify-content-around">
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label for="montoUsd" class="form-label">Monto en USD</label>
-                              <input type="text" v-model="montoUsd" id="montoUsd" class="form-control" @change="calcularTokens()" required />
-
-                            </div>
-
-                          </div>
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label class="form-label" required>Tokens</label>
-
-                              <p>{{ tokens }}</p>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                        <hr>
-
-                        <div class="text-center">
-
-                          <button type="button" @click="comprarTokens()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Comprar<span></span></button>
-
-                        </div>
-
-                      </div>
-
-                    </div>
+                    <input type="text" v-model="montoUsd" id="montoUsd" class="form-control " @change="calcularTokens()"
+                      required />
 
                   </div>
 
                 </div>
 
-                <div class="col-md-2"></div>
+                <div class="col-md-5">
+
+                  <div class="mb-3">
+
+                    <label class="form-label">Tokens</label>
+
+                    <p class="text-xl text-white text-center">{{ tokens }}</p>
+
+                  </div>
+
+                </div>
 
               </div>
 
@@ -201,7 +179,13 @@
 
           <div class="modal-footer">
 
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">
+            <button type="button" @click="comprarTokens()"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
+              Comprar<span></span>
+            </button>
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
+              data-bs-dismiss="modal">
               Cerrar<span></span>
             </button>
 
@@ -210,16 +194,17 @@
         </div>
 
       </div>
-      
+
     </div>
+
 
     <!-- Modal Inversión -->
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 
-        <div class="modal-content">
+        <div class="modal-content bg-degrade">
 
           <div class="modal-header">
 
@@ -235,101 +220,75 @@
 
             <form action="#" class="needs-validation" novalidate>
 
-              <p class="text-xl align-self-center">Tokens Restantes: {{ tokensCompradosInversionista - tokensInvertidosInversionista }}</p>
+              <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensCompradosInversionista -
+                tokensInvertidosInversionista }}</p>
 
               <div class="row">
+                <!-- Selección de Cliente -->
+                <div class="col-md-8 offset-md-2">
 
-                <div class="col-md-2"></div>
+                  <div class="mb-3">
 
-                <div class="col-md-8">
+                    <label for="cliente_Invertir_ID" class="form-label">Cliente</label>
 
-                  <div class="card m-1">
+                    <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select" required>
 
-                    <div class="card-body">
+                      <option disabled>Seleccione un Cliente</option>
 
-                      <div class="form">
+                      <option v-for="cliente in clientes" :key="cliente.usuario_id" :value="cliente.usuario_id">
+                        {{ cliente.nombre + ' ' + cliente.apellido }}
+                      </option>
 
-                        <div class="row d-flex justify-content-around">
-
-                          <div class="col-md-8">
-
-                            <div class="mb-3">
-
-                              <label for="cliente_Invertir_ID" class="form-label">Cliente</label><br>
-
-                              <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select" required>
-
-                                <option disabled>Seleccione un Cliente</option>
-                                <option v-for="cliente in clientes" :key="cliente" :value="cliente.usuario_id">
-                                  <!-- :value="cliente.usuario_id" -->
-                                  {{ cliente.nombre + ' ' + cliente.apellido }}
-                                </option>
-
-                              </select>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                        <div class="row d-flex justify-content-around">
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-
-                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control" @change="calcularGanancias()" required />
-
-                            </div>
-
-                          </div>
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label class="form-label">Meses de Inversión</label>
-
-                              <p>{{ tiempo_inversion }}</p>
-
-                            </div>
-                            
-                          </div>
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-
-                              <p>{{ ganancia_tokens_inv }}</p>
-
-                            </div>
-
-                          </div>
-                          
-                        </div>
-
-                        <hr>
-
-                        <div class="text-center">
-
-                          <button type="button" @click="inversionistaInvertir()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Invertir<span></span></button>
-
-                        </div>
-
-                      </div>
-
-                    </div>
+                    </select>
 
                   </div>
 
                 </div>
 
-                <div class="col-md-2"></div>
+              </div>
+
+              <div class="row">
+                <!-- Tokens a Invertir -->
+                <div class="col-md-4 offset-md-2">
+
+                  <div class="mb-3">
+
+                    <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
+
+                    <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
+                      @change="calcularGanancias()" required />
+
+                  </div>
+
+                </div>
+                <!-- Meses de Inversión -->
+                <div class="col-md-4">
+
+                  <div class="mb-3">
+
+                    <label class="form-label">Meses de Inversión</label>
+
+                    <p class="text-xl text-white text-center">{{ tiempo_inversion }}</p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="row">
+                <!-- Ganancias -->
+                <div class="col-md-4 offset-md-4">
+
+                  <div class="mb-3 text-center">
+
+                    <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+
+                    <p class="text-xl text-white text-center">{{ ganancia_tokens_inv }}</p>
+
+                  </div>
+
+                </div>
 
               </div>
 
@@ -339,7 +298,13 @@
 
           <div class="modal-footer">
 
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-dismiss="modal">Cerrar<span></span></button>
+            <button type="button" @click="inversionistaInvertir()"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
+              Invertir<span></span>
+            </button>
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
+              data-bs-dismiss="modal">Cerrar<span></span></button>
 
           </div>
 
@@ -348,14 +313,13 @@
       </div>
 
     </div>
-
     <!-- Modal Solicitud Retiro -->
     <div class="modal fade" id="modalSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 
-        <div class="modal-content">
+        <div class="modal-content bg-degrade">
 
           <div class="modal-header">
 
@@ -372,90 +336,59 @@
             <form action="#" class="needs-validation" novalidate>
 
               <div class="row">
+                <!-- Tokens a cambiar -->
+                <div class="col-md-6">
 
-                <div class="col-md-2"></div>
+                  <div class="mb-3">
 
-                <div class="col-md-8">
+                    <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
 
-                  <div class="card m-1">
+                    <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control"
+                      @change="calcularDolares()" required />
 
-                    <div class="card-body">
+                  </div>
 
-                      <div class="form">
+                </div>
+                <!-- Dólares calculados -->
+                <div class="col-md-6">
 
-                        <div class="row d-flex justify-content-around">
+                  <div class="mb-3">
 
-                          <div class="col-md-4">
+                    <label class="form-label">Dólares</label>
 
-                            <div class="mb-3">
-
-                              <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
-
-                              <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control" @change="calcularDolares()" required />
-
-                            </div>
-
-                          </div>
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label class="form-label">Dolares</label>
-
-                              <p>$US {{ montoDolares }}</p>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                        <div class="row d-flex justify-content-around">
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label class="form-label">Comisión de Retiro</label>
-
-                              <p>{{ comision_retiro }}%</p>
-
-                            </div>
-
-                          </div>
-
-                          <div class="col-md-4">
-
-                            <div class="mb-3">
-
-                              <label for="retiro_inversionista" class="form-label">Total a Retirar</label>
-
-                              <p>$US {{ dolares }}</p>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                        <hr>
-
-                        <div class="text-center">
-
-                          <button type="button" @click="solicitarRetiro()" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">Solicitar Retiro<span></span></button>
-
-                        </div>
-
-                      </div>
-
-                    </div>
+                    <p class="text-xl text-white text-center">$US {{ montoDolares }}</p>
 
                   </div>
 
                 </div>
 
-                <div class="col-md-2"></div>
+              </div>
+
+              <div class="row">
+                <!-- Comisión de retiro -->
+                <div class="col-md-6">
+
+                  <div class="mb-3">
+
+                    <label class="form-label">Comisión de Retiro</label>
+
+                    <p class="text-xl text-white text-center">{{ comision_retiro }}%</p>
+
+                  </div>
+
+                </div>
+                <!-- Total a retirar -->
+                <div class="col-md-6">
+
+                  <div class="mb-3">
+
+                    <label for="retiro_inversionista" class="form-label">Total a Retirar</label>
+
+                    <p class="text-xl text-white text-center">$US {{ dolares }}</p>
+
+                  </div>
+
+                </div>
 
               </div>
 
@@ -465,7 +398,13 @@
 
           <div class="modal-footer">
 
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
+            <button type="button" @click="solicitarRetiro()"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
+              Solicitar Retiro<span></span>
+            </button>
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 btn-7 m-2"
+              data-bs-dismiss="modal">
               Cerrar<span></span>
             </button>
 
@@ -476,6 +415,7 @@
       </div>
 
     </div>
+
 
   </div>
 
@@ -938,9 +878,13 @@ const solicitarRetiro = async () => {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
 
+h1 {
+  font-family: var(--font-montserrat-bold) ;
+}
+
 p {
-  font-size: 1rem;
-  color: var(--gray-color);
+  font-family: var(--font-montserrat-semibold);
+  font-size: 1.2rem;  
   margin-right: 15px;
 }
 
@@ -978,6 +922,10 @@ button {
   z-index: -1;
 }
 
+.btn-7 span {
+  background-color: rgb(173, 1, 1) !important;
+}
+
 .btn-6:hover {
   color: var(--white-anti-flash-color);
 }
@@ -988,7 +936,8 @@ button {
 }
 
 input {
-  border-color: var(--input);
-  background-color: var(--background);
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.281);
 }
+
 </style>
