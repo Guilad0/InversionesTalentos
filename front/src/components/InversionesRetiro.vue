@@ -15,8 +15,149 @@
             @click="activeTabCli = index">
             {{ tabCli }} <span></span>
           </button>
-
+          <button data-bs-toggle="modal" data-bs-target="#exportModalTal">
+            exportar
+          </button>
         </div>
+
+        <!-- Modal para extraer para el Talento -->
+        <div class="modal fade" id="exportModalTal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalTalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <button type="button" @click="closeModal" class="me-5 btn btn-blue mt-3 abs-custom-icon-close"
+                data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+              <div class="modal-header m-auto text-dark ">
+                <h5 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h5>
+                <br>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body px-5">
+                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')" 
+                      :class="{ 'selected': selectedReport === 'hoy' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Hoy</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
+                      :class="{ 'selected': selectedReport === 'ayer' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Ayer</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
+                      :class="{ 'selected': selectedReport === 'semana' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Semana</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
+                      :class="{ 'selected': selectedReport === 'mes' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Mes</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
+                      :class="{ 'selected': selectedReport === 'anual' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Anual</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
+                    :class="{ 'selected': band == true }"
+                      class="fa-regular fa-file fs-1" width="50" /><br>
+                    <label>Personalizado</label>
+                  </div>
+                  <transition name="slide">
+                    <div v-if="band == true" class="mx-1 card px-1">
+                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
+                        v-model="fechaInicioCustom" class="form-control" type="date">
+                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
+                        v-model="fechaFinCustom" class="form-control" type="date"><br>
+                    </div>
+                  </transition>
+                </div>
+                <div class="card border-0">
+                  <div class="card-body">
+                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
+                      <div class="custom-abs-rigth">
+                        <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="">
+                      </div>
+                      Reportes
+                      <div class="d-flex float-left px-5 mb-3 custom-abs-left">
+                        <div class="btn-group dropup">
+                          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <label class="text-white">{{ typeReport }}</label>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li @click="showTable('Inversiones')"><a class="dropdown-item" href="#">Inversiones</a></li>
+                            <li @click="showTable('Retiros')"><a class="dropdown-item" href="#">Retiros</a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="px-5 ">
+                  <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Talento</th>
+                        <th scope="col">Tokens invertidos</th>
+                        <th scope="col">Ganancia de tokens</th>
+                        <th scope="col">Fecha de Inversion</th>
+                        <th scope="col">Fecha de Retorno(Aprox)</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="reports.length > 0">
+                      <tr v-for="rep in reports" :key="rep">
+                        <th scope="col">{{rep.inversion_id}}</th>
+                        <th scope="col">{{ rep.inversor }}</th>
+                        <th scope="col">{{ rep.monto }}</th>
+                        <th scope="col">{{ getEstimada(rep.ganancia, rep.monto) }}</th>
+                        <th scope="col">{{ rep.fecha_deposito }}</th>
+                        <th scope="col">{{ rep.fecha_devolucion }}</th>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table v-if="typeReport == 'Retiros'" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Monto solicitado</th>
+                        <th scope="col">Monto a recibir</th>
+                        <th scope="col">Fecha solicitud</th>
+                        <th scope="col">Fecha de aprobacion</th>
+                        <th scope="col">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody v-for="rep in reports" :key="rep">
+                      <tr scope="col">{{ rep.retiro_id }}</tr>
+                      <tr scope="col">{{ rep.monto_solicitud }}</tr>
+                      <tr scope="col">{{ rep.monto_recibir }}</tr>
+                      <tr scope="col">{{ rep.fecha_solicitud }}</tr>
+                      <tr scope="col">{{ rep.fecha_aprobacion }}</tr>
+                      <tr scope="col">{{ rep.estado }}</tr>
+                    </tbody>
+                  </table>
+                  <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                    <div class="d-flex justify-content-center rounded-3">
+                      <div class="alert alert-warning " role="alert">
+                        <h4 class="alert-heading">Sin resultados!</h4>
+                        <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
+                          de fechas diferente.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Final modal para extraer para el Talento -->
+
 
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
@@ -95,9 +236,7 @@
     </div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
-
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-
         <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
         <!-- Contenedor de tabs -->
         <div class="d-flex justify-content-center">
@@ -107,8 +246,152 @@
             @click="activeTabInv = index">
             {{ tabInv }} <span></span>
           </button>
-
+          <button data-bs-toggle="modal" data-bs-target="#exportModalInv" class="animate__animated animate__fadeInUp">
+            exportar
+          </button>
         </div>
+
+        <!-- Modal para extraer para el Inversor -->
+        <div class="modal fade" id="exportModalInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalInvLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content position-relative">
+              <button type="button" @click="closeModal" class="me-5 btn btn-blue mt-3 abs-custom-icon-close"
+                data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+              <div class="modal-header m-auto text-dark ">
+                <h5 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h5>
+                <br>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+
+              <div class="modal-body px-5">
+                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')" 
+                      :class="{ 'selected': selectedReport === 'hoy' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Hoy</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
+                      :class="{ 'selected': selectedReport === 'ayer' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Ayer</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
+                      :class="{ 'selected': selectedReport === 'semana' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Semana</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
+                      :class="{ 'selected': selectedReport === 'mes' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Mes</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
+                      :class="{ 'selected': selectedReport === 'anual' }"
+                      class="fa-regular fa-file fs-1" width="50" /><br><label>Anual</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
+                    :class="{ 'selected': band == true }"
+                      class="fa-regular fa-file fs-1" width="50" /><br>
+                    <label>Personalizado</label>
+                  </div>
+                  <transition name="slide">
+                    <div v-if="band == true" class="mx-1 card px-1">
+                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
+                        v-model="fechaInicioCustom" class="form-control" type="date">
+                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
+                        v-model="fechaFinCustom" class="form-control" type="date"><br>
+                    </div>
+                  </transition>
+                </div>
+                <div class="card border-0">
+                  <div class="card-body">
+                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
+                      <div class="custom-abs-rigth">
+                        <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="">
+                      </div>
+                      Reportes
+                      <div class="d-flex float-left px-5 mb-3 custom-abs-left">
+                        <div class="btn-group dropup">
+                          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <label class="text-white">{{ typeReport }}</label>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li @click="showTable('Inversiones')"><a class="dropdown-item" href="#">Inversiones</a></li>
+                            <li @click="showTable('Retiros')"><a class="dropdown-item" href="#">Retiros</a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="px-5 ">
+                  <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Talento</th>
+                        <th scope="col">Tokens invertidos</th>
+                        <th scope="col">Ganancia de tokens</th>
+                        <th scope="col">Fecha de Inversion</th>
+                        <th scope="col">Fecha de Retorno(Aprox)</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="reports.length > 0">
+                      <tr v-for="rep in reports" :key="rep">
+                        <th scope="col">{{rep.inversion_id}}</th>
+                        <th scope="col">{{ rep.inversor }}</th>
+                        <th scope="col">{{ rep.monto }}</th>
+                        <th scope="col">{{ getEstimada(rep.ganancia, rep.monto) }}</th>
+                        <th scope="col">{{ rep.fecha_deposito }}</th>
+                        <th scope="col">{{ rep.fecha_devolucion }}</th>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table v-if="typeReport == 'Retiros'" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Monto solicitado</th>
+                        <th scope="col">Monto a recibir</th>
+                        <th scope="col">Fecha solicitud</th>
+                        <th scope="col">Fecha de aprobacion</th>
+                        <th scope="col">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody v-for="rep in reports" :key="rep">
+                      <tr scope="col">{{ rep.retiro_id }}</tr>
+                      <tr scope="col">{{ rep.monto_solicitud }}</tr>
+                      <tr scope="col">{{ rep.monto_recibir }}</tr>
+                      <tr scope="col">{{ rep.fecha_solicitud }}</tr>
+                      <tr scope="col">{{ rep.fecha_aprobacion }}</tr>
+                      <tr scope="col">{{ rep.estado }}</tr>
+                    </tbody>
+                  </table>
+                  <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                    <div class="d-flex justify-content-center rounded-3">
+                      <div class="alert alert-warning " role="alert">
+                        <h4 class="alert-heading">Sin resultados!</h4>
+                        <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
+                          de fechas diferente.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Final modal para extraer para el Inversor -->
+
+
 
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
@@ -170,29 +453,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { getCurrentYearStartAndEnd, getDayStartAndEnd, getMonthStartAndEnd, getWeekStartAndEnd, getYesterdayStartAndEnd } from "@/helpers/utilities";
 const route = useRouter();
 const tabsInv = ref(["Inversiones", "Retiros"]);
 var activeTabInv = ref(0);
 
 const tabsCli = ref(["Inversiones", "Retiros", "Devoluciones"]);
 var activeTabCli = ref(0);
+var typeReport = ref("Inversiones");
+const bandAlert = ref(false)
 
 let baseURL = "http://localhost:3000/inversionesRetiros/";
-
+const  selectedReport = ref('')
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
-
+const client = ref('')
 if (usuario_rol.value == "Inversionista") {
   inversionista_ID.value = usuario_id.value;
   onMounted(() => {
     obtenerInversiones_Inversionista();
     obtenerInversionista_retiro();
+    typeClient.value = 'reporteInversionesInversor'
+    client.value = 'inversor_id'
   });
 }
 if (usuario_rol.value == "Cliente") {
@@ -202,6 +490,8 @@ if (usuario_rol.value == "Cliente") {
     obtenerCliente_retiro();
     obtenerInversiones_Clientes_Vencidas();
     obtenerTokens_Cliente();
+    typeClient.value = 'reporteInversionesCliente'
+    client.value = 'cliente_id'
   });
 }
 
@@ -328,13 +618,177 @@ const devolverTokens = async (inversion) => {
 
 };
 
+
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0];
 };
 
+// funciones de obtener reportes
+const baseUrl = 'http://localhost:3000/reportes/';
+const band = ref(false);
+var fechaInicio = ref("");
+const typeClient = ref('')
+var fechaFin = ref("");
+var fechaInicioCustom = ref("");
+var fechaFinCustom = ref("");
+const reports = ref([])
+const getReports = (report) => {
+  selectedReport.value = report
+  band.value = false;
+  fechaInicioCustom.value = '';
+  fechaFinCustom.value = '';
+  switch (report) {
+    case 'hoy':
+      const { startOfDay, endOfDay } = getDayStartAndEnd();
+      fechaInicio.value = startOfDay;
+      fechaFin.value = endOfDay;
+      break;
+    case 'ayer':
+      const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
+      fechaInicio.value = startOfYesterday;
+      fechaFin.value = endOfYesterday;
+      console.log(fechaInicio.value, fechaFin.value);
+      break;
+    case 'semana':
+      const { startOfWeek, endOfWeek } = getWeekStartAndEnd();
+      fechaInicio.value = startOfWeek;
+      fechaFin.value = endOfWeek;
+      break;
+    case 'mes':
+      const { startOfMonth, endOfMonth } = getMonthStartAndEnd();
+      fechaInicio.value = startOfMonth;
+      fechaFin.value = endOfMonth;
+      break;
+    case 'anual':
+      const { startOfYear, endOfYear } = getCurrentYearStartAndEnd();
+      fechaInicio.value = startOfYear;
+      fechaFin.value = endOfYear;
+      break;
+    default:
+      break;
+  }
+  if (typeReport.value == 'Inversiones') {
+    getData(`${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+  }
+  if (typeReport.value == 'Retiros') {
+    getData(`reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+  }
+  bandAlert.value = true
+
+}
+
+watch(typeReport, () => {
+  cleanFields()
+});
+
+
+const showReportCustom = () => {
+  const fechaInicio = fechaInicioCustom.value?.trim();
+  const fechaFin = fechaFinCustom.value?.trim();
+  if (fechaInicio && fechaFin && !isNaN(Date.parse(fechaInicio)) && !isNaN(Date.parse(fechaFin))) {
+    const fechaInicioDate = new Date(fechaInicio);
+    const fechaFinDate = new Date(fechaFin);
+    if (fechaFinDate > fechaInicioDate) {
+      getData(`${typeClient.value}/?fecha_inicio=${fechaInicio}&fecha_final=${fechaFin}&inversor_id=${usuario.usuario_id}`);
+    }
+  }
+};
+
+const getEstimada = (a, b) => {
+  return a - b;
+}
+
+const getData = async (url) => {
+  console.log(baseUrl + url);
+  try {
+    const { data } = await axios.get(baseUrl + url)
+    reports.value = data.data,
+      console.log(reports.value);
+  } catch (error) {
+
+  }
+}
+
+const showCustomDate = () => {
+  band.value = true;
+  cleanFields()
+}
+
+const showTable = () => {
+  typeReport.value = (typeReport.value === 'Inversiones') ? 'Retiros' : 'Inversiones'
+}
+
+const closeModal = () => {
+  console.log('cerrado');
+  cleanFields()
+}
+
+const cleanFields = () => {
+  fechaInicio.value = ''
+  fechaFin.value = ''
+  fechaFinCustom.value = ''
+  fechaInicioCustom.value = ''
+  reports.value = []
+  bandAlert.value = false;
+  selectedReport.value = ''
+}
+
+
 </script>
 
 <style scoped>
+
+.selected {
+  text-decoration: underline;
+  border-radius: 50% ;
+  border: 3px solid #162139;
+  padding: 10px;
+  font-weight: bold;
+}
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-enter-from {
+  transform: translateY(-20px);
+  opacity: 0; 
+}
+
+.slide-enter-to {
+  transform: translateY(0);
+  opacity: 1; 
+}
+
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1; 
+}
+
+.slide-leave-to {
+  transform: translateY(-20px);
+  opacity: 0; 
+}
+.selected {
+  text-decoration: underline;
+  font-weight: bold;
+}
+.abs-custom-icon-close {
+  position: absolute;
+  right: 0%;
+}
+
+.custom-abs-left {
+  position: absolute;
+  top: 0;
+  left: 20px;
+}
+
+.custom-abs-rigth {
+  position: absolute;
+  top: 0;
+  right: 100px;
+}
+
 .bg-degrade-inverso {
   background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
 }

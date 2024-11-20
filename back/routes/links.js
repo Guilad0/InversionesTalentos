@@ -29,6 +29,30 @@ router.get('/', function (req, res, next) {
     });
 });
 
+// Ruta para obtener los links por cliente_id
+router.get("/cliente/:id", function (req, res, next) {
+    const clienteId = req.params.id;
+
+    const links = `
+        SELECT c.link FROM links c WHERE c.cliente_id = ?`;
+
+        conexion.query(links, [clienteId], function (err, results) {
+            if (err) {
+                res.status(500).send({
+                    error: err,
+                    message: "Error en la petición",
+                });
+            } else {
+                res.status(200).json({
+                    data: results,
+                    message: "Lista de links",
+                });
+            }
+        });
+    });
+
+
+
 //POSTEAR links
 router.post('/', function (req, res, next) {
 

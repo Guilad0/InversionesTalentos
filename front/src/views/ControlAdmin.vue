@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Solicitudes from '../components/WalletRequests.vue'
 import Users from '../components/Users.vue';
 import Posts from '../components/Posts.vue'
@@ -69,9 +69,17 @@ import ConsultasReclamos from '@/components/ConsultasReclamos.vue';
 import Coment from '../components/Coment.vue';
 import Reportes from '../components/Reportes.vue';
 import Faqs from '../components/Faqs.vue';
+import { getUser } from '@/helpers/utilities';
+import router from '@/router';
 
 const view = ref('users');
+const user = ref(null);
 
+onMounted(async () => {
+  user.value = await getUser();
+  
+
+})
 
 const showView = (typeView) => {
   view.value = typeView;

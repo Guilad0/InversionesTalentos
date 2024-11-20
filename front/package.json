@@ -18,6 +18,8 @@
     "crypto-js": "^4.2.0",
     "cryptr": "^6.3.0",
     "izitoast": "^1.4.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "notyf": "^3.10.0",
     "pinia": "^2.2.4",
     "sweetalert2": "^11.14.4",

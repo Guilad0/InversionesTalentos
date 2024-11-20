@@ -305,7 +305,7 @@
                             </div>
                           </label>
                         </button>
-                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-image text-light fs-5" style="color: green;"></i>
+                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-video text-light fs-5" style="color: green;"></i>
                         <i v-if="videoPresentacion" class=" fa-solid fa-ban text-light fs-5 cursor" @click="cleanVideo" style="color: green;"></i>
                       </div>
                       <input type="file" ref="videoFile" accept="video/*" style="display: none;" @change="onVideoChange">
@@ -360,9 +360,9 @@ import { porcentajeTrue } from "@/helpers/utilities";
 import iziToast from "izitoast";
 import { countriesData } from "../helpers/dataCountries";
 import Spinner from "@/components/Spinner.vue";
-import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { successAlert, errorAlert } from "@/helpers/iziToast";
+import router from '@/router';
 const fileInput = ref(null);
     const selectImage = () => {
       fileInput.value.click();
@@ -372,7 +372,7 @@ const fileInput = ref(null);
       videoFile.value.click();
     };
 
-let currentPath = useRoute();
+let currentPath = useRouter();
  currentPath = currentPath.name;
  
 let baseURL = "http://localhost:3000/";
@@ -389,11 +389,17 @@ const rol = ref("");
 const imagen_portada = ref(null);
 const countries = ref(countriesData);
 const videoPresentacion = ref(null);
-const router = useRouter()
-onMounted(() => {
+const routers = useRouter()
+
+const user = ref(JSON.parse(localStorage.getItem('usuario')))
+onMounted(async () => {
   obtenerDatos();
-  getRol()
-  verifyFormInfClient()
+  getRol();
+  verifyFormInfClient();
+  if (user.value?.rol === 'Admin') {
+      router.push('/'); // Cambia '/' por la ruta deseada
+      return; // Detén la ejecución del resto del código
+    }
 });
 
 const band = ref(0)
@@ -402,7 +408,7 @@ const  openCanvas = () =>{
 }
 
 const  goToPage = ( path )=>{
-  router.push(path)
+  routers.push(path)
 }
 
 

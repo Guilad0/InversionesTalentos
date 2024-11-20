@@ -1,6 +1,6 @@
 <template>
   <div class="contact-container">
-    <p class="contact-title">¿Necesitas Ayuda? <RouterLink class="contactus" to="/contact" ><span>Contactanos!</span>
+    <p class="contact-title title">¿Necesitas Ayuda? <RouterLink class="contactus" to="/contact" ><span>Contactanos!</span>
       </RouterLink>
     </p>
 
@@ -26,6 +26,15 @@
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 26px; /* Tamaño predefinido */
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
 .contactus {
   text-decoration: none;
 }

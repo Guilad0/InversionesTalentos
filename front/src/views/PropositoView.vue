@@ -210,10 +210,10 @@ body {
 }
 
 .header h1 {
-  font-size: 1.8rem;
+  font-size: 24px;
   margin: 0;
   letter-spacing: 1px;
-  font-style: italic; /* Cursiva para darle elegancia */
+  font-style: var(--font-montserrat-bold); /* Cursiva para darle elegancia */
   font-weight: bold; /* Negrita para mayor presencia */
   color: #fff;
 }
