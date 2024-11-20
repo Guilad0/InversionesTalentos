@@ -1,7 +1,7 @@
 <template>
 <div>
   
-  <div class="custom-main d-none d-lg-block">
+  <div class="custom-main d-none d-lg-block animate__animated animate__fadeIn bg-dark">
     <main class="d-flex justify-content-center align-items-center">
         
       <div class="container-wrapper  d-flex">
