@@ -72,7 +72,7 @@ onMounted(()=>{
 
 const getTextHome = async() =>{  
   try {
-    const {data} = await axios.get('http://localhost:3000/utilities/getTextHome');
+    const {data} = await axios.get('https://apitalentos.pruebasdeploy.online/utilities/getTextHome');
     text.value = data.text;
   } catch (error) {
       console.log(error);
@@ -82,7 +82,7 @@ const loading = ref(false)
 const saveText =async() =>{
   loading.value = true;
   try {
-    await axios.patch('http://localhost:3000/utilities/putTextHome/'+text.value);
+    await axios.patch('https://apitalentos.pruebasdeploy.online/utilities/putTextHome/'+text.value);
     getTextHome()
     alert('Texto arreglado')
   } catch (error) {

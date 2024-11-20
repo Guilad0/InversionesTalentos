@@ -72,7 +72,7 @@ const deleteUSer = (id, estado) => {
 
 const updateRol = async (usuario_id, newRol) => {
     try {
-        const response = await axios.patch(`http://localhost:3000/roles/updateRole/${usuario_id}`, { rol: newRol });
+        const response = await axios.patch(`https://apitalentos.pruebasdeploy.online/roles/updateRole/${usuario_id}`, { rol: newRol });
         if (response.status === 200) {
             notyf.success("Rol actualizado correctamente");
             getData();
@@ -86,7 +86,7 @@ const updateRol = async (usuario_id, newRol) => {
 const handleAproved =async (id, name, event, porcentaje_registro)=>{
     if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
         try {
-           await axios.patch(`http://localhost:3000/users/approved/${id}?rol=${user.rol}`);
+           await axios.patch(`https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`);
            
             
         } catch (err) {
@@ -112,7 +112,7 @@ const selecionatedUser = ( idUser, typeModel,rol )=>{
 
 const typeMedia = ref('')
 const selecionatedMedia = ( user ) =>{
-    image.value = 'http://localhost:3000/categories/video/'+user.usuario_id;
+    image.value = 'https://apitalentos.pruebasdeploy.online/categories/video/'+user.usuario_id;
     typeMedia.value = 'video'
 }
 

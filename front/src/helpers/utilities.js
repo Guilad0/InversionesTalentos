@@ -44,7 +44,7 @@ export const getUser = async () => {
       return null;
     }
     const { data } = await axios.get(
-      "http://localhost:3000/users/getUserById/" + user.usuario_id
+      "https://apitalentos.pruebasdeploy.online/users/getUserById/" + user.usuario_id
     );
 
     localStorage.setItem("usuario", JSON.stringify(data.results[0]));

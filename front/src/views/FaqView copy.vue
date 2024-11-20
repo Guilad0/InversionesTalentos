@@ -47,7 +47,7 @@ const toggleAccordion = (index) => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:3000/faq");
+    const response = await axios.get("https://apitalentos.pruebasdeploy.online/faq");
     faqs.value = response.data.data;
   } catch (error) {
     console.error("Error al cargar las preguntas:", error);

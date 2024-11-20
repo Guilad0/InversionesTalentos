@@ -37,7 +37,7 @@ import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
-const baseURL = "http://localhost:3000/";
+const baseURL = "https://apitalentos.pruebasdeploy.online/";
 const post = ref({});
 const mostrarCompleto = ref(false); 
 

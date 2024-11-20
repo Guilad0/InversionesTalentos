@@ -519,7 +519,7 @@ const postUser = async (req, res) => {
       if (error) {
         return res.status(500).send(error);
       } else {
-        const verificationLink = `http://localhost:3000/users/verify/${results.insertId}`;
+        const verificationLink = `https://apitalentos.pruebasdeploy.online/users/verify/${results.insertId}`;
         const msgHtml = (verificadoUser == 0)?`<!DOCTYPE html>
                             <html lang="es">
                             <head>
@@ -579,7 +579,7 @@ const postUser = async (req, res) => {
                                 <div style="padding: 20px;">
                                     <p>Hola,</p>
                                     <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
-                                    <p>Sus credenciales son ${correo} y ${password}</p>
+                                    <p>Sus credenciales son ${correo} y ${password}</p>https://apitalentos.pruebasdeploy.online/
                                 </div>
                                 <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
                                     <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>

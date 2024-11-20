@@ -431,7 +431,7 @@ import { useRouter } from "vue-router";
 import iziToast from 'izitoast';
 const route = useRouter();
 
-let baseURL = 'http://localhost:3000/billetera/';
+let baseURL = 'https://apitalentos.pruebasdeploy.online/billetera/';
 
 const clientes = ref([]);
 const valores = ref([]);

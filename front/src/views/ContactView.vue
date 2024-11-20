@@ -113,7 +113,7 @@ import Unete from "../components/Unete.vue";
 const route = useRouter();
 console.log(route.currentRoute.value.path);
 
-const baseURL = "http://localhost:3000/contact";
+const baseURL = "https://apitalentos.pruebasdeploy.online/contact";
 
 const nombre = ref("");
 const apellido = ref("");

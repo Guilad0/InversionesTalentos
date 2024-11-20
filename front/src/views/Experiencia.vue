@@ -105,7 +105,7 @@ onMounted(() => {
 
 const registrarExperiencia = async () => {
   try {
-    const response = await axios.post("http://localhost:3000/api/experiencia", {
+    const response = await axios.post("https://apitalentos.pruebasdeploy.online/api/experiencia", {
       cliente_id: cliente_id.value,
       institucion: institucion.value,
       cargo: cargo.value,

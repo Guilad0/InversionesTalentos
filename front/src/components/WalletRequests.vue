@@ -139,7 +139,7 @@ import axios from "axios";
 
 const solicitudes = ref([]);
 const paginacion = ref({});
-let BaseURL = "http://localhost:3000/solicitudes";
+let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
 const currentNav = ref("General");
 
 onMounted(() => {

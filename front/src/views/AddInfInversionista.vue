@@ -135,7 +135,7 @@ const addInfoInversionista = async () => {
   };
   console.log(datos);
   try {
-    const response = await axios.post("http://localhost:3000/clients/addInfoInversionista", datos);
+    const response = await axios.post("https://apitalentos.pruebasdeploy.online/clients/addInfoInversionista", datos);
     alert('Información registrada correctamente');
     router.push({ name: 'perfil' });
   } catch (error) {
