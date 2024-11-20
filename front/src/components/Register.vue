@@ -542,11 +542,11 @@ ustom-abs-icon-eye:hover{
 }
 
 .bg-admin{
-  background-image: url("../assets/images/prueba.png");
+  background-image: url("../assets/images/iniciar_sesion.png");
   
 }
 .bg-user{
-  background-image: url("../assets/images/register8.png");
+  background-image: url("../assets/images/iniciar_sesion.png");
 
 }
 .custom-terminos{
