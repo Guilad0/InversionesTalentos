@@ -126,7 +126,7 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
-const baseURL = "http://localhost:3000/";
+const baseURL = "https://apitalentos.pruebasdeploy.online/";
 const posts = ref([]);
 
 const titulo = ref("");

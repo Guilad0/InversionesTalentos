@@ -108,7 +108,7 @@ const saveImage = async() =>{
     formData.append("image", file.value);
     console.log(file.value);
     try {
-      await axios.post(`http://localhost:3000/utilities/uploadimageUserCloudinaryHome/partners`,
+      await axios.post(`https://apitalentos.pruebasdeploy.online/utilities/uploadimageUserCloudinaryHome/partners`,
       formData,
       {
         headers: {
@@ -138,7 +138,7 @@ onMounted(()=>{
 })
 
 const getImagePartner =async ()=>{
-  const {data} = await axios.get('http://localhost:3000/utilities/getImagePartners');
+  const {data} = await axios.get('https://apitalentos.pruebasdeploy.online/utilities/getImagePartners');
   image.value = data.results[0].partners
   
 }

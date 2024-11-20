@@ -357,7 +357,7 @@ const fileInput = ref(null);
 let currentPath = useRoute();
  currentPath = currentPath.name;
  
-let baseURL = "http://localhost:3000/";
+let baseURL = "https://apitalentos.pruebasdeploy.online/";
 let miId = ref('');
 let nombre = ref("");
 let apellido = ref("");
@@ -442,7 +442,7 @@ const saveImage = async () => {
 
   try {
     loadingButton.value = true;
-    await axios.post(`http://localhost:3000/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -569,7 +569,7 @@ const watchChange = ref('');
 const getRol = async ()=>{
   try {
     loading.value =true
-    const {data} = await axios.get(`http://localhost:3000/clients/getRol/user?id=${usuario.usuario_id}`);
+    const {data} = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
     rol.value = data.rol;
   } catch (error) {
     console.log(error);    
@@ -608,7 +608,7 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   try {
     for (let i = 0; i < verifyRegister.value.length; i++) {
       const item = verifyRegister.value[i];
-      const { data } = await axios.get(`http://localhost:3000/utilities/${item.field}/?id=${id}`);
+      const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
       item.status = data.ok;
       item.cant = data.cant;
       console.log(`Campo: ${item.field}, Status: ${item.status}, Cant: ${item.cant}`);

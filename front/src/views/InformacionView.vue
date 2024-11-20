@@ -110,7 +110,7 @@ onMounted(() => {
 // Función para obtener las categorías
 const obtenerCategorias = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/categories'); // Asegúrate de que este endpoint devuelva las categorías
+    const response = await axios.get('https://apitalentos.pruebasdeploy.online/categories'); // Asegúrate de que este endpoint devuelva las categorías
     console.log(response.data.results);
     categorias.value = response.data.results;
     console.log(categorias.value);
@@ -135,7 +135,7 @@ const registrarInformacion = async () => {
   };
   console.log(datos);
   try {
-    const response = await axios.post("http://localhost:3000/users/info", datos);
+    const response = await axios.post("https://apitalentos.pruebasdeploy.online/users/info", datos);
     alert('Información registrada correctamente');
     router.push({ name: 'perfil' });
 

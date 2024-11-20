@@ -11,7 +11,7 @@ const client = ref({});
 const getUser = async () => {
   try {
     const { data } = await axios.get(
-      "http://localhost:3000/users/getUserById/" + userId.value
+      "https://apitalentos.pruebasdeploy.online/users/getUserById/" + userId.value
     );
     client.value = data.results[0];
     console.log(client.value);

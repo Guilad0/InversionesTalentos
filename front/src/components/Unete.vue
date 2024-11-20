@@ -201,8 +201,8 @@ if (result.isConfirmed) {
     rol: role,
   };
   try {
-    await axios.put('http://localhost:3000/clients/changeRol/user', datos);
-    const { data } = await axios.get(`http://localhost:3000/clients/getUserById/user/?id=${user.value.usuario_id}`);
+    await axios.put('https://apitalentos.pruebasdeploy.online/clients/changeRol/user', datos);
+    const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getUserById/user/?id=${user.value.usuario_id}`);
     const updatedUser = data.results[0];  
     localStorage.setItem("usuario", JSON.stringify(updatedUser));      
     Swal.close();

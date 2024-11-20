@@ -71,7 +71,7 @@ const route = useRouter();
 
 const correo = ref("");
 const password = ref("");
-let baseURL = "http://localhost:3000/auth";
+let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
 
 
 const ingresar = async () => {

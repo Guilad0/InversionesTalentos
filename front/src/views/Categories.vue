@@ -53,7 +53,7 @@
                 <td>{{ categoria.nombre }}</td>
                 <td>
                   <img
-                    :src="`http://localhost:3000/uploads/categories/${categoria.imagen}`"
+                    :src="`https://apitalentos.pruebasdeploy.online/uploads/categories/${categoria.imagen}`"
                     alt="Imagen de categoría"
                     width="50"
                   />
@@ -205,7 +205,7 @@ const form = ref({ nombre: "", image: null });
 const editMode = ref(false);
 const categoriaEditada = ref(null);
 const search = ref("");
-let BaseURL = "http://localhost:3000/categories";
+let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
 
 const router = useRouter();
 

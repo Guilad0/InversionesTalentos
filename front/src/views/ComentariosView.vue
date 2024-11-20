@@ -35,7 +35,7 @@ const badWords = [
     "cornudo", "guarra"
 ];
 
-const baseURL = "http://localhost:3000/";
+const baseURL = "https://apitalentos.pruebasdeploy.online/";
 
 const inversorNombre = 'Nombre del Inversor'; 
 const clienteNombre = 'Nombre del Cliente'; 

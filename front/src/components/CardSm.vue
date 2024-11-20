@@ -18,7 +18,7 @@
                             <button class="btn  btn-outline-secondary rounded-4 btn-sm "><small>42 Lefts</small></button>
                         </div>
                         <div class="custom-absolute">
-                            <!-- <img :src="`http://localhost:3000/categories/image/${props.client.categoria_persona_id}`"
+                            <!-- <img :src="`https://apitalentos.pruebasdeploy.online/categories/image/${props.client.categoria_persona_id}`"
                                 width="25" class=" rounded-circle" alt=""> -->
                         </div>
                       

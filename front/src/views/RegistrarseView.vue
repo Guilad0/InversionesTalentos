@@ -204,7 +204,7 @@ import { RouterLink } from "vue-router";
 import { ref } from "vue";
 import axios from "axios";
 import useFetchData from "../helpers/UseFetchData";
-let baseURL = "http://localhost:3000/users";
+let baseURL = "https://apitalentos.pruebasdeploy.online/users";
 const usuarios = ref([]);
 const nombre = ref("");
 const Apellido = ref("");
@@ -249,7 +249,7 @@ const handleEmail = async () => {
   // }
   try {
     const response = await axios.get(
-      "http://localhost:3000/users/handleEmail/correo?correo=" + correo.value
+      "https://apitalentos.pruebasdeploy.online/users/handleEmail/correo?correo=" + correo.value
     );
     console.log(response.data);
     if (response.data.existe == true) {
@@ -268,7 +268,7 @@ const handleTelefono = async () => {
   console.log(numero_telefono.value);
   try {
     const response = await axios.get(
-      "http://localhost:3000/users/handleTelefono/telefono?telefono=" +
+      "https://apitalentos.pruebasdeploy.online/users/handleTelefono/telefono?telefono=" +
         numero_telefono.value
     );
     console.log(response.data);

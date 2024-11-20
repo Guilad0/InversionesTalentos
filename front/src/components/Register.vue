@@ -304,7 +304,7 @@ import { haveLetterCapital,cleanFileds, haveLetter, validateName, validatePasswo
 import iziToast from 'izitoast';
 
 const user = JSON.parse(localStorage.getItem('usuario')) || '';
-let baseURL = "http://localhost:3000/users";
+let baseURL = "https://apitalentos.pruebasdeploy.online/users";
 const isLoading = ref(false);
 
 const name = ref("");
@@ -415,7 +415,7 @@ const handleEmail = async ( event ) => {
   }
   try {
     const response = await axios.get(
-      "http://localhost:3000/users/handleEmail/correo?correo=" + email.value
+      "https://apitalentos.pruebasdeploy.online/users/handleEmail/correo?correo=" + email.value
     );
     if (response.data.existe == true) {
       control_email.value = false;
@@ -440,7 +440,7 @@ const handleTelefono = async ( event ) => {
   }
   try {
     const response = await axios.get(
-      "http://localhost:3000/users/handleTelefono/telefono?telefono=" +
+      "https://apitalentos.pruebasdeploy.online/users/handleTelefono/telefono?telefono=" +
       numero_telefono.value
     );
     if (response.data.existe == true) {

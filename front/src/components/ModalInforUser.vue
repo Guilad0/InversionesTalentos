@@ -150,7 +150,7 @@ const getUser = async () => {
   if( props.myRol == 'Cliente' ){
     if (props.typeForm == 'informacion') {
     try {
-      const { data } = await axios.get('http://localhost:3000/users/getUserById/' + props.id)
+      const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/users/getUserById/' + props.id)
       client.value = data.results[0];
       console.log(client.value);
     } catch (error) {
@@ -158,7 +158,7 @@ const getUser = async () => {
     }
   } else {
     try {
-      const { data } = await axios.get(`http://localhost:3000/clients/getExperienceById/${props.id}?type=${props.typeForm}`)
+      const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getExperienceById/${props.id}?type=${props.typeForm}`)
       client.value = data.results;
 
     } catch (error) {
@@ -168,7 +168,7 @@ const getUser = async () => {
   }else{
     if( props.myRol  == 'Inversionista' ){
       try {
-        const {data} = await axios.get('http://localhost:3000/users/getInfoInvestor/'+props.id);
+        const {data} = await axios.get('https://apitalentos.pruebasdeploy.online/users/getInfoInvestor/'+props.id);
         client.value = data.results[0];
         console.log(client.value);
       } catch (error) {

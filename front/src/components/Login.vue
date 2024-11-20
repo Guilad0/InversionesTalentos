@@ -77,7 +77,7 @@ const password = ref("");
 const loggedIn = ref(false);
 const user = ref(null);
 
-let baseURL = "http://localhost:3000/auth";
+let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
 
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {

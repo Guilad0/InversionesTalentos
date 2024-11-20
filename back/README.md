@@ -2,12 +2,12 @@
 
 ### Obtener todos los inversores
 - **Método**: `GET`
-- **Ruta**: `http://localhost:3000/users/`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/`
 - **Descripción**: Lista todos los usuarios
 
 ### Registar inversores, clientes
 - **Método**: `POST`
-- **Ruta**: `http://localhost:3000/users/`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/`
 - **Descripción**: Registra un inversor,admin, o cliente
 - **BodyEjemplo**:
 {
@@ -25,7 +25,7 @@
 
 ### modifica inversores
 - **Método**: `PUT`
-- **Ruta**: `http://localhost:3000/users/investors/id_usuario`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/investors/id_usuario`
 - **Descripción**: Modifica un inversor
 - **BodyEjemplo**:
 {
@@ -37,42 +37,42 @@
 
 ### modifica el estado de un inversores
 - **Método**: `PUT`
-- **Ruta**: `http://localhost:3000/users/Stateinvestors/id = id del inversor`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/Stateinvestors/id = id del inversor`
 - **Descripción**: Modifica el estado de un inversor
 
 ### agrega informacion del cliente
 - **Método**: `POST`
-- **Ruta**: `http://localhost:3000/users/info`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/info`
 - **Descripción**: agrega la tabla informacion a un cliente
 
 ### Editar informacion del cliente
 - **Método**: `PUT`
-- **Ruta**: `http://localhost:3000/users/info/id = id del cliente`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/info/id = id del cliente`
 - **Descripción**: Modifica la informacion del cliente
 
 ### Muestra informacion del cliente por su id
 - **Método**: `GET`
-- **Ruta**: `http://localhost:3000/users/clients/info/id = id del cliente`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/clients/info/id = id del cliente`
 - **Descripción**: Modifica la informacion del cliente
 
 ### cargar imagen del cliente al servidor
 - **Método**: `POST`
-- **Ruta**: `http://localhost:3000/users/upload/id = colocar el id del cliente`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/upload/id = colocar el id del cliente`
 - **Descripción**: Guarda una imagen en els ervidor en la carpeta uploads/images y ademas agrega el nombre de la imagen encripatada a la tabla de usuarios en imagen
 
 ### Url de la imagen del cliente del servidor
 - **Método**: `GET`
-- **Ruta**: `http://localhost:3000/users/image/id = colocar el id del cliente`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/image/id = colocar el id del cliente`
 - **Descripción**: Crea un enlace para acceder a la imagen dels ervidor
 
 ### Obtiene los clientes con su informacion
 - **Método**: `GET`
-- **Ruta**: `http://localhost:3000/users/clients/all`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/clients/all`
 - **Descripción**: Obtiene cada usuario con su informacion
 
 ### Cargar imagen del cliente al servidor Cloudinary
 - **Método**: `POST`
-- **Ruta**: `http://localhost:3000/users/cloudinary/id=colocar el id del cliente`
+- **Ruta**: `https://apitalentos.pruebasdeploy.online/users/cloudinary/id=colocar el id del cliente`
 - **Descripción**: Gaurda la imagen en el servidor Cloudinary opcional, tambien modifica la   base de datos del usuario para tener una referencia de la imagen
 
 

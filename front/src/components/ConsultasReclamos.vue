@@ -200,7 +200,7 @@ import autoTable from "jspdf-autotable";
 
 const { results: contacts, getData: getContact } = useFetchData(ref("/contact"));
 console.log("results", contacts);
-const BaseURL = "http://localhost:3000/contact";
+const BaseURL = "https://apitalentos.pruebasdeploy.online/contact";
 const search = ref("");
 const isModalVisible = ref(false);
 const contactActive = ref({});
@@ -291,7 +291,7 @@ const exportToPDF = () => {
 
 const fetchContacts = async (page = 1) => {
   try {
-    const response = await axios.get(`http://localhost:3000/contact`, {
+    const response = await axios.get(`https://apitalentos.pruebasdeploy.online/contact`, {
       params: {
         page,
         limit: pagination.value.itemsPerPage,
@@ -310,7 +310,7 @@ const fetchContacts = async (page = 1) => {
 
 const deleted = async (id) => {
   try {
-    await axios.put(`http://localhost:3000/contact/stateContact/${id}`);
+    await axios.put(`https://apitalentos.pruebasdeploy.online/contact/stateContact/${id}`);
     fetchContacts(pagination.value.currentPage);
 
     iziToast.success({
@@ -332,7 +332,7 @@ const answer = async (response, iduser) => {
 
   try {
     const res = await axios.put(
-      "http://localhost:3000/contact/response/" + iduser,
+      "https://apitalentos.pruebasdeploy.online/contact/response/" + iduser,
       datos
     );
 

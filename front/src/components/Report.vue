@@ -38,7 +38,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import apexchart from "vue3-apexcharts";
 const router = useRouter();
-let baseURL = "http://localhost:3000/report/";
+let baseURL = "https://apitalentos.pruebasdeploy.online/report/";
 
 const cliente_ID = ref('');
 const inversionista_ID = ref('');
