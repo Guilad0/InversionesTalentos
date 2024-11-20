@@ -1,6 +1,6 @@
 <template>
   <main
-    class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeInLeft"
+    class="d-flex justify-content-center py-3 animate__animated animate__fadeInLeftr background-container"
   >
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
@@ -220,9 +220,17 @@ const callback =async (response) => {
   text-transform: uppercase;
 }
 
-.bgf {
-  background-color: #f9f9fa;
+.background-container {
+  background-color: rgb(163, 12, 93);
+  background-image: url("../assets/images/iniciar_sesion2.png");
+  /*background-image: url("'@/assets/images/registrar_usuario.png'");*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 2rem; /* Ajusta el espacio alrededor del formulario */
+  border-radius: 8px; /* Opcional: agrega bordes redondeados */
 }
+
 .login-card {
   width: 30rem;
   padding: 2rem;
@@ -256,7 +264,7 @@ const callback =async (response) => {
 }
 
 main {
-  background-image: url("../assets/images/1.png");
+  
   background-size: cover;
   background-repeat: no-repeat;
 }
