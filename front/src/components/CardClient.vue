@@ -61,7 +61,7 @@ const obtenerExperiencia = async () => {
       "https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value
     );
     experiencia.value = data.data || [];
-    console.log(experiencia.value);
+    //console.log(experiencia.value);
   } catch (error) {
     console.log(error);
   }
@@ -73,7 +73,7 @@ const obtenerComentarios = async () => {
       "https://apitalentos.pruebasdeploy.online/comentarios/cliente/" + userId.value
     );
     comentarios.value = data.data || [];
-    console.log(comentarios.value);
+    //console.log(comentarios.value);
   } catch (error) {
     console.log(error);
   }
@@ -84,7 +84,7 @@ const obtenerLinks = async () => {
       "https://apitalentos.pruebasdeploy.online/links/cliente/" + userId.value
     );
     links.value = data.data || [];
-    console.log(links.value);
+    //console.log(links.value);
   } catch (error) {
     console.log(error);
   }
@@ -93,9 +93,8 @@ const obtenerLinks = async () => {
 const obtenerCategoria = async () => {
   try { const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/categories'); // URL correcta para obtener categorías 
   categorias.value = data.results || []; // Accede al array de categorías dentro de results 
-  console.log('Categorías obtenidas:', categorias.value); // Imprime todas las categorías para depuración 
-  categorias.value.forEach((cat, index) => { console.log(`Categoría ${index + 1}:`, cat); // Imprime cada categoría individualmente 
-    }); } catch (error) { console.error('Error al obtener las categorías:', error); } };
+  //console.log('Categorías obtenidas:', categorias.value); // Imprime todas las categorías para depuración 
+  } catch (error) { console.error('Error al obtener las categorías:', error); } };
 
     const tooltipExperiencia = computed(() => {
   if (experiencia.value.length > 0) {
@@ -119,12 +118,12 @@ const tooltipLogros = computed(() => {
 
 
 const categoriaNombre = computed(() => {
-  console.log("Verificando categoría para ID:", props.client.categoria_persona_id); // Depuración
-  console.log('Lista de categorías disponibles:', categorias.value); // Imprime la lista completa de categorías
+  //console.log("Verificando categoría para ID:", props.client.categoria_persona_id); // Depuración
+  //console.log('Lista de categorías disponibles:', categorias.value); // Imprime la lista completa de categorías
   if (props.client.categoria_persona_id && categorias.value.length > 0) {
     const categoria = categorias.value.find(
       cat => cat.categoria_persona_id === props.client.categoria_persona_id);
-    console.log("Categoría encontrada:", categoria); // Depuración
+    //console.log("Categoría encontrada:", categoria); // Depuración
     return categoria ? categoria.nombre : "Categoría no encontrada";
   }
   return "Sin categoría";
