@@ -142,7 +142,7 @@ const forgotPassword = (req, res) => {
           return res.status(500).send('Error al guardar el token de restablecimiento');
         }
   
-        const resetLink = `http://localhost:5173/reset-password/${token}`;
+        const resetLink = `https://talentos.pruebasdeploy.online/reset-password/${token}`;
         const mailOptions = {
           from: process.env.GG_EMAIL,
           to: correo,
