@@ -3,7 +3,7 @@
     <div class="content">
       <h4 class="d-block mb-2 text-center underline py-2">Consultas Y Reclamos</h4>
       <div class="table-responsive col-md-10 offset-md-1">
-        <div class="col-3 px-5 mb-3">
+        <div class="col-4 px-5 mb-3 d-flex">
           <input
             name="search"
             type="text"
@@ -12,7 +12,23 @@
             placeholder="Buscar ..."
             @input="fetchContacts(1)"
           />
+          <button class="btn btn-sm bg-info mx-4 text-white" @click="exportToPDF()">
+            PDF
+          </button>
         </div>
+        <!-- <div
+          v-if="showPreview"
+          style="margin-top: 20px; border: 1px solid #ccc; padding: 10px"
+          class="pdf-preview-container"
+        >
+          <iframe
+            id="pdfPreview"
+            style="width: 100%; height: 500px"
+            title="Previsualización PDF"
+            class="pdf-preview"
+            frameborder="0"
+          ></iframe>
+        </div> -->
         <div class="table-responsive table-container-contact">
           <table class="table overflow-x-scroll fs-9">
             <thead>
@@ -49,24 +65,21 @@
                 </td>
 
                 <td v-if="item.estado == '1'">
-                  <span
-                    @click="deleted(item.contacto_id)"
-                    class="badge text-bg-success"
-                  >
+                  <span @click="deleted(item.contacto_id)" class="badge text-bg-success">
                     Activo
                   </span>
                 </td>
                 <td v-else>
-                  <span
-                    @click="deleted(item.contacto_id)"
-                    class="badge text-bg-danger"
-                  >
+                  <span @click="deleted(item.contacto_id)" class="badge text-bg-danger">
                     Inactivo
                   </span>
                 </td>
 
                 <td>
-                  <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
+                  <button
+                    class="btn btn-danger btn-sm"
+                    @click="deleted(item.contacto_id)"
+                  >
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <!-- <button class="btn btn-success">
@@ -182,6 +195,8 @@ import axios from "axios";
 import useFetchData from "@/helpers/UseFetchData";
 import { Modal } from "bootstrap";
 import iziToast from "izitoast";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const { results: contacts, getData: getContact } = useFetchData(ref("/contact"));
 console.log("results", contacts);
@@ -189,9 +204,10 @@ const BaseURL = "http://localhost:3000/contact";
 const search = ref("");
 const isModalVisible = ref(false);
 const contactActive = ref({});
+const showPreview = ref(false);
 console.log(contactActive);
 
-const contact = ref([]);
+// const contact = ref([]);
 const pagination = ref({
   currentPage: 1,
   totalPages: 0,
@@ -208,6 +224,71 @@ onMounted(() => {
   fetchContacts();
 });
 
+const exportToPDF = () => {
+  const doc = new jsPDF();
+  doc.setFontSize(11);
+
+  const columns = [
+    { header: "ID", dataKey: "contacto_id" },
+    { header: "Nombre", dataKey: "nombre" },
+    { header: "Apellido", dataKey: "apellido" },
+    { header: "Email", dataKey: "email" },
+    { header: "Telefono", dataKey: "telefono" },
+    { header: "Comentarios", dataKey: "comentarios" },
+    { header: "Respuesta", dataKey: "respuesta" },
+  ];
+  const rows = contacts.value.map((contact) => ({
+    contacto_id: contact.contacto_id,
+    nombre: contact.nombre,
+    apellido: contact.apellido,
+    email: contact.email,
+    telefono: contact.telefono,
+    comentarios: contact.comentarios,
+    respuesta: contact.respuesta || "Sin responder",
+  }));
+
+  console.log("Rows para PDFF", rows);
+  doc.autoTable({
+    columns: columns,
+    body: rows,
+    startY: 20,
+    theme: "grid",
+    styles: {
+      fontSize: 10,
+      textColor: [40, 40, 40],
+      lineColor: [200, 200, 200],
+    },
+    headStyles: {
+      fillColor: [60, 141, 188],
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+      fontSize: 10,
+      halign: "center",
+    },
+    bodyStyles: {
+      fontStyle: "normal",
+      fillColor: [245, 245, 245],
+      textColor: [50, 50, 50],
+      fontSize: 9,
+    },
+    alternateRowStyles: {
+      fillColor: [250, 250, 250],
+    },
+    margin: { top: 30 },
+    tableLineColor: [200, 200, 200],
+    tableLineWidth: 0.1,
+  });
+  doc.text("Listado de Contactos", 105, 15, { align: "center" });
+  doc.save("contactos.pdf");
+
+  // const pdfData = doc.output("datauristring");
+  // const previewIframe = document.getElementById("pdfPreview");
+  // if (previewIframe) {
+  //   previewIframe.src = pdfData;
+  // }
+  // showPreview.value = true;
+};
+
 const fetchContacts = async (page = 1) => {
   try {
     const response = await axios.get(`http://localhost:3000/contact`, {
@@ -221,6 +302,7 @@ const fetchContacts = async (page = 1) => {
     pagination.value.currentPage = response.data.currentPage;
     pagination.value.totalPages = response.data.totalPages;
     pagination.value.totalItems = response.data.totalItems;
+    console.log(response.data);
   } catch (error) {
     console.error("Error fetching contacts:", error);
   }
@@ -289,6 +371,13 @@ const openModal = (item) => {
 </script>
 
 <style scoped>
+.pdf-preview-container {
+  position: fixed;
+  z-index: 9999;
+  width: 50vw;
+  height: 50vh;
+}
+
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;
