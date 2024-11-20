@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light pt-5 ps-4">
     <div class="content">
-      <h4 class="d-block mb-2 text-center underline py-4">Categorías</h4>
+      <h4 class="d-block mb-2 text-center title">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
         <div class="col-2 position-relative">
           <input
@@ -314,6 +314,14 @@ const saveCategory = async () => {
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 26px; /* Tamaño predefinido */
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
 .modal-card {
   width: 30rem;
   padding: 2rem;

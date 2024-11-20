@@ -118,8 +118,7 @@
                 </div>
             </div>
             <!-- Modal para buscar cliente y mostrar resultados -->
-            
-            <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel"
+             <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     
@@ -295,18 +294,6 @@ const seleccionarCliente = async (cliente) => {
 
 <style scoped>
 
-.background::before {
-    content: ""; /* Necesario para hacer visible el pseudo-elemento */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Capa negra con 50% de opacidad */
-    z-index: -1; /* Coloca la capa debajo del contenido */
-    position: relative; /* Necesario para que la superposición funcione */
-   
-}
 .background {
     background-image: url('@/assets/images/otro-fondo5.png');
     background-size: 100% auto;
@@ -341,6 +328,7 @@ td {
 }
 
 .btn:hover {
+    border: none;
     background-color:var(--yellow-orange)  !important;
 }
 
@@ -390,19 +378,17 @@ label:hover {
 }
 
 .btn-primary {
+    border: none;
     background-color: var(--gray-color);
     border: 1px solid var(--yellow-orange);
      margin-right: 2rem;
 }
 .btn-secondary{
+    border: none;
     background-color: var(--gray-color);
-    border: 1px solid var(--yellow-orange);
-
+   
 }
 .modal-custom {
-    border-radius: 30px;
-    background-image: url('@/assets/images/otro-fondo5.png');
-    color: var(--white-anti-flash-color);
     border: none;
     padding: 30px;
     width: 500px;
@@ -411,29 +397,31 @@ label:hover {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
 }
-.modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Negro translúcido */
-    z-index: 1050; 
-    border-radius: 0.5rem; /* Si tu modal tiene bordes redondeados */
-}
+
 .modal-content {
-    position: relative; /* Asegura que el contenido del modal esté en el nivel correcto */
-    z-index: 1060; /* El contenido del modal estará por encima de la superposición */
+    background-color: transparent !important; /* Hacerlo transparente */
+    box-shadow: none; /* Quitar sombras si no las quieres */
+    border: none; /* Quitar bordes */
+}
+.modal-backdrop {
+    background-color: #17223bef !important; /* Cambiar la opacidad o color */
 }
 
 .modal-header-custom {
-    background-color: var(--gray-color);
-    color: var(--white-anti-flash-color);
+    background-color: var(--dun2-color);
     border-bottom: none
 }
 
+.modal-title {
+    font-family: var(--font-montserrat-bold); /* Variante bold */
+    font-weight: 700; /* Asegura que sea bold */
+    font-size: 24px; /* Tamaño predefinido */
+    color: var( --gray-color); 
+    text-transform: uppercase;
+}
+
 .modal-body-custom {
-    background-color: var(--smoky-dark-color);
+    background-color: var(--blue-transparent);
     color: var(--white-color);
 }
 
@@ -444,7 +432,7 @@ label:hover {
 }
 
 .modal-footer-custom {
-    background-color: var(--gray-color);
+    background-color: var(--dun2-color);
     border-top: none
 }
 

@@ -158,7 +158,7 @@ const registrarExperiencia = async () => {
 .title {
   color: #17223B;
   font-family: sans-serif;
-  font-size: 36px;
+  font-size: 34px;
   font-weight: 600;
   margin-top: 10px;
   text-align: center;
@@ -206,7 +206,7 @@ const registrarExperiencia = async () => {
   border-radius: 12px;
   border: none;
   color: #eee;
-  cursor: pointer;
+  cursor: pointer; 
   font-size: 18px;
   height: 50px;
   margin-top: 38px;

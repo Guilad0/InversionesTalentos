@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="destacados-section">
-      <h3 class="py-5 text-center">Destacados</h3>
+      <h3 class="py-5 text-center title">Destacados</h3>
       <div class="d-flex flex-wrap justify-content-center flex-wrap ">
         <CardClient
           v-for="client in primerosCinco"
@@ -103,6 +103,15 @@ const props = defineProps({
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 26px; /* Tamaño predefinido */
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
 @media (max-width: 1500px) {
   .abs-custom-label{
   position: absolute;
