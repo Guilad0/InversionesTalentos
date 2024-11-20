@@ -4,7 +4,7 @@
 
     <div class="card banner-card z-1 bg-degrade text-white">
       <!-- Imagen superior (ej. imagen de fondo) -->
-      <img src="../assets/images/ejemplodeperfil.png" class="card-img-top" alt="Background Image" />
+      <img src="../assets/images/ejemplodeperfil.jpg" class="card-img-top" alt="Background Image" />
 
       <!-- Imagen de perfil -->
       <div class="card-body p-5">
