@@ -77,15 +77,7 @@ const user = ref(null);
 
 onMounted(async () => {
   user.value = await getUser();
-  if(user.value.rol != 'Admin'){
-    router.push('/');
-  }
-  if(!user.value){
-    router.push('/');
-  }
-  if(user.value.rol != 'inversionista'){
-    router.push('/');
-  }
+  
 
 })
 
