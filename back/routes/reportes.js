@@ -505,5 +505,44 @@ ORDER BY solicitudes_retiro.fecha_solicitud DESC;
   });
 });
 
+router.get("/reporteInversionesPendientes/", function(req, res, next){
+  const {
+    fecha_inicio,
+    fecha_final,
+    cliente_id // no importa si es cliente o inversor
+  } = req.query;
+  var query = ` 
+SELECT 
+  inversion_id,
+  cliente_id,
+  fecha_devolucion,
+  monto,
+CASE 
+  WHEN estado = 1 THEN 'Pendiente'
+  WHEN estado = 0 THEN 'Pagado'
+  ELSE 'Desconocido'
+END AS estado_descripcion
+FROM inversiones
+WHERE cliente_id = '${cliente_id}'
+AND fecha_devolucion BETWEEN '${fecha_inicio}' AND '${fecha_final}' -- Reemplaza con las fechas deseadas
+ORDER BY inversion_id DESC;
+  `;
+  connection.query(query, function (error, results) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Inversiones pendientes consultadas correctamente",
+        
+      });
+    }
+  });
+});
 
 module.exports = router;
