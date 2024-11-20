@@ -35,34 +35,33 @@
               <div class="modal-body px-5">
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')" 
-                      :class="{ 'selected': selectedReport === 'hoy' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Hoy</label>
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
+                      :class="{ 'selected': selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ 'selected': selectedReport === 'ayer' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Ayer</label>
+                      :class="{ 'selected': selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Ayer</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ 'selected': selectedReport === 'semana' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Semana</label>
+                      :class="{ 'selected': selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Semana</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ 'selected': selectedReport === 'mes' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Mes</label>
+                      :class="{ 'selected': selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Mes</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ 'selected': selectedReport === 'anual' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Anual</label>
+                      :class="{ 'selected': selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Anual</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                    :class="{ 'selected': band == true }"
-                      class="fa-regular fa-file fs-1" width="50" /><br>
+                      :class="{ 'selected': band == true }" class="fa-regular fa-file fs-1" width="50" /><br>
                     <label>Personalizado</label>
                   </div>
                   <transition name="slide">
@@ -83,7 +82,7 @@
                       Reportes
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
-                          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <label class="text-white">{{ typeReport }}</label>
                           </button>
@@ -98,57 +97,68 @@
                   </div>
                 </div>
 
-                <div class="px-5 ">
-                  <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Talento</th>
-                        <th scope="col">Tokens invertidos</th>
-                        <th scope="col">Ganancia de tokens</th>
-                        <th scope="col">Fecha de Inversion</th>
-                        <th scope="col">Fecha de Retorno(Aprox)</th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="reports.length > 0">
-                      <tr v-for="rep in reports" :key="rep">
-                        <th scope="col">{{rep.inversion_id}}</th>
-                        <th scope="col">{{ rep.inversor }}</th>
-                        <th scope="col">{{ rep.monto }}</th>
-                        <th scope="col">{{ getEstimada(rep.ganancia, rep.monto) }}</th>
-                        <th scope="col">{{ rep.fecha_deposito }}</th>
-                        <th scope="col">{{ rep.fecha_devolucion }}</th>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="px-5 d-flex justify-content-center">
+                  <div class="col">
+                    <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Inversionista</th>
+                          <th scope="col">Tokens invertidos</th>
+                          <th scope="col">Tokens a devolver</th>
+                          <th scope="col">Fecha de Inversion</th>
+                          <th scope="col">Fecha de Retorno(Aprox)</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="reports.length > 0">
+                        <tr v-for="rep in reports" :key="rep">
+                          <th scope="col">{{ rep.inversion_id }}</th>
+                          <th scope="col">{{ rep.inversor }}</th>
+                          <th scope="col">{{ rep.monto }}</th>
+                          <th scope="col">{{ monto_devolver(rep.monto, rep.ganancia) }}</th>
+                          <th scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</th>
+                          <th scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</th>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                  <table v-if="typeReport == 'Retiros'" class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Monto solicitado</th>
-                        <th scope="col">Monto a recibir</th>
-                        <th scope="col">Fecha solicitud</th>
-                        <th scope="col">Fecha de aprobacion</th>
-                        <th scope="col">Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody v-for="rep in reports" :key="rep">
-                      <tr scope="col">{{ rep.retiro_id }}</tr>
-                      <tr scope="col">{{ rep.monto_solicitud }}</tr>
-                      <tr scope="col">{{ rep.monto_recibir }}</tr>
-                      <tr scope="col">{{ rep.fecha_solicitud }}</tr>
-                      <tr scope="col">{{ rep.fecha_aprobacion }}</tr>
-                      <tr scope="col">{{ rep.estado }}</tr>
-                    </tbody>
-                  </table>
-                  <div class="text-dark" v-if="reports.length == 0 && bandAlert">
-                    <div class="d-flex justify-content-center rounded-3">
-                      <div class="alert alert-warning " role="alert">
-                        <h4 class="alert-heading">Sin resultados!</h4>
-                        <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
-                          de fechas diferente.</p>
+                    <table v-if="typeReport == 'Retiros'" class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Monto solicitado</th>
+                          <th scope="col">Monto a recibir</th>
+                          <th scope="col">Fecha solicitud</th>
+                          <th scope="col">Fecha de aprobacion</th>
+                          <th scope="col">Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody v-for="rep in reports" :key="rep">
+                        <tr scope="col">{{ rep.retiro_id }}</tr>
+                        <tr scope="col">{{ rep.monto_solicitud }}</tr>
+                        <tr scope="col">{{ rep.monto_recibir }}</tr>
+                        <tr scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</tr>
+                        <tr scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</tr>
+                        <tr scope="col">{{ rep.estado }}</tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <dir class="col text-dark">
+                    <div class="card m-1">
+                      <div class="card-body">
+                        <h5 class="card-title">Compras e Inversiones de Tokens</h5>
+                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options" :series="series"></apexchart>
                       </div>
+                    </div>
+                  </dir>
+
+                </div>
+                <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                  <div class="d-flex justify-content-center rounded-3">
+                    <div class="alert alert-warning " role="alert">
+                      <h4 class="alert-heading">Sin resultados!</h4>
+                      <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
+                        de fechas diferente.</p>
                     </div>
                   </div>
                 </div>
@@ -219,8 +229,10 @@
 
               <p class="text-white text-center">Solicitud: {{ inversion_vencida.inversion_id }}</p>
               <p class="text-white text-center">Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
-              <p class="text-white text-center">Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}</p>
-              <p class="text-white text-center">Fecha de Vencimiento: {{ formatDate(inversion_vencida.fecha_devolucion)}}</p>
+              <p class="text-white text-center">Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}
+              </p>
+              <p class="text-white text-center">Fecha de Vencimiento: {{
+                formatDate(inversion_vencida.fecha_devolucion) }}</p>
               <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
                 @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span>
               </button>
@@ -267,34 +279,38 @@
               <div class="modal-body px-5">
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')" 
-                      :class="{ 'selected': selectedReport === 'hoy' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Hoy</label>
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('general')"
+                      :class="{ 'selected': selectedReport === 'general' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>General</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
+                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
+                      :class="{ 'selected': selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ 'selected': selectedReport === 'ayer' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Ayer</label>
+                      :class="{ 'selected': selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Ayer</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ 'selected': selectedReport === 'semana' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Semana</label>
+                      :class="{ 'selected': selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Semana</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ 'selected': selectedReport === 'mes' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Mes</label>
+                      :class="{ 'selected': selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Mes</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover"><img
                       src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ 'selected': selectedReport === 'anual' }"
-                      class="fa-regular fa-file fs-1" width="50" /><br><label>Anual</label>
+                      :class="{ 'selected': selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br><label>Anual</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                    :class="{ 'selected': band == true }"
-                      class="fa-regular fa-file fs-1" width="50" /><br>
+                      :class="{ 'selected': band == true }" class="fa-regular fa-file fs-1" width="50" /><br>
                     <label>Personalizado</label>
                   </div>
                   <transition name="slide">
@@ -315,7 +331,7 @@
                       Reportes
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
-                          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <label class="text-white">{{ typeReport }}</label>
                           </button>
@@ -330,58 +346,70 @@
                   </div>
                 </div>
 
-                <div class="px-5 ">
-                  <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Talento</th>
-                        <th scope="col">Tokens invertidos</th>
-                        <th scope="col">Ganancia de tokens</th>
-                        <th scope="col">Fecha de Inversion</th>
-                        <th scope="col">Fecha de Retorno(Aprox)</th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="reports.length > 0">
-                      <tr v-for="rep in reports" :key="rep">
-                        <th scope="col">{{rep.inversion_id}}</th>
-                        <th scope="col">{{ rep.inversor }}</th>
-                        <th scope="col">{{ rep.monto }}</th>
-                        <th scope="col">{{ getEstimada(rep.ganancia, rep.monto) }}</th>
-                        <th scope="col">{{ rep.fecha_deposito }}</th>
-                        <th scope="col">{{ rep.fecha_devolucion }}</th>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="px-5 d-flex justify-content-center">
+                  <div class="col">
+                    <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Talento</th>
+                          <th scope="col">Tokens invertidos</th>
+                          <th scope="col">Ganancia de tokens</th>
+                          <th scope="col">Fecha de Inversion</th>
+                          <th scope="col">Fecha de Retorno(Aprox)</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="reports.length > 0">
+                        <tr v-for="rep in reports" :key="rep">
+                          <th scope="col">{{ rep.inversion_id }}</th>
+                          <th scope="col">{{ rep.cliente }}</th>
+                          <th scope="col">{{ rep.monto }}</th>
+                          <th scope="col">{{ rep.ganancia }}</th>
+                          <th scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</th>
+                          <th scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</th>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                  <table v-if="typeReport == 'Retiros'" class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Monto solicitado</th>
-                        <th scope="col">Monto a recibir</th>
-                        <th scope="col">Fecha solicitud</th>
-                        <th scope="col">Fecha de aprobacion</th>
-                        <th scope="col">Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody v-for="rep in reports" :key="rep">
-                      <tr scope="col">{{ rep.retiro_id }}</tr>
-                      <tr scope="col">{{ rep.monto_solicitud }}</tr>
-                      <tr scope="col">{{ rep.monto_recibir }}</tr>
-                      <tr scope="col">{{ rep.fecha_solicitud }}</tr>
-                      <tr scope="col">{{ rep.fecha_aprobacion }}</tr>
-                      <tr scope="col">{{ rep.estado }}</tr>
-                    </tbody>
-                  </table>
-                  <div class="text-dark" v-if="reports.length == 0 && bandAlert">
-                    <div class="d-flex justify-content-center rounded-3">
-                      <div class="alert alert-warning " role="alert">
-                        <h4 class="alert-heading">Sin resultados!</h4>
-                        <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
-                          de fechas diferente.</p>
-
+                    <table v-if="typeReport == 'Retiros'" class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Monto solicitado</th>
+                          <th scope="col">Monto a recibir</th>
+                          <th scope="col">Fecha solicitud</th>
+                          <th scope="col">Fecha de aprobacion</th>
+                          <th scope="col">Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody v-for="rep in reports" :key="rep">
+                        <tr scope="col">{{ rep.retiro_id }}</tr>
+                        <tr scope="col">{{ rep.monto_solicitud }}</tr>
+                        <tr scope="col">{{ rep.monto_recibir }}</tr>
+                        <tr scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</tr>
+                        <tr scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</tr>
+                        <tr scope="col">{{ rep.estado }}</tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <dir class="col text-dark">
+                    <div class="card m-1">
+                      <div class="card-body">
+                        <h5 class="card-title">Compras e Inversiones de Tokens</h5>
+                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options" :series="series"></apexchart>
                       </div>
+                    </div>
+                  </dir>
+
+
+                </div>
+                <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                  <div class="d-flex justify-content-center rounded-3">
+                    <div class="alert alert-warning " role="alert">
+                      <h4 class="alert-heading">Sin resultados!</h4>
+                      <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
+                        de fechas diferente.</p>
+
                     </div>
                   </div>
                 </div>
@@ -457,6 +485,7 @@ import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { getCurrentYearStartAndEnd, getDayStartAndEnd, getMonthStartAndEnd, getWeekStartAndEnd, getYesterdayStartAndEnd } from "@/helpers/utilities";
+import apexchart from "vue3-apexcharts";
 const route = useRouter();
 const tabsInv = ref(["Inversiones", "Retiros"]);
 var activeTabInv = ref(0);
@@ -467,7 +496,7 @@ var typeReport = ref("Inversiones");
 const bandAlert = ref(false)
 
 let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
-const  selectedReport = ref('')
+const selectedReport = ref('')
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
 const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -694,9 +723,6 @@ const showReportCustom = () => {
   }
 };
 
-const getEstimada = (a, b) => {
-  return a - b;
-}
 
 const getData = async (url) => {
   console.log(baseUrl + url);
@@ -732,46 +758,108 @@ const cleanFields = () => {
   bandAlert.value = false;
   selectedReport.value = ''
 }
-
+const monto_devolver = (a, b) => {
+    return a + b
+  }
+  const series = ref([]);
+  const series2 = ref([]);
+  const meses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+  ];
+  
+  const options = ref({
+    chart: {
+      id: "vuechart-example",
+    },
+    xaxis: {
+      categories: meses,
+    },
+  });
+  
+  const options2 = ref({
+    chart: {
+      type: 'bar', height: 250, stacked: true,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        dataLabels: {
+          total: {
+            enabled: true,
+            offsetX: 0,
+            style: {
+              fontSize: '13px',
+              fontWeight: 900
+            }
+          }
+        }
+      },
+    },
+    xaxis: {
+      categories: meses,
+      labels: {
+        formatter: function (val) {
+          return val
+        }
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetX: 40
+    }
+  });
 
 </script>
 
 <style scoped>
+.dropdown-item:hover {
+  background-color: var(--yellow-orange);
+  color: white;
+}
 
 .selected {
   text-decoration: underline;
-  border-radius: 50% ;
+  border-radius: 50%;
   border: 3px solid #162139;
   padding: 10px;
   font-weight: bold;
 }
-.slide-enter-active, .slide-leave-active {
+
+.slide-enter-active,
+.slide-leave-active {
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .slide-enter-from {
   transform: translateY(-20px);
-  opacity: 0; 
+  opacity: 0;
 }
 
 .slide-enter-to {
   transform: translateY(0);
-  opacity: 1; 
+  opacity: 1;
 }
 
 .slide-leave-from {
   transform: translateY(0);
-  opacity: 1; 
+  opacity: 1;
 }
 
 .slide-leave-to {
   transform: translateY(-20px);
-  opacity: 0; 
+  opacity: 0;
 }
+
 .selected {
   text-decoration: underline;
   font-weight: bold;
 }
+
 .abs-custom-icon-close {
   position: absolute;
   right: 0%;
