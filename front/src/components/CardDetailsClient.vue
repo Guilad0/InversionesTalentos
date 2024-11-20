@@ -16,22 +16,36 @@
         </div>
         <!-- nombre y datos -->
         <div class="mt-5 ">
-          <div class="row">
-            <div class="col-8">
-              <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
-              <h5>{{ client.ocupacion }}</h5>
-              <h6>{{ client.pais_residencia }}</h6>
-            </div>
-            <div class="col-4 text-end">
-              <div>
-                <span v-if="prom">{{ prom }}</span>
-              </div>
-              <div>
-                <span v-html="generarEstrellas(prom)"></span>
-              </div>
-            </div>
-          </div>
 
+          <div class="row">
+
+            <div class="col-8">
+
+              <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
+
+              <h5>{{ client.ocupacion }}</h5>
+
+              <h6>{{ client.pais_residencia }}</h6>
+
+            </div>
+
+            <div class="col-4 text-end">
+
+              <div>
+
+                <span v-if="prom">{{ prom }}</span>
+
+              </div>
+
+              <div>
+
+                <span class="stars" v-html="generarEstrellas(prom)"></span>
+
+              </div>
+
+            </div>
+
+          </div>
 
           <div class="row">
 
@@ -191,78 +205,83 @@
     <!-- Modal Inversión -->
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
+
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+
+        <div class="modal-content bg-degrade-inverso text-white">
+
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-              Datos de la Inversión
-            </h1>
+
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la Inversión</h1>
+
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
           </div>
+
           <div class="modal-body">
-            <p class="text-xl align-self-center">Tokens Restantes: {{ tokensCompradosInversionista -
+
+            <p class="text-xl text-center">Tokens Restantes: {{ tokensCompradosInversionista -
               tokensInvertidosInversionista }}</p>
+
             <form action="#" class="needs-validation" novalidate>
-              <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                  <div class="card m-1">
-                    <div class="card-body">
-                      <div class="form">
-                        <div class="row d-flex justify-content-around">
-                          <div class="col-md-8">
-                            <div class="mb-3">
-                              <label for="cliente_id" class="form-label">Cliente</label><br />
-                              <p>{{ client.nombre }}</p>
-                            </div>
-                          </div>
-                        </div>
+              <!-- Cliente -->
+              <div class="mb-3 text-center">
 
-                        <div class="row d-flex justify-content-around">
-                          <div class="col-md-4">
-                            <div class="mb-3">
-                              <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-                              <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
-                                class="form-control" @change="calcularGanancias()" required />
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="mb-3">
-                              <label class="form-label">Meses de Inversión</label>
-                              <p>{{ tiempo_inversion }}</p>
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="mb-3">
-                              <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-                              <p>{{ ganancia_tokens_inv }}</p>
-                            </div>
-                          </div>
-                        </div>
+                <label for="cliente_id" class="form-label">Cliente</label>
 
-                        <hr />
-                        <div class="text-center">
-                          <button type="button" @click="inversionistaInvertir()" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                            Invertir
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-2"></div>
+                <p>{{ client.nombre }}</p>
+
               </div>
+              <!-- Tokens, Meses y Ganancia -->
+              <div class="row text-center">
+
+                <div class="col-md-4 mb-3">
+
+                  <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
+
+                  <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
+                    @change="calcularGanancias()" required />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                  <label class="form-label">Meses de Inversión</label>
+
+                  <p>{{ tiempo_inversion }}</p>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                  <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+
+                  <p>{{ ganancia_tokens_inv }}</p>
+
+                </div>
+
+              </div>
+
             </form>
+
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Cerrar
+
+            <button type="button" @click="inversionistaInvertir()"
+              class="animate__animated animate__fadeInUp animate__slow btn-6" data-bs-dismiss="modal">
+              Invertir<span></span>
             </button>
+
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7"
+              data-bs-dismiss="modal">Cerrar<span></span></button>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
 
   </div>
@@ -464,8 +483,9 @@ const toggleExperiencia = () => {
 };
 
 const formatDate = (date) => {
-  return new Date(date).toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (YYYY-MM-DD)
+  return new Date(date).toISOString().split('T')[0];
 };
+
 const obtenerPromedio = async () => {
   try {
     const { data } = await axios.get("http://localhost:3000/preview/" + userId.value);
@@ -476,10 +496,10 @@ const obtenerPromedio = async () => {
     console.log(error);
   }
 };
+
 const generarEstrellas = (promedio) => {
   const cantidadEstrellas = Math.round(promedio);
   const estrellas = [];
-
   for (let i = 1; i <= 5; i++) {
     if (i <= cantidadEstrellas) {
       estrellas.push("★");
@@ -487,9 +507,9 @@ const generarEstrellas = (promedio) => {
       estrellas.push("☆");
     }
   }
-
   return estrellas.join("");
 };
+
 </script>
 
 <style scoped>
@@ -565,6 +585,10 @@ button {
   height: 562.5px;
 }
 
+.btn-7 span {
+  background-color: rgb(173, 1, 1) !important;
+}
+
 .banner-card {
   border: none;
   border-radius: 10px;
@@ -589,6 +613,10 @@ button {
   position: absolute;
   top: -50px;
   left: 15px;
+}
+
+.stars {
+  color: rgb(206, 206, 12);  
 }
 
 .card-title {
@@ -636,5 +664,5 @@ button {
 
 .col-4 {
   font-size: 40px;
-} 
+}
 </style>
