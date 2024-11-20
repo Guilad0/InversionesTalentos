@@ -7,11 +7,20 @@
     --yellow-orange: #F37926;
     /* --yellow-orange: #e6880d; */
     --dun-color:#D9C5B2;
+    --dun2-color: #d1cbc1; 
     --red-color:#FF0000;
     --green-color:#00FF00;
-
     --white-anti-flash-color:#F3F3F4;
     --dark-anti-flash-color:#17223B;
+    --blue-transparent:rgba(23, 34, 59, 0.5);
 
     --red-color:rgba(243, 10, 10, 0.856);
+
+    /* Fuentes Montserrat */
+    --font-montserrat-light: 'Montserrat', sans-serif; /* wght 300 */
+    --font-montserrat-regular: 'Montserrat', sans-serif; /* wght 400 */
+    --font-montserrat-semibold: 'Montserrat', sans-serif; /* wght 600 */
+    --font-montserrat-bold: 'Montserrat', sans-serif; /* wght 700 */
+
+  
 }

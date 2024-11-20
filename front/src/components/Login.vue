@@ -5,7 +5,7 @@
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="login-text-color">Iniciar sesión</h3>
+          <h3 class="login-text-color title">Iniciar sesión</h3>
         </div>
         <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
@@ -211,6 +211,15 @@ const callback =async (response) => {
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 26px; /* Tamaño predefinido */
+  color: var( --white-anti-flash-color); 
+  text-transform: uppercase;
+}
+
 .bgf {
   background-color: #f9f9fa;
 }

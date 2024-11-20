@@ -66,14 +66,15 @@ onMounted(async () => {
     transform: translateY(0);
   }
 }
-
-.title {
-  font-family: "Monoton", sans-serif;
-  font-size: 2.5em;
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-weight: 700;
+  .title {
+    font-family: var(--font-montserrat-bold); /* Variante bold */
+    font-weight: 700; /* Asegura que sea bold */
+    font-size: 26px; /* Tamaño predefinido */
+    color: var( --gray-color); 
+    text-transform: uppercase;
 }
+
+
 
 .description {
   font-family: "Monoton", sans-serif;
@@ -98,9 +99,7 @@ onMounted(async () => {
   .container {
     padding: 20px;
   }
-  .title {
-    font-size: 2em;
-  }
+
   .description {
     font-size: 1em;
   }
