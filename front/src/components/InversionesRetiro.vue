@@ -548,11 +548,13 @@
                       class="card-title text-center text-dark mt-5 mb-3 position-relative"
                     >
                       <div class="custom-abs-rigth">
-                        <img
-                          src="../assets/svg/diskette-svgrepo-com.svg"
-                          width="35"
-                          alt=""
-                        />
+                        <button @click="exportToPDF()">
+                          <img
+                            src="../assets/svg/diskette-svgrepo-com.svg"
+                            width="35"
+                            alt=""
+                          />
+                        </button>
                       </div>
                       Reportes
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
