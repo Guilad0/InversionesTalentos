@@ -190,7 +190,7 @@ const copiarEnlace = () => {
           </div>
         </div>
         <div class="text-center">
-          <label class="card-text token py-3 m-auto">Precio de token: ${{
+          <label class="card-text token py-3 m-auto">Precio de Token: ${{
             props.client.monto_inversion == null
               ? "00.00"
               : props.client.monto_inversion
@@ -198,7 +198,7 @@ const copiarEnlace = () => {
         </div>
         <div class="row mt-2">
           <button class="btn btn-gray" @click="showClient(props.client)">
-            Ver detalles
+            Ver Detalles
           </button>
         </div>
       </div>

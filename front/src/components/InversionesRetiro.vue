@@ -28,7 +28,7 @@
             data-bs-toggle="modal"
             data-bs-target="#exportModalTal"
           >
-            EXPORTAR <span></span>
+            Descargar <span></span>
           </button>
         </div>
 
@@ -55,7 +55,7 @@
               </button>
 
               <div class="modal-header m-auto text-dark">
-                <h5 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h5>
+                <h5 class="modal-title" id="exportModalInvLabel">Descargar Reporte</h5>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
@@ -195,8 +195,8 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Inversionista</th>
-                          <th scope="col">Tokens invertidos</th>
-                          <th scope="col">Tokens a devolver</th>
+                          <th scope="col">Tokens Invertidos</th>
+                          <th scope="col">Tokens a Devolver</th>
                           <th scope="col">Fecha de Inversion</th>
                           <th scope="col">Fecha de Retorno(Aprox)</th>
                         </tr>
@@ -223,10 +223,10 @@
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">Monto solicitado</th>
-                          <th scope="col">Monto a recibir</th>
-                          <th scope="col">Fecha solicitud</th>
-                          <th scope="col">Fecha de aprobacion</th>
+                          <th scope="col">Monto Solicitado</th>
+                          <th scope="col">Monto a Recibir</th>
+                          <th scope="col">Fecha Solicitud</th>
+                          <th scope="col">Fecha de Aprobacion</th>
                           <th scope="col">Estado</th>
                         </tr>
                       </thead>
@@ -264,7 +264,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <dir class="col text-dark">
+                  <div class="col text-dark">
                     <div class="card m-1">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
@@ -277,7 +277,7 @@
                         ></apexchart>
                       </div>
                     </div>
-                  </dir>
+                  </div>
                 </div>
                 <div class="text-dark" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
@@ -306,7 +306,7 @@
             <div class="custom-card row bg-degrade-inverso p-3">
               <div class="col-9 text-white text-center border-end p-3">
                 <p class="text-white text-center">
-                  Inversion ID: {{ inversion_recibida.inversion_id }}
+                  Inversión ID: {{ inversion_recibida.inversion_id }}
                 </p>
                 <p class="text-white text-center">
                   Inversionista: {{ inversion_recibida.nombre_inversor }}
@@ -421,7 +421,7 @@
             data-bs-target="#exportModalInv"
             class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
           >
-            EXPORTAR <span></span>
+            Descargar <span></span>
           </button>
         </div>
 
@@ -590,9 +590,9 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Talento</th>
-                          <th scope="col">Tokens invertidos</th>
-                          <th scope="col">Ganancia de tokens</th>
-                          <th scope="col">Fecha de Inversion</th>
+                          <th scope="col">Tokens Invertidos</th>
+                          <th scope="col">Ganancia de Tokens</th>
+                          <th scope="col">Fecha de Inversión</th>
                           <th scope="col">Fecha de Retorno(Aprox)</th>
                         </tr>
                       </thead>
@@ -616,10 +616,10 @@
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">Monto solicitado</th>
-                          <th scope="col">Monto a recibir</th>
-                          <th scope="col">Fecha solicitud</th>
-                          <th scope="col">Fecha de aprobacion</th>
+                          <th scope="col">Monto Solicitado</th>
+                          <th scope="col">Monto a Recibir</th>
+                          <th scope="col">Fecha Solicitud</th>
+                          <th scope="col">Fecha de Aprobación</th>
                           <th scope="col">Estado</th>
                         </tr>
                       </thead>
@@ -677,7 +677,7 @@
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Sin resultados!</h4>
                       <p>
-                        No se encontraron resultados entre las fechas seleccionadas. Por
+                        No se encontraron resultados entre las fechas seleccionadas.<br> Por
                         favor, intenta con un rango de fechas diferente.
                       </p>
                     </div>
@@ -700,7 +700,7 @@
             <div class="custom-card row bg-degrade-inverso p-3">
               <div class="col-9 text-white text-center border-end p-3">
                 <p class="text-white text-center">
-                  Inversion ID: {{ inversion.inversion_id }}
+                  Inversión ID: {{ inversion.inversion_id }}
                 </p>
                 <p class="text-white text-center">
                   Cliente: {{ inversion.nombre_cliente }}
@@ -712,7 +712,7 @@
                   Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}
                 </p>
                 <p class="text-white text-center">
-                  Fecha de Inversion: {{ formatDate(inversion.fecha_deposito) }}
+                  Fecha de Inversión: {{ formatDate(inversion.fecha_deposito) }}
                 </p>
                 <p class="text-white text-center">
                   Fecha de Retorno Aprox.: {{ formatDate(inversion.fecha_devolucion) }}

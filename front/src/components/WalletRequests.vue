@@ -23,7 +23,7 @@
       </nav>
     </div>
     <div class="content">
-      <h4 class="d-block mb-2 text-center title">Solicitudes de retiro</h4>
+      <h4 class="d-block mb-2 text-center title">Solicitudes de Retiro</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="col-3 px-5 mb-3">
           <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
@@ -34,12 +34,12 @@
             <thead>
               <tr class="table-secondary">
                 <th class="custom-size">ID</th>
-                <th class="custom-size">Nombre usuario - Rol</th>
+                <th class="custom-size">Nombre Usuario - Rol</th>
                 <th class="custom-size">Monto Solicitud</th>
-                <th class="custom-size">Comision a aplicar %</th>
-                <th class="custom-size">Monto a recibir</th>
-                <th class="custom-size">Fecha de solicitud</th>
-                <th class="custom-size">Fecha de aprobacion</th>
+                <th class="custom-size">Comision a Aplicar %</th>
+                <th class="custom-size">Monto a Recibir</th>
+                <th class="custom-size">Fecha de Solicitud</th>
+                <th class="custom-size">Fecha de Aprobacion</th>
                 <th class="custom-size">Estado</th>
                 <th class="custom-size">Acciones</th>
               </tr>

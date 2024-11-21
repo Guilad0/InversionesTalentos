@@ -3,7 +3,7 @@
     <div class="card login-card">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="login-text-color">Iniciar sesión</h3>
+          <h3 class="login-text-color">Iniciar Sesión</h3>
         </div>
         <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
@@ -45,7 +45,7 @@
             <div class="col"><h5 class="login-text-color">¿No tienes cuenta?</h5></div>
             <div class="col">
               <RouterLink to="/registrarse" class="nav-link registrar-link">
-                Regístrate gratis
+                Regístrate Gratis
               </RouterLink>
             </div>
           </div>

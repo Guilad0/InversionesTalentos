@@ -12,13 +12,13 @@
 
               <div class="row mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic1">
-                  <label for="nombre_completo" class="form-label">Nombre completo</label>
+                  <label for="nombre_completo" class="form-label">Nombre Completo</label>
                   <input type="text" v-model="nombre_completo" id="nombre_completo" class="form-control text-dark input"
                     required />
                 </div>
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
-                  <label for="tipo_dni" class="form-label ">Tipo de DNI</label>
+                  <label for="tipo_dni" class="form-label ">Tipo de Documento</label>
                   <select v-model="tipo_dni" class="form-select input-select" aria-label="Default select example" required>
                     <option value="ci" class="btn-gray ">CI</option>
                     <option value="pasaporte" class="btn-gray ">Pasaporte</option>
@@ -28,7 +28,7 @@
 
               <div class="row mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic3">
-                  <label for="dni" class="form-label">Dni</label>
+                  <label for="dni" class="form-label">Número de Documento</label>
                   <input type="text" v-model="dni" id="dni" class="form-control text-dark input" required />
                 </div>
 
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col-md-6 custom-subtitle input-container ic6">
-                  <label for="fuente_de_ingresos" class="form-label">Fuente de ingresos</label>
+                  <label for="fuente_de_ingresos" class="form-label">Fuente de Ingresos</label>
                   <input type="text" v-model="fuente_de_ingresos" id="fuente_de_ingresos"
                     class="form-control text-dark input" required />
                 </div>
@@ -55,7 +55,7 @@
                 <div class="col-md-6 mt-3">
                   <div class="col-md-12">
                     <br>
-                    <label class="form-label custom-subtitle">Situación laboral</label>
+                    <label class="form-label custom-subtitle">Situación Laboral</label>
                     <div class="form-check">
                       <input type="radio" v-model="situacion_laboral" id="empleado" value="Empleado"
                         class="form-check-input" />

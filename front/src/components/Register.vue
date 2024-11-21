@@ -6,7 +6,7 @@
         <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="login-text-color">Registrar cuenta</h3>
+          <h3 class="login-text-color">Registrar Cuenta</h3>
         </div>
         <div class="mb-2 login-text-color d-flex">
           <div class="col me-2">
@@ -23,7 +23,7 @@
                         @input="handleName"
                       />
                   <div v-if="nameConfirm == false" class="invalid-feedback text-orange">
-                    Minimo 5 caracteres
+                    Minimo 5 Caracteres
                   </div>
           </div>
           <div class="col ms-2">
@@ -39,14 +39,14 @@
                     @input="handleLastName"
                     placeholder="" />
                     <div v-if="lastNameConfirm == false" class="invalid-feedback text-orange">
-                    Minimo 5 caracteres
+                    Mínimo 5 Caracteres
                   </div>
           </div>
         </div>
 
         <div class="mb-2 login-text-color d-flex ">
             <div class="col me-2">
-            <label for="lastName">Fecha de nacimiento <label class="text-danger">*</label> </label>
+            <label for="lastName">Fecha de Nacimiento <label class="text-danger">*</label> </label>
               <input
                   type="date"
                   v-model="fechaCumple"
@@ -58,11 +58,11 @@
                   class="form-control custom-font p-1"
                   required />
                   <div v-if="control_fecha == false" class="invalid-feedback text-orange">
-                    Fecha no valida
+                    Fecha No Valida
                   </div>
             </div>
             <div class="col ms-2">
-            <label for="lastName">Pais de residencia <label class="text-danger">*</label> </label>
+            <label for="lastName">País de Residencia <label class="text-danger">*</label> </label>
               <select
                   class="form-select form-select-sm p-1"
                   id="countrySelect"
@@ -71,7 +71,7 @@
                   @input="selectCountryCode(selectedCountryname)"
                   required
                 >
-                  <option disabled value="">Selecciona un país</option>
+                  <option disabled value="">Selecciona un País</option>
                   <option v-for="country in countries" :key="country.abbreviation" :value="country" class="btn-gray ">
                     {{ country.name }}
                   </option>
@@ -86,7 +86,7 @@
                   required>
                   <option  class="btn-gray " value="Inversionista">Inversor</option>
                   <option  class="btn-gray " value="Cliente" >Cliente</option>
-                  <option  class="btn-gray " value="Null" >Sin rol</option>
+                  <option  class="btn-gray " value="Null" >Sin Rol</option>
                 </select>
               </div>
 
@@ -103,7 +103,7 @@
 
         <div class="mb-2 login-text-color d-flex ">
           <div class="col me-2">
-            <label for="lastName">Codigo de Pais <label class="text-danger">*</label> </label>
+            <label for="lastName">Código de País <label class="text-danger">*</label> </label>
 
             <div class="dropdown">
               <button
@@ -148,7 +148,7 @@
 
           </div>
           <div class="col ms-2">
-            <label >Telefono <label class="text-danger">*</label> </label>
+            <label >Teléfono <label class="text-danger">*</label> </label>
 
             <input
                       type="number"
@@ -161,14 +161,14 @@
                       v-model="numero_telefono"
                       @input="handleTelefono">
                     <div v-if="control_telefono === false" class="invalid-feedback text-orange">
-                      Minimo 6 caracteres
+                      Mínimo 6 Caracteres
                     </div>
           </div>
         </div>
 
         <div class="mb-2 login-text-color d-flex">
           <div class="col me-2">
-            <label for="floatingInput">Correo <label class="text-danger">*</label></label>
+            <label for="floatingInput">E-mail <label class="text-danger">*</label></label>
             <input
                   type="email"
                   class="form-control "
@@ -180,11 +180,11 @@
                   @input="handleEmail"
                   v-model="email">
                 <div v-if="control_email === false" class="invalid-feedback text-orange">
-                  Correo no permitido
+                  E-mail No Permitido
                 </div>
           </div>
           <div class="col ms-2">
-            <label >Genero <label class="text-danger">*</label></label>
+            <label >Género <label class="text-danger">*</label></label>
             <div class="d-flex align-items-center gap-3 mt-2">
               <div class="form-check">
                 <input
@@ -237,16 +237,16 @@
             <i v-if="typeInput=='password'" class="fa fa-eye custom-abs-icon-eye cursor "  @click="showPass"></i>
                     <div class="invalid-feedback">
                     <ul class="text-orange">
-                      <li v-if="password.length < 8">Debe ser mayor a 7 caracteres</li>
-                      <li v-if="!haveLetter(password)">Debe contener al menos una letra minuscula</li>
-                      <li v-if="!haveLetterCapital(password)">Debe contener al menos una letra mayuscula</li>
+                      <li v-if="password.length < 8">Debe tener más de 7 caracteres</li>
+                      <li v-if="!haveLetter(password)">Debe contener al menos una letra minúscula</li>
+                      <li v-if="!haveLetterCapital(password)">Debe contener al menos una letra mayúscula</li>
                       <li v-if="!tieneNumero(password)">Debe contener al menos un número</li>
-                      <li v-if="!tieneCaracterEspecial(password)">Debe contener al menos un carácter especial</li>
+                      <li v-if="!tieneCaracterEspecial(password)">Debe contener al menos un caracter especial</li>
                     </ul>
                   </div>
           </div>
           <div class="col ms-2 ">
-            <label >Confirmar contraseña <label class="text-danger">*</label></label>
+            <label >Confirmar Contraseña <label class="text-danger">*</label></label>
               <input
                     :type="typeInput"
                     v-model="confirmPassword"
@@ -264,18 +264,18 @@
             <input class="form-check-input" v-model="acepta_terminos" type="checkbox" id="flexCheckChecked" required   @invalid="handleInvalid"  @input="handleValid"/>
             <label class="form-check-label" for="flexCheckChecked">
               He leído y acepto los
-              <span :style="{ color: 'dark' }">Términos y condiciones</span>
+              <span :style="{ color: 'dark' }">Términos y Condiciones</span>
               y la
-              <span :style="{ color: 'dark' }">Política de privacidad</span>
+              <span :style="{ color: 'dark' }">Política de Privacidad</span>
             </label>
           </div>
         <div class="row text-center">
           <div class="my-3">
             <button :disabled="isLoading" type="submit" class="btn btn-gray rounded-5 w-75 ">
-                <label v-if="!isLoading"> Crear cuenta</label>
+                <label v-if="!isLoading"> Crear Cuenta</label>
                 <div v-if="isLoading" class="d-flex justify-content-center">
                   <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">Cargando...</span>
                   </div>
                 </div>
               </button>
@@ -283,9 +283,9 @@
         </div>
 
           <div v-if="user.rol != 'Admin'" class="row text-center w-70">
-            <div class="col"><h5 class="login-text-color">¿Ya tienes una cuenta ?</h5></div>
+            <div class="col"><h5 class="login-text-color">¿Ya tienes una cuenta?</h5></div>
             <div @click="$emit('changePage')" class="col cursor">
-              <a class="nav-link registrar-link"> Iniciar Sesion </a>
+              <a class="nav-link registrar-link"> Iniciar Sesión </a>
             </div>
           </div>
       </div>

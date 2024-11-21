@@ -16,7 +16,7 @@
                 <img :src="image" alt="" width="300" class="card-img-top" />
               </div>
               <div v-else class="alert alert-warning px-5" role="alert">
-                <h4 class="alert-heading">Sin resultados</h4>
+                <h4 class="alert-heading">Sin Resultados</h4>
                 <p>El usuario aún no cuenta con una imagen</p>
               </div>
             </div>

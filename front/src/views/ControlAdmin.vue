@@ -14,11 +14,11 @@
 
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('posts')"
             :class="{ 'border-custom': view === 'posts' }">
-            <i class="fa-solid fa-book-open "></i>&nbsp; Guias
+            <i class="fa-solid fa-book-open "></i>&nbsp; Guías
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('categorias')"
             :class="{ 'border-custom': view === 'categorias' }">
-            <i class="fa-solid fa-layer-group "></i> &nbsp; Categorias
+            <i class="fa-solid fa-layer-group "></i> &nbsp; Categorías
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('coment')"
             :class="{ 'border-custom': view === 'coment' }">
@@ -38,7 +38,7 @@
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('faqs')"
             :class="{ 'border-custom': view === 'faqs' }">
-            <i class="fa-solid fa-person-circle-question "></i> &nbsp; Preguntas frecuentes
+            <i class="fa-solid fa-person-circle-question "></i> &nbsp; Preguntas Frecuentes
           </li>
         </ul>
       </div>

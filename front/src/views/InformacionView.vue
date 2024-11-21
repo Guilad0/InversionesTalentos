@@ -7,7 +7,7 @@
         <div class="card shadow">
           <div class="card-body py-2 align-items-center">
             <label class="fw-bold text-center d-block w-100">¡Bienvenid@ {{ nombre }} completa tus datos!</label>
-            <h5 class="fw-bold text-center mb-3">Registra tu talento</h5>
+            <h5 class="fw-bold text-center mb-3">Registra tu Talento</h5>
 
             <div class="row mb-3">
 
@@ -17,10 +17,10 @@
               </div>
 
               <div class="col-md-6">
-                <label for="categoria_persona_id" class="form-label">Categoria</label>
+                <label for="categoria_persona_id" class="form-label">Categoría</label>
                 <select id="categoria_persona_id" v-model="categoria_persona_id" class="form-select form-select-sm p-1" aria-label="Multiple select example"
                 required>
-                  <option disabled selected value="">Selecciona tu categoría</option>
+                  <option disabled selected value="">Selecciona tu Categoría</option>
                   <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
                     {{ categoria.nombre }}
                   </option>
@@ -43,7 +43,7 @@
               </div>
 
               <div class="col-md-6">
-                <label for="cantidad_maxima_inversiones" class="form-label">Cantidad máxima de inversiones</label>
+                <label for="cantidad_maxima_inversiones" class="form-label">Cantidad Máxima de Inversiones</label>
                 <input type="text" v-model="cantidad_maxima_inversiones" id="cantidad_maxima_inversiones"
                   class="form-control text-dark" required />
               </div>

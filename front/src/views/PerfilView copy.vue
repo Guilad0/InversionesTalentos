@@ -43,7 +43,7 @@
               />
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="codigopais" class="form-label">Codigo del pais</label> 
+                  <label for="codigopais" class="form-label">Código del País</label> 
                   <select
                     name="codigopais"
                     v-model="codigopais"
@@ -62,7 +62,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="telefono" class="form-label">Numero de telefono</label>
+                  <label for="telefono" class="form-label">Número de Teléfono</label>
                   <input
                     type="text"
                     name="telefono"
@@ -83,13 +83,13 @@
                   disabled="true" 
                 />
                 <label class="form-check-label" for="flexSwitchCheckDefault"
-                  >KYC - Se necesita validar</label
+                  >KYC - Se Necesita Validar</label
                 >
               </div>
 
               <div class="row">
                 <div class="col-md-6">
-                  <label for="idioma" class="form-label">Nombre de usuario</label>
+                  <label for="idioma" class="form-label">Nombre de Usuario</label>
                   <input
                     type="text"
                     id="idioma"
@@ -98,7 +98,7 @@
                   />
                 </div>
                 <div class="col-md-6">
-                  <label for="pais" class="form-label">Pais de Residencia</label>
+                  <label for="pais" class="form-label">País de Residencia</label>
                   <select
                     name="pais_residencia"
                     v-model="pais_residencia"
@@ -182,7 +182,7 @@
                 <ul v-if="!loadingButtonKYC" class="text-white">
                   <li class="mb-3" v-if="rol== 'Cliente'">
                     <div class="d-flex m-auto align-items-center">
-                      <div class="col"> <i class="fa-solid fa-trophy"></i> &nbsp; logros </div> 
+                      <div class="col"> <i class="fa-solid fa-trophy"></i> &nbsp; Logros </div> 
                       <div class="col position-relative">
                         <RouterLink to="logros" class=" py-2  btn btn-sm btn-orange rounded-5 w-50">Abrir 
                         </RouterLink>
@@ -206,7 +206,7 @@
                   </li>
                   <li class="mb-3" v-if="rol== 'Cliente'">
                     <div class="d-flex m-auto align-items-center">
-                      <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Informacion </div> 
+                      <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Información </div> 
                       <div class="col position-relative">
                         <RouterLink  to="addInfCliente" class=" py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegister[0].status }">
                           <label v-if="verifyRegister[2].status">Enviado</label> 

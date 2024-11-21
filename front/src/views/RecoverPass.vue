@@ -5,26 +5,26 @@
         <form @submit.prevent="guardarCambios">
           <div class="card custom-card shadow">
             <div class="card-body py-5 align-items-center">
-              <h5 class="fw-bold text-center mb-3 custom-color custom-title">Introduzca su nueva contraseña</h5>
+              <h5 class="fw-bold text-center mb-3 custom-color custom-title">Introduzca su Nueva Contraseña</h5>
 
               <div class="row mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic1">
-                  <label for="new_pass" class="form-label ">Nueva contraseña</label>
+                  <label for="new_pass" class="form-label ">Nueva Contraseña</label>
                   <input type="password" v-model="new_pass" id="new_pass" class="form-control input" required />
                   <p v-if="mensajeError" class="text-danger">{{ mensaje }} </p>
                 </div>
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
-                  <label for="repeat_pass" class="form-label "> Repetir contraseña </label>
+                  <label for="repeat_pass" class="form-label "> Repetir Contraseña </label>
                   <input type="password" v-model="repeat_pass" id="repeat_pass" class="form-control text-dark input"
                     required />
-                  <p v-if="mensajeErrorRepetir" class="text-danger"> Las contraseñas no coinciden</p>
+                  <p v-if="mensajeErrorRepetir" class="text-danger"> Las Contraseñas No Coinciden</p>
                 </div>
 
               </div>
 
               <button type="submit" class="btn custom-button rounded-3">
-                Guardar cambios
+                Guardar Cambios
               </button>
             </div>
           </div>

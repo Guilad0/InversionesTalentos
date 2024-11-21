@@ -92,7 +92,7 @@ img {
         <div class="row justify-content-between align-items-center mb-3">
           <div class="col-4 col-sm-8 col-custom">
             <p class="token m-0">
-              Precio por token USD $
+              Precio por Token USD $
               {{ client.monto_inversion == null ? "00.00" : client.monto_inversion }}
             </p>
           </div>

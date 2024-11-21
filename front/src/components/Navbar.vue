@@ -25,22 +25,22 @@
             </li>
 
             <li class="nav-item" v-if="rol !== 'Cliente'">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="marketplace">Markeplace
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="marketplace">Marketplace
               </RouterLink>
             </li>
 
             <li class="nav-item">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/proposito">Proposito
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/proposito">Propósito
               </RouterLink>
             </li>
 
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="como-funciona">Cómo
-                funciona</RouterLink>
+                Funciona</RouterLink>
             </li>
 
             <li class="nav-item">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">Guias de usuario
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">Guías de Usuario
               </RouterLink>
             </li>
 
@@ -50,7 +50,7 @@
             </li>
 
             <li class="nav-item">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas frecuentes</RouterLink>
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas Frecuentes</RouterLink>
             </li>
 
           </ul>

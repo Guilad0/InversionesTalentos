@@ -42,7 +42,7 @@
                                 <th class="custom-size">Inversor</th>
                                 <th class="custom-size">Comentario</th>
                                 <th class="custom-size">Calificación</th>
-                                <th class="custom-size">Fecha de creación</th>
+                                <th class="custom-size">Fecha de Creación</th>
                                 <th class="custom-size">Estado</th>
                                 <th class="custom-size">Acciones</th>
                             </tr>
@@ -149,8 +149,8 @@
                             <div v-if="clienteSeleccionado">
                                 <h5>Estadísticas de {{ clienteSeleccionado.nombre }} {{ clienteSeleccionado.apellido }}
                                 </h5>
-                                <p>Comentarios aprobados: {{ estadisticas.totalAprobados }}</p>
-                                <p>Calificación promedio: {{ estadisticas.promedioCalificaciones.toFixed(2) }} / 5</p>
+                                <p>Comentarios Aprobados: {{ estadisticas.totalAprobados }}</p>
+                                <p>Calificación Promedio: {{ estadisticas.promedioCalificaciones.toFixed(2) }} / 5</p>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <span v-for="n in 5" :key="n" class="star">
                                         <i v-if="n <= Math.floor(estadisticas.promedioCalificaciones)"

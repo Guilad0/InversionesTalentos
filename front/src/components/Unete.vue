@@ -12,7 +12,7 @@
           <div
             class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
           >
-            <h5 class="card-title">Eres un profesional en busca de tu primer capital?</h5>
+            <h5 class="card-title">¿Eres un profesional en busca de tu primer capital?</h5>
 
             <button
               class="animate__animated animate__fadeInUp animate__slow btn-6"
@@ -36,7 +36,7 @@
           <div
             class="overlay flex-column justify-content-center text-white position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
           >
-            <h5 class="card-title">Buscas profesionales para invertir?</h5>
+            <h5 class="card-title">¿Buscas profesionales para invertir?</h5>
 
             <button
               class="animate__animated animate__fadeInUp animate__slow btn-6 border-0"

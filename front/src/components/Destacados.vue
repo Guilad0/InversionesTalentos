@@ -5,7 +5,7 @@
         <h1 class="text-center text-white  fs-custom position-relative ">
           {{ text }}
         <EditIcon v-if="rol == 'Admin'" class="mt-3"  data-bs-toggle="modal" data-bs-target="#textHome"/>
-        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar campo</label>
+        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar Campo</label>
         
         </h1>
       </div>
@@ -24,7 +24,7 @@
     <div class="d-flex justify-content-center pb-5">
       <div class="wrap">
         <RouterLink to="marketplace" class="btn-6 text-center rounded-3"
-          >Ir a marketplace<span></span
+          >Ir a Marketplace<span></span
         ></RouterLink>
       </div>
     </div>
@@ -32,7 +32,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title  fs-custom-text m-auto text-center" id="textHomeLabel">Introduce el texto de almenos 50 caracteres</h1>
+        <h1 class="modal-title  fs-custom-text m-auto text-center" id="textHomeLabel">Introduce el texto de al menos 50 caracteres</h1>
       </div>
       <div class="modal-body">
           <input type="text" class="form-control"  v-model="text">         

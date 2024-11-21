@@ -51,7 +51,7 @@
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
               data-bs-target="#modalVideoPresentacion">
-              <i class="fas fa-video"></i> Video presentación<span></span>
+              <i class="fas fa-video"></i> Video Presentación<span></span>
             </button>
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
@@ -71,7 +71,7 @@
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
               @click="isAuthenticatedAlert()">
-              <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
+              <i class="fas fa-wallet"></i> Fondear mi Billetera<span></span>
             </button>
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
@@ -145,8 +145,8 @@
           <h4 class="text-uppercase">{{ exp.institucion }}</h4>
           <h6>Cargo: {{ exp.cargo }}</h6>
           <h6>Actividades: {{ exp.actividades }}</h6>
-          <h6>Fecha de inicio: {{ formatDate(exp.fecha_inicio) }}</h6>
-          <h6>Fecha final: {{ formatDate(exp.fecha_final) }}</h6>
+          <h6>Fecha de Inicio: {{ formatDate(exp.fecha_inicio) }}</h6>
+          <h6>Fecha Final: {{ formatDate(exp.fecha_final) }}</h6>
 
         </div>
 
@@ -222,7 +222,7 @@
 
                 <div class="col-md-4 mb-3">
 
-                  <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
+                  <label for="monto_tokens_invertir" class="form-label">Tokens a Invertir</label>
 
                   <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
                     @change="calcularGanancias()" required />

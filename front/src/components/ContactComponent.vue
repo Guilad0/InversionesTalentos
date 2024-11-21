@@ -1,13 +1,14 @@
 <template>
   <div class="contact-container">
-    <p class="contact-title title">¿Necesitas Ayuda? <RouterLink class="contactus" to="/contact" ><span>Contactanos!</span>
+    <p class="contact-title title">¿Necesitas Ayuda? <RouterLink class="contactus" to="/contact" ><span>Contáctanos!</span>
       </RouterLink>
     </p>
 
-    <div class="contact-icons">
+    <div class="contact-icons d-flex text-center">
+      
       <a href="https://wa.me/59179367210" target="_blank" class="contact-item">
         <i class="fab fa-whatsapp"></i>
-        <span class="">Whatsapp</span>
+        <span class="">WhatsApp</span>
       </a>
       <a href="mailto:proyecto.inver24@gmail.com" class="contact-item">
         <i class="fas fa-envelope"></i>
