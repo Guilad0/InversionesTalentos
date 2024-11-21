@@ -21,8 +21,8 @@
 }
 
 .sppiner {
-  width: 100px;
-  height: 100px;
+  width:  80px;
+  height: 80px;
   border: 5px solid #17223B;
   border-radius: 50%;
   border-top-color: #D95C00;
