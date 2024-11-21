@@ -3,7 +3,7 @@
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
       <div>
         <h2 class="text-xl font-bold mb-4">
-          Inversiones, Retiros y Devoluciones Pendientes
+          Reportes de Inversiones, Retiros y Devoluciones Pendientes
         </h2>
 
         <div class="d-flex justify-content-center">
@@ -396,7 +396,7 @@
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-        <h2 class="text-xl font-bold mb-4">Inversiones & Retiros</h2>
+        <h2 class="text-xl font-bold mb-4">Reportes de Inversiones y Retiros</h2>
         <!-- Contenedor de tabs -->
         <div class="d-flex justify-content-center">
           <!-- Clase añadida para centrar -->
