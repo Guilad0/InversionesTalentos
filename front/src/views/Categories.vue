@@ -1,35 +1,20 @@
 <template>
-  <main class="bg-light pt-5 ps-4">
+  <main class="bg-light">
     <div class="content">
-      <h4 class="d-block mb-2 text-center title">Categorías</h4>
+      <h4 class="d-block mb-2 text-center underline py-4">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
         <div class="col-2 position-relative">
-          <input
-            name="search"
-            type="text"
-            v-model="search"
-            class="form-control"
-            placeholder="Buscar ..."
-            @input="obtenerCategorias(1, search)"
-          />
+          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+            @input="obtenerCategorias(1, search)" />
           <div v-if="search !== ''" class="custom-absolute">
-            <img
-              class="cursor"
-              src="../assets/svg/close.svg"
-              alt="Descripción del SVG"
-              width="25"
-              @click="clearSearch"
-            />
+            <img class="cursor" src="../assets/svg/close.svg" alt="Descripción del SVG" width="25"
+              @click="clearSearch" />
           </div>
         </div>
         <div class="col-8"></div>
         <div class="col-2 text-end">
-          <button
-            class="btn bg-gray rounded-3 text-white"
-            data-bs-toggle="modal"
-            data-bs-target="#modalRegisterCategorie"
-            @click="crearCategoria"
-          >
+          <button class="btn bg-gray rounded-3 text-white" data-bs-toggle="modal"
+            data-bs-target="#modalRegisterCategorie" @click="crearCategoria">
             +
             <i class="fa-solid fa-tags"></i>
           </button>
@@ -52,38 +37,23 @@
                 <td>{{ categoria.categoria_persona_id }}</td>
                 <td>{{ categoria.nombre }}</td>
                 <td>
-                  <img
-                    :src="`https://apitalentos.pruebasdeploy.online/uploads/categories/${categoria.imagen}`"
-                    alt="Imagen de categoría"
-                    width="50"
-                  />
+                  <img :src="`http://localhost:3000/uploads/categories/${categoria.imagen}`" alt="Imagen de categoría"
+                    width="50" />
                 </td>
                 <td>
-                  <span v-if="categoria.estado" class="badge text-bg-success"
-                    >Activo</span
-                  >
+                  <span v-if="categoria.estado" class="badge text-bg-success">Activo</span>
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
                 <td>
-                  <button
-                    @click="editarCategoria(categoria.categoria_persona_id)"
-                    class="btn btn-warning btn-sm me-2"
-                  >
+                  <button @click="editarCategoria(categoria.categoria_persona_id)" class="btn btn-warning btn-sm me-2">
                     <i class="fa fa-edit"></i>
                   </button>
 
-                  <button
-                    v-if="categoria.estado"
-                    @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="btn btn-danger btn-sm"
-                  >
+                  <button v-if="categoria.estado" @click="cambiarEstado(categoria.categoria_persona_id)"
+                    class="btn btn-danger btn-sm">
                     <i class="fa fa-times"></i>
                   </button>
-                  <button
-                    v-else
-                    @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="btn btn-success btn-sm"
-                  >
+                  <button v-else @click="cambiarEstado(categoria.categoria_persona_id)" class="btn btn-success btn-sm">
                     <i class="fa fa-check"></i>
                   </button>
                 </td>
@@ -101,23 +71,15 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button
-                  @click="obtenerCategorias(paginacion.previous)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3"
-                >
+                <button @click="obtenerCategorias(paginacion.previous)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
-              <li
-                v-for="page in paginacion.pages"
-                :key="page"
-                class="page-item"
-                :class="paginacion.current === page ? 'active' : ''"
-              >
-                <button
-                  @click="obtenerCategorias(page)"
-                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
-                >
+              <li v-for="page in paginacion.pages" :key="page" class="page-item"
+                :class="paginacion.current === page ? 'active' : ''">
+                <button @click="obtenerCategorias(page)"
+                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
                   {{ page }}
                 </button>
               </li>
@@ -128,10 +90,8 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button
-                  @click="obtenerCategorias(paginacion.next)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3"
-                >
+                <button @click="obtenerCategorias(paginacion.next)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </li>
@@ -142,57 +102,52 @@
     </div>
 
     <!-- Modal para Crear/Editar Categoría -->
-    <div
-      class="modal fade"
-      id="modalRegisterCategorie"
-      tabindex="-1"
-      aria-labelledby="modalRegisterCategorieLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content modal-card">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalRegisterCategorieLabel">
-              {{ editMode ? "Editar Categoría" : "Crear Nueva Categoría" }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="saveCategory">
-              <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre de la Categoría</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nombre"
-                  v-model="form.nombre"
-                  required
-                />
+    <div class="modal fade" id="modalRegisterCategorie" tabindex="-1" aria-labelledby="modalRegisterCategorieLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content modal-card">
+      <!-- Primera fila: Título -->
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="modalRegisterCategorieLabel">
+          {{ editMode ? "Editar Categoría" : "Crear Nueva Categoría" }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Segunda fila: Contenido del formulario -->
+      <div class="modal-body" style="background-color: #17223B;">
+        <form @submit.prevent="saveCategory">
+          <div class="container">
+            <!-- Campo: Nombre -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="nombre" class="form-label custom-subtitle">Nombre de la Categoría</label>
+                <input type="text" class="form-control input" id="nombre" v-model="form.nombre" required />
               </div>
-              <div class="mb-3">
-                <label for="image" class="form-label">Imagen de la Categoría</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="image"
-                  @change="handleFileChange"
-                />
+            </div>
+
+            <!-- Campo: Imagen -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="image" class="form-label custom-subtitle">Imagen de la Categoría</label>
+                <input type="file" class="form-control input" id="image" @change="handleFileChange" />
               </div>
-              <div class="d-flex justify-content-center py-3">
-                <button type="submit" class="btn btn-orange rounded-5 w-75">
+            </div>
+
+            <!-- Botón: Crear/Guardar -->
+            <div class="row">
+              <div class="col-12 text-center modal-footer">
+                <button type="submit" class="btn custom-button">
                   {{ editMode ? "Guardar Cambios" : "Crear Categoría" }}
                 </button>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
+</div>
+
   </main>
 </template>
 <script setup>
@@ -205,7 +160,7 @@ const form = ref({ nombre: "", image: null });
 const editMode = ref(false);
 const categoriaEditada = ref(null);
 const search = ref("");
-let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
+let BaseURL = "http://localhost:3000/categories";
 
 const router = useRouter();
 
@@ -314,23 +269,154 @@ const saveCategory = async () => {
 </script>
 
 <style scoped>
-.title {
-  font-family: var(--font-montserrat-bold); /* Variante bold */
-  font-weight: 700; /* Asegura que sea bold */
-  font-size: 30px; /* Tamaño predefinido */
-  color: var( --gray-color); 
-  text-transform: uppercase;
+/*inicio de la modal*/
+.modal-header {
+  background-color: #D9C5B2 !important;
+  width: 100%;
+  height: 75px;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.modal-footer {
+  background-color: #D9C5B2 !important;
+  width: 100%;
+  height: 75px;
+  border-radius: 0 0 15px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .modal-card {
-  width: 30rem;
-  padding: 2rem;
-  height: 25rem;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  background-color: rgba(0, 0, 0, 0.705);
-  color: var(--white-anti-flash-color);
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #17223B;
 }
+
+.input {
+  background-color: rgba(44, 46, 51, 1.1);
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--white-color);
+  font-size: 13px;
+  height: 50px;
+  outline: 0;
+  padding: 4px 20px 0;
+  width: 100%;
+}
+
+.input:focus {
+  background-color: var(--white-color);
+  border: 2px solid #F37926;
+  outline: none;
+  box-shadow: none;
+  color: black;
+}
+
+
+.custom-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #d06a20; /* Darker orange */
+}
+
+
+.modal-dialog {
+  /* background-image: url("@/assets/images/otro-fondo5.png"); */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* Centra verticalmente el formulario */
+  justify-content: center;
+  /* Centra horizontalmente el formulario */
+}
+
+
+/* Botón de cerrar modal */
+.btn-close {
+  color: var(--yellow-orange);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/*titulo de la modal*/
+.modal-title {
+  color: var(--gray-color);
+  font-family: var(--font-montserrat);
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 1px;
+  text-transform: uppercase;
+}
+
+.custom-subtitle {
+  color: var(--white-color);
+  font-family: var(--font-montserrat);
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.input-container {
+  height: 50px;
+  position: relative;
+  width: 100%;
+}
+
+.ic1 {
+  margin-top: 20px;
+}
+
+.ic2 {
+  margin-top: 20px;
+}
+
+
+.custom-button {
+  background-color: #17223B;
+  color: #F3F3F4;
+  font-family: var(--font-montserrat);
+  font-size: 16px;
+  border: none;
+  margin-top: 2px;
+  height: 30px;
+  width: 180px;
+  padding: 1.5rem;
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+}
+
+
+.custom-button:hover {
+  background-color: #F37926 !important;
+  color: #fff;
+}
+
+/*fin de la Modal*/
+
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;
@@ -358,11 +444,13 @@ td {
 }
 
 .btn:hover {
-  background-color: rgba(136, 136, 136, 0.76) !important;
+  background-color: rgba(136, 136, 136, 0.76);
 }
+
 .btn-danger:hover {
   background-color: rgba(122, 0, 0, 0.8) !important;
 }
+
 .btn-warning:hover {
   background-color: rgba(187, 156, 0, 0.8) !important;
 }

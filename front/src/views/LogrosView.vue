@@ -13,6 +13,7 @@
                   <input type="date" v-model="fecha" id="date" class="form-control text-dark inputF" required :min="minDate"
                     :max="maxDate" />
                 </div>
+                <br>
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
                   <label for="description" class="form-label custom-subtitle">Logros</label>
@@ -59,7 +60,7 @@ onMounted(() => {
 // Función para registrar el logro
 const registrarLogro = async () => {
   try {
-    const response = await axios.post("https://apitalentos.pruebasdeploy.online/logros", {
+    const response = await axios.post("http://localhost:3000/logros", {
       cliente_id: cliente_id.value,
       descripcion: descripcion.value,
       fecha: fecha.value,
@@ -88,37 +89,39 @@ const registrarLogro = async () => {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 0.563); /* Color con opacidad */
+  background-blend-mode: overlay; /* Combina el color y la imagen */
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  /* Centra verticalmente el formulario */
-  justify-content: center;
-  /* Centra horizontalmente el formulario */
+  align-items: center; /* Centra verticalmente el formulario */
+  justify-content: center; /* Centra horizontalmente el formulario */
 }
 
+
 .custom-card {
-  background-color: var(--white-color);
+  background-color:  rgba(255, 255, 255, 0.877);
   border-radius: 20px;
   box-sizing: border-box;
-  height: 450px;
+  height: 525px;
   padding: 20px;
   width: 520px;
 }
 
 .custom-title {
   color: var(--gray-color);
-  font-family: sans-serif;
-  font-size: 30px;
-  font-weight: 600;
+  font-family: var(--font-montserrat);
+  font-size: 32px;
+  font-weight: 700;
   margin-top: -50px;
+  text-transform: uppercase;
 }
 
 .custom-subtitle {
   color: var(--gray-color);
-  font-family: sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  margin-top: 5px;
+  font-family: var(--font-montserrat);
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 2px;
 }
 .input-container {
   height: 50px;
@@ -127,11 +130,11 @@ const registrarLogro = async () => {
 }
 
 .ic1 {
-  margin-top: 35px;
+  margin-top: 45px;
 }
 
 .ic2 {
-  margin-top: 35px;
+  margin-top: 45px;
 }
 
 .inputF {
@@ -149,7 +152,7 @@ const registrarLogro = async () => {
 .inputF:focus {
   color: #000000 !important; 
   background-color: var(--white-color);
-  border: 2px solid #F37926; 
+  border: 2px solid #F37926;  
   outline: none;
   box-shadow: none;
 }
@@ -179,7 +182,7 @@ const registrarLogro = async () => {
   background-color: #17223B;
   color: #F3F3F4;
   border: none;
-  margin-top: 150px;
+  margin-top: 170px;
 }
 
 .custom-button:hover {

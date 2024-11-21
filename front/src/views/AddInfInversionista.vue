@@ -19,9 +19,9 @@
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
                   <label for="tipo_dni" class="form-label ">Tipo de DNI</label>
-                  <select v-model="tipo_dni" class="form-select" aria-label="Default select example" required>
-                    <option value="ci">CI</option>
-                    <option value="pasaporte">Pasaporte</option>
+                  <select v-model="tipo_dni" class="form-select input-select" aria-label="Default select example" required>
+                    <option value="ci" class="btn-gray ">CI</option>
+                    <option value="pasaporte" class="btn-gray ">Pasaporte</option>
                   </select>
                 </div>
               </div>
@@ -135,7 +135,7 @@ const addInfoInversionista = async () => {
   };
   console.log(datos);
   try {
-    const response = await axios.post("https://apitalentos.pruebasdeploy.online/clients/addInfoInversionista", datos);
+    const response = await axios.post("http://localhost:3000/clients/addInfoInversionista", datos);
     alert('Información registrada correctamente');
     router.push({ name: 'perfil' });
   } catch (error) {
@@ -151,6 +151,8 @@ const addInfoInversionista = async () => {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 0.563);
+  background-blend-mode: overlay;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -160,7 +162,7 @@ const addInfoInversionista = async () => {
 }
 
 .custom-card {
-  background-color: var(--white-color);
+  background-color: rgba(255, 255, 255, 0.877);
   border-radius: 20px;
   box-sizing: border-box;
   height: 640px;
@@ -170,23 +172,24 @@ const addInfoInversionista = async () => {
 
 .custom-title {
   color: var(--gray-color);
-  font-family: sans-serif;
-  font-size: 28px;
-  font-weight: 600;
+  font-family: var(--font-montserrat);
+  font-size: 32px;
+  font-weight: 700;
   margin-top: -20px;
+  text-transform: uppercase;
 }
 
 .custom-subtitle {
   color: var(--gray-color);
-  font-family: sans-serif;
+  font-family: var(--font-montserrat);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: -15px;
 }
 
 .custom-subtitle-up {
   color: var(--gray-color);
-  font-family: sans-serif;
+  font-family: var(--font-montserrat);
   font-size: 15px;
   font-weight: 600;
   margin-top: -15px;
@@ -205,6 +208,8 @@ const addInfoInversionista = async () => {
 
 .ic2 {
   margin-top: 15px;
+  
+
 }
 
 .ic3 {
@@ -239,8 +244,30 @@ const addInfoInversionista = async () => {
 .input:focus {
   color: #17223B !important;
   background-color: var(--white-color);
-  border: 2px solid #F37926; 
-  outline: none; 
+  border: 2px solid #F37926;
+  outline: none;
+  box-shadow: none;
+  color: black;
+}
+
+.input-select {
+  background-color: rgba(44, 46, 51, 0.8);
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--white-color) !important;
+  font-size: 18px;
+  height: 80%;
+  outline: 0;
+  padding: 4px 20px 0;
+  width: 100%;
+}
+
+.input-select:focus {
+  color: #17223B !important;
+  background-color: var(--white-color);
+  border: 2px solid #F37926;
+  outline: none;
   box-shadow: none;
   color: black;
 }
@@ -251,10 +278,22 @@ const addInfoInversionista = async () => {
   color: #F3F3F4;
   border: none;
   margin-top: 25px;
+  font-family: var(--font-montserrat);
+  font-size: 18px;
 }
 
 .custom-button:hover {
   background-color: #F37926;
   color: #fff;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #F37926;
+  border-color: #F37926;
+}
+
+.form-check-input:checked {
+  background-color: #F37926;
+  border-color: #F37926;
 }
 </style>

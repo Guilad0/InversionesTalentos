@@ -66,6 +66,8 @@ const guardarCambios = () => {
 <style scoped>
 .custom-background {
   background-image: url("@/assets/images/otro-fondo3.png");
+  background-color: rgba(0, 0, 0, 0.563);
+  background-blend-mode: overlay;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -76,25 +78,26 @@ const guardarCambios = () => {
 }
 
 .custom-card {
-  background-color: var(--white-color);
+  background-color: rgba(255, 255, 255, 0.877);
   border-radius: 20px;
   box-sizing: border-box;
-  height: 300px;
+  height: 330px;
   padding: 20px;
   width: 520px;
 }
 
 .custom-title {
   color: var(--gray-color);
-  font-family: sans-serif;
+  font-family: var(--font-montserrat);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: -20px;
+  text-transform: uppercase;
 }
 
 .custom-subtitle {
   color: var(--gray-color);
-  font-family: var(--font-montserrat-semibold);
+  font-family: var(--font-montserrat);
   font-size: 18px;
   font-weight: 600;
   margin-top: 5px;
