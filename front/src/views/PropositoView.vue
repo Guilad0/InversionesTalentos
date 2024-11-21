@@ -105,7 +105,7 @@ const saveText =async () =>{
   <div class="full-background">
     <header class="header">
       
-      <h1>Propósito</h1>
+      <h1 class="title">Propósito</h1>
 
     </header>
       <EditIcon v-if="rol =='Admin'" class="ms-5 mt-5"   data-bs-toggle="modal" data-bs-target="#modalImagePurpose"/>
@@ -175,6 +175,13 @@ const saveText =async () =>{
 </template>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 /* Asegurarse de que el html y body tengan altura completa */
 html,
 body {

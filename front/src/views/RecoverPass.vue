@@ -94,8 +94,8 @@ const guardarCambios = () => {
 
 .custom-subtitle {
   color: var(--gray-color);
-  font-family: sans-serif;
-  font-size: 15px;
+  font-family: var(--font-montserrat-semibold);
+  font-size: 18px;
   font-weight: 600;
   margin-top: 5px;
 }

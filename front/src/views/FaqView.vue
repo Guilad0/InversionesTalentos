@@ -1,6 +1,7 @@
 <template>
   <div>
   <div v-if="!loading">
+    <h1 class="text-center title pt-5">FAQs</h1>
     <div class="container py-5 animate__animated animate__fadeIn">
       <div class="accordion custom-accordion" id="accordionExample">
         <div v-for="(faq, index) in faqs" :key="faq.faq_id" class="accordion-item">
@@ -30,7 +31,7 @@
           </div>
         </div>
       </div>
-      <Contact />
+    
     </div>
     <div v-if="user == null || user?.rol == 'Null'">
     <Unete />
@@ -45,7 +46,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import Contact from "../components/ContactComponent.vue";
 import Unete from "../components/Unete.vue";
 import { getUser } from '@/helpers/utilities';
 import Spinner from '../components/Spinner.vue'
@@ -74,6 +74,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .custom-accordion-button {
   background-color: var(--gray-color);
   color: var(--white-anti-flash-color);

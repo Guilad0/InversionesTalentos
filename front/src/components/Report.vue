@@ -1,6 +1,6 @@
 <template>
   <div class="m-3">
-    <h2 class="text-xl font-bold mb-4">Reportes</h2>
+    <h2 class="text-xl title mb-4">Reportes</h2>
 
     <div class="row my-3">
       <div class="col-md-5">
@@ -221,6 +221,14 @@ const obtenerGanancias = async () => {
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700;
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .active {
   color: var(--yellow-orange) !important;
   border-radius: 10px !important;

@@ -1,6 +1,6 @@
 <template>
     <div class="terminos-container">
-        <h1 class="terminos-titulo">Términos y Condiciones</h1>
+        <h1 class="terminos-titulo title">Términos y Condiciones</h1>
         <p class="terminos-texto">
             Bienvenido a nuestra plataforma. Lea atentamente estos Términos de
             servicio (los "Términos"), ya que rigen el uso del sitio web
@@ -204,6 +204,13 @@
 </template>
 
 <style scoped>
+.title {
+    font-family: var(--font-montserrat-bold);
+    font-weight: 700; 
+    font-size: 30px; 
+    color: var( --gray-color); 
+    text-transform: uppercase;
+}
 .terminos-container {
     max-width: 800px;
     margin: 0 auto;

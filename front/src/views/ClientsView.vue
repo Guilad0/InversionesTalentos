@@ -99,7 +99,7 @@ onMounted(async () => {
 <template>
   <main class="min-vh-100">
     <div class="container">
-      <h1 class="text-center fs-3 pt-5">Marketplace</h1>
+      <h1 class="text-center titleM pt-5">Marketplace</h1>
       <p class="mt-5 fw-bold fs-5">Profesionales</p>
       <div class="d-flex justify-content-between">
         <div class="d-flex">
@@ -169,6 +169,15 @@ onMounted(async () => {
   </main>
 </template>
 <style scoped>
+
+.titleM {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 30px; /* Tamaño predefinido */
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
 main {
   width: 100%;
 }

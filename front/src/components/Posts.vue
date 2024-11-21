@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light pt-4 ps-4">
     <div class="content">
-      <h4 class="d-block mb-2 text-center underline py-5">Guías de Usuarios</h4>
+      <h4 class="d-block mb-2 py-3 text-center title">Guías de Usuarios</h4>
       <div class="table-center py-3">
         <div class="table-container">
           <table class="table">
@@ -208,6 +208,14 @@ const editar = (item) => {
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;

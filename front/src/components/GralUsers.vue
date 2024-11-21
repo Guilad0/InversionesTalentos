@@ -127,7 +127,7 @@ const clearId = ()=>{
     <main class="bg-light">
         
         <div class="content ">
-            <h4 class="d-block text-start mb-2 text-center underline"> Todos los usuarios </h4>
+            <h4 class="d-block text-start mb-2 text-center title"> Todos los usuarios </h4>
             <div class="d-flex justify-content-between px-5 mt-2 mb-3">
                 <div class="col-2 position-relative">
                     <input name="search" type="text" v-model="search" class="form-control border-1 border-secondary" placeholder="Buscar ..."
@@ -298,6 +298,14 @@ const clearId = ()=>{
     </main>
 </template>
 <style scoped>
+
+.title {
+    font-family: var(--font-montserrat-bold); 
+    font-weight: 700; 
+    font-size: 30px; 
+    color: var( --gray-color); 
+    text-transform: uppercase;
+} 
 .custom-size {
     font-size: 0.9rem;
     font-weight: 630;

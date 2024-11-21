@@ -4,7 +4,7 @@
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
 
-      <h1 class="font-bold mb-4">Balance de Fondos</h1>
+      <h1 class="font-bold mb-4 title">Balance de Fondos</h1>
 
       <div>
 
@@ -878,7 +878,15 @@ const solicitarRetiro = async () => {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
 
-h1 {
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
+.h1 {
   font-family: var(--font-montserrat-bold) ;
 }
 

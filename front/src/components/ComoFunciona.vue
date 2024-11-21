@@ -6,7 +6,7 @@
       <div class="col-md-6">
         <h2 class="title">Cómo Funciona</h2>
         <p class="description">
-          Mira este video para conocer qué es Hamilo Inversiones y cómo funciona
+          Mira este video para conocer qué es <br> Hamilo Inversiones y cómo funciona
         </p>
       </div>
       <div class="col-md-6 video-container">
@@ -69,7 +69,7 @@ onMounted(async () => {
   .title {
     font-family: var(--font-montserrat-bold); /* Variante bold */
     font-weight: 700; /* Asegura que sea bold */
-    font-size: 26px; /* Tamaño predefinido */
+    font-size: 30px; /* Tamaño predefinido */
     color: var( --gray-color); 
     text-transform: uppercase;
 }
@@ -77,10 +77,10 @@ onMounted(async () => {
 
 
 .description {
-  font-family: "Monoton", sans-serif;
-  font-size: 1.2em;
+  font-family: var(--font-montserrat-semibold);
+  font-size: 24px;
   color: #7f8c8d;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .video-container {

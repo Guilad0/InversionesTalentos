@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light pt-5 ps-4">
     <div class="content">
-      <h4 class="d-block mb-2 text-center underline py-2">Consultas Y Reclamos</h4>
+      <h4 class="d-block mb-2 text-center py-2 title">Consultas Y Reclamos</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="col-4 px-5 mb-3 d-flex">
           <input
@@ -371,6 +371,15 @@ const openModal = (item) => {
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
 .pdf-preview-container {
   position: fixed;
   z-index: 9999;
