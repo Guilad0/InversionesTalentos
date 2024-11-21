@@ -7,50 +7,31 @@
         </h2>
 
         <div class="d-flex justify-content-center">
-          <button
-            v-for="(tabCli, index) in tabsCli"
-            :key="index"
-            :class="[
-              'animate__animated',
-              'animate__fadeInUp',
-              'animate__slow',
-              'btn-6',
-              'm-2',
-              { active: activeTabCli === index },
-            ]"
-            @click="activeTabCli = index"
-          >
+          <button v-for="(tabCli, index) in tabsCli" :key="index" :class="[
+            'animate__animated',
+            'animate__fadeInUp',
+            'animate__slow',
+            'btn-6',
+            'm-2',
+            { active: activeTabCli === index },
+          ]" @click="activeTabCli = index">
             {{ tabCli }} <span></span>
           </button>
 
-          <button
-            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
-            data-bs-toggle="modal"
-            data-bs-target="#exportModalTal"
-          >
+          <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-toggle="modal"
+            data-bs-target="#exportModalTal">
             Descargar <span></span>
           </button>
         </div>
 
         <!-- Modal para extraer para el Talento -->
-        <div
-          class="modal fade"
-          id="exportModalTal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="exportModalTalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exportModalTal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalTalLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content bg-degrade">
-              <button
-                type="button"
-                @click="closeModal"
-                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" @click="closeModal"
+                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close" data-bs-dismiss="modal"
+                aria-label="Close">
                 Cerrar
               </button>
 
@@ -60,104 +41,59 @@
               </div>
 
               <div class="modal-body px-5">
-                <div
-                  class="d-flex justify-content-center text-dark gap-5 position-relative"
-                >
+                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Hoy</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
+                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Hoy</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('ayer')"
-                      :class="{ selected: selectedReport === 'ayer' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Ayer</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
+                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Ayer</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('semana')"
-                      :class="{ selected: selectedReport === 'semana' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Semana</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
+                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Semana</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('mes')"
-                      :class="{ selected: selectedReport === 'mes' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Mes</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
+                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Mes</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('anual')"
-                      :class="{ selected: selectedReport === 'anual' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Anual</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
+                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Anual</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="showCustomDate"
-                      :class="{ selected: band == true }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br />
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
+                      :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
                     <label>Personalizado</label>
                   </div>
 
                   <transition name="slide">
                     <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label
-                      ><input
-                        @input="showReportCustom"
-                        id="fechaInicio"
-                        v-model="fechaInicioCustom"
-                        class="form-control"
-                        type="date"
-                      />
-                      <label for="fechaFin">Fecha Final</label
-                      ><input
-                        @input="showReportCustom"
-                        id="fechaFin"
-                        v-model="fechaFinCustom"
-                        class="form-control"
-                        type="date"
-                      /><br />
+                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
+                        v-model="fechaInicioCustom" class="form-control" type="date" />
+                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
+                        v-model="fechaFinCustom" class="form-control" type="date" /><br />
                     </div>
                   </transition>
                 </div>
 
                 <div class="card border-0">
                   <div class="card-body bg-degrade">
-                    <h3
-                      class="card-title text-center text-dark mt-5 mb-3 position-relative"
-                    >
+                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
                         <button @click="exportToPDF()">
-                          <img
-                            src="../assets/svg/diskette-svgrepo-com.svg"
-                            width="35"
-                            alt=""
-                          />
+                          <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
                         </button>
                       </div>
 
@@ -165,12 +101,8 @@
 
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
-                          <button
-                            type="button"
-                            class="btn btn-blue dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
+                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <label class="text-white">{{ typeReport }}</label>
                           </button>
 
@@ -268,13 +200,8 @@
                     <div class="card m-1">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
-                        <apexchart
-                          v-if="reports.length > 0"
-                          width="100%"
-                          type="area"
-                          :options="options"
-                          :series="series"
-                        ></apexchart>
+                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
+                          :series="series"></apexchart>
                       </div>
                     </div>
                   </div>
@@ -298,11 +225,8 @@
 
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
-          <div
-            class="p-3 shadow-md text-center"
-            v-for="inversion_recibida in inversiones_recibidas"
-            :key="inversion_recibida"
-          >
+          <div class="p-3 shadow-md text-center" v-for="inversion_recibida in inversiones_recibidas"
+            :key="inversion_recibida">
             <div class="custom-card row bg-degrade-inverso p-3">
               <div class="col-9 text-white text-center border-end p-3">
                 <p class="text-white text-center">
@@ -320,12 +244,7 @@
               </div>
 
               <div class="col-3 p-3">
-                <img
-                  :src="inversion_recibida.imagen"
-                  width="150"
-                  class="rounded-circle"
-                  alt=""
-                />
+                <img :src="inversion_recibida.imagen" width="150" class="rounded-circle" alt="" />
               </div>
             </div>
           </div>
@@ -333,11 +252,7 @@
 
         <!-- Lista de solicitudes de retiro -->
         <div class="tab-content" v-if="activeTabCli === 1">
-          <div
-            class="p-3 shadow-md text-center"
-            v-for="cliente_retiro in clientes_retiros"
-            :key="cliente_retiro"
-          >
+          <div class="p-3 shadow-md text-center" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
             <div class="custom-card bg-degrade-inverso p-3">
               <h3 class="text-white text-center">
                 Monto:<br />
@@ -350,10 +265,7 @@
                 Fecha Solicitud: {{ formatDate(cliente_retiro.fecha_solicitud) }}
               </p>
               <p class="text-white text-center">Estado: {{ cliente_retiro.estado }}</p>
-              <p
-                class="text-white text-center"
-                v-if="cliente_retiro.estado == 'Aprobado'"
-              >
+              <p class="text-white text-center" v-if="cliente_retiro.estado == 'Aprobado'">
                 Fecha Aprobación: {{ formatDate(cliente_retiro.fecha_aprobacion) }}
               </p>
             </div>
@@ -362,14 +274,9 @@
 
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
-          <div
-            class="p-3 shadow-md text-center"
-            v-for="inversion_vencida in inversiones_vencidas"
-            :key="inversion_vencida"
-          >
-            <div
-              class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center"
-            >
+          <div class="p-3 shadow-md text-center" v-for="inversion_vencida in inversiones_vencidas"
+            :key="inversion_vencida">
+            <div class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center">
               <p class="text-white text-center">
                 Solicitud: {{ inversion_vencida.inversion_id }}
               </p>
@@ -382,10 +289,8 @@
               <p class="text-white text-center">
                 Fecha de Vencimiento: {{ formatDate(inversion_vencida.fecha_devolucion) }}
               </p>
-              <button
-                class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
-                @click="devolverTokens(inversion_vencida)"
-              >
+              <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                @click="devolverTokens(inversion_vencida)">
                 Devolver Inversión<span></span>
               </button>
             </div>
@@ -400,174 +305,102 @@
         <!-- Contenedor de tabs -->
         <div class="d-flex justify-content-center">
           <!-- Clase añadida para centrar -->
-          <button
-            v-for="(tabInv, index) in tabsInv"
-            :key="index"
-            :class="[
-              'animate__animated',
-              'animate__fadeInUp',
-              'animate__slow',
-              'btn-6',
-              'm-2',
-              { active: activeTabInv === index },
-            ]"
-            @click="activeTabInv = index"
-          >
+          <button v-for="(tabInv, index) in tabsInv" :key="index" :class="[
+            'animate__animated',
+            'animate__fadeInUp',
+            'animate__slow',
+            'btn-6',
+            'm-2',
+            { active: activeTabInv === index },
+          ]" @click="activeTabInv = index">
             {{ tabInv }} <span></span>
           </button>
 
-          <button
-            data-bs-toggle="modal"
-            data-bs-target="#exportModalInv"
-            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
-          >
+          <button data-bs-toggle="modal" data-bs-target="#exportModalInv"
+            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2">
             Descargar <span></span>
           </button>
         </div>
 
         <!-- Modal para extraer para el Inversor -->
-        <div
-          class="modal fade"
-          id="exportModalInv"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="exportModalInvLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exportModalInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="exportModalInvLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content position-relative bg-degrade">
-              <button
-                type="button"
-                @click="closeModal"
-                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                Cerrar
-              </button>
+              <div class="d-flex flex-row-reverse">
+                <button type="button" @click="closeModal"
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2"
+                  data-bs-dismiss="modal" aria-label="Close">
+                  Cerrar<span></span>
+                </button>
+              </div>
 
-              <div class="modal-header m-auto text-dark">
-                <h2 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h2>
+              <div class="modal-header m-auto">
+                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Exportar Reporte</h2>
                 <br />
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
               <div class="modal-body px-5">
-                <div
-                  class="d-flex justify-content-center text-dark gap-5 position-relative"
-                >
+                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('general')"
-                      :class="{ selected: selectedReport === 'general' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>General</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('general')"
+                      :class="{ selected: selectedReport === 'general' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>General</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Hoy</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
+                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('ayer')"
-                      :class="{ selected: selectedReport === 'ayer' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Ayer</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
+                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Ayer</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('semana')"
-                      :class="{ selected: selectedReport === 'semana' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Semana</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
+                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Semana</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('mes')"
-                      :class="{ selected: selectedReport === 'mes' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Mes</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
+                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Mes</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="getReports('anual')"
-                      :class="{ selected: selectedReport === 'anual' }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br /><label>Anual</label>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
+                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      width="50" /><br /><label>Anual</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img
-                      src="../assets//svg/report-svgrepo-com.svg"
-                      @click="showCustomDate"
-                      :class="{ selected: band == true }"
-                      class="fa-regular fa-file fs-1"
-                      width="50"
-                    /><br />
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
+                      :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
                     <label>Personalizado</label>
                   </div>
                   <transition name="slide">
                     <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label
-                      ><input
-                        @input="showReportCustom"
-                        id="fechaInicio"
-                        v-model="fechaInicioCustom"
-                        class="form-control"
-                        type="date"
-                      />
-                      <label for="fechaFin">Fecha Final</label
-                      ><input
-                        @input="showReportCustom"
-                        id="fechaFin"
-                        v-model="fechaFinCustom"
-                        class="form-control"
-                        type="date"
-                      /><br />
+                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
+                        v-model="fechaInicioCustom" class="form-control" type="date" />
+                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
+                        v-model="fechaFinCustom" class="form-control" type="date" /><br />
                     </div>
                   </transition>
                 </div>
                 <div class="card border-0">
                   <div class="card-body bg-degrade">
-                    <h3
-                      class="card-title text-center text-dark mt-5 mb-3 position-relative"
-                    >
+                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button @click="exportToPDF()">
-                          <img
-                            src="../assets/svg/diskette-svgrepo-com.svg"
-                            width="35"
-                            alt=""
-                          />
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" @click="exportToPDF()">
+                          <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
                         </button>
                       </div>
-                      Reportes
+                      <span class="subtitle-class">Reportes</span>
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
-                          <button
-                            type="button"
-                            class="btn btn-blue dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <label class="text-white"
-                              >{{ typeReport }} <span></span
-                            ></label>
+                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <label class="text-white">{{ typeReport }} <span></span></label>
                           </button>
                           <ul class="dropdown-menu">
                             <li @click="showTable('Inversiones')">
@@ -657,20 +490,15 @@
                       </tbody>
                     </table>
                   </div>
-                  <dir class="col text-dark">
+                  <div class="col text-dark">
                     <div class="card m-1">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
-                        <apexchart
-                          v-if="reports.length > 0"
-                          width="100%"
-                          type="area"
-                          :options="options"
-                          :series="series"
-                        ></apexchart>
+                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
+                          :series="series"></apexchart>
                       </div>
                     </div>
-                  </dir>
+                  </div>
                 </div>
                 <div class="text-dark" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
@@ -692,11 +520,7 @@
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
-          <div
-            class="p-3 shadow-md text-center"
-            v-for="inversion in inversiones"
-            :key="inversion"
-          >
+          <div class="p-3 shadow-md text-center" v-for="inversion in inversiones" :key="inversion">
             <div class="custom-card row bg-degrade-inverso p-3">
               <div class="col-9 text-white text-center border-end p-3">
                 <p class="text-white text-center">
@@ -728,11 +552,8 @@
 
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
-          <div
-            class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
-            v-for="inversionista_retiro in inversionistas_retiros"
-            :key="inversionista_retiro"
-          >
+          <div class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
+            v-for="inversionista_retiro in inversionistas_retiros" :key="inversionista_retiro">
             <p class="text-white">Monto: ${{ inversionista_retiro.monto_recibir }}</p>
             <p class="text-white">Solicitud: {{ inversionista_retiro.retiro_id }}</p>
             <p class="text-white">Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
@@ -1009,7 +830,7 @@ const getData = async (url) => {
   try {
     const { data } = await axios.get(baseUrl + url);
     (reports.value = data.data), console.log(reports.value);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const showCustomDate = () => {
@@ -1224,6 +1045,29 @@ const exportToPDF = () => {
   border-radius: 15px;
 }
 
+label {
+  color: var( --white-color);
+  font-size: 1rem;
+}
+
+th {
+  color: var( --gray-color);
+}
+
+.subtitle-class {
+  color: var( --white-color); 
+}
+
+
+
+.title-modal {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --white-color); 
+  text-transform: uppercase;
+}
+
 button {
   color: rgb(128, 159, 245);
   font-size: 0.8rem;
@@ -1256,6 +1100,23 @@ button {
   transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
   transform: translate(-50%, -50%);
   z-index: -1;
+}
+
+.btn-7 {
+  background-color: var(--white-color) !important;
+  width: 10% !important;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
+
+.btn-7:hover {
+  background-color: rgb(173, 1, 1) !important;
+  color: var(--white-color) !important;
+  font-display: bold;
 }
 
 .btn-6:hover {
