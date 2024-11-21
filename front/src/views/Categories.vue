@@ -160,7 +160,7 @@ const form = ref({ nombre: "", image: null });
 const editMode = ref(false);
 const categoriaEditada = ref(null);
 const search = ref("");
-let BaseURL = "http://localhost:3000/categories";
+let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
 
 const router = useRouter();
 

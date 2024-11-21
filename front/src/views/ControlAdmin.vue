@@ -1,46 +1,45 @@
 <template>
-  <main class=" ">
+  <main class=" h-100">
     <div class="d-flex">
-      <div class="col-2 shadow-custom-1 z-3">
+      <div class="col-2  ">
         <ul class="mt-5">
           <li class="py-3 ps-2 rounded  nav-link  my-3 " :class="{ 'border-custom': view == 'wallRequests' }"
             @click="showView('wallRequests')">
-            <img src="../assets/svg/retiro.png" width="25" class="me-2"> Solicitudes Retiro
+            <i class="fa-solid fa-circle-dollar-to-slot text-light"></i> &nbsp; Solicitudes Retiro
           </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
             @click="showView('users')">
-            <img src="../assets/svg/users.svg" width="25" class="me-2">Usuarios
+            <i class="fa-solid fa-users "></i> &nbsp; Usuarios
           </li>
 
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('posts')"
             :class="{ 'border-custom': view === 'posts' }">
-            <img src="../assets/svg/manual.webp" width="25" class="me-2">Guias
+            <i class="fa-solid fa-book-open "></i>&nbsp; Guias
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('categorias')"
             :class="{ 'border-custom': view === 'categorias' }">
-            <img src="../assets/svg/tags-category-categories-labels-svgrepo-com.svg" width="25" class="me-2">Categorias
+            <i class="fa-solid fa-layer-group "></i> &nbsp; Categorias
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('coment')"
             :class="{ 'border-custom': view === 'coment' }">
-            <img src="../assets/svg/resenas.jpg" width="25" class="me-2">Comentarios y Reseñas
+            <i class="fa-solid fa-comments-dollar "></i> &nbsp; Comentarios y Reseñas
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('reclamos')"
             :class="{ 'border-custom': view === 'reclamos' }">
-            <img src="../assets/svg/consultas.png" width="25" class="me-2">Consultas y Reclamos
+            <i class="fa-solid fa-envelope-open-text "></i> &nbsp; Consultas y Reclamos
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('reportes')"
             :class="{ 'border-custom': view === 'reportes' }">
-            <img src="../assets/svg/consultas.svg" width="25" class="me-2">Reportes
+            <i class="fa-regular fa-paste "></i> &nbsp; Reportes
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('ajustes')"
             :class="{ 'border-custom': view === 'ajustes' }">
-            <img src="../assets/svg/ajustes.png" width="25" class="me-2">Ajustes
+            <i class="fa-solid fa-gear "></i> &nbsp; Ajustes
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('faqs')"
             :class="{ 'border-custom': view === 'faqs' }">
-            <img src="../assets/svg/faq.png" width="25" class="me-2">FAQs
+            <i class="fa-solid fa-person-circle-question "></i> &nbsp; Preguntas frecuentes
           </li>
-
         </ul>
       </div>
       <div class="col-10">
@@ -86,6 +85,7 @@ const showView = (typeView) => {
 }
 </script>
 <style scoped>
+
 .d-flex {
   height: 100%;
 }
@@ -102,12 +102,15 @@ li {
 
 li:hover {
   font-weight: 600;
-  background-color: rgba(196, 196, 196, 0.315);
+  background-color: #17223B;
+  color: white;
+
 }
 
 .border-custom {
   font-weight: 600;
-  background-color: rgba(196, 196, 196, 0.315);
+  background-color: #17223B;
+  color: white;
 
 }
 </style>
