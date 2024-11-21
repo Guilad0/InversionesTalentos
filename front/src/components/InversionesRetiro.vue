@@ -416,8 +416,8 @@
                   </div>
                 </div>
 
-                <div class="px-5 d-flex justify-content-center">
-                  <div class="col">
+                <div class="row px-5 d-flex justify-content-center">
+                  <div class="col-7">
                     <table v-if="typeReport == 'Inversiones'" class="table table-striped">
                       <thead class="bg-dark">
                         <tr>
@@ -490,10 +490,10 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="col text-dark">
+                  <div class="col-5">
                     <div class="card m-1">
                       <div class="card-body">
-                        <h5 class="card-title">Compras e Inversiones de Tokens</h5>
+                        <h5 class="card-title">Compras e Inversiones Anualesde Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
                           :series="series"></apexchart>
                       </div>
@@ -606,6 +606,8 @@ if (usuario_rol.value == "Inversionista") {
     obtenerInversionista_retiro();
     typeClient.value = "reporteInversionesInversor";
     client.value = "inversor_id";
+    getReports("mes");
+    obtenerTotales();
   });
 }
 if (usuario_rol.value == "Cliente") {
@@ -617,6 +619,8 @@ if (usuario_rol.value == "Cliente") {
     obtenerTokens_Cliente();
     typeClient.value = "reporteInversionesCliente";
     client.value = "cliente_id";
+    getReports("mes");
+    obtenerTotales();
   });
 }
 
@@ -747,6 +751,7 @@ const formatDate = (date) => {
 
 // funciones de obtener reportes
 const baseUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
+const reportUrl = "https://apitalentos.pruebasdeploy.online/report/";
 const band = ref(false);
 var fechaInicio = ref("");
 const typeClient = ref("");
@@ -860,7 +865,6 @@ const monto_devolver = (a, b) => {
   return a + b;
 };
 const series = ref([]);
-const series2 = ref([]);
 const meses = [
   "Enero",
   "Febrero",
@@ -885,44 +889,58 @@ const options = ref({
   },
 });
 
-const options2 = ref({
-  chart: {
-    type: "bar",
-    height: 250,
-    stacked: true,
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
-      dataLabels: {
-        total: {
-          enabled: true,
-          offsetX: 0,
-          style: {
-            fontSize: "13px",
-            fontWeight: 900,
-          },
-        },
-      },
-    },
-  },
-  xaxis: {
-    categories: meses,
-    labels: {
-      formatter: function (val) {
-        return val;
-      },
-    },
-  },
-  fill: {
-    opacity: 1,
-  },
-  legend: {
-    position: "top",
-    horizontalAlign: "left",
-    offsetX: 40,
-  },
-});
+const obtenerTotales = async () => {
+  series.value = [];
+  try {
+    const { data } = await axios.get(reportUrl + "totalCompras/" + usuario_id.value);
+    console.log(data);
+    var datosMesCompra = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesCompra[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesCompra[i] = data.data[j].tokens_comprados;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Compra de Tokens",
+      data: datosMesCompra,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    const { data } = await axios.get(reportUrl + "totalInversiones/" + usuario_id.value);
+
+    var datosMesVenta = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesVenta[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesVenta[i] = data.data[j].tokens_invertidos;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Inversiones de Tokens",
+      data: datosMesVenta,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const exportToPDF = () => {
   const doc = new jsPDF();
 
