@@ -27,7 +27,7 @@
             </button>
         </div>
         <div class="content">
-            <h4 class="d-block mb-2 text-center underline">Comentarios y Reseñas</h4>
+            <h4 class="d-block mb-2 text-center title">Comentarios y Reseñas</h4>
             <div class="table-responsive col-md-10 offset-md-1">
                 <div class="col-3 px-5 mb-3">
                     <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
@@ -293,6 +293,14 @@ const seleccionarCliente = async (cliente) => {
 </script>
 
 <style scoped>
+
+.title {
+    font-family: var(--font-montserrat-bold); 
+    font-weight: 700; 
+    font-size: 30px; 
+    color: var( --gray-color); 
+    text-transform: uppercase;
+}
 
 .background {
     background-image: url('@/assets/images/otro-fondo5.png');

@@ -3,7 +3,7 @@
     <div v-if="!loading">
       <div class="container my-5">
       <div class="text-center">
-        <h3 class="text-center underline fs-4">Guías de Usuarios</h3>
+        <h3 class="text-center title fs-4">Guías de Usuarios</h3>
       </div>
 
       <div class="d-flex justify-content-center flex-wrap gap-3 my-5">
@@ -87,6 +87,13 @@ const cargarDatos = async () => {
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .card:hover {
   transform: translateY(-10px);
 }

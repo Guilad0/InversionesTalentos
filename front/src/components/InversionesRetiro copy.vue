@@ -6,7 +6,7 @@
 
       <div>
 
-        <h2 class="text-xl font-bold mb-4">Inversiones, Retiros y Devoluciones Pendientes</h2>
+        <h2 class="text-xl title mb-4">Inversiones, Retiros y <br> Devoluciones Pendientes</h2>
 
         <div class="d-flex justify-content-center">
 
@@ -723,6 +723,14 @@ const cleanFields = () => {
 </script>
 
 <style scoped>
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 
 .selected {
   text-decoration: underline;

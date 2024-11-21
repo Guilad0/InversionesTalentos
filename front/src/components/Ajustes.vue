@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light">
     <div class="content">
-      <h2 class="d-block text-start mb-5 mt-5 text-center underline">
+      <h2 class="d-block text-start mb-5 mt-5 text-center title">
         Datos de Usuarios
       </h2>
       <div class="mt-5">
@@ -186,6 +186,13 @@ const valor_token = ref("");
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;

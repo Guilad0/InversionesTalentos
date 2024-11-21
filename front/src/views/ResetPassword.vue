@@ -3,7 +3,7 @@
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="orange-text-color">Reestablece tu Contraseña</h3>
+          <h3 class="orange-text-color title">Reestablece tu Contraseña</h3>
         </div>
         <form @submit.prevent="resetPassword"> 
           <div class="mb-3 login-text-color">
@@ -53,6 +53,13 @@ const goToHomePage = () => {
 
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 600; 
+  font-size: 24px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .bgf {
   background-color: #f9f9fa;
 }

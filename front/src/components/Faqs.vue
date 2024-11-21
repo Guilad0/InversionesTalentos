@@ -1,5 +1,6 @@
 <template>
   <div class="container py-5 font">
+    <h1 class="py-3 text-center title">FAQs</h1>
     <!-- Botón para agregar nuevo FAQ (moverlo a la parte superior) -->
     <div class="mt-4">
       <button @click="openModal" class="btn btn-success">Agregar nuevo FAQ</button>
@@ -210,6 +211,15 @@ onMounted(async () => {
 /* .font{
   font-family: 'Monoton'!important;
 } */
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
  .font{
   font-family: 'Montserrat'!important;
  }

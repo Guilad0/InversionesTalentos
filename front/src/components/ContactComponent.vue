@@ -30,7 +30,7 @@
 .title {
   font-family: var(--font-montserrat-bold); /* Variante bold */
   font-weight: 700; /* Asegura que sea bold */
-  font-size: 26px; /* Tamaño predefinido */
+  font-size: 28px; /* Tamaño predefinido */
   color: var( --gray-color); 
   text-transform: uppercase;
 }

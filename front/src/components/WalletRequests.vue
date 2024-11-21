@@ -23,7 +23,7 @@
       </nav>
     </div>
     <div class="content">
-      <h4 class="d-block mb-2 text-center underline">Solicitudes de retiro</h4>
+      <h4 class="d-block mb-2 text-center title">Solicitudes de retiro</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="col-3 px-5 mb-3">
           <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
@@ -209,6 +209,13 @@ const eliminado = async (retiro_id) => {
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700; 
+  font-size: 30px;
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;
