@@ -5,30 +5,35 @@
         <div class="card-body">
           <ul>
             <div class="text-center my-4">
-              <img :src="user?.imagen" alt="" width="150" class="rounded-circle">
+              <img :src="user?.imagen" alt="" width="150" class="rounded-circle" />
             </div>
 
             <!-- RouterLink para Perfil -->
             <RouterLink class="nav-link my-3" to="perfil">
-              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'perfil' }">
+              <li
+                class="py-3 ps-2 rounded nav-link my-3"
+                :class="{ active: currentPath === 'perfil' }"
+              >
                 <i class="fa-regular fa-user me-3"></i>Perfil
               </li>
             </RouterLink>
 
             <!-- RouterLink para Billetera -->
             <RouterLink class="nav-link my-3" to="billetera">
-              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'billetera' }">
+              <li
+                class="py-3 ps-2 rounded nav-link my-3"
+                :class="{ active: currentPath === 'billetera' }"
+              >
                 <i class="fa-solid fa-wallet me-3"></i>Billetera
               </li>
             </RouterLink>
 
             <!-- RouterLink para reportes -->
-            <RouterLink class="nav-link my-3" to="reportes">
+            <!-- <RouterLink class="nav-link my-3" to="reportes">
               <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'reportes' }">
                 <i class="fa-solif fa-chart-line me-3"></i>Reportes
               </li>
-            </RouterLink>
-
+            </RouterLink> -->
           </ul>
         </div>
       </div>
@@ -37,8 +42,8 @@
 </template>
 
 <script setup>
-import { getUser } from '@/helpers/utilities';
-import { ref, onMounted } from 'vue';
+import { getUser } from "@/helpers/utilities";
+import { ref, onMounted } from "vue";
 
 const user = ref(null);
 
@@ -101,8 +106,8 @@ ul {
 }
 
 .active {
-  border-bottom: 3px solid #D95C00;
-  color: #D95C00 !important;
+  border-bottom: 3px solid #d95c00;
+  color: #d95c00 !important;
 }
 
 .my-3 {

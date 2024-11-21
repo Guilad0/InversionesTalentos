@@ -1,295 +1,318 @@
 <template>
-
   <div class="col-7 col-xl-9 col-md-12 col-sm-10 d-none d-md-block">
-
     <div class="card banner-card z-1 bg-degrade text-white">
       <!-- Imagen superior (ej. imagen de fondo) -->
-      <img src="../assets/images/ejemplodeperfil.jpg" class="card-img-top" alt="Background Image" />
+      <img
+        src="../assets/images/ejemplodeperfil.jpg"
+        class="card-img-top"
+        alt="Background Image"
+      />
 
       <!-- Imagen de perfil -->
       <div class="card-body p-5">
-
         <div class="profile-section">
-
-          <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="profile-image" alt="Profile Image" />
-
+          <img
+            :src="client.imagen || '../assets/images/fotoperfil.png'"
+            class="profile-image"
+            alt="Profile Image"
+          />
         </div>
         <!-- nombre y datos -->
-        <div class="mt-5 ">
-
+        <div class="mt-5">
           <div class="row">
-
             <div class="col-8">
-
               <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
 
               <h5>{{ client.ocupacion }}</h5>
 
               <h6>{{ client.pais_residencia }}</h6>
-
             </div>
 
             <div class="col-4 text-end">
-
               <div>
-
                 <span v-if="prom">{{ prom }}</span>
-
               </div>
 
               <div>
-
                 <span class="stars" v-html="generarEstrellas(prom)"></span>
-
               </div>
-
             </div>
-
           </div>
 
           <div class="row">
-
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
-              data-bs-target="#modalVideoPresentacion">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+              data-bs-toggle="modal"
+              data-bs-target="#modalVideoPresentacion"
+            >
               <i class="fas fa-video"></i> Video presentación<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarInformacion }"
+              @click="toggleInformacion()"
+            >
               <i class="fas fa-info-circle"></i> Información<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
-              <i class="fas fa-trophy"></i> Logros<span></span> 
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarLogros }"
+              @click="toggleLogros()"
+            >
+              <i class="fas fa-trophy"></i> Logros<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              :class="{ 'active-button': mostrarExperiencia }" @click="toggleExperiencia()">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              :class="{ 'active-button': mostrarExperiencia }"
+              @click="toggleExperiencia()"
+            >
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
-              @click="isAuthenticatedAlert()">
-              <i class="fas fa-wallet"></i> Fondear mi billetera<span></span>
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+            >
+              <RouterLink to="/billetera">
+                <i class="fas fa-wallet fondear"></i> Fondear mi billetera<span></span>
+              </RouterLink>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
-              data-bs-target="#modalInversion">
+            <button
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              data-bs-toggle="modal"
+              data-bs-target="#modalInversion"
+            >
               <i class="fas fa-dollar-sign"></i> Invertir<span></span>
             </button>
-
           </div>
 
           <div class="mt-3">
-
             <h5 class="title text-center">Descripción</h5>
             <p class="font">{{ client.vision }}</p>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
 
-    <div v-if="mostrarInformacion" class="card banner-card mt-3 fade-in bg-degrade text-white">
-
+    <div
+      v-if="mostrarInformacion"
+      class="card banner-card mt-3 fade-in bg-degrade text-white"
+    >
       <div class="card-body p-5 text-center">
-
         <h3>Información</h3>
 
-        <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> Monto de inversión: ${{ client.monto_inversion }}</h6>
-        <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
-        <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}</h6>
-        <h6 class="mt-3"><i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}</h6>
+        <h6 class="mt-3">
+          <i class="fas fa-dollar-sign"></i> Monto de inversión: ${{
+            client.monto_inversion
+          }}
+        </h6>
+        <h6 class="mt-3">
+          <i class="fas fa-tags"></i> Categoría: {{ client.categoria }}
+        </h6>
+        <h6 class="mt-3">
+          <i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}
+        </h6>
+        <h6 class="mt-3">
+          <i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}
+        </h6>
         <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> Edad: {{ client.edad }}</h6>
-        <h6 class="mt-3"><i class="fas fa-venus-mars"></i> Género: {{ client.genero }}</h6>
-        <h6 class="mt-3"><i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}</h6>
+        <h6 class="mt-3">
+          <i class="fas fa-venus-mars"></i> Género: {{ client.genero }}
+        </h6>
+        <h6 class="mt-3">
+          <i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}
+        </h6>
         <h6 class="mt-3"><i class="fas fa-envelope"></i> Correo: {{ client.correo }}</h6>
-
       </div>
-
     </div>
 
     <div v-if="mostrarLogros" class="card banner-card mt-3 fade-in bg-degrade text-white">
-
       <div class="card-body p-5">
-
         <h3 class="text-center">Logros</h3>
 
         <table class="table table-striped table-bordered table-radius">
-
           <thead class="table-dark">
-
             <tr>
-
               <th class="fs-5" style="width: 85%">Descripción</th>
               <th class="fs-5" style="width: 15%">Fecha</th>
-
             </tr>
-
           </thead>
 
           <tbody>
-
             <tr v-for="logro in logros" :key="logro">
-
               <td class="font" style="width: 85%">{{ logro.descripcion }}</td>
               <td class="font" style="width: 15%">{{ formatDate(logro.fecha) }}</td>
-
             </tr>
-
           </tbody>
-
         </table>
-
       </div>
-
     </div>
 
-    <div v-if="mostrarExperiencia" class="card banner-card mt-3 fade-in bg-degrade text-white">
-
+    <div
+      v-if="mostrarExperiencia"
+      class="card banner-card mt-3 fade-in bg-degrade text-white"
+    >
       <div class="card-body p-5">
-
         <h3 class="text-center">Experiencia</h3>
 
-        <div class="card p-4 bg-degrade-inverso text-white text-center mt-3" v-for="exp in experiencia" :key="exp.id">
-
+        <div
+          class="card p-4 bg-degrade-inverso text-white text-center mt-3"
+          v-for="exp in experiencia"
+          :key="exp.id"
+        >
           <h4 class="text-uppercase">{{ exp.institucion }}</h4>
           <h6>Cargo: {{ exp.cargo }}</h6>
           <h6>Actividades: {{ exp.actividades }}</h6>
           <h6>Fecha de inicio: {{ formatDate(exp.fecha_inicio) }}</h6>
           <h6>Fecha final: {{ formatDate(exp.fecha_final) }}</h6>
-
         </div>
-
       </div>
-
     </div>
 
     <!-- Modal Video Presentación -->
-    <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
-      aria-hidden="true">
-
+    <div
+      class="modal fade"
+      id="modalVideoPresentacion"
+      tabindex="-1"
+      aria-labelledby="videoModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered modal-lg">
-
         <div class="modal-content bg-degrade text-white">
-
           <div class="modal-header">
             <h5 class="modal-title" id="videoModalLabel">
               {{ client.nombre }} {{ client.apellido }}
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
 
           <div class="modal-body text-center">
-
             <video class="video-presentacion" autoplay controls>
-              <source v-if="url" :src="url" type="video/mp4"> <!-- Asegúrate de que el tipo de video sea correcto -->
+              <source v-if="url" :src="url" type="video/mp4" />
+              <!-- Asegúrate de que el tipo de video sea correcto -->
               Tu navegador no soporta el elemento de video.
             </video>
-
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
-              data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
+            <button
+              type="button"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+              data-bs-dismiss="modal"
+              @click="pauseVideo()"
+            >
+              Cerrar <span></span>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-
     <!-- Modal Inversión -->
-    <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
+    <div
+      class="modal fade"
+      id="modalInversion"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content bg-degrade-inverso text-white">
-
           <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              Datos de la Inversión
+            </h1>
 
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la Inversión</h1>
-
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
 
           <div class="modal-body">
-
-            <p class="text-xl text-center">Tokens Restantes: {{ tokensCompradosInversionista -
-              tokensInvertidosInversionista }}</p>
+            <p class="text-xl text-center">
+              Tokens Restantes:
+              {{ tokensCompradosInversionista - tokensInvertidosInversionista }}
+            </p>
 
             <form action="#" class="needs-validation" novalidate>
               <!-- Cliente -->
               <div class="mb-3 text-center">
-
                 <label for="cliente_id" class="form-label">Cliente</label>
 
                 <p>{{ client.nombre }}</p>
-
               </div>
               <!-- Tokens, Meses y Ganancia -->
               <div class="row text-center">
-
                 <div class="col-md-4 mb-3">
+                  <label for="monto_tokens_invertir" class="form-label"
+                    >Tokens a invertir</label
+                  >
 
-                  <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-
-                  <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
-                    @change="calcularGanancias()" required />
-
+                  <input
+                    type="number"
+                    v-model="monto_tokens_invertir"
+                    id="monto_tokens_invertir"
+                    class="form-control"
+                    @change="calcularGanancias()"
+                    required
+                  />
                 </div>
 
                 <div class="col-md-4 mb-3">
-
                   <label class="form-label">Meses de Inversión</label>
 
                   <p>{{ tiempo_inversion }}</p>
-
                 </div>
 
                 <div class="col-md-4 mb-3">
-
-                  <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+                  <label class="form-label"
+                    >Ganancia del {{ porcentaje_inversion }}%</label
+                  >
 
                   <p>{{ ganancia_tokens_inv }}</p>
-
                 </div>
-
               </div>
-
             </form>
-
           </div>
 
           <div class="modal-footer">
-
-            <button type="button" @click="inversionistaInvertir()"
-              class="animate__animated animate__fadeInUp animate__slow btn-6" data-bs-dismiss="modal">
+            <button
+              type="button"
+              @click="inversionistaInvertir()"
+              class="animate__animated animate__fadeInUp animate__slow btn-6"
+              data-bs-dismiss="modal"
+            >
               Invertir<span></span>
             </button>
 
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7"
-              data-bs-dismiss="modal">Cerrar<span></span></button>
-
+            <button
+              type="button"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7"
+              data-bs-dismiss="modal"
+            >
+              Cerrar<span></span>
+            </button>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </template>
 
 <script setup>
-
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted } from "vue";
@@ -301,7 +324,6 @@ const client = ref({});
 const url = ref("");
 const prom = ref("");
 
-
 const getUser = async () => {
   try {
     const { data } = await axios.get(
@@ -309,7 +331,9 @@ const getUser = async () => {
     );
     client.value = data.results[0];
     console.log(client.value);
-    url.value = 'https://apitalentos.pruebasdeploy.online/categories/video/' + client.value.usuario_id
+    url.value =
+      "https://apitalentos.pruebasdeploy.online/categories/video/" +
+      client.value.usuario_id;
   } catch (error) {
     console.log(error);
   }
@@ -320,7 +344,9 @@ const experiencia = ref([]);
 
 const obtenerLogros = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/logrosFechas/" + userId.value);
+    const { data } = await axios.get(
+      "https://apitalentos.pruebasdeploy.online/logros/logrosFechas/" + userId.value
+    );
     logros.value = data.data || [];
     console.log(logros.value, "logros");
   } catch (error) {
@@ -330,7 +356,9 @@ const obtenerLogros = async () => {
 
 const obtenerExperiencia = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value);
+    const { data } = await axios.get(
+      "https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value
+    );
     experiencia.value = data.data || [];
   } catch (error) {
     console.log(error);
@@ -382,7 +410,9 @@ const calcularGanancias = async () => {
 
 const obtenerTokens_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensInversionistaComprados/' + inversionista_ID.value);
+    const { data } = await axios.get(
+      baseURL + "tokensInversionistaComprados/" + inversionista_ID.value
+    );
     tokensCompradosInversionista.value = data.data[0].totalTokensComprados;
     console.log(tokensCompradosInversionista.value);
   } catch (error) {
@@ -392,7 +422,9 @@ const obtenerTokens_Inversionista = async () => {
 
 const obtenerTokens_Inversionista_Invertidos = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
+    const { data } = await axios.get(
+      baseURL + "tokensInversionistaInvertidos/" + inversionista_ID.value
+    );
     tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos;
     console.log(tokensInvertidosInversionista.value);
   } catch (error) {
@@ -401,8 +433,13 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
 };
 
 const inversionistaInvertir = async () => {
-  const tokensInversionista = parseFloat(tokensCompradosInversionista.value) - parseFloat(tokensInvertidosInversionista.value);;
-  if (monto_tokens_invertir.value > 0 && monto_tokens_invertir.value <= tokensInversionista) {
+  const tokensInversionista =
+    parseFloat(tokensCompradosInversionista.value) -
+    parseFloat(tokensInvertidosInversionista.value);
+  if (
+    monto_tokens_invertir.value > 0 &&
+    monto_tokens_invertir.value <= tokensInversionista
+  ) {
     console.log(inversionista_ID.value);
     cliente_Invertir_ID.value = parseInt(userId.value);
     console.log(cliente_Invertir_ID.value);
@@ -436,8 +473,7 @@ const inversionistaInvertir = async () => {
       //   color: "var(--gray-color)",
       //   confirmButtonColor: "var(--yellow-orange)",
       // });
-      successAlert('Inversion realizada exitosamente', 'Felicidades!!!');
-
+      successAlert("Inversion realizada exitosamente", "Felicidades!!!");
 
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
@@ -456,7 +492,7 @@ const inversionistaInvertir = async () => {
     //   color: "var(--gray-color)",
     //   confirmButtonColor: "var(--yellow-orange)",
     // });
-    errorAlert('Por favor, ingrese una cantidad valida de tokens a invertir', 'Error!!')
+    errorAlert("Por favor, ingrese una cantidad valida de tokens a invertir", "Error!!");
   }
 };
 
@@ -483,15 +519,16 @@ const toggleExperiencia = () => {
 };
 
 const formatDate = (date) => {
-  return new Date(date).toISOString().split('T')[0];
+  return new Date(date).toISOString().split("T")[0];
 };
 
 const obtenerPromedio = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/preview/" + userId.value);
+    const { data } = await axios.get(
+      "https://apitalentos.pruebasdeploy.online/preview/" + userId.value
+    );
 
     prom.value = data.data[0].promedio;
-
   } catch (error) {
     console.log(error);
   }
@@ -509,10 +546,12 @@ const generarEstrellas = (promedio) => {
   }
   return estrellas.join("");
 };
-
 </script>
 
 <style scoped>
+.fondear {
+  text-decoration: none !important;
+}
 
 .bg-degrade {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
@@ -523,7 +562,7 @@ const generarEstrellas = (promedio) => {
 }
 
 .font {
-  font-size: 1rem
+  font-size: 1rem;
 }
 
 .custom-link {
@@ -616,7 +655,7 @@ button {
 }
 
 .stars {
-  color: rgb(206, 206, 12);  
+  color: rgb(206, 206, 12);
 }
 
 .card-title {
@@ -654,7 +693,7 @@ button {
 }
 
 .modal-card {
-  background-color: rgb(187, 184, 181)
+  background-color: rgb(187, 184, 181);
 }
 
 .active-button {
