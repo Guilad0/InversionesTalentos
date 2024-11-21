@@ -15,7 +15,7 @@
                     </span>
                 </div>
                 <button class="cerrar" @click="cerrarPagina">Cerrar</button>
-                <button @click="enviarComentario">Enviar comentario</button>
+                <button @click="enviarComentario">Enviar Comentario</button>
             </div>
         </div>
     </div>

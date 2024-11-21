@@ -115,14 +115,14 @@ const saveText =async () =>{
         {{ results[0]?.propositoText }}       
       </h2>
       <EditIcon v-if="rol =='Admin'" class="abs-custom"   data-bs-toggle="modal" data-bs-target="#textPurpose"/>
-      <label v-if="rol =='Admin'" class="text-white ms-5">Editar proposito</label>
+      <label v-if="rol =='Admin'" class="text-white ms-5">Editar Propósito</label>
     </main>
     <!--Modal edit text -->
     <div class="modal fade" id="textPurpose" tabindex="-1" aria-labelledby="textHomeLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title  fs-custom-text m-auto text-center" id="textHomeLabel">Introduce el texto de la pagina</h1>
+        <h1 class="modal-title  fs-custom-text m-auto text-center" id="textHomeLabel">Introduce el texto de la página</h1>
       </div>
       <div class="modal-body">
         <textarea class="form-control" v-model="text" rows="4"></textarea>       

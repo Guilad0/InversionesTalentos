@@ -3,7 +3,7 @@
     <div class="overlay"></div>
     <div class="form">
       <div class="title">¡Bienvenid@ {{ nombre }}!</div>
-      <div class="subtitle">Completa tu registro</div>
+      <div class="subtitle">Completa tu Registro</div>
       
       <form @submit.prevent="registrarExperiencia">
         <div class="row mb-3">
@@ -48,7 +48,7 @@
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_inicio" class="label">Fecha inicio</label>
+              <label for="fecha_inicio" class="label">Fecha Inicio</label>
               <input
                 id="fecha_inicio"
                 v-model="fecha_inicio"
@@ -60,7 +60,7 @@
           </div>
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_final" class="label">Fecha final</label>
+              <label for="fecha_final" class="label">Fecha Final</label>
               <input
                 id="fecha_final"
                 v-model="fecha_final"

@@ -8,9 +8,9 @@
             <thead>
               <tr class="table-secondary">
                 <th class="custom-size">ID</th>
-                <th class="custom-size">Nombre usuario</th>
-                <th class="custom-size">Fecha de creación</th>
-                <th class="custom-size">Fecha de edición</th>
+                <th class="custom-size">Nombre Usuario</th>
+                <th class="custom-size">Fecha de Creación</th>
+                <th class="custom-size">Fecha de Edición</th>
                 <th class="custom-size">Estado</th>
                 <th class="custom-size">Acciones</th>
               </tr>
@@ -91,7 +91,7 @@
                 ></textarea>
               </div>
               <div class="mb-3">
-                <label for="imagen_portada" class="form-label">Imagen de portada</label>
+                <label for="imagen_portada" class="form-label">Imagen de Portada</label>
                 <input
                   type="file"
                   id="imagen_portada"

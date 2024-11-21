@@ -37,7 +37,7 @@
                 <th scope="col" class="custom-size">Nombre</th>
                 <th scope="col" class="custom-size">Apellido</th>
                 <th scope="col" class="custom-size">Email</th>
-                <th scope="col" class="custom-size">Telefono</th>
+                <th scope="col" class="custom-size">Teléfono</th>
                 <th scope="col" class="custom-size">Mensaje</th>
                 <th scope="col" class="custom-size">Respuesta</th>
                 <th scope="col" class="custom-size">Responder</th>
@@ -171,7 +171,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                Close
+                Cerrar
               </button>
               <button
                 type="button"
@@ -179,7 +179,7 @@
                 data-bs-dismiss="modal"
                 @click="answer(userResponse, contactActive.contacto_id)"
               >
-                Save
+                Guardar
               </button>
             </div>
           </div>

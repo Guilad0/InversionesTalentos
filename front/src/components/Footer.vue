@@ -18,26 +18,26 @@
 
                         <div class="me-4 ">
 
-                            <h6 class="text-uppercase color-text">Informacion General</h6>
+                            <h6 class="text-uppercase color-text">Información General</h6>
 
 
                             <div class="d-flex flex-column">
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
-                                    to="marketplace">Markeplace</RouterLink>
+                                    to="marketplace">Marketplace</RouterLink>
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
-                                    to="/proposito">Proposito</RouterLink>
+                                    to="/proposito">Propósito</RouterLink>
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic"
-                                    to="como-funciona">Cómo funciona</RouterLink>
+                                    to="como-funciona">Cómo Funciona</RouterLink>
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">
-                                    Guias de usuario</RouterLink>
+                                    Guías de Usuario</RouterLink>
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="contact">
@@ -45,7 +45,7 @@
 
 
                                 <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">
-                                    Faqs</RouterLink>
+                                    FAQs</RouterLink>
 
 
                             </div>

@@ -153,10 +153,10 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
                             <th v-if="myRol == 'Cliente'" class="custom-size">Logros</th>
                             <th v-if="myRol == 'Cliente'" class="custom-size">Experiencia</th>
                             <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size text-center">
-                                informacion</th>
-                            <th v-if="myRol == 'Cliente'" class="custom-size text-center">Video</th>
+                                Información</th>
+                            <th v-if="myRol == 'Cliente'" class="custom-size text-center">Vídeo</th>
                             <th class="custom-size">Rol</th>
-                            <th v-if="myRol !== 'Admin'" class="custom-size">% registro</th>
+                            <th v-if="myRol !== 'Admin'" class="custom-size">% Registro</th>
                             <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size">Aprobado</th>
                             <th class="custom-size">Estado</th>
                             <th class="custom-size ">Acciones</th>
@@ -230,7 +230,7 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
                                     @mouseout="toggleStatus">Activo</span>
                             </td>
                             <td v-if="user.estado == '0'">
-                                <span class="badge text-bg-danger cursor">No activo</span>
+                                <span class="badge text-bg-danger cursor">No Activo</span>
                             </td>
                             <td v-if="user.estado == '1'">
                                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">

@@ -17,7 +17,7 @@
           </div>
         </form>
         <p class="login-text-color text-center p-3" v-if="message">{{ message }}</p>
-        <RouterLink v-if="showBackLink" to="/sign-login" class="text-center orange-text-color w-100 p-3 d-block">Volver a inicio de sesión</RouterLink>
+        <RouterLink v-if="showBackLink" to="/sign-login" class="text-center orange-text-color w-100 p-3 d-block">Volver a Inicio de Sesión</RouterLink>
       </div>
     </div>
   </main>

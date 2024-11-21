@@ -5,7 +5,7 @@
         <form @submit.prevent="registrarLogro">
           <div class="card custom-card shadow">
             <div class="card-body py-5 align-items-center">
-              <h5 class="fw-bold text-center mb-3 custom-title">Registra tu logro</h5>
+              <h5 class="fw-bold text-center mb-3 custom-title">Registra Tu Logro</h5>
 
               <div class="col mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic1">

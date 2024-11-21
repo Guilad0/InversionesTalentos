@@ -5,7 +5,7 @@
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
-          <h3 class="login-text-color title">Iniciar sesión</h3>
+          <h3 class="login-text-color title">Iniciar Sesión</h3>
         </div>
         <div class="mb-3 login-text-color">
           <label for="correo">E-mail</label>
@@ -31,7 +31,7 @@
         <div class="row text-center">
           <div class="mb-3 login-text-color">
             <RouterLink to="/forgot-password" class="nav-link registrar-link">
-              ¿Olvidaste tu contraseña?
+              ¿Olvidaste tu Contraseña?
             </RouterLink>
           </div>
           <div class="mb-3">
@@ -47,9 +47,9 @@
 
         <div class="mb-3">
           <div class="row text-center w-70">
-            <div class="col"><h5 class="login-text-color">¿No tienes cuenta?</h5></div>
+            <div class="col"><h5 class="login-text-color">¿No Tienes Cuenta?</h5></div>
             <div @click="$emit('changePage')" class="col cursor">
-              <a class="nav-link registrar-link"> Regístrate gratis </a>
+              <a class="nav-link registrar-link"> Regístrate Gratis </a>
             </div>
           </div>
         </div>

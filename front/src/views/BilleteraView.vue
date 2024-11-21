@@ -26,12 +26,12 @@
             class="img-fluid">
             
           <p class="text-center mt-5">
-            Debes completar tu registro para acceder a tu billetera
+            Debes completar tu registro para acceder a tu billetera.
           </p>
 
           <div class="text-center my-3">
 
-            <RouterLink to="perfil" class="btn btn-orange ">Ir a perfil</RouterLink>
+            <RouterLink to="perfil" class="btn btn-orange ">Ir a Perfil</RouterLink>
 
           </div>
 

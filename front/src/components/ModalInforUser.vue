@@ -10,42 +10,42 @@
       <div v-if="typeForm == 'informacion'" class="modal-body ">
           <div v-if="myRol == 'Cliente'" class="d-flex justify-content-between px-5 ">
             <div class="col">
-              <p> <label class="fw-bold">Nombres</label>: {{ client.nombre }}</p>
-              <p> <label class="fw-bold">apellidos</label>: {{ client.apellido }}</p>
-              <p> <label class="fw-bold">Correo</label>: {{ client.correo }}</p>
+              <p> <label class="fw-bold">Nombres:</label>: {{ client.nombre }}</p>
+              <p> <label class="fw-bold">apellidos:</label>: {{ client.apellido }}</p>
+              <p> <label class="fw-bold">E-mail:</label>: {{ client.correo }}</p>
               <p> <label class="fw-bold">Usuario:</label> {{ client.username }}</p>
-              <p> <label class="fw-bold">Telefono</label>: +{{ client.codigo_pais }} {{ client.numero_telefono }} </p>
-              <p> <label class="fw-bold">Genero</label>: {{ client.genero }} </p>
+              <p> <label class="fw-bold">Teléfono:</label>: +{{ client.codigo_pais }} {{ client.numero_telefono }} </p>
+              <p> <label class="fw-bold">Género:</label>: {{ client.genero }} </p>
             </div>
             <div class="col">
-              <p v-if="client.rol == 'Cliente'"> <label class="fw-bold">Categoria: &nbsp;</label>{{ client.categoria }}
+              <p v-if="client.rol == 'Cliente'"> <label class="fw-bold">Categoría: &nbsp;</label>{{ client.categoria }}
               </p>
               <p> <label class="fw-bold">Rol: &nbsp;</label>{{ client.rol }} </p>
-              <p> <label class="fw-bold">Fecha de registro: &nbsp;</label>{{ client.created_at }} </p>
+              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client.created_at }} </p>
               <p v-if="client.verificado == '0'"> <label class="fw-bold">Verificado: &nbsp;</label>No </p>
               <p v-if="client.verificado == '1'"> <label class="fw-bold">Verificado: &nbsp;</label>Si </p>
-              <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>Si </p>
-              <p v-if="client.aprobado == '0'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>No </p>
+              <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>Si </p>
+              <p v-if="client.aprobado == '0'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>No </p>
             </div>
 
           </div>
           <div v-if="myRol == 'Inversionista'">
             <div class="d-flex justify-content-between px-5">
               <div class="col">
-              <p> <label class="fw-bold">Nombres</label>: {{ client.nombre }}</p>
-              <p> <label class="fw-bold">apellidos</label>: {{ client.apellido }}</p>
-              <p> <label class="fw-bold">Correo</label>: {{ client.correo }}</p>
+              <p> <label class="fw-bold">Nombres:</label>: {{ client.nombre }}</p>
+              <p> <label class="fw-bold">Apellidos:</label>: {{ client.apellido }}</p>
+              <p> <label class="fw-bold">E-mail:</label>: {{ client.correo }}</p>
               <p> <label class="fw-bold">Usuario:</label> {{ client.username }}</p>
-              <p> <label class="fw-bold">Telefono</label>: +{{ client.codigo_pais }} {{ client.numero_telefono }} </p>
-              <p> <label class="fw-bold">Genero</label>: {{ client.genero }} </p>
+              <p> <label class="fw-bold">Teléfono:</label>: +{{ client.codigo_pais }} {{ client.numero_telefono }} </p>
+              <p> <label class="fw-bold">Género:</label>: {{ client.genero }} </p>
             </div>
             <div class="col">
               <p> <label class="fw-bold">Rol: &nbsp;</label>{{ client.rol }} </p>
-              <p> <label class="fw-bold">Fecha de registro: &nbsp;</label>{{ client.created_at }} </p>
+              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client.created_at }} </p>
               <p v-if="client.verificado == '0'"> <label class="fw-bold">Verificado: &nbsp;</label>No </p>
               <p v-if="client.verificado == '1'"> <label class="fw-bold">Verificado: &nbsp;</label>Si </p>
-              <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>Si </p>
-              <p v-if="client.aprobado == '0'"> <label class="fw-bold">Cuenta aprobada: &nbsp;</label>No </p>
+              <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>Si </p>
+              <p v-if="client.aprobado == '0'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>No </p>
             </div>
 
             </div>
@@ -58,11 +58,11 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">institucion</th>
-                <th scope="col">cargo</th>
-                <th scope="col">actividades</th>
-                <th scope="col">fecha inicio</th>
-                <th scope="col" >fecha final</th>
+                <th scope="col">Institución</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Actividades</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Fecha Final</th>
                 <th scope="col">Fecha</th>
               </tr>
             </thead>
@@ -80,7 +80,7 @@
             </tbody>
           </table>
           <div v-else class="alert alert-warning px-5" role="alert">
-            <h4 class="alert-heading">Sin resultados</h4>
+            <h4 class="alert-heading">Sin Resultados</h4>
             <p><i class="fa-solid fa-circle-exclamation"></i> &nbsp; El usuario aun no cuenta con experiencias registradas</p>
           </div>
         </div>    
@@ -91,7 +91,7 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Descripcion</th>
+                <th scope="col">Descripción</th>
                 <th scope="col">Fecha</th>
               </tr>
             </thead>
@@ -105,14 +105,14 @@
             </tbody>
           </table>
           <div v-else class="alert alert-warning px-5" role="alert">
-            <h4 class="alert-heading">Sin resultados</h4>
+            <h4 class="alert-heading">Sin Resultados</h4>
             <p>El usuario aun no cuenta con logros registrados</p>
           </div>
 
         </div>
         <div class="modal-footer text-center m-auto">
           <div class="row "><button type="button" class="btn btn-gray rounded-5 px-4"
-              data-bs-dismiss="modal" @click="$emit('clearId')">Close</button></div>
+              data-bs-dismiss="modal" @click="$emit('clearId')">Cerrar</button></div>
         </div>
     </div>
       </div>

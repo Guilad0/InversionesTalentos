@@ -3,7 +3,7 @@
     <h1 class="py-3 text-center title">FAQs</h1>
     <!-- Botón para agregar nuevo FAQ (moverlo a la parte superior) -->
     <div class="mt-4">
-      <button @click="openModal" class="btn btn-success">Agregar nuevo FAQ</button>
+      <button @click="openModal" class="btn btn-success">Agregar Nuevo FAQ</button>
     </div>
     <br />
 
@@ -83,7 +83,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addFaqModalLabel">Agregar nuevo FAQ</h5>
+            <h5 class="modal-title" id="addFaqModalLabel">Agregar Nuevo FAQ</h5>
             <button
               type="button"
               class="btn-close"

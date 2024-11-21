@@ -127,7 +127,7 @@ const closeModal = () =>{
 <template>
   <main class="bg-light">
     <div  class="content">
-      <h4 class="d-block text-start mb-2 text-center title">Todos los usuarios</h4>
+      <h4 class="d-block text-start mb-2 text-center title">Todos los Usuarios</h4>
       <div class="d-flex justify-content-between  mt-2 mb-3">
       </div>
       <div class="d-flex justify-content-start gap-3 position-relative my-4">
@@ -147,7 +147,7 @@ const closeModal = () =>{
         </div>
         <div class="card text-bg-primary mb-3 rounded-5" style="max-width: 18rem">
           <div class="card-header">
-            <i class="fa-solid fa-check"></i><strong> aprobados</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-check"></i><strong> Aprobados</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
           </div>
         </div>
         <div class="card text-bg-orange mb-3  rounded-5" style="max-width: 18rem">
@@ -198,10 +198,10 @@ const closeModal = () =>{
               <th class="custom-size">Imagen</th>
               <th class="custom-size">Logros</th>
               <th class="custom-size">Experiencia</th>
-              <th class="custom-size text-center">informacion</th>
+              <th class="custom-size text-center">Informacion</th>
               <th class="custom-size text-center">Video</th>
               <th class="custom-size">Rol</th>
-              <th class="custom-size">% registro</th>
+              <th class="custom-size">% Registro</th>
               <th class="custom-size">Aprobado</th>
               <th class="custom-size">Estado</th>
               <th class="custom-size">Acciones</th>

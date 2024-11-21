@@ -24,7 +24,7 @@
   <div v-else>
     <div  class="d-flex justify-content-center align-items-center min-vh-100">
     <div  class="spinner-grow text-dark" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">Cargando...</span>
     </div>
     </div>
   </div>

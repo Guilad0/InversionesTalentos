@@ -49,7 +49,7 @@
   
         <div class="mb-3">
           <label for="correo" class="form-label text-form-contact"
-            >Correo Electrónico<span class="text-danger"><strong>*</strong></span></label
+            >E-mail<span class="text-danger"><strong>*</strong></span></label
           >
           <input
             type="email"

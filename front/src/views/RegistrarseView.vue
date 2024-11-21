@@ -59,7 +59,7 @@
             </div>
             <div class="col">
               <label for="fechaCumple" class="form-label"
-                >Fecha de nacimiento</label
+                >Fecha de Nacimiento</label
               >
               <input
                 type="date"
@@ -87,7 +87,7 @@
               />
             </div>
             <div class="col">
-              <label for="pais_residencia">País de residencia</label>
+              <label for="pais_residencia">País de Residencia</label>
           <input
             type="text"
             name="pais_residencia"
@@ -101,7 +101,7 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="codigo_pais" class="form-label"
-                >Código del país</label
+                >Código del País</label
               >
               <select
                 v-model="codigo_pais"
@@ -119,7 +119,7 @@
 
             <div class="col-md-6">
               <label for="numero_telefono" class="form-label"
-                >Número de teléfono</label
+                >Número de Teléfono</label
               >
               <input
                 type="text"
@@ -150,7 +150,7 @@
           </div>
           <div class="col">
             <label for="confirmPassword" class="form-label"
-            >Confirmar contraseña</label
+            >Confirmar Contraseña</label
           >
           <input
             type="password"
@@ -171,9 +171,9 @@
             />
             <label class="form-check-label" for="flexCheckChecked">
               He leído y acepto los
-              <span :style="{ color: 'dark' }">Términos y condiciones</span>
+              <span :style="{ color: 'dark' }">Términos y Condiciones</span>
               y la
-              <span :style="{ color: 'dark' }">Política de privacidad</span>
+              <span :style="{ color: 'dark' }">Política de Privacidad</span>
             </label>
           </div>
 
