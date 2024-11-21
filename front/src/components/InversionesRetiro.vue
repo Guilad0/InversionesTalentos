@@ -1,143 +1,196 @@
 <template>
-
   <div>
-
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
-
       <div>
-
-        <h2 class="text-xl font-bold mb-4">Inversiones, Retiros y Devoluciones Pendientes</h2>
+        <h2 class="text-xl font-bold mb-4">
+          Inversiones, Retiros y Devoluciones Pendientes
+        </h2>
 
         <div class="d-flex justify-content-center">
-
-          <button v-for="(tabCli, index) in tabsCli" :key="index"
-            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabCli === index }]"
-            @click="activeTabCli = index">
+          <button
+            v-for="(tabCli, index) in tabsCli"
+            :key="index"
+            :class="[
+              'animate__animated',
+              'animate__fadeInUp',
+              'animate__slow',
+              'btn-6',
+              'm-2',
+              { active: activeTabCli === index },
+            ]"
+            @click="activeTabCli = index"
+          >
             {{ tabCli }} <span></span>
           </button>
 
-          <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-toggle="modal"
-            data-bs-target="#exportModalTal">
+          <button
+            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+            data-bs-toggle="modal"
+            data-bs-target="#exportModalTal"
+          >
             EXPORTAR <span></span>
           </button>
-
         </div>
 
         <!-- Modal para extraer para el Talento -->
-        <div class="modal fade" id="exportModalTal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-          aria-labelledby="exportModalTalLabel" aria-hidden="true">
-
+        <div
+          class="modal fade"
+          id="exportModalTal"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="exportModalTalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog modal-fullscreen">
-
             <div class="modal-content bg-degrade">
-
-              <button type="button" @click="closeModal"
-                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close" data-bs-dismiss="modal"
-                aria-label="Close">Cerrar
+              <button
+                type="button"
+                @click="closeModal"
+                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                Cerrar
               </button>
 
-              <div class="modal-header m-auto text-dark ">
-
+              <div class="modal-header m-auto text-dark">
                 <h5 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h5>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
               <div class="modal-body px-5">
-
-                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
-
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ 'selected': selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Hoy</label>
-                  </div>
-
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ 'selected': selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Ayer</label>
-                  </div>
-
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ 'selected': selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Semana</label>
-                  </div>
-
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ 'selected': selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Mes</label>
-                  </div>
-
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ 'selected': selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Anual</label>
+                <div
+                  class="d-flex justify-content-center text-dark gap-5 position-relative"
+                >
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('hoy')"
+                      :class="{ selected: selectedReport === 'hoy' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Hoy</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                      :class="{ 'selected': band == true }" class="fa-regular fa-file fs-1" width="50" /><br>
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('ayer')"
+                      :class="{ selected: selectedReport === 'ayer' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Ayer</label>
+                  </div>
+
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('semana')"
+                      :class="{ selected: selectedReport === 'semana' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Semana</label>
+                  </div>
+
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('mes')"
+                      :class="{ selected: selectedReport === 'mes' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Mes</label>
+                  </div>
+
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('anual')"
+                      :class="{ selected: selectedReport === 'anual' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Anual</label>
+                  </div>
+
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="showCustomDate"
+                      :class="{ selected: band == true }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br />
                     <label>Personalizado</label>
                   </div>
 
                   <transition name="slide">
-
                     <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
-                        v-model="fechaInicioCustom" class="form-control" type="date">
-                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
-                        v-model="fechaFinCustom" class="form-control" type="date"><br>
+                      <label for="fechaInicio">Fecha de Inicio</label
+                      ><input
+                        @input="showReportCustom"
+                        id="fechaInicio"
+                        v-model="fechaInicioCustom"
+                        class="form-control"
+                        type="date"
+                      />
+                      <label for="fechaFin">Fecha Final</label
+                      ><input
+                        @input="showReportCustom"
+                        id="fechaFin"
+                        v-model="fechaFinCustom"
+                        class="form-control"
+                        type="date"
+                      /><br />
                     </div>
-
                   </transition>
-
                 </div>
 
                 <div class="card border-0">
-
                   <div class="card-body">
-
-                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
-
+                    <h3
+                      class="card-title text-center text-dark mt-5 mb-3 position-relative"
+                    >
                       <div class="custom-abs-rigth">
-
-                        <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="">
-
+                        <button @click="exportToPDF()">
+                          <img
+                            src="../assets/svg/diskette-svgrepo-com.svg"
+                            width="35"
+                            alt=""
+                          />
+                        </button>
                       </div>
 
                       Reportes
 
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
-
                         <div class="btn-group dropup">
-
-                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                          <button
+                            type="button"
+                            class="btn btn-blue dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
                             <label class="text-white">{{ typeReport }}</label>
                           </button>
 
                           <ul class="dropdown-menu">
-
-                            <li @click="showTable('Inversiones')"><a class="dropdown-item" href="#">Inversiones</a></li>
-                            <li @click="showTable('Retiros')"><a class="dropdown-item" href="#">Retiros</a></li>
-
+                            <li @click="showTable('Inversiones')">
+                              <a class="dropdown-item" href="#">Inversiones</a>
+                            </li>
+                            <li @click="showTable('Retiros')">
+                              <a class="dropdown-item" href="#">Retiros</a>
+                            </li>
                           </ul>
-
                         </div>
-
                       </div>
-
                     </h3>
-
                   </div>
-
                 </div>
 
                 <div class="px-5 d-flex justify-content-center">
                   <div class="col">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-striped ">
+                    <table v-if="typeReport == 'Inversiones'" class="table table-striped">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -153,9 +206,15 @@
                           <th scope="col">{{ rep.inversion_id }}</th>
                           <th scope="col">{{ rep.inversor }}</th>
                           <th scope="col">{{ rep.monto }}</th>
-                          <th scope="col">{{ monto_devolver(rep.monto, rep.ganancia) }}</th>
-                          <th scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</th>
-                          <th scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</th>
+                          <th scope="col">
+                            {{ monto_devolver(rep.monto, rep.ganancia) }}
+                          </th>
+                          <th scope="col">
+                            {{ new Date(rep.fecha_deposito).toLocaleDateString() }}
+                          </th>
+                          <th scope="col">
+                            {{ new Date(rep.fecha_devolucion).toLocaleDateString() }}
+                          </th>
                         </tr>
                       </tbody>
                     </table>
@@ -172,12 +231,36 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <tr scope="col">{{ rep.retiro_id }}</tr>
-                        <tr scope="col">{{ rep.monto_solicitud }}</tr>
-                        <tr scope="col">{{ rep.monto_recibir }}</tr>
-                        <tr scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</tr>
-                        <tr scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</tr>
-                        <tr scope="col">{{ rep.estado }}</tr>
+                        <tr scope="col">
+                          {{
+                            rep.retiro_id
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.monto_solicitud
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.monto_recibir
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            new Date(rep.fecha_solicitud).toLocaleDateString()
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            new Date(rep.fecha_aprobacion).toLocaleDateString()
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.estado
+                          }}
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -185,19 +268,25 @@
                     <div class="card m-1">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
-                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
-                          :series="series"></apexchart>
+                        <apexchart
+                          v-if="reports.length > 0"
+                          width="100%"
+                          type="area"
+                          :options="options"
+                          :series="series"
+                        ></apexchart>
                       </div>
                     </div>
                   </dir>
-
                 </div>
                 <div class="text-dark" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
-                    <div class="alert alert-warning " role="alert">
+                    <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Sin resultados!</h4>
-                      <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
-                        de fechas diferente.</p>
+                      <p>
+                        No se encontraron resultados entre las fechas seleccionadas. Por
+                        favor, intenta con un rango de fechas diferente.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -207,83 +296,102 @@
         </div>
         <!-- Final modal para extraer para el Talento -->
 
-
         <!-- Lista Inversiones -->
         <div class="tab-content" v-if="activeTabCli === 0">
-
-          <div class="p-3 shadow-md text-center" v-for="inversion_recibida in inversiones_recibidas"
-            :key="inversion_recibida">
-
+          <div
+            class="p-3 shadow-md text-center"
+            v-for="inversion_recibida in inversiones_recibidas"
+            :key="inversion_recibida"
+          >
             <div class="custom-card row bg-degrade-inverso p-3">
-
               <div class="col-9 text-white text-center border-end p-3">
-
-                <p class="text-white text-center">Inversion ID: {{ inversion_recibida.inversion_id }}</p>
-                <p class="text-white text-center">Inversionista: {{ inversion_recibida.nombre_inversor }}</p>
-                <p class="text-white text-center">Tokens Recibidos: {{ inversion_recibida.monto }}</p>
-                <p class="text-white text-center">Fecha: {{ formatDate(inversion_recibida.fecha_deposito) }}</p>
-
+                <p class="text-white text-center">
+                  Inversion ID: {{ inversion_recibida.inversion_id }}
+                </p>
+                <p class="text-white text-center">
+                  Inversionista: {{ inversion_recibida.nombre_inversor }}
+                </p>
+                <p class="text-white text-center">
+                  Tokens Recibidos: {{ inversion_recibida.monto }}
+                </p>
+                <p class="text-white text-center">
+                  Fecha: {{ formatDate(inversion_recibida.fecha_deposito) }}
+                </p>
               </div>
 
               <div class="col-3 p-3">
-
-                <img :src="inversion_recibida.imagen" width="150" class=" rounded-circle" alt="">
-
+                <img
+                  :src="inversion_recibida.imagen"
+                  width="150"
+                  class="rounded-circle"
+                  alt=""
+                />
               </div>
-
             </div>
-
           </div>
-
         </div>
 
         <!-- Lista de solicitudes de retiro -->
         <div class="tab-content" v-if="activeTabCli === 1">
-
-          <div class="p-3 shadow-md text-center" v-for="cliente_retiro in clientes_retiros" :key="cliente_retiro">
-
+          <div
+            class="p-3 shadow-md text-center"
+            v-for="cliente_retiro in clientes_retiros"
+            :key="cliente_retiro"
+          >
             <div class="custom-card bg-degrade-inverso p-3">
-
-              <h3 class="text-white text-center">Monto:<br> ${{ cliente_retiro.monto_recibir }}</h3>
-              <p class="text-white text-center">Solicitud: {{ cliente_retiro.retiro_id }}</p>
-              <p class="text-white text-center">Fecha Solicitud: {{ formatDate(cliente_retiro.fecha_solicitud) }}</p>
+              <h3 class="text-white text-center">
+                Monto:<br />
+                ${{ cliente_retiro.monto_recibir }}
+              </h3>
+              <p class="text-white text-center">
+                Solicitud: {{ cliente_retiro.retiro_id }}
+              </p>
+              <p class="text-white text-center">
+                Fecha Solicitud: {{ formatDate(cliente_retiro.fecha_solicitud) }}
+              </p>
               <p class="text-white text-center">Estado: {{ cliente_retiro.estado }}</p>
-              <p class="text-white text-center" v-if="cliente_retiro.estado == 'Aprobado'">
+              <p
+                class="text-white text-center"
+                v-if="cliente_retiro.estado == 'Aprobado'"
+              >
                 Fecha Aprobación: {{ formatDate(cliente_retiro.fecha_aprobacion) }}
               </p>
-
             </div>
-
           </div>
-
         </div>
 
         <!-- Lista de Devoluciones Pendientes-->
         <div class="tab-content" v-if="activeTabCli === 2">
-
-          <div class="p-3 shadow-md text-center" v-for="inversion_vencida in inversiones_vencidas"
-            :key="inversion_vencida">
-
-            <div class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center">
-
-              <p class="text-white text-center">Solicitud: {{ inversion_vencida.inversion_id }}</p>
-              <p class="text-white text-center">Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}</p>
-              <p class="text-white text-center">Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}
+          <div
+            class="p-3 shadow-md text-center"
+            v-for="inversion_vencida in inversiones_vencidas"
+            :key="inversion_vencida"
+          >
+            <div
+              class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center"
+            >
+              <p class="text-white text-center">
+                Solicitud: {{ inversion_vencida.inversion_id }}
               </p>
-              <p class="text-white text-center">Fecha de Vencimiento: {{
-                formatDate(inversion_vencida.fecha_devolucion) }}</p>
-              <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
-                @click="devolverTokens(inversion_vencida)">Devolver Inversión<span></span>
+              <p class="text-white text-center">
+                Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}
+              </p>
+              <p class="text-white text-center">
+                Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}
+              </p>
+              <p class="text-white text-center">
+                Fecha de Vencimiento: {{ formatDate(inversion_vencida.fecha_devolucion) }}
+              </p>
+              <button
+                class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                @click="devolverTokens(inversion_vencida)"
+              >
+                Devolver Inversión<span></span>
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
@@ -292,102 +400,183 @@
         <!-- Contenedor de tabs -->
         <div class="d-flex justify-content-center">
           <!-- Clase añadida para centrar -->
-          <button v-for="(tabInv, index) in tabsInv" :key="index"
-            :class="['animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2', { active: activeTabInv === index }]"
-            @click="activeTabInv = index">
+          <button
+            v-for="(tabInv, index) in tabsInv"
+            :key="index"
+            :class="[
+              'animate__animated',
+              'animate__fadeInUp',
+              'animate__slow',
+              'btn-6',
+              'm-2',
+              { active: activeTabInv === index },
+            ]"
+            @click="activeTabInv = index"
+          >
             {{ tabInv }} <span></span>
           </button>
 
-          <button data-bs-toggle="modal" data-bs-target="#exportModalInv"
-            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2">
+          <button
+            data-bs-toggle="modal"
+            data-bs-target="#exportModalInv"
+            class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+          >
             EXPORTAR <span></span>
           </button>
         </div>
 
         <!-- Modal para extraer para el Inversor -->
-        <div class="modal fade" id="exportModalInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-          aria-labelledby="exportModalInvLabel" aria-hidden="true">
-
+        <div
+          class="modal fade"
+          id="exportModalInv"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="exportModalInvLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-
             <div class="modal-content position-relative bg-degrade">
+              <button
+                type="button"
+                @click="closeModal"
+                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                Cerrar
+              </button>
 
-              <button type="button" @click="closeModal" class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close"
-                data-bs-dismiss="modal" aria-label="Close">Cerrar
-                </button>
-                
-              <div class="modal-header m-auto text-dark ">
+              <div class="modal-header m-auto text-dark">
                 <h2 class="modal-title" id="exportModalInvLabel">Exportar Reporte</h2>
-                <br>
+                <br />
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
               <div class="modal-body px-5">
-                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('general')"
-                      :class="{ 'selected': selectedReport === 'general' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>General</label>
-                  </div>
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ 'selected': selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Hoy</label>
-                  </div>
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ 'selected': selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Ayer</label>
-                  </div>
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ 'selected': selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Semana</label>
-                  </div>
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ 'selected': selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Mes</label>
-                  </div>
-                  <div class="mx-1 m-auto border-custom cursor custom-hover"><img
-                      src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ 'selected': selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
-                      width="50" /><br><label>Anual</label>
+                <div
+                  class="d-flex justify-content-center text-dark gap-5 position-relative"
+                >
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('general')"
+                      :class="{ selected: selectedReport === 'general' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>General</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                      :class="{ 'selected': band == true }" class="fa-regular fa-file fs-1" width="50" /><br>
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('hoy')"
+                      :class="{ selected: selectedReport === 'hoy' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Hoy</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('ayer')"
+                      :class="{ selected: selectedReport === 'ayer' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Ayer</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('semana')"
+                      :class="{ selected: selectedReport === 'semana' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Semana</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('mes')"
+                      :class="{ selected: selectedReport === 'mes' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Mes</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="getReports('anual')"
+                      :class="{ selected: selectedReport === 'anual' }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br /><label>Anual</label>
+                  </div>
+                  <div class="mx-1 m-auto border-custom cursor custom-hover">
+                    <img
+                      src="../assets//svg/report-svgrepo-com.svg"
+                      @click="showCustomDate"
+                      :class="{ selected: band == true }"
+                      class="fa-regular fa-file fs-1"
+                      width="50"
+                    /><br />
                     <label>Personalizado</label>
                   </div>
                   <transition name="slide">
                     <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
-                        v-model="fechaInicioCustom" class="form-control" type="date">
-                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
-                        v-model="fechaFinCustom" class="form-control" type="date"><br>
+                      <label for="fechaInicio">Fecha de Inicio</label
+                      ><input
+                        @input="showReportCustom"
+                        id="fechaInicio"
+                        v-model="fechaInicioCustom"
+                        class="form-control"
+                        type="date"
+                      />
+                      <label for="fechaFin">Fecha Final</label
+                      ><input
+                        @input="showReportCustom"
+                        id="fechaFin"
+                        v-model="fechaFinCustom"
+                        class="form-control"
+                        type="date"
+                      /><br />
                     </div>
                   </transition>
                 </div>
                 <div class="card border-0">
                   <div class="card-body bg-degrade">
-                    <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
+                    <h3
+                      class="card-title text-center text-dark mt-5 mb-3 position-relative"
+                    >
                       <div class="custom-abs-rigth">
-                        <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="">
+                        <img
+                          src="../assets/svg/diskette-svgrepo-com.svg"
+                          width="35"
+                          alt=""
+                        />
                       </div>
                       Reportes
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
-                          <button type="button" class="text-black animate__animated animate__fadeInUp animate__slow btn-6 m-2 dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <label class="text-white">{{ typeReport }} <span></span></label>
+                          <button
+                            type="button"
+                            class="text-black animate__animated animate__fadeInUp animate__slow btn-6 m-2 dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <label class="text-white"
+                              >{{ typeReport }} <span></span
+                            ></label>
                           </button>
                           <ul class="dropdown-menu">
-                            <li @click="showTable('Inversiones')"><a class="dropdown-item" href="#">Inversiones</a></li>
-                            <li @click="showTable('Retiros')"><a class="dropdown-item" href="#">Retiros</a></li>
+                            <li @click="showTable('Inversiones')">
+                              <a class="dropdown-item" href="#">Inversiones</a>
+                            </li>
+                            <li @click="showTable('Retiros')">
+                              <a class="dropdown-item" href="#">Retiros</a>
+                            </li>
                           </ul>
                         </div>
                       </div>
-
                     </h3>
                   </div>
                 </div>
@@ -411,8 +600,12 @@
                           <th scope="col">{{ rep.cliente }}</th>
                           <th scope="col">{{ rep.monto }}</th>
                           <th scope="col">{{ rep.ganancia }}</th>
-                          <th scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</th>
-                          <th scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</th>
+                          <th scope="col">
+                            {{ new Date(rep.fecha_deposito).toLocaleDateString() }}
+                          </th>
+                          <th scope="col">
+                            {{ new Date(rep.fecha_devolucion).toLocaleDateString() }}
+                          </th>
                         </tr>
                       </tbody>
                     </table>
@@ -429,12 +622,36 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <tr scope="col">{{ rep.retiro_id }}</tr>
-                        <tr scope="col">{{ rep.monto_solicitud }}</tr>
-                        <tr scope="col">{{ rep.monto_recibir }}</tr>
-                        <tr scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</tr>
-                        <tr scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</tr>
-                        <tr scope="col">{{ rep.estado }}</tr>
+                        <tr scope="col">
+                          {{
+                            rep.retiro_id
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.monto_solicitud
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.monto_recibir
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            new Date(rep.fecha_solicitud).toLocaleDateString()
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            new Date(rep.fecha_aprobacion).toLocaleDateString()
+                          }}
+                        </tr>
+                        <tr scope="col">
+                          {{
+                            rep.estado
+                          }}
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -442,21 +659,25 @@
                     <div class="card m-1">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
-                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
-                          :series="series"></apexchart>
+                        <apexchart
+                          v-if="reports.length > 0"
+                          width="100%"
+                          type="area"
+                          :options="options"
+                          :series="series"
+                        ></apexchart>
                       </div>
                     </div>
                   </dir>
-
-
                 </div>
                 <div class="text-dark" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
-                    <div class="alert alert-warning " role="alert">
+                    <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Sin resultados!</h4>
-                      <p>No se encontraron resultados entre las fechas seleccionadas. Por favor, intenta con un rango
-                        de fechas diferente.</p>
-
+                      <p>
+                        No se encontraron resultados entre las fechas seleccionadas. Por
+                        favor, intenta con un rango de fechas diferente.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -466,47 +687,50 @@
         </div>
         <!-- Final modal para extraer para el Inversor -->
 
-
-
         <!-- Contenido de los tabs -->
         <!-- Lista de Inversiones Recibidas-->
         <div class="tab-content" v-if="activeTabInv === 0">
-
-          <div class="p-3 shadow-md text-center" v-for="inversion in inversiones" :key="inversion">
-
+          <div
+            class="p-3 shadow-md text-center"
+            v-for="inversion in inversiones"
+            :key="inversion"
+          >
             <div class="custom-card row bg-degrade-inverso p-3">
-
               <div class="col-9 text-white text-center border-end p-3">
-
-                <p class=" text-white text-center">Inversion ID: {{ inversion.inversion_id }}</p>
-                <p class=" text-white text-center">Cliente: {{ inversion.nombre_cliente }}</p>
-                <p class=" text-white text-center">Tokens Invertidos: {{ inversion.monto }}</p>
-                <p class=" text-white text-center">Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto
-                  }}</p>
-                <p class=" text-white text-center">Fecha de Inversion: {{ formatDate(inversion.fecha_deposito) }}</p>
-                <p class=" text-white text-center">Fecha de Retorno Aprox.: {{ formatDate(inversion.fecha_devolucion) }}
+                <p class="text-white text-center">
+                  Inversion ID: {{ inversion.inversion_id }}
                 </p>
-
+                <p class="text-white text-center">
+                  Cliente: {{ inversion.nombre_cliente }}
+                </p>
+                <p class="text-white text-center">
+                  Tokens Invertidos: {{ inversion.monto }}
+                </p>
+                <p class="text-white text-center">
+                  Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}
+                </p>
+                <p class="text-white text-center">
+                  Fecha de Inversion: {{ formatDate(inversion.fecha_deposito) }}
+                </p>
+                <p class="text-white text-center">
+                  Fecha de Retorno Aprox.: {{ formatDate(inversion.fecha_devolucion) }}
+                </p>
               </div>
 
               <div class="col-3 p-3">
-
-                <img :src="inversion.imagen" width="200" class=" rounded-circle" alt="">
-
+                <img :src="inversion.imagen" width="200" class="rounded-circle" alt="" />
               </div>
-
             </div>
-
           </div>
-
         </div>
 
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
-
-          <div class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
-            v-for="inversionista_retiro in inversionistas_retiros" :key="inversionista_retiro">
-
+          <div
+            class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
+            v-for="inversionista_retiro in inversionistas_retiros"
+            :key="inversionista_retiro"
+          >
             <p class="text-white">Monto: ${{ inversionista_retiro.monto_recibir }}</p>
             <p class="text-white">Solicitud: {{ inversionista_retiro.retiro_id }}</p>
             <p class="text-white">Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
@@ -514,25 +738,27 @@
             <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ formatDate(inversionista_retiro.fecha_aprobacion) }}
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-import { getCurrentYearStartAndEnd, getDayStartAndEnd, getMonthStartAndEnd, getWeekStartAndEnd, getYesterdayStartAndEnd } from "@/helpers/utilities";
+import {
+  getCurrentYearStartAndEnd,
+  getDayStartAndEnd,
+  getMonthStartAndEnd,
+  getWeekStartAndEnd,
+  getYesterdayStartAndEnd,
+} from "@/helpers/utilities";
 import apexchart from "vue3-apexcharts";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 const route = useRouter();
 const tabsInv = ref(["Inversiones", "Retiros"]);
 var activeTabInv = ref(0);
@@ -540,23 +766,23 @@ var activeTabInv = ref(0);
 const tabsCli = ref(["Inversiones", "Retiros", "Devoluciones"]);
 var activeTabCli = ref(0);
 var typeReport = ref("Inversiones");
-const bandAlert = ref(false)
+const bandAlert = ref(false);
 
 let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
-const selectedReport = ref('')
+const selectedReport = ref("");
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
-const client = ref('')
+const client = ref("");
 if (usuario_rol.value == "Inversionista") {
   inversionista_ID.value = usuario_id.value;
   onMounted(() => {
     obtenerInversiones_Inversionista();
     obtenerInversionista_retiro();
-    typeClient.value = 'reporteInversionesInversor'
-    client.value = 'inversor_id'
+    typeClient.value = "reporteInversionesInversor";
+    client.value = "inversor_id";
   });
 }
 if (usuario_rol.value == "Cliente") {
@@ -566,8 +792,8 @@ if (usuario_rol.value == "Cliente") {
     obtenerCliente_retiro();
     obtenerInversiones_Clientes_Vencidas();
     obtenerTokens_Cliente();
-    typeClient.value = 'reporteInversionesCliente'
-    client.value = 'cliente_id'
+    typeClient.value = "reporteInversionesCliente";
+    client.value = "cliente_id";
   });
 }
 
@@ -580,12 +806,9 @@ const inversiones_vencidas = ref([]);
 const tokensRecibidosCliente = ref(0);
 const tokensDeudasCliente = ref(0);
 
-
 const obtenerInversiones_Inversionista = async () => {
   try {
-    const { data } = await axios.get(
-      baseURL + "inversionista/" + inversionista_ID.value
-    );
+    const { data } = await axios.get(baseURL + "inversionista/" + inversionista_ID.value);
     inversiones.value = data.data;
     console.log(inversiones.value);
   } catch (error) {
@@ -615,9 +838,7 @@ const obtenerInversiones_Clientes = async () => {
 
 const obtenerCliente_retiro = async () => {
   try {
-    const { data } = await axios.get(
-      baseURL + "cliente_retiros/" + cliente_ID.value
-    );
+    const { data } = await axios.get(baseURL + "cliente_retiros/" + cliente_ID.value);
     clientes_retiros.value = data.data;
   } catch (error) {
     console.log(error);
@@ -626,7 +847,9 @@ const obtenerCliente_retiro = async () => {
 
 const obtenerInversiones_Clientes_Vencidas = async () => {
   try {
-    const { data } = await axios.get(baseURL + "inversiones_vencidas/" + cliente_ID.value);
+    const { data } = await axios.get(
+      baseURL + "inversiones_vencidas/" + cliente_ID.value
+    );
     inversiones_vencidas.value = data.data;
     console.log(inversiones_vencidas.value);
   } catch (error) {
@@ -636,8 +859,11 @@ const obtenerInversiones_Clientes_Vencidas = async () => {
 
 const obtenerTokens_Cliente = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
-    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
+    const { data } = await axios.get(
+      baseURL + "tokensClienteRecibido/" + cliente_ID.value
+    );
+    tokensRecibidosCliente.value =
+      data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
     tokensDeudasCliente.value = data.data[0].totalTokensDeudas;
     console.log(tokensRecibidosCliente.value);
   } catch (error) {
@@ -657,85 +883,82 @@ const devolverTokens = async (inversion) => {
       usuario_id: inversion.inversor_id,
       cliente_id: cliente_ID.value,
       inversor_id: inversion.inversor_id,
-      tipo: 'Egreso',
-      descripcion: 'Devolucion de tokens'
+      tipo: "Egreso",
+      descripcion: "Devolucion de tokens",
     };
     console.log(datos);
     try {
-      await axios.post(baseURL + 'devolverTokens', datos);
+      await axios.post(baseURL + "devolverTokens", datos);
       Swal.fire({
         title: "¡Felicidades!",
         text: "Devolución de tokens realizada con éxito",
         icon: "success",
         allowOutsideClick: true,
         allowEscapeKey: true,
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)',
+        color: "var(--gray-color)",
+        confirmButtonColor: "var(--yellow-orange)",
       });
-      var myModalEl = document.getElementById('modalInversion');
+      var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
       modal.hide();
     } catch (error) {
-      console.error('Error al invertir los tokens:', error);
+      console.error("Error al invertir los tokens:", error);
     }
-  }
-  else {
+  } else {
     Swal.fire({
       title: "¡Error!",
       text: "La cantidad de tokens es insuficiente",
       icon: "error",
       allowOutsideClick: true,
       allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)',
+      color: "var(--gray-color)",
+      confirmButtonColor: "var(--yellow-orange)",
     });
   }
   obtenerInversiones_Clientes_Vencidas();
-
 };
 
-
 const formatDate = (date) => {
-  return new Date(date).toISOString().split('T')[0];
+  return new Date(date).toISOString().split("T")[0];
 };
 
 // funciones de obtener reportes
-const baseUrl = 'https://apitalentos.pruebasdeploy.online/reportes/';
+const baseUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
 const band = ref(false);
 var fechaInicio = ref("");
-const typeClient = ref('')
+const typeClient = ref("");
 var fechaFin = ref("");
 var fechaInicioCustom = ref("");
 var fechaFinCustom = ref("");
-const reports = ref([])
+const reports = ref([]);
 const getReports = (report) => {
-  selectedReport.value = report
+  selectedReport.value = report;
   band.value = false;
-  fechaInicioCustom.value = '';
-  fechaFinCustom.value = '';
+  fechaInicioCustom.value = "";
+  fechaFinCustom.value = "";
   switch (report) {
-    case 'hoy':
+    case "hoy":
       const { startOfDay, endOfDay } = getDayStartAndEnd();
       fechaInicio.value = startOfDay;
       fechaFin.value = endOfDay;
       break;
-    case 'ayer':
+    case "ayer":
       const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
       fechaInicio.value = startOfYesterday;
       fechaFin.value = endOfYesterday;
       console.log(fechaInicio.value, fechaFin.value);
       break;
-    case 'semana':
+    case "semana":
       const { startOfWeek, endOfWeek } = getWeekStartAndEnd();
       fechaInicio.value = startOfWeek;
       fechaFin.value = endOfWeek;
       break;
-    case 'mes':
+    case "mes":
       const { startOfMonth, endOfMonth } = getMonthStartAndEnd();
       fechaInicio.value = startOfMonth;
       fechaFin.value = endOfMonth;
       break;
-    case 'anual':
+    case "anual":
       const { startOfYear, endOfYear } = getCurrentYearStartAndEnd();
       fechaInicio.value = startOfYear;
       fechaFin.value = endOfYear;
@@ -743,76 +966,91 @@ const getReports = (report) => {
     default:
       break;
   }
-  if (typeReport.value == 'Inversiones') {
-    getData(`${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+  if (typeReport.value == "Inversiones") {
+    getData(
+      `${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`
+    );
   }
-  if (typeReport.value == 'Retiros') {
-    getData(`reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+  if (typeReport.value == "Retiros") {
+    getData(
+      `reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`
+    );
   }
-  bandAlert.value = true
-
-}
+  bandAlert.value = true;
+};
 
 watch(typeReport, () => {
-  cleanFields()
+  cleanFields();
 });
-
 
 const showReportCustom = () => {
   const fechaInicio = fechaInicioCustom.value?.trim();
   const fechaFin = fechaFinCustom.value?.trim();
-  if (fechaInicio && fechaFin && !isNaN(Date.parse(fechaInicio)) && !isNaN(Date.parse(fechaFin))) {
+  if (
+    fechaInicio &&
+    fechaFin &&
+    !isNaN(Date.parse(fechaInicio)) &&
+    !isNaN(Date.parse(fechaFin))
+  ) {
     const fechaInicioDate = new Date(fechaInicio);
     const fechaFinDate = new Date(fechaFin);
     if (fechaFinDate > fechaInicioDate) {
-      getData(`${typeClient.value}/?fecha_inicio=${fechaInicio}&fecha_final=${fechaFin}&inversor_id=${usuario.usuario_id}`);
+      getData(
+        `${typeClient.value}/?fecha_inicio=${fechaInicio}&fecha_final=${fechaFin}&inversor_id=${usuario.usuario_id}`
+      );
     }
   }
 };
 
-
 const getData = async (url) => {
   console.log(baseUrl + url);
   try {
-    const { data } = await axios.get(baseUrl + url)
-    reports.value = data.data,
-      console.log(reports.value);
-  } catch (error) {
-
-  }
-}
+    const { data } = await axios.get(baseUrl + url);
+    (reports.value = data.data), console.log(reports.value);
+  } catch (error) {}
+};
 
 const showCustomDate = () => {
   band.value = true;
-  cleanFields()
-}
+  cleanFields();
+};
 
 const showTable = () => {
-  typeReport.value = (typeReport.value === 'Inversiones') ? 'Retiros' : 'Inversiones'
-}
+  typeReport.value = typeReport.value === "Inversiones" ? "Retiros" : "Inversiones";
+};
 
 const closeModal = () => {
-  console.log('cerrado');
-  cleanFields()
-}
+  console.log("cerrado");
+  cleanFields();
+};
 
 const cleanFields = () => {
-  fechaInicio.value = ''
-  fechaFin.value = ''
-  fechaFinCustom.value = ''
-  fechaInicioCustom.value = ''
-  reports.value = []
+  fechaInicio.value = "";
+  fechaFin.value = "";
+  fechaFinCustom.value = "";
+  fechaInicioCustom.value = "";
+  reports.value = [];
   bandAlert.value = false;
-  selectedReport.value = ''
-}
+  selectedReport.value = "";
+};
 const monto_devolver = (a, b) => {
-  return a + b
-}
+  return a + b;
+};
 const series = ref([]);
 const series2 = ref([]);
 const meses = [
-  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
 ];
 
 const options = ref({
@@ -826,7 +1064,9 @@ const options = ref({
 
 const options2 = ref({
   chart: {
-    type: 'bar', height: 250, stacked: true,
+    type: "bar",
+    height: 250,
+    stacked: true,
   },
   plotOptions: {
     bar: {
@@ -836,31 +1076,69 @@ const options2 = ref({
           enabled: true,
           offsetX: 0,
           style: {
-            fontSize: '13px',
-            fontWeight: 900
-          }
-        }
-      }
+            fontSize: "13px",
+            fontWeight: 900,
+          },
+        },
+      },
     },
   },
   xaxis: {
     categories: meses,
     labels: {
       formatter: function (val) {
-        return val
-      }
-    }
+        return val;
+      },
+    },
   },
   fill: {
-    opacity: 1
+    opacity: 1,
   },
   legend: {
-    position: 'top',
-    horizontalAlign: 'left',
-    offsetX: 40
-  }
+    position: "top",
+    horizontalAlign: "left",
+    offsetX: 40,
+  },
 });
+const exportToPDF = () => {
+  const doc = new jsPDF();
 
+  const columns = [
+    { header: "ID", dataKey: "inversion_id" },
+    { header: "Inversionista", dataKey: "inversor" },
+    { header: "Token Invertidos", dataKey: "monto" },
+    { header: "Tokens a Devolver", dataKey: "ganancia" },
+    { header: "Fecha de Inversion", dataKey: "fecha_deposito" },
+    { header: "Fecha de Retorno(Aproximado)", dataKey: "fecha_devolucion" },
+  ];
+
+  const rows = reports.value.map((report) => ({
+    inversion_id: report.inversion_id,
+    inversor: report.inversor,
+    monto: report.monto,
+    ganancia: report.ganancia,
+    fecha_deposito: report.fecha_deposito,
+    fecha_devolucion: report.fecha_devolucion,
+  }));
+
+  console.log("Rows para PDF Cliente", rows);
+
+  doc.autoTable({
+    columns: columns,
+    body: rows,
+    startY: 20,
+    theme: "grid",
+    styles: {
+      overflow: "linebreak",
+      cellPadding: 2,
+      fontSize: 9,
+    },
+  });
+  doc.text("Reporte de Inversiones y Retiros", doc.internal.pageSize.width / 2, 10, {
+    align: "center",
+  });
+  doc.save("Reporte de Inversiones y Retiros.pdf");
+};
 </script>
 
 <style scoped>
