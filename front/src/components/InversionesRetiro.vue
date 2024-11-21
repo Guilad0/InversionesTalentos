@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="card border-0">
-                  <div class="card-body">
+                  <div class="card-body bg-degrade">
                     <h3
                       class="card-title text-center text-dark mt-5 mb-3 position-relative"
                     >
@@ -561,7 +561,7 @@
                         <div class="btn-group dropup">
                           <button
                             type="button"
-                            class="text-black animate__animated animate__fadeInUp animate__slow btn-6 m-2 dropdown-toggle"
+                            class="btn btn-blue dropdown-toggle"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
