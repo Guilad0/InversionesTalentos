@@ -3,7 +3,7 @@
     <h1 class="py-3 text-center title">FAQs</h1>
     <!-- Botón para agregar nuevo FAQ (moverlo a la parte superior) -->
     <div class="mt-4">
-      <button @click="openModal" class="btn btn-success">Agregar Nuevo FAQ</button>
+      <button @click="openModal" class="btn btn-faq btn-sm mx-4">Agregar Nuevo FAQ</button>
     </div>
     <br />
 
@@ -292,5 +292,17 @@ button.btn-warning.mt-2.me-2 {
   overflow-y: auto;
   padding-right: 15px;
 }
+.btn-faq {
+  border: none;
+  background-color: var(--gray-color);
+  color: white;
+  border: 1px solid var(--yellow-orange);
+  margin-right: 2rem;
+}
 
+.btn:hover {
+  border: none;
+  color: white;
+  background-color: var(--yellow-orange) !important;
+}
 </style>

@@ -1,21 +1,19 @@
 <template>
   <main class="bg-light pt-5 ps-4">
+    <div class="col-12">
+      <button class="btn btn-pdf btn-sm mx-4 float-end " @click="exportToPDF()">
+        PDF
+      </button>
+    </div>
     <div class="content">
       <h4 class="d-block mb-2 text-center py-2 title">Consultas Y Reclamos</h4>
       <div class="table-responsive col-md-10 offset-md-1">
-        <div class="col-4 px-5 mb-3 d-flex">
-          <input
-            name="search"
-            type="text"
-            v-model="search"
-            class="form-control"
-            placeholder="Buscar ..."
-            @input="fetchContacts(1)"
-          />
-          <button class="btn btn-sm bg-info mx-4 text-white" @click="exportToPDF()">
-            PDF
-          </button>
+        <div class="col-3 px-5 mb-3 d-flex">
+          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+            @input="fetchContacts(1)" />
+
         </div>
+
         <!-- <div
           v-if="showPreview"
           style="margin-top: 20px; border: 1px solid #ccc; padding: 10px"
@@ -55,10 +53,9 @@
                 <td>{{ item.comentarios }}</td>
                 <td>{{ item.respuesta }}</td>
                 <td v-if="item.respuesta === '' || item.respuesta === null">
-                  <button class="btn btn-info text-white btn-sm" @click="openModal(item)">
+                  <span class="badge badge-responder" @click="openModal(item)">
                     Responder
-                  </button>
-                  <!-- {{ console.log(item.estado) }} -->
+                  </span>
                 </td>
                 <td v-else>
                   <span class="badge text-bg-dark">Contestado</span>
@@ -76,10 +73,7 @@
                 </td>
 
                 <td>
-                  <button
-                    class="btn btn-danger btn-sm"
-                    @click="deleted(item.contacto_id)"
-                  >
+                  <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <!-- <button class="btn btn-success">
@@ -102,41 +96,28 @@
               </button>
             </li>
             <li v-else class="page-item">
-              <button
-                @click="fetchContacts(pagination.currentPage - 1)"
-                class="page-link color-gray fw-bolder rounded-5 border border-3"
-              >
+              <button @click="fetchContacts(pagination.currentPage - 1)"
+                class="page-link color-gray fw-bolder rounded-5 border border-3">
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
             </li>
 
-            <li
-              v-for="page in pagination.totalPages"
-              :key="page"
-              class="page-item"
-              :class="{ active: pagination.currentPage === page }"
-            >
-              <button
-                @click="fetchContacts(page)"
-                class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
-              >
+            <li v-for="page in pagination.totalPages" :key="page" class="page-item"
+              :class="{ active: pagination.currentPage === page }">
+              <button @click="fetchContacts(page)"
+                class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
                 {{ page }}
               </button>
             </li>
 
-            <li
-              v-if="pagination.currentPage === pagination.totalPages"
-              class="page-item disabled"
-            >
+            <li v-if="pagination.currentPage === pagination.totalPages" class="page-item disabled">
               <button class="page-link color-gray fw-bolder rounded-5 border border-3">
                 <i class="fa-solid fa-arrow-right"></i>
               </button>
             </li>
             <li v-else class="page-item">
-              <button
-                @click="fetchContacts(pagination.currentPage + 1)"
-                class="page-link color-gray fw-bolder rounded-5 border border-3"
-              >
+              <button @click="fetchContacts(pagination.currentPage + 1)"
+                class="page-link color-gray fw-bolder rounded-5 border border-3">
                 <i class="fa-solid fa-arrow-right"></i>
               </button>
             </li>
@@ -144,14 +125,8 @@
         </nav>
       </div>
 
-      <div
-        class="modal fade"
-        id="answerModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="answerModalLabel"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -160,25 +135,16 @@
             <div class="modal-body">
               <p>{{ contactActive.nombre + ": " }} {{ contactActive.email }}</p>
               <label class="form-label"> Responder Usuario </label>
-              <input
-                class="form-control"
-                type="text"
-                id="respuesta"
-                v-model="userResponse"
-                placeholder="Escribe la respuesta"
-              />
+              <input class="form-control" type="text" id="respuesta" v-model="userResponse"
+                placeholder="Escribe la respuesta" />
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Cerrar
               </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-dismiss="modal"
-                @click="answer(userResponse, contactActive.contacto_id)"
-              >
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                @click="answer(userResponse, contactActive.contacto_id)">
                 Guardar
               </button>
             </div>
@@ -371,12 +337,11 @@ const openModal = (item) => {
 </script>
 
 <style scoped>
-
 .title {
-  font-family: var(--font-montserrat-bold); 
-  font-weight: 700; 
-  font-size: 30px; 
-  color: var( --gray-color); 
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--gray-color);
   text-transform: uppercase;
 }
 
@@ -396,6 +361,7 @@ const openModal = (item) => {
   height: 70vh;
   width: 100%;
 }
+
 .table-container-contact {
   max-height: 70vh;
   overflow-y: auto;
@@ -408,5 +374,24 @@ const openModal = (item) => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.btn-pdf {
+  border: none;
+  background-color: var(--gray-color);
+  color: white;
+  border: 1px solid var(--yellow-orange);
+  margin-right: 2rem;
+}
+
+.btn:hover {
+  border: none;
+  color: white;
+  background-color: var(--yellow-orange) !important;
+}
+.badge-responder {
+  background-color: var(--yellow-orange);
+  color: white;
+  cursor: pointer;
 }
 </style>
