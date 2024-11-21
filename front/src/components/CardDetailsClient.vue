@@ -61,7 +61,7 @@
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
-              <i class="fas fa-trophy"></i> Logros<span></span>
+              <i class="fas fa-trophy"></i> Logros<span></span> 
             </button>
 
             <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
