@@ -91,7 +91,7 @@
             </tbody>
           </table>
         </div>
-
+        <!-- paginacion -->
         <div class="d-flex justify-content-center">
           <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
             <!-- Los botones de paginación se mantienen, pero se asegura que pase el filtro -->

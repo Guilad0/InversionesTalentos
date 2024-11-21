@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light">
     <div class="content">
-      <h4 class="d-block mb-2 text-center underline py-4">Categorías</h4>
+      <h4 class="d-block mb-2 text-center title py-5">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
         <div class="col-2 position-relative">
           <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
@@ -13,7 +13,7 @@
         </div>
         <div class="col-8"></div>
         <div class="col-2 text-end">
-          <button class="btn bg-gray rounded-3 text-white" data-bs-toggle="modal"
+          <button class="btn bg-gray rounded-3 text-white btn-categoria" data-bs-toggle="modal"
             data-bs-target="#modalRegisterCategorie" @click="crearCategoria">
             +
             <i class="fa-solid fa-tags"></i>
@@ -269,6 +269,13 @@ const saveCategory = async () => {
 </script>
 
 <style scoped>
+.title {
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700; 
+  font-size: 30px;
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
 /*inicio de la modal*/
 .modal-header {
   background-color: #D9C5B2 !important;
@@ -485,5 +492,10 @@ td {
   border: 1.5px solid #b0b8ff;
   box-shadow: 0px 0px 6px rgb(3, 3, 3);
   transform: scale(1.05);
+}
+.btn-categoria:hover {
+  border: none;
+  color: white;
+  background-color: var(--yellow-orange) !important;
 }
 </style>

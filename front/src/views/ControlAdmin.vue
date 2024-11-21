@@ -3,9 +3,9 @@
     <div class="d-flex">
       <div class="col-2  ">
         <ul class="mt-5">
-          <li class="py-3 ps-2 rounded  nav-link  my-3 " :class="{ 'border-custom': view == 'wallRequests' }"
+          <li class="py-3 ps-2 rounded  nav-link  my-3 retiro " :class="{ 'border-custom': view == 'wallRequests' }"
             @click="showView('wallRequests')">
-            <i class="fa-solid fa-circle-dollar-to-slot text-light"></i> &nbsp; Solicitudes Retiro
+            <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Retiro
           </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
             @click="showView('users')">
@@ -113,4 +113,11 @@ li:hover {
   color: white;
 
 }
+.retiro:hover {
+  font-weight: 600;
+  background-color: #17223B;
+  color: white !important;
+  
+}
+
 </style>
