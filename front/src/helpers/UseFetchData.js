@@ -7,7 +7,7 @@ export default function useFetchData(ruta){
     const next = ref('');
     const prev = ref('');
     const isLoading = ref(false);
-    const baseURL = 'http://localhost:3000';
+    const baseURL = 'https://apitalentos.pruebasdeploy.online';
     const total = ref('')
     const getData = async ()=>{
         try {
