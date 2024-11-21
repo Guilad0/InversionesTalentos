@@ -30,6 +30,7 @@
                 </ol>
             </nav>
         </div>
+        
         <div class="d-flex ">
             <div class="container" v-if="currentNav =='users'">
                 <GralUsers/>
@@ -43,7 +44,9 @@
             <div class="container" v-if="currentNav =='Admin'" >
                 <Client :rol="rol"/>
             </div>
+            
         </div>
+        
     </main>
 </template>
 

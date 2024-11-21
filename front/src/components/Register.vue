@@ -84,7 +84,7 @@
             <label for="lastName">Rol <label class="text-danger">*</label> </label>
                 <select v-model="rol" class="form-select form-select-sm p-1" aria-label="Multiple select example"
                   required>
-                  <option  class="btn-gray " value="Inversioniste">Inversor</option>
+                  <option  class="btn-gray " value="Inversionista">Inversor</option>
                   <option  class="btn-gray " value="Cliente" >Cliente</option>
                   <option  class="btn-gray " value="Null" >Sin rol</option>
                 </select>

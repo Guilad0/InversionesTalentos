@@ -13,13 +13,11 @@
             <button class="btn border-0" :disabled="isLoading">
                 <li class="page-item my-auto" v-if="next != null"
                 :class="{ 'disabled cursor-blocked': next == null || isLoading == true }" @click="$emit('nextAction')">
-                <a class="page-link btn-gray">Next</a>
+                <a class="page-link btn-gray">Siguiente</a>
             </li>
             </button>
         </ul>
-        <div class="text-end pe-3">
-            <strong>Total {{ myRol }}s: </strong>{{ total }}
-        </div>
+      
     </nav>
 </template>
 

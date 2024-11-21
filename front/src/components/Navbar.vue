@@ -50,7 +50,7 @@
             </li>
 
             <li class="nav-item">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Faqs</RouterLink>
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas frecuentes</RouterLink>
             </li>
 
           </ul>

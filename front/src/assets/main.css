@@ -176,3 +176,17 @@
   0%, 100% { opacity: 1; } 
   50% { opacity: 0; }     
 }
+
+
+
+.title {
+  font-family: var(--font-montserrat-bold); 
+  font-weight: 700; 
+  font-size: 30px; 
+  color: var( --gray-color); 
+  text-transform: uppercase;
+}
+
+.text-bg-orange {
+  background-color: #D95C00 !important; 
+}
