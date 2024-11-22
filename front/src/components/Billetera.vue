@@ -72,8 +72,8 @@
 
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
-          data-bs-target="#modalInversion">Invertir<span></span></button>
+        <!--<button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+          data-bs-target="#modalInversion">Invertir<span></span></button>-->
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
 
@@ -152,7 +152,7 @@
 
                     <label for="montoUsd" class="form-label">Monto en USD</label>
 
-                    <input type="text" v-model="montoUsd" id="montoUsd" class="form-control " @change="calcularTokens()"
+                    <input type="text" v-model="montoUsd" id="montoUsd" class="form-control " @input="calcularTokens()"
                       required />
 
                   </div>
@@ -256,7 +256,7 @@
                     <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
 
                     <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
-                      @change="calcularGanancias()" required />
+                      @input="calcularGanancias()" required />
 
                   </div>
 
@@ -344,7 +344,7 @@
                     <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
 
                     <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control"
-                      @change="calcularDolares()" required />
+                      @input="calcularDolares()" required />
 
                   </div>
 

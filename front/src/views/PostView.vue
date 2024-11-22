@@ -11,7 +11,7 @@
     </div>
     <div class="post-content">
       <p class="fs-6 ">
-        {{ mostrarCompleto ? post.contenido : post.contenido.slice(0, 300) + '...' }}
+        <span v-html="mostrarCompleto ? post.contenido : post.contenido.slice(0, 300) + '...'"></span>
       </p>
       <button @click="toggleMostrarCompleto" class="btn ">
         <label class="text-orange showmore "> {{ mostrarCompleto ? 'Mostrar menos' : 'Leer más' }}</label>
