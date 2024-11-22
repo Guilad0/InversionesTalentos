@@ -29,14 +29,16 @@
           aria-labelledby="exportModalTalLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content bg-degrade">
-              <button type="button" @click="closeModal"
-                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close" data-bs-dismiss="modal"
-                aria-label="Close">
-                Cerrar
-              </button>
+              <div class="d-flex flex-row-reverse">
+                <button type="button" @click="closeModal"
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2"
+                  data-bs-dismiss="modal" aria-label="Close">
+                  Cerrar<span></span>
+                </button>
+              </div>
 
               <div class="modal-header m-auto text-dark">
-                <h5 class="modal-title" id="exportModalInvLabel">Descargar Reporte</h5>
+                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Descargar Reporte</h2>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
@@ -97,7 +99,7 @@
                         </button>
                       </div>
 
-                      Reportes
+                      <span class="subtitle-class">Reportes</span>
 
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
@@ -122,7 +124,7 @@
 
                 <div class="px-5 d-flex justify-content-center">
                   <div class="col">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-striped">
+                    <table v-if="typeReport == 'Inversiones'" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -135,23 +137,17 @@
                       </thead>
                       <tbody v-if="reports.length > 0">
                         <tr v-for="rep in reports" :key="rep">
-                          <th scope="col">{{ rep.inversion_id }}</th>
-                          <th scope="col">{{ rep.inversor }}</th>
-                          <th scope="col">{{ rep.monto }}</th>
-                          <th scope="col">
-                            {{ monto_devolver(rep.monto, rep.ganancia) }}
-                          </th>
-                          <th scope="col">
-                            {{ new Date(rep.fecha_deposito).toLocaleDateString() }}
-                          </th>
-                          <th scope="col">
-                            {{ new Date(rep.fecha_devolucion).toLocaleDateString() }}
-                          </th>
+                          <td scope="col">{{ rep.inversion_id }}</td>
+                          <td scope="col">{{ rep.inversor }}</td>
+                          <td scope="col">{{ rep.monto }}</td>
+                          <td scope="col">{{ monto_devolver(rep.monto, rep.ganancia) }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</td>
                         </tr>
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table">
+                    <table v-if="typeReport == 'Retiros'" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -163,36 +159,12 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <tr scope="col">
-                          {{
-                            rep.retiro_id
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.monto_solicitud
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.monto_recibir
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            new Date(rep.fecha_solicitud).toLocaleDateString()
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            new Date(rep.fecha_aprobacion).toLocaleDateString()
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.estado
-                          }}
-                        </tr>
+                        <td scope="col">{{  rep.retiro_id  }}</td>
+                        <td scope="col">{{  rep.monto_solicitud  }}</td>
+                        <td scope="col">{{  rep.monto_recibir  }}</td>
+                        <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString()  }}</td>
+                        <td scope="col">{{  new Date(rep.fecha_aprobacion).toLocaleDateString()  }}</td>
+                        <td scope="col">{{  rep.estado  }}</td>
                       </tbody>
                     </table>
                   </div>
@@ -336,7 +308,7 @@
               </div>
 
               <div class="modal-header m-auto">
-                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Exportar Reporte</h2>
+                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Descargar Reporte</h2>
                 <br />
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
@@ -417,9 +389,9 @@
                 </div>
 
                 <div class="row px-5 d-flex justify-content-center">
-                  <div class="col-7">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-striped">
-                      <thead class="bg-dark">
+                  <div class="col-7 table-responsive">
+                    <table v-if="typeReport == 'Inversiones'" class="table table-sm align-middle">
+                      <thead class="align-middle">
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Talento</th>
@@ -431,21 +403,21 @@
                       </thead>
                       <tbody v-if="reports.length > 0">
                         <tr v-for="rep in reports" :key="rep">
-                          <th scope="col">{{ rep.inversion_id }}</th>
-                          <th scope="col">{{ rep.cliente }}</th>
-                          <th scope="col">{{ rep.monto }}</th>
-                          <th scope="col">{{ rep.ganancia }}</th>
-                          <th scope="col">
+                          <td scope="col">{{ rep.inversion_id }}</td>
+                          <td scope="col">{{ rep.cliente }}</td>
+                          <td scope="col">{{ rep.monto }}</td>
+                          <td scope="col">{{ rep.ganancia }}</td>
+                          <td scope="col">
                             {{ new Date(rep.fecha_deposito).toLocaleDateString() }}
-                          </th>
-                          <th scope="col">
+                          </td>
+                          <td scope="col">
                             {{ new Date(rep.fecha_devolucion).toLocaleDateString() }}
-                          </th>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table">
+                    <table v-if="typeReport == 'Retiros'" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -457,36 +429,12 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <tr scope="col">
-                          {{
-                            rep.retiro_id
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.monto_solicitud
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.monto_recibir
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            new Date(rep.fecha_solicitud).toLocaleDateString()
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            new Date(rep.fecha_aprobacion).toLocaleDateString()
-                          }}
-                        </tr>
-                        <tr scope="col">
-                          {{
-                            rep.estado
-                          }}
-                        </tr>
+                        <td scope="col">{{  rep.retiro_id  }}</td>
+                        <td scope="col">{{  rep.monto_solicitud  }}</td>
+                        <td scope="col">{{  rep.monto_recibir  }}</td>
+                        <td scope="col">{{  new Date(rep.fecha_solicitud).toLocaleDateString()  }}</td>
+                        <td scope="col">{{  new Date(rep.fecha_aprobacion).toLocaleDateString()  }}</td>
+                        <td scope="col">{{  rep.estado  }}</td>
                       </tbody>
                     </table>
                   </div>
@@ -1072,15 +1020,11 @@ label {
   font-size: 1rem;
 }
 
-th {
-  color: var( --gray-color);
-}
+
 
 .subtitle-class {
   color: var( --white-color); 
 }
-
-
 
 .title-modal {
   font-family: var(--font-montserrat-bold); 
@@ -1159,5 +1103,14 @@ p {
   font-size: 1rem;
   color: var(--gray-color);
   margin-right: 15px;
+}
+
+tr {
+  color: var( --gray-color);
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
 }
 </style>
