@@ -29,14 +29,16 @@
           aria-labelledby="exportModalTalLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content bg-degrade">
-              <button type="button" @click="closeModal"
-                class="me-5 btn btn-danger text-black mt-3 abs-custom-icon-close" data-bs-dismiss="modal"
-                aria-label="Close">
-                Cerrar
-              </button>
+              <div class="d-flex flex-row-reverse">
+                <button type="button" @click="closeModal"
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2" data-bs-dismiss="modal"
+                  aria-label="Close">
+                  Cerrar
+                </button>
+              </div>
 
               <div class="modal-header m-auto text-dark">
-                <h5 class="modal-title" id="exportModalInvLabel">Descargar Reporte</h5>
+                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Descargar Reporte</h2>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
@@ -92,12 +94,14 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button @click="exportToPDF()">
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                          @click="exportToPDF()">
                           <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
                         </button>
                       </div>
-
-                      Reportes
+                      <span class="subtitle-class">
+                        Reportes
+                      </span>
 
                       <div class="d-flex float-left px-5 mb-3 custom-abs-left">
                         <div class="btn-group dropup">
@@ -120,10 +124,10 @@
                   </div>
                 </div>
 
-                <div class="px-5 d-flex justify-content-center">
-                  <div class="col">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-striped">
-                      <thead>
+                <div class="row px-5 d-flex justify-content-center">
+                  <div class="col-7 table-responsive">
+                    <table v-if="typeReport == 'Inversiones'" class="table align-middle table-striped table-sm">
+                      <thead class="table align-middle">
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Inversionista</th>
@@ -151,8 +155,8 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table">
-                      <thead>
+                    <table v-if="typeReport == 'Retiros'" class="table align-middle table-striped table-sm">
+                      <thead class="table align-middle">
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Monto Solicitado</th>
@@ -196,10 +200,10 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="col text-dark">
+                  <div class="col-5">
                     <div class="card m-1">
                       <div class="card-body">
-                        <h5 class="card-title">Compras e Inversiones de Tokens</h5>
+                        <h5 class="card-title">Compras e Inversiones Recibidas de Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
                           :series="series"></apexchart>
                       </div>
@@ -329,16 +333,15 @@
             <div class="modal-content position-relative bg-degrade">
               <div class="d-flex flex-row-reverse">
                 <button type="button" @click="closeModal"
-                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2"
-                  data-bs-dismiss="modal" aria-label="Close">
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2" data-bs-dismiss="modal"
+                  aria-label="Close">
                   Cerrar<span></span>
                 </button>
               </div>
 
               <div class="modal-header m-auto">
-                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Exportar Reporte</h2>
+                <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">Descargar Reporte</h2>
                 <br />
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
               <div class="modal-body px-5">
@@ -391,7 +394,8 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" @click="exportToPDF()">
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                          @click="exportToPDF()">
                           <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
                         </button>
                       </div>
@@ -417,9 +421,9 @@
                 </div>
 
                 <div class="row px-5 d-flex justify-content-center">
-                  <div class="col-7">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-striped">
-                      <thead class="bg-dark">
+                  <div class="col-7 table-responsive">
+                    <table v-if="typeReport == 'Inversiones'" class="table align-middle table-striped table-sm">
+                      <thead class="table align-middle">
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Talento</th>
@@ -445,8 +449,8 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table">
-                      <thead>
+                    <table v-if="typeReport == 'Retiros'" class="table align-middle table-striped table-sm">
+                      <thead class="table align-middle">
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Monto Solicitado</th>
@@ -493,7 +497,7 @@
                   <div class="col-5">
                     <div class="card m-1">
                       <div class="card-body">
-                        <h5 class="card-title">Compras e Inversiones Anualesde Tokens</h5>
+                        <h5 class="card-title">Compras e Inversiones Anuales de Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
                           :series="series"></apexchart>
                       </div>
@@ -591,7 +595,7 @@ var activeTabCli = ref(0);
 var typeReport = ref("Inversiones");
 const bandAlert = ref(false);
 
-let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
+const baseURL = "http://localhost:3000/inversionesRetiros/"; //https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
 const selectedReport = ref("");
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
@@ -607,7 +611,7 @@ if (usuario_rol.value == "Inversionista") {
     typeClient.value = "reporteInversionesInversor";
     client.value = "inversor_id";
     getReports("mes");
-    obtenerTotales();
+    obtenerTotalesInversionista();
   });
 }
 if (usuario_rol.value == "Cliente") {
@@ -620,7 +624,7 @@ if (usuario_rol.value == "Cliente") {
     typeClient.value = "reporteInversionesCliente";
     client.value = "cliente_id";
     getReports("mes");
-    obtenerTotales();
+    obtenerTotalesCliente();
   });
 }
 
@@ -750,7 +754,7 @@ const formatDate = (date) => {
 };
 
 // funciones de obtener reportes
-const baseUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
+const reportesUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
 const reportUrl = "https://apitalentos.pruebasdeploy.online/report/";
 const band = ref(false);
 var fechaInicio = ref("");
@@ -831,9 +835,9 @@ const showReportCustom = () => {
 };
 
 const getData = async (url) => {
-  console.log(baseUrl + url);
+  console.log(reportesUrl + url);
   try {
-    const { data } = await axios.get(baseUrl + url);
+    const { data } = await axios.get(reportesUrl + url);
     (reports.value = data.data), console.log(reports.value);
   } catch (error) { }
 };
@@ -889,10 +893,10 @@ const options = ref({
   },
 });
 
-const obtenerTotales = async () => {
+const obtenerTotalesInversionista = async () => {
   series.value = [];
   try {
-    const { data } = await axios.get(reportUrl + "totalCompras/" + usuario_id.value);
+    const { data } = await axios.get(reportUrl + "totalCompras/" + inversionista_ID.value);
     console.log(data);
     var datosMesCompra = [];
     for (let i = 0; i < meses.length; i++) {
@@ -916,7 +920,7 @@ const obtenerTotales = async () => {
     console.log(error);
   }
   try {
-    const { data } = await axios.get(reportUrl + "totalInversiones/" + usuario_id.value);
+    const { data } = await axios.get(reportUrl + "totalInversiones/" + inversionista_ID.value);
 
     var datosMesVenta = [];
     for (let i = 0; i < meses.length; i++) {
@@ -939,6 +943,62 @@ const obtenerTotales = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const obtenerTotalesCliente = async () => {
+  series.value = [];
+  try {
+    const { data } = await axios.get(reportUrl + "totalCompras/" + cliente_ID.value);
+
+    var datosMesCompra = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesCompra[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesCompra[i] = data.data[j].tokens_comprados;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Compra de Tokens",
+      data: datosMesCompra,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    console.log(cliente_ID.value);
+
+    const { data } = await axios.get(reportUrl + "totalInversionesRecibidas/" + cliente_ID.value);
+
+    console.log(data);
+    var datosMesVenta = [];
+    for (let i = 0; i < meses.length; i++) {
+      let mes = i + 1;
+
+      datosMesVenta[i] = 0;
+
+      for (let j = 0; j < data.data.length; j++) {
+        if (mes == data.data[j].mes) {
+          datosMesVenta[i] = data.data[j].tokens_invertidos;
+        }
+      }
+    }
+
+    var datos = {
+      name: "Inversiones de Tokens Recibidas",
+      data: datosMesVenta,
+    };
+    series.value.push(datos);
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(series.value);
 };
 
 const exportToPDF = () => {
@@ -1064,25 +1124,25 @@ const exportToPDF = () => {
 }
 
 label {
-  color: var( --white-color);
+  color: var(--white-color);
   font-size: 1rem;
 }
 
 th {
-  color: var( --gray-color);
+  color: var(--gray-color);
 }
 
 .subtitle-class {
-  color: var( --white-color); 
+  color: var(--white-color);
 }
 
 
 
 .title-modal {
-  font-family: var(--font-montserrat-bold); 
-  font-weight: 700; 
-  font-size: 30px; 
-  color: var( --white-color); 
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--white-color);
   text-transform: uppercase;
 }
 
@@ -1156,4 +1216,10 @@ p {
   color: var(--gray-color);
   margin-right: 15px;
 }
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 </style>
