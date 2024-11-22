@@ -166,7 +166,8 @@ import autoTable from "jspdf-autotable";
 
 const { results: contacts, getData: getContact } = useFetchData(ref("/contact"));
 console.log("results", contacts);
-const BaseURL = "https://apitalentos.pruebasdeploy.online/contact";
+// const BaseURL = "https://apitalentos.pruebasdeploy.online/contact";
+const BaseURL = import.meta.env.VITE_BASE_URL+"/contact";
 const search = ref("");
 const isModalVisible = ref(false);
 const contactActive = ref({});
@@ -257,7 +258,8 @@ const exportToPDF = () => {
 
 const fetchContacts = async (page = 1) => {
   try {
-    const response = await axios.get(`https://apitalentos.pruebasdeploy.online/contact`, {
+    // const response = await axios.get(`https://apitalentos.pruebasdeploy.online/contact`, {
+    const response = await axios.get(import.meta.env.VITE_BASE_URL+`/contact`, {
       params: {
         page,
         limit: pagination.value.itemsPerPage,
@@ -276,7 +278,8 @@ const fetchContacts = async (page = 1) => {
 
 const deleted = async (id) => {
   try {
-    await axios.put(`https://apitalentos.pruebasdeploy.online/contact/stateContact/${id}`);
+    // await axios.put(`https://apitalentos.pruebasdeploy.online/contact/stateContact/${id}`);
+    await axios.put(import.meta.env.VITE_BASE_URL+`/contact/stateContact/${id}`);
     fetchContacts(pagination.value.currentPage);
 
     iziToast.success({
@@ -298,7 +301,8 @@ const answer = async (response, iduser) => {
 
   try {
     const res = await axios.put(
-      "https://apitalentos.pruebasdeploy.online/contact/response/" + iduser,
+      // "https://apitalentos.pruebasdeploy.online/contact/response/" + iduser,
+      import.meta.env.VITE_BASE_URL+"/contact/response/" + iduser,
       datos
     );
 

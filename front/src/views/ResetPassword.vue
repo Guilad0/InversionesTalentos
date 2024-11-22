@@ -38,7 +38,8 @@ const router = useRouter();
 const resetPassword = async () => {
   try { 
 
-    const {data} = await axios.post(`https://apitalentos.pruebasdeploy.online/auth/reset-password/${route.params.token}`, { password: password.value });
+    // const {data} = await axios.post(`https://apitalentos.pruebasdeploy.online/auth/reset-password/${route.params.token}`, { password: password.value });
+    const {data} = await axios.post(import.meta.env.VITE_BASE_URL+`/auth/reset-password/${route.params.token}`, { password: password.value });
     message.value = data.message; 
     success.value = true; // Establece el indicador de éxito en true
   } catch (error) {

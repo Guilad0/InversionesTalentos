@@ -38,7 +38,8 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import apexchart from "vue3-apexcharts";
 const router = useRouter();
-let baseURL = "https://apitalentos.pruebasdeploy.online/report/";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/report/";
+let baseURL = import.meta.env.VITE_BASE_URL+"/report/";
 
 const cliente_ID = ref('');
 const inversionista_ID = ref('');

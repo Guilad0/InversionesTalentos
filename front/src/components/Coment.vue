@@ -186,7 +186,8 @@ const estadisticas = ref({ totalAprobados: 0, promedioCalificaciones: 0 });
 
 const comentarios = ref([]);
 const paginacion = ref({});
-let BaseURL = "https://apitalentos.pruebasdeploy.online/comentarios/";
+// let BaseURL = "https://apitalentos.pruebasdeploy.online/comentarios/";
+let BaseURL = import.meta.env.VITE_BASE_URL+"/";
 const currentNav = ref("General");
 
 onMounted(() => {
@@ -267,7 +268,8 @@ const buscarCliente = async () => {
     if (searchCliente.value.length > 2) {
         try {
             const response = await axios.get(
-                `https://apitalentos.pruebasdeploy.online/comentarios/clientes?search=${searchCliente.value}`
+                // `https://apitalentos.pruebasdeploy.online/comentarios/clientes?search=${searchCliente.value}`
+                import.meta.env.VITE_BASE_URL+`/comentarios/clientes?search=${searchCliente.value}`
             );
             clientes.value = response.data;
         } catch (error) {
@@ -280,7 +282,8 @@ const seleccionarCliente = async (cliente) => {
     clienteSeleccionado.value = cliente;
     try {
         const response = await axios.get(
-            `https://apitalentos.pruebasdeploy.online/comentarios/estadisticas/${cliente.usuario_id}`
+            // `https://apitalentos.pruebasdeploy.online/comentarios/estadisticas/${cliente.usuario_id}`
+            import.meta.env.VITE_BASE_URL+`/comentarios/estadisticas/${cliente.usuario_id}`
         );
         estadisticas.value = response.data;
     } catch (error) {

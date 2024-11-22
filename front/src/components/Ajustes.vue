@@ -130,7 +130,8 @@ const editableData = ref({});
 
 const fetchCombinedData = async () => {
   try {
-    const response = await axios.get("https://apitalentos.pruebasdeploy.online/ajustesAdmin");
+    // const response = await axios.get("https://apitalentos.pruebasdeploy.online/ajustesAdmin");
+    const response = await axios.get(import.meta.env.VITE_BASE_URL+"/ajustesAdmin");
     combinedData.value = response.data.results;
   } catch (error) {
     console.error("Error al obtener datos combinados:", error);
@@ -164,7 +165,8 @@ const saveEdit = async () => {
   console.log(editableData);
   try {
     await axios.put(
-      `https://apitalentos.pruebasdeploy.online/ajustesAdmin/${ajuste_id.value}`,
+      // `https://apitalentos.pruebasdeploy.online/ajustesAdmin/${ajuste_id.value}`,
+      import.meta.env.VITE_BASE_URL+`/ajustesAdmin/${ajuste_id.value}`,
       datos
     );
     fetchCombinedData();

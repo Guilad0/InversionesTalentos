@@ -139,7 +139,8 @@ import axios from "axios";
 
 const solicitudes = ref([]);
 const paginacion = ref({});
-let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
+// let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
+let BaseURL = import.meta.env.VITE_BASE_URL+"/solicitudes";
 const currentNav = ref("General");
 
 onMounted(() => {

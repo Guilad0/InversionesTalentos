@@ -160,7 +160,8 @@ const form = ref({ nombre: "", image: null });
 const editMode = ref(false);
 const categoriaEditada = ref(null);
 const search = ref("");
-let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
+// let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
+const BaseURL = import.meta.env.VITE_BASE_URL;
 
 const router = useRouter();
 

@@ -63,7 +63,7 @@ onMounted(async () => {
   try {
     loading.value =true;
     user.value = await getUser(); 
-    const response = await axios.get("https://apitalentos.pruebasdeploy.online/faq");
+    const response = await axios.get(import.meta.env.VITE_BASE_URL+"/faq");
     faqs.value = response.data.data;
   } catch (error) {
     console.error("Error al cargar las preguntas:", error);

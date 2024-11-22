@@ -70,7 +70,8 @@ const deleteUSer = (id, estado) => {
 const updateRol = async (usuario_id, newRol) => {
   try {
     const response = await axios.patch(
-      `https://apitalentos.pruebasdeploy.online/roles/updateRole/${usuario_id}`,
+      // `https://apitalentos.pruebasdeploy.online/roles/updateRole/${usuario_id}`,
+      import.meta.env.VITE_BASE_URL+`/roles/updateRole/${usuario_id}`,
       { rol: newRol }
     );
     if (response.status === 200) {
@@ -87,7 +88,8 @@ const handleAproved = async (id, name, event, porcentaje_registro) => {
   if (confirm("¿Quieres aprobar al usuario " + name + " ?")) {
     try {
       await axios.patch(
-        `https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`
+        // `https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`
+        import.meta.env.VITE_BASE_URL+`/users/approved/${id}?rol=${user.rol}`
       );
     } catch (err) {
       console.log(err);
@@ -111,7 +113,8 @@ const selecionatedUser = (idUser, typeModel, rol) => {
 const typeMedia = ref("");
 const selecionatedMedia = (user) => {
   image.value =
-    "https://apitalentos.pruebasdeploy.online/categories/video/" + user.usuario_id;
+    // "https://apitalentos.pruebasdeploy.online/categories/video/" + user.usuario_id;
+    import.meta.env.VITE_BASE_URL+"/categories/video/" + user.usuario_id;
   typeMedia.value = "video";
 };
 

@@ -37,7 +37,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const new_pass = ref("");
 const repeat_pass = ref("");
 

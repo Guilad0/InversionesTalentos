@@ -58,7 +58,8 @@ import Unete from "../components/Unete.vue";
 import { getUser } from '@/helpers/utilities';
 import Spinner from '../components/Spinner.vue'
 
-const baseURL = "https://apitalentos.pruebasdeploy.online/";
+// const baseURL = "https://apitalentos.pruebasdeploy.online/";
+const baseURL = import.meta.env.VITE_BASE_URL+"/";
 const loading = ref(false)
 const user = ref(null);
 const posts = ref([]);

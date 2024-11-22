@@ -71,7 +71,8 @@ const route = useRouter();
 
 const correo = ref("");
 const password = ref("");
-let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
+let baseURL = import.meta.env.VITE_BASE_URL+"/auth";
 
 
 const ingresar = async () => {

@@ -47,7 +47,8 @@ const showClient = (user) => {
 const obtenerLogros = async () => {
   try {
     const { data } = await axios.get(
-      `https://apitalentos.pruebasdeploy.online/logros/logrosFechas/${userId.value}`
+      // `https://apitalentos.pruebasdeploy.online/logros/logrosFechas/${userId.value}`
+      import.meta.env.VITE_BASE_URL+`/logros/logrosFechas/${userId.value}`
     );
     logros.value = data.data || [];
   } catch (error) {
@@ -58,7 +59,8 @@ const obtenerLogros = async () => {
 const obtenerExperiencia = async () => {
   try {
     const { data } = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value
+      // "https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value
+      import.meta.env.VITE_BASE_URL+"/logros/experiencia/" + userId.value
     );
     experiencia.value = data.data || [];
     //console.log(experiencia.value);
@@ -70,7 +72,8 @@ const obtenerExperiencia = async () => {
 const obtenerComentarios = async () => {
   try {
     const { data } = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/comentarios/cliente/" + userId.value
+      // "https://apitalentos.pruebasdeploy.online/comentarios/cliente/" + userId.value
+      import.meta.env.VITE_BASE_URL+"/comentarios/cliente/" + userId.value
     );
     comentarios.value = data.data || [];
     //console.log(comentarios.value);
@@ -81,7 +84,8 @@ const obtenerComentarios = async () => {
 const obtenerLinks = async () => {
   try {
     const { data } = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/links/cliente/" + userId.value
+      // "https://apitalentos.pruebasdeploy.online/links/cliente/" + userId.value
+      import.meta.env.VITE_BASE_URL+"/links/cliente/" + userId.value
     );
     links.value = data.data || [];
     //console.log(links.value);
@@ -91,7 +95,8 @@ const obtenerLinks = async () => {
 };
 
 const obtenerCategoria = async () => {
-  try { const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/categories'); // URL correcta para obtener categorías 
+  // try { const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/categories'); // URL correcta para obtener categorías 
+  try { const { data } = await axios.get(import.meta.env.VITE_BASE_URL+'/categories'); // URL correcta para obtener categorías 
   categorias.value = data.results || []; // Accede al array de categorías dentro de results 
   //console.log('Categorías obtenidas:', categorias.value); // Imprime todas las categorías para depuración 
   } catch (error) { console.error('Error al obtener las categorías:', error); } };

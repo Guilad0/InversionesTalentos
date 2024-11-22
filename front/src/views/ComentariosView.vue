@@ -35,8 +35,8 @@ const badWords = [
     "cornudo", "guarra"
 ];
 
-const baseURL = "https://apitalentos.pruebasdeploy.online/";
-
+// const baseURL = "https://apitalentos.pruebasdeploy.online/";
+const baseURL = import.meta.env.VITE_BASE_URL;
 const inversorNombre = 'Nombre del Inversor'; 
 const clienteNombre = 'Nombre del Cliente'; 
 const nuevoComentario = ref('');
@@ -65,7 +65,7 @@ const enviarComentario = async () => {
   }
 
   try {
-    await axios.post(`${baseURL}comentarios`, {
+    await axios.post(`${baseURL}/comentarios`, {
       cliente_id: 90,
       inversor_id: 85,
       comentario: nuevoComentario.value,

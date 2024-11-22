@@ -29,8 +29,6 @@
               </div>
           </div>
 
-       
-
           <div class="row mb-3">
             <div class="col">
               <label for="rol" class="form-label">Rol</label>
@@ -204,7 +202,8 @@ import { RouterLink } from "vue-router";
 import { ref } from "vue";
 import axios from "axios";
 import useFetchData from "../helpers/UseFetchData";
-let baseURL = "https://apitalentos.pruebasdeploy.online/users";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/users";
+let baseURL = import.meta.env.VITE_BASE_URL+"/users";
 const usuarios = ref([]);
 const nombre = ref("");
 const Apellido = ref("");
@@ -249,7 +248,8 @@ const handleEmail = async () => {
   // }
   try {
     const response = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/handleEmail/correo?correo=" + correo.value
+      // "https://apitalentos.pruebasdeploy.online/users/handleEmail/correo?correo=" + correo.value
+      import.meta.env.VITE_BASE_URL+"/users/handleEmail/correo?correo=" + correo.value
     );
     console.log(response.data);
     if (response.data.existe == true) {
@@ -268,7 +268,8 @@ const handleTelefono = async () => {
   console.log(numero_telefono.value);
   try {
     const response = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/handleTelefono/telefono?telefono=" +
+      // "https://apitalentos.pruebasdeploy.online/users/handleTelefono/telefono?telefono=" +
+      import.meta.env.VITE_BASE_URL+"/users/handleTelefono/telefono?telefono=" +
         numero_telefono.value
     );
     console.log(response.data);

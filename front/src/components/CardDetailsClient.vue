@@ -290,11 +290,13 @@ const prom = ref("");
 const getUser = async () => {
   try {
     const { data } = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/getUserById/" + userId.value
+      // "https://apitalentos.pruebasdeploy.online/users/getUserById/" + userId.value
+      import.meta.env.VITE_BASE_URL+"/users/getUserById/" + userId.value
     );
     client.value = data.results[0];
     console.log(client.value);
-    url.value = 'https://apitalentos.pruebasdeploy.online/categories/video/' + client.value.usuario_id
+    // url.value = 'https://apitalentos.pruebasdeploy.online/categories/video/' + client.value.usuario_id
+    url.value = import.meta.env.VITE_BASE_URL+'/categories/video/' + client.value.usuario_id
   } catch (error) {
     console.log(error);
   }
@@ -305,7 +307,8 @@ const experiencia = ref([]);
 
 const obtenerLogros = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/logrosFechas/" + userId.value);
+    // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/logrosFechas/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/logros/logrosFechas/" + userId.value);
     logros.value = data.data || [];
     console.log(logros.value, "logros");
   } catch (error) {
@@ -315,7 +318,8 @@ const obtenerLogros = async () => {
 
 const obtenerExperiencia = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value);
+    // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/logros/experiencia/" + userId.value);
     experiencia.value = data.data || [];
   } catch (error) {
     console.log(error);
@@ -332,7 +336,8 @@ onMounted(() => {
   obtenerPromedio();
 });
 
-let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
+let baseURL = import.meta.env.VITE_BASE_URL+"/billetera/";
 
 const tokens = ref(0);
 const monto_tokens_invertir = ref(0);
@@ -473,7 +478,8 @@ const formatDate = (date) => {
 
 const obtenerPromedio = async () => {
   try {
-    const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/preview/" + userId.value);
+    // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/preview/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/preview/" + userId.value);
 
     prom.value = data.data[0].promedio;
 

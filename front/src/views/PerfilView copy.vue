@@ -569,7 +569,8 @@ const watchChange = ref('');
 const getRol = async ()=>{
   try {
     loading.value =true
-    const {data} = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
+    // const {data} = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
+    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+`/clients/getRol/user?id=${usuario.usuario_id}`);
     rol.value = data.rol;
   } catch (error) {
     console.log(error);    
@@ -608,7 +609,8 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   try {
     for (let i = 0; i < verifyRegister.value.length; i++) {
       const item = verifyRegister.value[i];
-      const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
+      // const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
+      const { data } = await axios.get(import.meta.env.VITE_BASE_URL+`/utilities/${item.field}/?id=${id}`);
       item.status = data.ok;
       item.cant = data.cant;
       console.log(`Campo: ${item.field}, Status: ${item.status}, Cant: ${item.cant}`);

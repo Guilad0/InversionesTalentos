@@ -60,7 +60,8 @@ onMounted(() => {
 // Función para registrar el logro
 const registrarLogro = async () => {
   try {
-    const response = await axios.post("http://localhost:3000/logros", {
+    // const response = await axios.post("http://localhost:3000/logros", {
+    const response = await axios.post(import.meta.env.VITE_BASE_URL+"/logros", {
       cliente_id: cliente_id.value,
       descripcion: descripcion.value,
       fecha: fecha.value,

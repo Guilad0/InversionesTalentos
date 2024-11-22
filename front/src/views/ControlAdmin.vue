@@ -69,15 +69,13 @@ import Coment from '../components/Coment.vue';
 import Reportes from '../components/Reportes.vue';
 import Faqs from '../components/Faqs.vue';
 import { getUser } from '@/helpers/utilities';
-import router from '@/router';
+// import router from '@/router';
 
 const view = ref('users');
 const user = ref(null);
 
 onMounted(async () => {
   user.value = await getUser();
-  
-
 })
 
 const showView = (typeView) => {

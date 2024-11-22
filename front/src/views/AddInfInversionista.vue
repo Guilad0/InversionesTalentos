@@ -107,7 +107,7 @@ const domicilio = ref("");
 const ciudad = ref("");
 const situacion_laboral = ref("");
 const fuente_de_ingresos = ref("");
-
+const baseURL = import.meta.env.VITE_BASE_URL;
 // Cliente_id desde localStorage
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("usuario"));
@@ -135,7 +135,7 @@ const addInfoInversionista = async () => {
   };
   console.log(datos);
   try {
-    const response = await axios.post("http://localhost:3000/clients/addInfoInversionista", datos);
+    const response = await axios.post(baseURL+"/clients/addInfoInversionista", datos);
     alert('Información registrada correctamente');
     router.push({ name: 'perfil' });
   } catch (error) {

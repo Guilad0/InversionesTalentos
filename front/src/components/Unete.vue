@@ -201,8 +201,10 @@ if (result.isConfirmed) {
     rol: role,
   };
   try {
-    await axios.put('https://apitalentos.pruebasdeploy.online/clients/changeRol/user', datos);
-    const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getUserById/user/?id=${user.value.usuario_id}`);
+    // await axios.put('https://apitalentos.pruebasdeploy.online/clients/changeRol/user', datos);
+    await axios.put(import.meta.env.VITE_BASE_URL+'/clients/changeRol/user', datos);
+    // const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getUserById/user/?id=${user.value.usuario_id}`);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+`/clients/getUserById/user/?id=${user.value.usuario_id}`);
     const updatedUser = data.results[0];  
     localStorage.setItem("usuario", JSON.stringify(updatedUser));      
     Swal.close();
