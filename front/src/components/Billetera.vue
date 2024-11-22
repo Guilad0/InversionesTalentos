@@ -431,7 +431,8 @@ import { useRouter } from "vue-router";
 import iziToast from 'izitoast';
 const route = useRouter();
 
-let baseURL = 'https://apitalentos.pruebasdeploy.online/billetera/';
+// let baseURL = 'https://apitalentos.pruebasdeploy.online/billetera/';
+let baseURL = import.meta.env.VITE_BASE_URL+'/billetera/';
 
 const clientes = ref([]);
 const valores = ref([]);

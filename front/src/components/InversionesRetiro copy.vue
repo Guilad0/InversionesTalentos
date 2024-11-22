@@ -458,7 +458,8 @@ var activeTabCli = ref(0);
 var typeReport = ref("Inversiones");
 const bandAlert = ref(false)
 
-let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
+let baseURL = import.meta.env.VITE_BASE_URL+"/inversionesRetiros/";
 const  selectedReport = ref('')
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
@@ -611,7 +612,8 @@ const devolverTokens = async (inversion) => {
 };
 
 // funciones de obtener reportes
-const baseUrl = 'https://apitalentos.pruebasdeploy.online/reportes/';
+// const baseUrl = 'https://apitalentos.pruebasdeploy.online/reportes/';
+const baseUrl = import.meta.env.VITE_BASE_URL+'/reportes/';
 const band = ref(false);
 var fechaInicio = ref("");
 const typeClient = ref('')

@@ -103,7 +103,8 @@ const typeMedia = ref('')
 const handleAproved =async (id, name, event, porcentaje_registro)=>{
     if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
         try {
-           await axios.patch(`https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`);
+        //    await axios.patch(`https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`);
+           await axios.patch(import.meta.env.VITE_BASE_URL+`/users/approved/${id}?rol=${user.rol}`);
            
             
         } catch (err) {

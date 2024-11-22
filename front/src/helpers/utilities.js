@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const baseURL = import.meta.env.VITE_BASE_URL;
 export const orderByName = (clients) => {
   return clients.sort((a, b) => {
     let nombreA = a.nombre.toLowerCase();
@@ -44,7 +44,7 @@ export const getUser = async () => {
       return null;
     }
     const { data } = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/getUserById/" + user.usuario_id
+      baseURL+"/users/getUserById/" + user.usuario_id
     );
 
     localStorage.setItem("usuario", JSON.stringify(data.results[0]));

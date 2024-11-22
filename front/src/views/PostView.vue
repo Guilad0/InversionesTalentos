@@ -37,7 +37,8 @@ import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
-const baseURL = "https://apitalentos.pruebasdeploy.online/";
+// const baseURL = "https://apitalentos.pruebasdeploy.online/";
+const baseURL = import.meta.env.VITE_BASE_URL+"/";
 const post = ref({});
 const mostrarCompleto = ref(false); 
 

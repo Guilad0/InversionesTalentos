@@ -34,7 +34,8 @@ const showBackLink = ref(false);
 
 const forgotPassword = async () => {
   try {
-    const { data } = await axios.post('https://apitalentos.pruebasdeploy.online/auth/forgot-password', {
+    // const { data } = await axios.post('https://apitalentos.pruebasdeploy.online/auth/forgot-password', {
+      const { data } = await axios.post(import.meta.env.VITE_BASE_URL+'/auth/forgot-password', {
       correo: correo.value
     });
     message.value = 'Correo enviado correctamente. Revisa tu bandeja de entrada.';

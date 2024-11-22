@@ -304,7 +304,8 @@ import { haveLetterCapital,cleanFileds, haveLetter, validateName, validatePasswo
 import iziToast from 'izitoast';
 
 const user = JSON.parse(localStorage.getItem('usuario')) || '';
-let baseURL = "https://apitalentos.pruebasdeploy.online/users";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/users";
+let baseURL = import.meta.env.VITE_BASE_URL+"/users";
 const isLoading = ref(false);
 
 const name = ref("");

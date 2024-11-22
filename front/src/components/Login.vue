@@ -77,7 +77,8 @@ const password = ref("");
 const  edIn = ref(false);
 const user = ref(null);
 
-let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
+let baseURL = import.meta.env.VITE_BASE_URL+"/auth";
 
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {

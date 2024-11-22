@@ -148,7 +148,8 @@ const cancelEdit = () => {
 const updateFaq = async (faq_id) => {
   try {
     const response = await axios.put(
-      `https://apitalentos.pruebasdeploy.online/faq/${faq_id}`,
+      // `https://apitalentos.pruebasdeploy.online/faq/${faq_id}`,
+      import.meta.env.VITE_BASE_URL+`/faq/${faq_id}`,
       faqToEdit.value
     );
     console.log(response.data);
@@ -164,7 +165,8 @@ const updateFaq = async (faq_id) => {
 const deleteFaq = async (faq_id) => {
   try {
     // Llamada a la ruta de eliminación definitiva
-    const response = await axios.delete(`https://apitalentos.pruebasdeploy.online/faq/definitivo/${faq_id}`);
+    // const response = await axios.delete(`https://apitalentos.pruebasdeploy.online/faq/definitivo/${faq_id}`);
+    const response = await axios.delete(import.meta.env.VITE_BASE_URL+`/faq/definitivo/${faq_id}`);
     console.log(response.data);
     // Elimina el FAQ de la lista solo en la vista
     faqs.value = faqs.value.filter((faq) => faq.faq_id !== faq_id);
@@ -175,7 +177,8 @@ const deleteFaq = async (faq_id) => {
 
 const addFaq = async () => {
   try {
-    const response = await axios.post("https://apitalentos.pruebasdeploy.online/faq", newFaq.value);
+    // const response = await axios.post("https://apitalentos.pruebasdeploy.online/faq", newFaq.value);
+    const response = await axios.post(import.meta.env.VITE_BASE_URL+"/faq", newFaq.value);
     console.log(response.data);
     faqs.value.push({ ...newFaq.value, faq_id: response.data.data });
     newFaq.value = { pregunta: "", respuesta: "" };
@@ -195,7 +198,8 @@ const closeModal = () => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get("https://apitalentos.pruebasdeploy.online/faq");
+    // const response = await axios.get("https://apitalentos.pruebasdeploy.online/faq");
+    const response = await axios.get(import.meta.env.VITE_BASE_URL+"/faq");
     faqs.value = response.data.data;
   } catch (error) {
     console.error("Error al cargar los FAQs:", error);

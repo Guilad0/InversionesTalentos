@@ -59,7 +59,8 @@ const saveImage = async() =>{
     formData.append("image", file.value);
     console.log(file.value);
     try {
-      await axios.post(`https://apitalentos.pruebasdeploy.online/utilities/uploadimageUserCloudinaryHome/proposito_imagen`,
+      // await axios.post(`https://apitalentos.pruebasdeploy.online/utilities/uploadimageUserCloudinaryHome/proposito_imagen`,
+      await axios.post(import.meta.env.VITE_BASE_URL+`/utilities/uploadimageUserCloudinaryHome/proposito_imagen`,
       formData,
       {
         headers: {
@@ -89,7 +90,8 @@ const saveImage = async() =>{
 const saveText =async () =>{
   loading.value = true
   try {
-    await axios.patch('https://apitalentos.pruebasdeploy.online/utilities/putTextPurpose/'+ text.value);
+    // await axios.patch('https://apitalentos.pruebasdeploy.online/utilities/putTextPurpose/'+ text.value);
+    await axios.patch(import.meta.env.VITE_BASE_URL+'/utilities/putTextPurpose/'+ text.value);
   } catch (error) {
     console.log(error);
     alert('error al subir iamgen')

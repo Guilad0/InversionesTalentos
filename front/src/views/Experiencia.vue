@@ -91,7 +91,7 @@ const actividades = ref("");
 const nombre = ref("");
 const fecha_inicio = ref("");
 const fecha_final = ref("");
-
+const BaseURL = import.meta.env.VITE_BASE_URL;
 // Cliente_id desde localStorage
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("usuario"));
@@ -105,7 +105,8 @@ onMounted(() => {
 
 const registrarExperiencia = async () => {
   try {
-    const response = await axios.post("https://apitalentos.pruebasdeploy.online/api/experiencia", {
+    // const response = await axios.post("https://apitalentos.pruebasdeploy.online/api/experiencia", {
+    const response = await axios.post( import.meta.env.VITE_BASE_URL+"/experiencia", {
       cliente_id: cliente_id.value,
       institucion: institucion.value,
       cargo: cargo.value,

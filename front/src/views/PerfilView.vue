@@ -375,7 +375,8 @@ const fileInput = ref(null);
 let currentPath = useRouter();
  currentPath = currentPath.name;
  
-let baseURL = "https://apitalentos.pruebasdeploy.online/";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/";
+let baseURL = import.meta.env.VITE_BASE_URL+"/";
 let miId = ref('');
 let nombre = ref("");
 let apellido = ref("");
@@ -466,7 +467,8 @@ const saveImage = async () => {
 
   try {
     loadingButton.value = true;
-    await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    // await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    await axios.post(import.meta.env.VITE_BASE_URL+`/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

@@ -113,7 +113,8 @@ import Unete from "../components/Unete.vue";
 const route = useRouter();
 console.log(route.currentRoute.value.path);
 
-const baseURL = "https://apitalentos.pruebasdeploy.online/contact";
+// const baseURL = "https://apitalentos.pruebasdeploy.online/contact";
+const baseURL = import.meta.env.VITE_BASE_URL+"/contact";
 
 const nombre = ref("");
 const apellido = ref("");

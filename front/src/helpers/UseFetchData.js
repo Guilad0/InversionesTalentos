@@ -7,7 +7,8 @@ export default function useFetchData(ruta){
     const next = ref('');
     const prev = ref('');
     const isLoading = ref(false);
-    const baseURL = 'https://apitalentos.pruebasdeploy.online';
+    // const baseURL = 'https://apitalentos.pruebasdeploy.online';
+    const baseURL = import.meta.env.VITE_BASE_URL;
     const total = ref('')
     const getData = async ()=>{
         try {
