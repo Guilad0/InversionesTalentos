@@ -7,14 +7,13 @@ import axios from "axios";
 import ModalInforUser from "../components/ModalInforUser.vue";
 import ModalCreateUserAdmin from "./ModalCreateUserAdmin.vue";
 import ModalMedia from "./ModalMedia.vue";
-import Spinner from '../components/Spinner.vue'
+import Spinner from '../components/Spinner.vue';
 const user = JSON.parse(localStorage.getItem("usuario"));
 const page = ref(1);
 const search = ref("");
 const baseUrl = ref(`/users?rol=${user.rol}&page=${page.value}`);
-const { results, prev, next, isLoading, getData, ChangeState, total } = useFetchData(
-  ref(baseUrl)
-);
+const { results, prev, next, isLoading, getData, ChangeState, total } = useFetchData(ref(baseUrl));
+const { results:reports, getData:getReports,  } = useFetchData(ref('/utilities/total'));
 const nextAction = () => {
   page.value += 1;
   baseUrl.value = `/users?rol=${user.rol}&page=${page.value}`;
@@ -26,9 +25,30 @@ const prevAction = () => {
   getData();
 };
 const myRol = ref("");
+const aprobados = ref(0)
+const pendientes = ref(0)
+const activos = ref(0)
+const inaactivos = ref(0)
+// const getTotalReportsUser = async ()=>{
+//   try {
+//     const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/total')
+//     console.log(data,'dataaa');
+//     reports.value = data.results;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
-onMounted(() => {
-  getData();
+const updateReports = () =>{
+  aprobados.value = reports.value.filter( u => u.aprobado == 1  ).length;
+  pendientes.value = reports.value.filter( u => u.aprobado == 0 ).length;
+  activos.value = reports.value.filter( u => u.estado == 1 ).length;
+  inaactivos.value = reports.value.filter( u => u.estado == 0 ).length;
+}
+onMounted( async() => {
+  await getData();
+  await getReports();
+  updateReports()
 });
 
 const image = ref("");
@@ -55,9 +75,11 @@ const handleName = () => {
   }
 };
 
-const deleteUSer = (id, estado) => {
+const deleteUSer = async(id, estado) => {
   baseUrl.value = `/users/Stateinvestors/` + id + `/?rol=${user.rol}`;
-  ChangeState();
+ await ChangeState();
+ await getReports();
+  updateReports()
   baseUrl.value = `/users/?rol=${user.rol}&page=${page.value}`;
   console.log(estado);
   if (estado == "1") {
@@ -145,36 +167,36 @@ const closeModal = () =>{
         </div>
         <div class="card text-bg-secondary mb-3   rounded-5" style="max-width: 18rem">
           <div class="card-header ">
-            <i class="fa-solid fa-users"></i> <strong> Total</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-users"></i> <strong> Total</strong> {{ total }} &nbsp; 
           </div>
         </div>
         <div class="card text-bg-primary mb-3 rounded-5" style="max-width: 18rem">
           <div class="card-header">
-            <i class="fa-solid fa-check"></i><strong> Aprobados</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-check"></i><strong> Aprobados</strong> {{ aprobados }} &nbsp; 
           </div>
         </div>
         <div class="card text-bg-orange mb-3  rounded-5" style="max-width: 18rem">
           <div class="card-header text-white">
-            <i class="fa-solid fa-triangle-exclamation"></i> <strong class=""> Pendientes</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong class=""> Pendientes</strong> {{pendientes}} &nbsp; 
           </div>
         </div>
         <div class="card text-bg-success mb-3  rounded-5" style="max-width: 18rem">
           <div class="card-header text-white">
-            <i class="fa-solid fa-user-plus"></i><strong class=""> Activos</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-user-plus"></i><strong class=""> Activos</strong> {{activos}} &nbsp; 
           </div>
         </div>
         <div class="card text-bg-danger mb-3  rounded-5" style="max-width: 18rem">
           <div class="card-header text-white">
-            <i class="fa-solid fa-user-minus"></i> <strong class=""> Inactivos</strong> 100 &nbsp; <i class="fa-solid fa-floppy-disk cursor"></i>
+            <i class="fa-solid fa-user-minus"></i> <strong class=""> Inactivos</strong> {{inaactivos}} &nbsp; 
           </div>
         </div>
-        <div class="custom-abs-search">
+        <div class="">
             <div class="position-relative">
           <input
             name="search"
             type="text"
             v-model="search"
-            class="form-control border-1 border-secondary border-primary rounded-5" 
+            class="form-control border-1 border-secondary  rounded-5" 
             placeholder="Buscar ..."
             @input="handleName"
           />
@@ -332,12 +354,12 @@ const closeModal = () =>{
               <td v-if="user.estado == '0'">
                 <span class="badge text-bg-danger cursor">No activo</span>
               </td>
-              <td v-if="user.estado == '1'">
+              <td v-if="user.estado == '1'" class="text-center">
                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                   <img src="../assets/svg/delete.svg" width="25" />
                 </div>
               </td>
-              <td v-if="user.estado == '0'">
+              <td v-if="user.estado == '0'" class="text-center">
                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                   <img src="../assets/svg/user-plus.svg" width="25" />
                 </div>
