@@ -1,6 +1,12 @@
 <template>
 
   <div class="col-7 col-xl-9 col-md-12 col-sm-10 d-none d-md-block">
+    <!-- Botón para volver al Marketplace -->
+    <div class="back-button1">
+      <router-link to="/marketplace" class="btn-back">
+        Volver al Marketplace
+      </router-link>
+    </div>
 
     <div class="card banner-card z-1 bg-degrade text-white">
       <!-- Imagen superior (ej. imagen de fondo) -->
@@ -268,6 +274,11 @@
       </div>
 
     </div>
+    <div class="back-button2">
+      <router-link to="/marketplace" class="btn-back">
+        Volver al Marketplace
+      </router-link>
+    </div>
 
   </div>
 
@@ -291,12 +302,12 @@ const getUser = async () => {
   try {
     const { data } = await axios.get(
       // "https://apitalentos.pruebasdeploy.online/users/getUserById/" + userId.value
-      import.meta.env.VITE_BASE_URL+"/users/getUserById/" + userId.value
+      import.meta.env.VITE_BASE_URL + "/users/getUserById/" + userId.value
     );
     client.value = data.results[0];
     console.log(client.value);
     // url.value = 'https://apitalentos.pruebasdeploy.online/categories/video/' + client.value.usuario_id
-    url.value = import.meta.env.VITE_BASE_URL+'/categories/video/' + client.value.usuario_id
+    url.value = import.meta.env.VITE_BASE_URL + '/categories/video/' + client.value.usuario_id
   } catch (error) {
     console.log(error);
   }
@@ -308,7 +319,7 @@ const experiencia = ref([]);
 const obtenerLogros = async () => {
   try {
     // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/logrosFechas/" + userId.value);
-    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/logros/logrosFechas/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + "/logros/logrosFechas/" + userId.value);
     logros.value = data.data || [];
     console.log(logros.value, "logros");
   } catch (error) {
@@ -319,7 +330,7 @@ const obtenerLogros = async () => {
 const obtenerExperiencia = async () => {
   try {
     // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value);
-    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/logros/experiencia/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + "/logros/experiencia/" + userId.value);
     experiencia.value = data.data || [];
   } catch (error) {
     console.log(error);
@@ -337,7 +348,7 @@ onMounted(() => {
 });
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
-let baseURL = import.meta.env.VITE_BASE_URL+"/billetera/";
+let baseURL = import.meta.env.VITE_BASE_URL + "/billetera/";
 console.log(baseURL);
 
 const tokens = ref(0);
@@ -481,7 +492,7 @@ const formatDate = (date) => {
 const obtenerPromedio = async () => {
   try {
     // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/preview/" + userId.value);
-    const { data } = await axios.get(import.meta.env.VITE_BASE_URL+"/preview/" + userId.value);
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + "/preview/" + userId.value);
 
     prom.value = data.data[0].promedio;
 
@@ -656,5 +667,41 @@ button {
 
 .col-4 {
   font-size: 40px;
+}
+
+/*Boton de regreso a marketplace*/
+.back-button1 {
+  text-align: left;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.back-button2 {
+  text-align: left;
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #17223B;
+  color: var(--white-color);
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: var(--yellow-orange);
+  color: var(--white-anti-flash-color);
+}
+
+.btn-back:active {
+  transform: scale(0.95);
 }
 </style>

@@ -8,13 +8,27 @@
         <div class="table-responsive table-center col-md-10 offset-md-1">
           <table class="table overflow-x-scroll">
             <thead>
-              <tr class="table-secondary">
-                <th class="custom-size">Comisión % de Ganancia</th>
-                <th class="custom-size">Comisión % de Retiro</th>
-                <th class="custom-size">Tiempo Mínimo de Inversión</th>
-                <th class="custom-size">Tiempo Máximo de Inversión</th>
-                <th class="custom-size">Valor Token</th>
-                <th class="custom-size">Acciones</th>
+              <tr class="table-secondary text-center">
+                <th class="custom-size" data-bs-toggle="tooltip" title="Porcentaje de ganancia obtenido como comisión">
+                  Comisión % de Ganancia
+                </th>
+                <th class="custom-size" data-bs-toggle="tooltip" title="Porcentaje cobrado al realizar un retiro">
+                  Comisión % de Retiro
+                </th>
+                <th class="custom-size" data-bs-toggle="tooltip"
+                  title="Mínimo tiempo requerido para mantener una inversión (Meses)">
+                  Tiempo Mínimo de Inversión
+                </th>
+                <th class="custom-size" data-bs-toggle="tooltip"
+                  title="Máximo tiempo permitido para mantener una inversión (Meses)">
+                  Tiempo Máximo de Inversión
+                </th>
+                <th class="custom-size" data-bs-toggle="tooltip" title="Valor actual del token en el mercado">
+                  Valor Token
+                </th>
+                <th class="custom-size" data-bs-toggle="tooltip" title="Acciones disponibles para este registro">
+                  Acciones
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -185,6 +199,17 @@ const comision_porcentual_retiro = ref("");
 const tiempo_minimo_inversion = ref("");
 const tiempo_maximo_inversion = ref("");
 const valor_token = ref("");
+
+//Funcion para hacer mas intuitiva la tabla 
+
+import { Tooltip } from 'bootstrap';
+
+onMounted(() => {
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipTriggerList.forEach((tooltipTriggerEl) => {
+    new Tooltip(tooltipTriggerEl);
+  });
+});
 </script>
 
 <style scoped>
@@ -199,6 +224,13 @@ const valor_token = ref("");
   font-size: 0.9rem;
   font-weight: 630;
 }
+
+.custom-size:hover {
+  cursor: pointer;
+  background-color: #F37926;
+  color: #fff;
+}
+
 
 .content {
   height: 70vh;
