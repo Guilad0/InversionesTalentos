@@ -74,7 +74,7 @@
               </div>
             </div>
           </div>
-          <!-- <div v-else>
+          <!-- <div >
             <Spinner />
           </div> -->
           <div>
@@ -85,7 +85,9 @@
           <div class="d-flex justify-content-between py-4">
             <div class="">
               <i class="fa fa-lock" aria-hidden="true"></i>
-              Cambiar Contraseña
+                <label class="px-2">
+                  Cambiar Contraseña
+                </label>
             </div>
             <div class="">
               <button class="btn btn-orange rounded-5 px-3" @click="goToPage('RecoverPass')">Modificar</button>
@@ -95,7 +97,9 @@
           <div class="d-flex justify-content-between py-4">
             <div class="">
               <i class="fas fa-user-check"></i>
-              Verificar Cuenta(KYC)
+              <label class="px-2">
+                Verificar Cuenta(KYC)
+              </label>
             </div>
             <div class="">
               <button class="btn btn-orange rounded-5 px-3" @click="openCanvas" data-bs-toggle="offcanvas"
@@ -285,7 +289,9 @@
           <div class="d-flex justify-content-between py-4 ">
             <div class="">
               <i class="fas fa-smile"></i>
-              Referir Amigos
+              <label class="px-2">
+                Referir Amigos
+              </label>
             </div>
             <div class="">
               <button class="btn btn-orange rounded-5 px-3">Referir</button>
@@ -331,8 +337,7 @@ const selectVideo = () => {
 let currentPath = useRouter();
 currentPath = currentPath.name;
 
-// let baseURL = "https://apitalentos.pruebasdeploy.online/";
-let baseURL = import.meta.env.VITE_BASE_URL + "/";
+let baseURL = "https://apitalentos.pruebasdeploy.online/";
 let miId = ref('');
 let nombre = ref("");
 let apellido = ref("");
@@ -423,8 +428,7 @@ const saveImage = async () => {
 
   try {
     loadingButton.value = true;
-    // await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
-    await axios.post(import.meta.env.VITE_BASE_URL + `/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -502,13 +506,9 @@ const obtenerDatos = () => {
 };
 
 const formLoading = ref(false)
+
 const actualizar = async () => {
-  if (
-    codigopais.value == "" ||
-    telefono.value == "" ||
-    userName.value == "" ||
-    pais_residencia.value == ""
-  ) {
+  if (codigopais.value == "" || telefono.value == "" || userName.value == "" || pais_residencia.value == "") {
     errorAlert('Todos los campos son obligatorios', 'error', 'topRight');
     return;
   }
@@ -519,6 +519,7 @@ const actualizar = async () => {
     userName: userName.value,
     pais_residencia: pais_residencia.value,
   };
+
   console.log(datos);
   console.log(miId.value);
 
@@ -526,8 +527,8 @@ const actualizar = async () => {
     formLoading.value = true
     const { data } = await axios.put(baseURL + "perfil/actualizarPerfil/" + miId.value, datos);
     console.log(data);
-
     usuario.codigo_pais = codigopais.value;
+
     usuario.username = userName.value;
     usuario.pais_residencia = pais_residencia.value;
     localStorage.setItem("usuario", JSON.stringify(usuario));
