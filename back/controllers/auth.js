@@ -147,10 +147,67 @@ const forgotPassword = (req, res) => {
           from: process.env.GG_EMAIL,
           to: correo,
           subject: 'Restablece tu contraseña',
-          text: `Por favor, restablece tu contraseña haciendo clic en el siguiente enlace: ${resetLink}`,
+          text: `Olvidaste tu contraseña?
+          Por favor, restablece tu contraseña haciendo clic en el siguiente enlace: ${resetLink}`,
           html: `
-            <p>Por favor, restablece tu contraseña haciendo clic en el siguiente enlace:</p>
-            <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #e6880d; text-decoration: none; border-radius: 5px;">Restablecer contraseña</a>
+            <!DOCTYPE html>
+      <html lang="es">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Bienvenido</title>
+          <style>
+              .mail-container {
+                  background-color: #ff;
+                  padding: 20px;
+                  border-radius: 10px;
+                  max-width: 600px;
+                  margin: 0 auto;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              }
+              .mail-header {
+                  background-color: #17223B;;
+                  padding: 10px;
+                  border-radius: 10px 10px 0 0;
+                  text-align: center;
+                  color: white;
+              }
+              .mail-content {
+                  padding: 20px;
+              }
+              .verification-link {
+                  background-color: #F37926;
+                  color: white;
+                  padding: 10px 20px;
+                  text-decoration: none;
+                  border-radius: 5px;
+              }
+              .mail-footer {
+                  text-align: center;
+                  font-size: 12px;
+                  color: #777;
+                  margin-top: 20px;
+              }
+          </style>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div class="mail-container">
+              <div class="mail-header">
+                  <h1 style="margin: 0;">¿Olvidaste tu contraseña?</h1>
+              </div>
+              <div class="mail-content">
+                  <p>Estimado usuario,</p>
+                  <p>Te enviamos este correo para que puedas restablecer tu contraseña.</p>
+                  <p>Para continuar y elegir una nueva haz click en el siguiente enlace:</p>
+                  
+                  <a class="verification-link" href="${resetLink}">Ir a reestablecer contraseña</a>
+              </div>
+              <div class="mail-footer">
+                  <p>&copy; 2024 Talento Inversiones. Todos los derechos reservados.</p>
+              </div>
+          </div>
+      </body>
+      </html>
           `
         };
   
