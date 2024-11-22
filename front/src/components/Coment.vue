@@ -3,24 +3,21 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li :class="{ 'active-button': currentNav === 'General' }" @click="setActiveNav('General')"
+                    <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"
                         class="nav-link mx-2">
                         <label>General</label>
                     </li>
-                    <li :class="{ 'active-button': currentNav === 'Pendientes' }" @click="setActiveNav('Pendientes')"
-                        class="nav-link mx-2">
-                        <label>Pendientes</label>
-                    </li>
-                    <li :class="{ 'active-button': currentNav === 'Aprobado' }" @click="setActiveNav('Aprobado')"
+                    <li :class="{ 'active-button': currentNav === 'Aprobado' }" @click="setActive('Aprobado')"
                         class="nav-link mx-2">
                         <label>Aprobados</label>
                     </li>
-                    <li :class="{ 'active-button': currentNav === 'Rechazado' }" @click="setActiveNav('Rechazado')"
+                    <li :class="{ 'active-button': currentNav === 'Rechazado' }" @click="setActive('Rechazado')"
                         class="nav-link mx-2">
                         <label>Rechazados</label>
                     </li>
                 </ol>
             </nav>
+
             <!-- Botón para abrir el modal -->
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clienteModal">
                 Estadísticas
@@ -28,10 +25,36 @@
         </div>
         <div class="content">
             <h4 class="d-block mb-2 text-center title">Comentarios y Reseñas</h4>
+
             <div class="table-responsive col-md-10 offset-md-1">
-                <div class="col-3 px-5 mb-3">
-                    <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
-                        @input="obtenerDatos(1, search)" />
+                <div class="d-flex justify-content-start gap-3 position-relative my-4">
+                    <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem"
+                        @click="obtenerDatos(1, '', 'General')">
+                        <div class="card-header">
+                            <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalComentarios }} &nbsp;
+                        </div>
+                    </div>
+                    <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem"
+                        @click="obtenerDatos(1, '', 'Aprobado')">
+                        <div class="card-header text-white">
+                            <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ comentariosActivos }}
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem"
+                        @click="obtenerDatos(1, '', 'Rechazado')">
+                        <div class="card-header text-white">
+                            <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ comentariosInactivos }}
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="custom-abs-search">
+                        <div class="position-relative">
+                            <input name="search" type="text" v-model="search"
+                                class="form-control border-1 border-secondary border-primary rounded-5 float"
+                                placeholder="Buscar ..." @input="obtenerDatos(1, search)" />
+                        </div>
+                    </div>
                 </div>
                 <div class="table-container">
                     <table class="table overflow-x-scroll">
@@ -56,26 +79,23 @@
                                 <td>{{ item.calificacion }}</td>
                                 <td>{{ new Date(item.created_at).toLocaleDateString() }}</td>
                                 <td>
-                                    <span v-if="item.estado == 'Pendiente'" class="badge text-bg-warning">{{
-                                        item.estado
-                                        }}</span>
                                     <span v-if="item.estado == 'Aprobado'" class="badge text-bg-success">{{
                                         item.estado
-                                        }}</span>
+                                    }}</span>
                                     <span v-if="item.estado == 'Rechazado'" class="badge text-bg-danger">{{
                                         item.estado
-                                        }}</span>
+                                    }}</span>
                                 </td>
-                                <td v-if="item.estado == 'Pendiente'">
-                                    <button class="btn btn-success btn-sm mx-1" @click="aprobado(item.id_comentarios)">
-                                        <i class="fa fa-check"></i>
-                                    </button>
+                                <td v-if="item.estado == 'Aprobado'">
                                     <button class="btn btn-danger btn-sm mx-1" @click="rechazado(item.id_comentarios)">
                                         <i class="fa fa-times"></i>
                                     </button>
                                 </td>
-                                <td v-if="item.estado == 'Aprobado'"></td>
-                                <td v-if="item.estado == 'Rechazado'"></td>
+                                <td v-if="item.estado == 'Rechazado'">
+                                    <button class="btn btn-success btn-sm mx-1" @click="aprobado(item.id_comentarios)">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -118,12 +138,12 @@
                 </div>
             </div>
             <!-- Modal para buscar cliente y mostrar resultados -->
-             <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel"
+            <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    
+
                     <div class="modal-content modal-custom ">
-                        
+
                         <div class="modal-header modal-header-custom">
                             <h5 class="modal-title" id="clienteModalLabel">Buscar Cliente</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -165,13 +185,13 @@
                         <div class="modal-footer modal-footer-custom">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 @click="cerrarModal">Cerrar</button>
-                                
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </main>
 </template>
 <script setup>
@@ -183,21 +203,20 @@ const searchCliente = ref("");
 const clientes = ref([]);
 const clienteSeleccionado = ref(null);
 const estadisticas = ref({ totalAprobados: 0, promedioCalificaciones: 0 });
+const totalComentarios = ref(0);
+const comentariosActivos = ref(0);
+const comentariosInactivos = ref(0);
 
 const comentarios = ref([]);
 const paginacion = ref({});
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/comentarios/";
-let BaseURL = import.meta.env.VITE_BASE_URL+"/";
+let BaseURL = import.meta.env.VITE_BASE_URL + "/comentarios/";
 const currentNav = ref("General");
 
 onMounted(() => {
     obtenerDatos();
 });
 
-function setActiveNav(nav) {
-    currentNav.value = nav;
-    obtenerDatos(1, search.value);
-}
 
 function cerrarModal() {
     searchCliente.value = "";
@@ -217,9 +236,13 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
         }
 
         const { data } = await axios.get(url);
-        console.log(data);
+
         comentarios.value = data.data || [];
         paginacion.value = data.pagination || {};
+
+        totalComentarios.value = comentarios.value.length;
+        comentariosActivos.value = comentarios.value.filter((c) => c.estado === "Aprobado").length;
+        comentariosInactivos.value = comentarios.value.filter((c) => c.estado === "Rechazado").length;
     } catch (error) {
         console.log("Error en la solicitud GET:", error);
         paginacion.value = {};
@@ -229,7 +252,8 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
 const aprobado = async (id_comentarios) => {
     try {
         await axios.patch(`${BaseURL}aprobar/${id_comentarios}`);
-        obtenerDatos(1, "", "Pendiente");
+        // Mantener el estado de la paginación y filtro
+        obtenerDatos(paginacion.value.current, search.value, currentNav.value);
     } catch (error) {
         console.log(error);
     }
@@ -238,11 +262,13 @@ const aprobado = async (id_comentarios) => {
 const rechazado = async (id_comentarios) => {
     try {
         await axios.patch(`${BaseURL}rechazar/${id_comentarios}`);
-        obtenerDatos(1, "", "Pendiente");
+        // Mantener el estado de la paginación y filtro
+        obtenerDatos(paginacion.value.current, search.value, currentNav.value);
     } catch (error) {
         console.log(error);
     }
 };
+
 
 // const pendiente = async (retiro_id) => {
 //     try {
@@ -269,7 +295,7 @@ const buscarCliente = async () => {
         try {
             const response = await axios.get(
                 // `https://apitalentos.pruebasdeploy.online/comentarios/clientes?search=${searchCliente.value}`
-                import.meta.env.VITE_BASE_URL+`/comentarios/clientes?search=${searchCliente.value}`
+                import.meta.env.VITE_BASE_URL + `/comentarios/clientes?search=${searchCliente.value}`
             );
             clientes.value = response.data;
         } catch (error) {
@@ -283,7 +309,7 @@ const seleccionarCliente = async (cliente) => {
     try {
         const response = await axios.get(
             // `https://apitalentos.pruebasdeploy.online/comentarios/estadisticas/${cliente.usuario_id}`
-            import.meta.env.VITE_BASE_URL+`/comentarios/estadisticas/${cliente.usuario_id}`
+            import.meta.env.VITE_BASE_URL + `/comentarios/estadisticas/${cliente.usuario_id}`
         );
         estadisticas.value = response.data;
     } catch (error) {
@@ -296,21 +322,21 @@ const seleccionarCliente = async (cliente) => {
 </script>
 
 <style scoped>
-
 .title {
-    font-family: var(--font-montserrat-bold); 
-    font-weight: 700; 
-    font-size: 30px; 
-    color: var( --gray-color); 
+    font-family: var(--font-montserrat-bold);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--gray-color);
     text-transform: uppercase;
 }
 
 .background {
     background-image: url('@/assets/images/otro-fondo5.png');
     background-size: 100% auto;
-     background-position: center 10%; 
+    background-position: center 10%;
     background-repeat: no-repeat;
-  }
+}
+
 .custom-size {
     font-size: 0.9rem;
     font-weight: 630;
@@ -340,7 +366,7 @@ td {
 
 .btn:hover {
     border: none;
-    background-color:var(--yellow-orange)  !important;
+    background-color: var(--yellow-orange) !important;
 }
 
 .table-container {
@@ -392,13 +418,15 @@ label:hover {
     border: none;
     background-color: var(--gray-color);
     border: 1px solid var(--yellow-orange);
-     margin-right: 2rem;
+    margin-right: 2rem;
 }
-.btn-secondary{
+
+.btn-secondary {
     border: none;
     background-color: var(--gray-color);
-   
+
 }
+
 .modal-custom {
     border: none;
     padding: 30px;
@@ -410,12 +438,17 @@ label:hover {
 }
 
 .modal-content {
-    background-color: transparent !important; /* Hacerlo transparente */
-    box-shadow: none; /* Quitar sombras si no las quieres */
-    border: none; /* Quitar bordes */
+    background-color: transparent !important;
+    /* Hacerlo transparente */
+    box-shadow: none;
+    /* Quitar sombras si no las quieres */
+    border: none;
+    /* Quitar bordes */
 }
+
 .modal-backdrop {
-    background-color: #17223bef !important; /* Cambiar la opacidad o color */
+    background-color: #17223bef !important;
+    /* Cambiar la opacidad o color */
 }
 
 .modal-header-custom {
@@ -424,10 +457,13 @@ label:hover {
 }
 
 .modal-title {
-    font-family: var(--font-montserrat-bold); /* Variante bold */
-    font-weight: 700; /* Asegura que sea bold */
-    font-size: 24px; /* Tamaño predefinido */
-    color: var( --gray-color); 
+    font-family: var(--font-montserrat-bold);
+    /* Variante bold */
+    font-weight: 700;
+    /* Asegura que sea bold */
+    font-size: 24px;
+    /* Tamaño predefinido */
+    color: var(--gray-color);
     text-transform: uppercase;
 }
 
@@ -450,5 +486,10 @@ label:hover {
 .star {
     font-size: 1.5rem;
     margin: 0 0.1rem;
+}
+
+.custom-abs-search {
+    position: absolute;
+    right: 0;
 }
 </style>

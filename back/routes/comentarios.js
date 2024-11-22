@@ -70,6 +70,7 @@ router.get("/", (req, res) => {
     });
 });
 
+
 // Ruta para obtener comentarios por cliente_id
 router.get("/cliente/:id", function (req, res, next) {
     const clienteId = req.params.id;
@@ -201,5 +202,6 @@ router.get("/estadisticas/:usuario_id", (req, res) => {
         });
     });
 });
+
 
 module.exports = router;
