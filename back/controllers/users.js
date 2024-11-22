@@ -20,12 +20,9 @@ cloudinary.config(process.env.CLOUDINARY_URL);
 const getUsers = (req, res) => {
   middlewareControlAdmin(req.query.rol)(req, res, (err) => {
     if (err) {
-      return res
-        .status(err.status || 403)
-        .json({
-          msg:
-            err.message || "No tiene permisos para acceder a esta sección.",
-        });
+      return res.status(err.status || 403).json({
+        msg: err.message || "No tiene permisos para acceder a esta sección.",
+      });
     }
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
@@ -112,20 +109,19 @@ const getUsers = (req, res) => {
  */
 
 const getUsersByname = (req, res) => {
-  middlewareControlAdmin(req.query.rol)(req, res, (err)=>{
-    if(err){
-        return res.status(err.status || 403).json({
-            msg: err.message || "No tiene permisos para acceder a esta sección.",
-            
-        })
+  middlewareControlAdmin(req.query.rol)(req, res, (err) => {
+    if (err) {
+      return res.status(err.status || 403).json({
+        msg: err.message || "No tiene permisos para acceder a esta sección.",
+      });
     }
-     const page = parseInt(req.query.page) || 1;
-     const size = parseInt(req.query.size) || 10;
-     const offset = (page - 1) * size;
-     const searchTerm = req.params.id || "";
-     const searchPattern = `${searchTerm}%`;
+    const page = parseInt(req.query.page) || 1;
+    const size = parseInt(req.query.size) || 10;
+    const offset = (page - 1) * size;
+    const searchTerm = req.params.id || "";
+    const searchPattern = `${searchTerm}%`;
 
-     let query = `
+    let query = `
     SELECT 
         u.usuario_id,
         u.nombre, 
@@ -158,63 +154,71 @@ const getUsersByname = (req, res) => {
     WHERE u.nombre LIKE ?
     LIMIT ? OFFSET ?`;
 
-  conexion.query(query, [searchPattern, size, offset], (err, results) => {
-    if (err) {
-      res.status(500).json({
-        msg: "Error al buscar clientes",
-      });
-      return;
-    }
-
-    const countQuery = `SELECT COUNT(*) AS total FROM usuarios WHERE nombre LIKE ?`;
-    conexion.query(countQuery, [searchPattern], (err, countResults) => {
+    conexion.query(query, [searchPattern, size, offset], (err, results) => {
       if (err) {
         res.status(500).json({
-          msg: "Error al contar usuarios",
+          msg: "Error al buscar clientes",
         });
         return;
       }
 
-      const totalUsers = countResults[0].total;
-      const totalPages = Math.ceil(totalUsers / size);
+      const countQuery = `SELECT COUNT(*) AS total FROM usuarios WHERE nombre LIKE ?`;
+      conexion.query(countQuery, [searchPattern], (err, countResults) => {
+        if (err) {
+          res.status(500).json({
+            msg: "Error al contar usuarios",
+          });
+          return;
+        }
 
-      const prevPage =
-        page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
+        const totalUsers = countResults[0].total;
+        const totalPages = Math.ceil(totalUsers / size);
 
-      const nextPage =
-        results.length === size && page < totalPages
-          ? `/api/users?page=${page + 1}&size=${size}`
-          : null;
+        const prevPage =
+          page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
 
-      res.status(200).json({
-        results,
-        cant: results.length,
-        total: totalUsers,
-        totalPages: totalPages,
-        currentPage: page,
-        prev: prevPage,
-        next: nextPage,
+        const nextPage =
+          results.length === size && page < totalPages
+            ? `/api/users?page=${page + 1}&size=${size}`
+            : null;
+
+        res.status(200).json({
+          results,
+          cant: results.length,
+          total: totalUsers,
+          totalPages: totalPages,
+          currentPage: page,
+          prev: prevPage,
+          next: nextPage,
+        });
       });
     });
   });
-  })
 };
 
 const approvedUser = (req, res) => {
-  const handleError = (status, msg, err = null) => res.status(status).json({ msg, err });
+  const handleError = (status, msg, err = null) =>
+    res.status(status).json({ msg, err });
 
   middlewareControlAdmin(req.query.rol)(req, res, (err) => {
-    if (err) return handleError(err.status || 403, err.message || "No tiene permisos para acceder a esta sección.");
+    if (err)
+      return handleError(
+        err.status || 403,
+        err.message || "No tiene permisos para acceder a esta sección."
+      );
 
-    const getUserQuery = 'SELECT * FROM usuarios WHERE usuario_id = ?';
+    const getUserQuery = "SELECT * FROM usuarios WHERE usuario_id = ?";
     conexion.query(getUserQuery, [req.params.id], (err, results) => {
-      if (err) return handleError(500, 'Error en la petición', err);
-      if (results.length === 0) return handleError(404, 'Usuario no encontrado');
+      if (err) return handleError(500, "Error en la petición", err);
+      if (results.length === 0)
+        return handleError(404, "Usuario no encontrado");
       const currentApprovalState = results[0].aprobado;
-      const toggleApprovalQuery = 'UPDATE usuarios SET aprobado = !aprobado WHERE usuario_id = ?';
+      const toggleApprovalQuery =
+        "UPDATE usuarios SET aprobado = !aprobado WHERE usuario_id = ?";
       conexion.query(toggleApprovalQuery, [req.params.id], (err) => {
-        if (err) return handleError(500, 'Error al aprobar el usuario', err);
-        const responseMsg = currentApprovalState === 0 ? 'Usuario aprobado' : 'Usuario rechazado';
+        if (err) return handleError(500, "Error al aprobar el usuario", err);
+        const responseMsg =
+          currentApprovalState === 0 ? "Usuario aprobado" : "Usuario rechazado";
         res.status(200).json({ msg: responseMsg });
       });
     });
@@ -267,45 +271,53 @@ const getUsersBynameAndRol = (req, res) => {
     WHERE u.nombre LIKE ? AND u.rol = ?
     LIMIT ? OFFSET ?`;
 
-    conexion.query(query, [searchPattern, req.query.rolUser, size, offset], (err, results) => {
-      if (err) {
-        res.status(500).json({
-          msg: "Error al buscar clientes",
-        });
-        return;
-      }
-
-      const countQuery = `SELECT COUNT(*) AS total FROM usuarios u WHERE u.nombre LIKE ? AND u.rol = ?`;
-      conexion.query(countQuery, [searchPattern, req.query.rolUser], (err, countResults) => {
+    conexion.query(
+      query,
+      [searchPattern, req.query.rolUser, size, offset],
+      (err, results) => {
         if (err) {
           res.status(500).json({
-            msg: "Error al contar usuarios",
+            msg: "Error al buscar clientes",
           });
           return;
         }
 
-        const totalUsers = countResults[0].total;
-        const totalPages = Math.ceil(totalUsers / size);
+        const countQuery = `SELECT COUNT(*) AS total FROM usuarios u WHERE u.nombre LIKE ? AND u.rol = ?`;
+        conexion.query(
+          countQuery,
+          [searchPattern, req.query.rolUser],
+          (err, countResults) => {
+            if (err) {
+              res.status(500).json({
+                msg: "Error al contar usuarios",
+              });
+              return;
+            }
 
-        const prevPage =
-          page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
+            const totalUsers = countResults[0].total;
+            const totalPages = Math.ceil(totalUsers / size);
 
-        const nextPage =
-          results.length === size && page < totalPages
-            ? `/api/users?page=${page + 1}&size=${size}`
-            : null;
+            const prevPage =
+              page > 1 ? `/api/users?page=${page - 1}&size=${size}` : null;
 
-        res.status(200).json({
-          results,
-          cant: results.length,
-          total: totalUsers,
-          totalPages: totalPages,
-          currentPage: page,
-          prev: prevPage,
-          next: nextPage,
-        });
-      });
-    });
+            const nextPage =
+              results.length === size && page < totalPages
+                ? `/api/users?page=${page + 1}&size=${size}`
+                : null;
+
+            res.status(200).json({
+              results,
+              cant: results.length,
+              total: totalUsers,
+              totalPages: totalPages,
+              currentPage: page,
+              prev: prevPage,
+              next: nextPage,
+            });
+          }
+        );
+      }
+    );
   });
 };
 
@@ -362,7 +374,6 @@ const getInfoInvestor = (req, res) => {
     });
   });
 };
-
 
 /**
  * Nesesita el rol de admin enviado en la query
@@ -439,9 +450,13 @@ const getUsersByRol = (req, res) => {
 
         // Configurar enlaces para paginación
         const prevPage =
-          page > 1 ? `/api/users?page=${page - 1}&size=${size}&rol=${rol}` : null;
+          page > 1
+            ? `/api/users?page=${page - 1}&size=${size}&rol=${rol}`
+            : null;
         const nextPage =
-          page < totalPages ? `/api/users?page=${page + 1}&size=${size}&rol=${rol}` : null;
+          page < totalPages
+            ? `/api/users?page=${page + 1}&size=${size}&rol=${rol}`
+            : null;
 
         // Enviar respuesta JSON
         res.status(200).json({
@@ -459,7 +474,7 @@ const getUsersByRol = (req, res) => {
 };
 
 /**
- *  Esta funsion crea un inversor, cliente/ desde la vista sign-login 
+ *  Esta funsion crea un inversor, cliente/ desde la vista sign-login
  */
 const postUser = async (req, res) => {
   const {
@@ -478,7 +493,7 @@ const postUser = async (req, res) => {
     rol,
     gender,
   } = req.body;
-  let verificadoUser = (registrado_por == '')? 0:1;
+  let verificadoUser = registrado_por == "" ? 0 : 1;
 
   if (acepta_terminos == "0") {
     return res.status(500).json({
@@ -512,87 +527,142 @@ const postUser = async (req, res) => {
       verificationCode,
       verificadoUser,
       registrado_por,
-      gender
+      gender,
     ];
- 
     conexion.query(sql, values, (error, results) => {
       if (error) {
         return res.status(500).send(error);
       } else {
         const verificationLink = `https://apitalentos.pruebasdeploy.online/users/verify/${results.insertId}`;
-        const msgHtml = (verificadoUser == 0)?`<!DOCTYPE html>
-                            <html lang="es">
-                            <head>
-                                <meta charset="UTF-8">
-                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                <title>Bienvenido</title>
-                            </head>
-                            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
-                                <div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                    <div style="background-color: #4CAF50; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; color: white;">
-                                        <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
-                                    </div>
-                                    <div style="padding: 20px;">
-                                        <p>Hola,</p>
-                                        <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
-                                        <p>Aqui encontrarás el código de verificación para verificar tu cuenta:</p>
-                                        <p style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"> ${verificationCode}</p>
-                                    </div>
-                                    <a href=${verificationLink}> as click aqui </a>
-                                    <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
-                                        <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
-                                    </div>
-                                </div>
-                                <div style="padding: 20px;">
-                                    <p>Hola,</p>
-                                    <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
-                                    <p>Aqui encontrarás el código de verificación para verificar tu cuenta:</p>
-                                    <p style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"> ${verificationCode}</p>
-                                </div>
-                                <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
-                                    <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
-                                </div>
-                            </div>
-                        </body>
-                        </html>
-                        `:`<!DOCTYPE html>
-                            <html lang="es">
-                            <head>
-                                <meta charset="UTF-8">
-                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                <title>Bienvenido</title>
-                            </head>
-                            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
-                                <div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                    <div style="background-color: #4CAF50; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; color: white;">
-                                        <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
-                                    </div>
-                                    <div style="padding: 20px;">
-                                        <p>Hola,</p>
-                                        <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
-                                        <p>Sus credenciales son ${correo} y ${password}</p>
-                                    </div>
-                                    <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
-                                        <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
-                                    </div>
-                                </div>
-                                <div style="padding: 20px;">
-                                    <p>Hola,</p>
-                                    <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
-                                    <p>Sus credenciales son ${correo} y ${password}</p>https://apitalentos.pruebasdeploy.online/
-                                </div>
-                                <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
-                                    <p>&copy; 2024 Tu Compañía. Todos los derechos reservados.</p>
-                                </div>
-                            </div>
-                        </body>
-                        </html>
+        const loginLink = 'https://apitalentos.pruebasdeploy.online/sign-login';
+        const msgHtml =
+          verificadoUser == 0
+            ? `<!DOCTYPE html>
+      <html lang="es">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Bienvenido</title>
+          <style>
+              .mail-container {
+                  background-color: #ff;
+                  padding: 20px;
+                  border-radius: 10px;
+                  max-width: 600px;
+                  margin: 0 auto;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              }
+              .mail-header {
+                  background-color: #17223B;;
+                  padding: 10px;
+                  border-radius: 10px 10px 0 0;
+                  text-align: center;
+                  color: white;
+              }
+              .mail-content {
+                  padding: 20px;
+              }
+              .verification-link {
+                  background-color: #F37926;
+                  color: white;
+                  padding: 10px 20px;
+                  text-decoration: none;
+                  border-radius: 5px;
+              }
+              .mail-footer {
+                  text-align: center;
+                  font-size: 12px;
+                  color: #777;
+                  margin-top: 20px;
+              }
+          </style>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div class="mail-container">
+              <div class="mail-header">
+                  <h1 style="margin: 0;">¡Sólo falta un paso!</h1>
+              </div>
+              <div class="mail-content">
+                  <p>Estimado usuario,</p>
+                  <p>Gracias por registrarte en nuestra plataforma. Realiza la verificación y podrás acceder a todos nuestros servicios.</p>
+                  <p>A continuación te mostramos el código de verificación de tu cuenta:</p>
+                  <strong>${verificationCode}</strong>
+                  <p>Para verificar tu cuenta, haz click en el siguiente enlace:</p>
+                  <a class="verification-link" href="${verificationLink}">Verificar cuenta</a>
+              </div>
+              <div class="mail-footer">
+                  <p>&copy; 2024 Talento Inversiones. Todos los derechos reservados.</p>
+              </div>
+          </div>
+      </body>
+      </html>
                         `
+            : `<!DOCTYPE html>
+      <html lang="es">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Bienvenido</title>
+          <style>
+              .mail-container {
+                  background-color: #ff;
+                  padding: 20px;
+                  border-radius: 10px;
+                  max-width: 600px;
+                  margin: 0 auto;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              }
+              .mail-header {
+                  background-color: #17223B;;
+                  padding: 10px;
+                  border-radius: 10px 10px 0 0;
+                  text-align: center;
+                  color: white;
+              }
+              .mail-content {
+                  padding: 20px;
+              }
+              .verification-link {
+                  background-color: #F37926;
+                  color: white;
+                  padding: 10px 20px;
+                  text-decoration: none;
+                  border-radius: 5px;
+              }
+              .mail-footer {
+                  text-align: center;
+                  font-size: 12px;
+                  color: #777;
+                  margin-top: 20px;
+              }
+          </style>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div class="mail-container">
+              <div class="mail-header">
+                  <h1 style="margin: 0;">¡Bienvenido a Nuestra Plataforma!</h1>
+              </div>
+              <div class="mail-content">
+                  <p>Estimado usuario,</p>
+                  <p>Gracias por registrarte en nuestra plataforma. Hemos comletado tu registro.</p>
+                  <p>Tus credenciales de acceso son:</p>
+                  <strong>Email: ${correo}</strong><br>
+                  <strong>Contraseña: ${password}</strong>
+                  <p>Para iniciar sesión, haz click en el siguiente enlace:</p>
+                  <a class="verification-link" href="${loginLink}">Iniciar sesión</a>
+              </div>
+              <div class="mail-footer">
+                  <p>&copy; 2024 Talento Inversiones. Todos los derechos reservados.</p>
+              </div>
+          </div>
+      </body>
+      </html>
+                        `;
         const mailOptions = {
           from: process.env.GG_EMAIL,
           to: correo,
           subject: "Verifica tu cuenta",
-           text: `Por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`,
+          text: `Por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`,
           html: msgHtml,
         };
         transporter.sendMail(mailOptions, (error, info) => {
@@ -613,24 +683,26 @@ const postUser = async (req, res) => {
  * Verifica email
  */
 const verifyEmail = (req, res) => {
-    const userId = req.params.id;
-  
-    const query = `SELECT * FROM usuarios WHERE usuario_id = ?`;
-    conexion.query(query, [userId], (err, results) => {
-      if (err) {
-        return res.status(500).send("Error al verificar el código");
+  const userId = req.params.id;
+
+  const query = `SELECT * FROM usuarios WHERE usuario_id = ?`;
+  conexion.query(query, [userId], (err, results) => {
+    if (err) {
+      return res.status(500).send("Error al verificar el código");
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send("Usuario no encontrado");
+    }
+
+    const updateQuery = `UPDATE usuarios SET verificado = 1 WHERE usuario_id = ?`;
+    conexion.query(updateQuery, [userId], (updateErr, updateResults) => {
+      if (updateErr) {
+        return res
+          .status(500)
+          .send("Error al actualizar el estado de verificación");
       }
-      
-      if (results.length === 0) {
-        return res.status(404).send("Usuario no encontrado");
-      }
-  
-      const updateQuery = `UPDATE usuarios SET verificado = 1 WHERE usuario_id = ?`;
-      conexion.query(updateQuery, [userId], (updateErr, updateResults) => {
-        if (updateErr) {
-          return res.status(500).send("Error al actualizar el estado de verificación");
-        }
-        const htmlResponse = `
+      const htmlResponse = `
         <!DOCTYPE html>
         <html lang="es">
         <head>
@@ -679,22 +751,19 @@ const verifyEmail = (req, res) => {
       `;
 
       res.send(htmlResponse);
-      });
     });
-  };
-  
-
+  });
+};
 
 /**
  *  Esta funsion modificael estado de  un inversor
  */
 const putStateusers = async (req, res) => {
-  middlewareControlAdmin(req.query.rol)(req,res, (err) =>{
-    if(err){
-        return res.status(err.status || 403).json({
-            msg: err.message || "No tiene permisos para acceder a esta sección.",
-            
-        })
+  middlewareControlAdmin(req.query.rol)(req, res, (err) => {
+    if (err) {
+      return res.status(err.status || 403).json({
+        msg: err.message || "No tiene permisos para acceder a esta sección.",
+      });
     }
     let sql = `select * from usuarios where usuario_id=${req.params.id}`;
     conexion.query(sql, (error, results) => {
@@ -718,14 +787,14 @@ const putStateusers = async (req, res) => {
               });
             } else {
               res.status(201).json({
-                msg: (user.estado == 0)?'Estado activo':'Estado inactivo',
+                msg: user.estado == 0 ? "Estado activo" : "Estado inactivo",
               });
             }
           });
         }
       }
-    });  
-  })
+    });
+  });
 };
 
 /**falsta desde aqui
@@ -761,17 +830,21 @@ const addInfClient = async (req, res) => {
       }
 
       if (data.length > 0) {
-        return res.status(400).json({ msg: "El usuario ya cuenta con una informacion" });
+        return res
+          .status(400)
+          .json({ msg: "El usuario ya cuenta con una informacion" });
       }
 
       // Actualizamos la columna categoria_persona_id en la tabla usuarios
-      query = "update usuarios set categoria_persona_id = ? where usuario_id = ?";
+      query =
+        "update usuarios set categoria_persona_id = ? where usuario_id = ?";
       conexion.query(query, [categoria_persona_id, cliente_id], (err) => {
         if (err) {
           return res.status(500).json({ err: err.message });
         }
 
-        query = "insert into informacion (cliente_id, ocupacion, descripcion, monto_inversion, cantidad_maxima_inversiones, preparacion, estudios, vision) values (?,?,?,?,?,?,?,?)";
+        query =
+          "insert into informacion (cliente_id, ocupacion, descripcion, monto_inversion, cantidad_maxima_inversiones, preparacion, estudios, vision) values (?,?,?,?,?,?,?,?)";
         const values = [
           cliente_id,
           ocupacion,
@@ -787,7 +860,11 @@ const addInfClient = async (req, res) => {
           if (err) {
             return res.status(500).json({ err: err.message });
           }
-          res.status(201).json({ msg: "Informacion agregada y categoria_persona_id actualizada" });
+          res
+            .status(201)
+            .json({
+              msg: "Informacion agregada y categoria_persona_id actualizada",
+            });
         });
       });
     });
@@ -1035,7 +1112,7 @@ const getUserById = (req, res) => {
       return;
     }
     res.status(200).json({
-      results
+      results,
     });
   });
 };
@@ -1090,5 +1167,5 @@ module.exports = {
   handleEmail,
   getUsersBynameAndRol,
   approvedUser,
-  getInfoInvestor
+  getInfoInvestor,
 };
