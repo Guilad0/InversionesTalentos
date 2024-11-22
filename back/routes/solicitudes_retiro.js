@@ -312,4 +312,22 @@ router.patch("/pendiente/:id", function (req, res, next) { //pendiente la solici
   });
 });
 
+router.get("/totales", function (req, res, next) {
+  const queryTotales = `
+    SELECT
+      (SELECT COUNT(*) FROM solicitudes_retiro) AS total,
+      (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 'Pendiente') AS pendientes,
+      (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 'Aprobado') AS aprobados,
+      (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 'Rechazado') AS rechazados;
+  `;
+
+  connection.query(queryTotales, function (error, results) {
+    if (error) {
+      res.status(500).send({ error, message: "Error al obtener los totales" });
+    } else {
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
 module.exports = router;

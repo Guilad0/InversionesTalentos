@@ -25,10 +25,31 @@
     <div class="content">
       <h4 class="d-block mb-2 text-center title">Solicitudes de Retiro</h4>
       <div class="table-responsive col-md-10 offset-md-1">
-        <div class="col-3 px-5 mb-3">
-          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
-            @input="obtenerDatos(1, search)" />
-        </div>
+        <div class="d-flex justify-content-start gap-3 position-relative my-4">
+  <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
+    <div class="card-header">
+      <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
+    </div>
+  </div>
+  <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
+    <div class="card-header text-white">
+      <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
+      &nbsp;
+    </div>
+  </div>
+  <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
+    <div class="card-header text-white">
+      <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
+      &nbsp;
+    </div>
+  </div>
+  <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
+    <div class="card-header text-white">
+      <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
+      &nbsp;
+    </div>
+  </div>
+</div>
         <div class="table-container">
           <table class="table overflow-x-scroll">
             <thead>
@@ -142,13 +163,22 @@ const paginacion = ref({});
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
 let BaseURL = import.meta.env.VITE_BASE_URL+"/solicitudes";
 const currentNav = ref("General");
+const totalSolicitudes = ref(0);
+const solicitudesPendientes = ref(0);
+const solicitudesAprobados = ref(0);
+const solicitudesRechazados = ref(0);
 
 onMounted(() => {
   obtenerDatos();
+  obtenerTotales();
 });
 
 const setActive = (estado) => {
-  currentNav.value = estado;
+  currentNav.value = estado;onMounted(() => {
+  obtenerDatos(); // Carga los datos iniciales de solicitudes
+  obtenerTotales(); // Carga los totales iniciales
+});
+
   obtenerDatos(1, "", estado);
 };
 
@@ -162,17 +192,30 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
     const { data } = await axios.get(url);
     solicitudes.value = data.data;
     paginacion.value = data.pagination;
+
   } catch (error) {
     console.log(error);
   }
 };
-
+const obtenerTotales = async () => {
+  try {
+    const { data } = await axios.get(`${BaseURL}/totales`); 
+    console.log(data);
+    totalSolicitudes.value = data.total;
+    solicitudesPendientes.value = data.pendientes;
+    solicitudesAprobados.value = data.aprobados;
+    solicitudesRechazados.value = data.rechazados;
+  } catch (error) {
+    console.log("Error al obtener totales:", error);
+  }
+};
 const aprobado = async (retiro) => {
 
   try {
     await axios.put(BaseURL + "/aprobar/" + retiro.retiro_id, retiro);
     // Al aprobar, se vuelve a cargar la lista de pendientes
-    obtenerDatos(1, "", "Pendiente");
+    await obtenerDatos(1, "", "Pendiente");
+    await obtenerTotales();
   } catch (error) {
     console.log(error);
   }
@@ -182,7 +225,8 @@ const rechazado = async (retiro_id) => {
   try {
     const { data } = await axios.patch(BaseURL + "/rechazar/" + retiro_id);
     // Al rechazar, se vuelve a cargar la lista de pendientes
-    obtenerDatos(1, "", "Pendiente");
+    await obtenerDatos(1, "", "Pendiente");
+    await obtenerTotales();
   } catch (error) {
     console.log(error);
   }
@@ -290,5 +334,9 @@ li {
 
 label:hover {
   font-weight: 500;
+}
+.custom-abs-search {
+    position: absolute;
+    right: 0;
 }
 </style>
