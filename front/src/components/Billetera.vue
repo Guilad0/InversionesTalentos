@@ -882,7 +882,7 @@ const solicitarRetiro = async () => {
   font-family: var(--font-montserrat-bold); 
   font-weight: 700; 
   font-size: 30px; 
-  color: var( --gray-color); 
+  color: var( --white-color); 
   text-transform: uppercase;
 }
 

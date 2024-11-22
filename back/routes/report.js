@@ -133,6 +133,36 @@ router.get("/totalInversiones/:id", function (req, res, next) {
   });
 });
 
+
+router.get("/totalInversionesRecibidas/:id", function (req, res, next) {
+  var anho = new Date().getFullYear();
+
+  var queryInversionToken = `
+                SELECT SUM(token) as tokens_invertidos, MONTH(fecha_solicitud) AS mes
+                FROM movimientos
+                WHERE YEAR(fecha_solicitud) = ${anho} 
+                AND descripcion = 'Inversión recibida'
+                AND usuario_id = ${req.params.id}
+                GROUP BY MONTH(fecha_solicitud);
+  `;
+
+  connection.query(queryInversionToken, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      console.log(results);
+      res.status(200).send({
+        data: results,
+        message: "Total inversiones por mes",
+      });
+    }
+  });
+});
+
 router.get("/gananciasEstimadas/:id", function (req, res, next) {
   var anho = new Date().getFullYear();
 
