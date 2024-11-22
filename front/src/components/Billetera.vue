@@ -484,7 +484,7 @@ const dolares = ref(0);
 //Función para saber cuantos dólares invirtió el inversionista
 const obtenerDolares_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'dolaresInversionista/' + inversionista_ID.value);
+    const { data } = await axios.get(baseURL+'dolaresInversionista/'+inversionista_ID.value);
     dolaresInversionista.value = data.data[0].totalUsd;
   } catch (error) {
     console.log(error);
@@ -503,7 +503,8 @@ const obtenerTokens_Inversionista = async () => {
 const obtenerTokens_Inversionista_Invertidos = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
-    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos;
+    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos || 0;
+    console.log(tokensInvertidosInversionista.value) ;
   } catch (error) {
     console.log(error);
   }
@@ -534,6 +535,7 @@ const comprarTokens = async () => {
         color: 'var(--gray-color)',
         confirmButtonColor: 'var(--yellow-orange)',
       };
+      console.log(datos);
       try {
         await axios.post(baseURL + 'comprarTokens', datos);
         // Swal.fire({

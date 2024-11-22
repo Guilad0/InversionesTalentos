@@ -459,6 +459,23 @@ const savePercentajerUser = (req, res) =>{
   })
 }
 
+const getTotalInfoUsers = (req, res) =>{
+  let query = 'select aprobado, estado from usuarios'
+  conexion.query(query, (err, results) =>{
+    if (err) {
+      res.status(500).json({
+        err,
+        msg: "error al guardar el texto",
+      });
+      return;
+    }
+    res.status(201).json({
+      results
+    });
+  })
+}
+
+ 
 
 module.exports = {
   isClientFormInfoRegistered,
@@ -476,5 +493,6 @@ module.exports = {
   getImagePartners,
   getTextProposito,
   putTextPurpose,
-  savePercentajerUser
+  savePercentajerUser,
+  getTotalInfoUsers
 };

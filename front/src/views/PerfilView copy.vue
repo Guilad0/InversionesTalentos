@@ -208,7 +208,7 @@
                     <div class="d-flex m-auto align-items-center">
                       <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Información </div> 
                       <div class="col position-relative">
-                        <RouterLink  to="addInfCliente" class=" py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegister[0].status }">
+                        <RouterLink  to="addInfCliente" class=" py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegister[2].status }">
                           <label v-if="verifyRegister[2].status">Enviado</label> 
                           <label v-else>Abrir</label> 
                         </RouterLink>
@@ -220,7 +220,7 @@
                   </li>
                   <li class="mb-3" v-if="rol == 'Inversionista'">
                     <div class="d-flex m-auto align-items-center">
-                      <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Informacion </div> 
+                      <div class="col">  <i class="fas fa-info-circle"></i> &nbsp; Información </div> 
                       <div class="col position-relative">
                         <RouterLink to="addInfInversionista" class="py-2  btn btn-sm btn-orange rounded-5 w-50" :class="{ disabled: verifyRegisterInversor[0].status }">
                           <label v-if="verifyRegisterInversor[0].status">Enviado</label>
@@ -290,15 +290,27 @@
                     <div class="d-flex m-auto align-items-center justify-content-between">
                       <div class="col "> <i class="fa-solid fa-play"></i> &nbsp; Presentacion </div> 
                       <div class="col d-flex align-items-center position-relative">
-                        <button  :disabled="verifyRegister[4].status" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" >
-                          <label v-if="verifyRegister[4].status">Enviado</label>
-                          <label v-if="!verifyRegister[4].status">Enviar</label>
-                          </button>
                         <label v-if="verifyRegister[4].status" class="custom-abs">
                         <img src="../assets/svg/check1.svg " width="25" alt="">
                         </label>
+                        <button v-if="!videoPresentacion" :disabled="verifyRegister[4].status" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="selectVideo">
+                          <label v-if="verifyRegister[4].status">Enviado</label>
+                          <label v-if="!verifyRegister[4].status">Abrir</label>
+                        </button>
+                        <button v-if="videoPresentacion" class="py-2 btn btn-sm btn-orange rounded-5 w-50 me-2" @click="saveVideo">
+                          <label v-if="!loadingButtonVideo">Enviar</label>
+                          <label v-if="loadingButtonVideo">
+                            <div class="spinner-border text-primary spinner-border-sm" role="status">
+                              <span class="visually-hidden"></span>
+                            </div>
+                          </label>
+                        </button>
+                        <i v-if="videoPresentacion" class="me-2 fa-solid fa-video text-light fs-5" style="color: green;"></i>
+                        <i v-if="videoPresentacion" class=" fa-solid fa-ban text-light fs-5 cursor" @click="cleanVideo" style="color: green;"></i>
                       </div>
+                      <input type="file" ref="videoFile" accept="video/*" style="display: none;" @change="onVideoChange">
                     </div>
+
                   </li>
                   <li v-if="bar == '100%'" class="pt-2 ">
                     <strong>Nota: </strong> Su proceso de registro está completo. Nuestro equipo de administración revisará sus datos para habilitar su cuenta en breve.
@@ -326,7 +338,7 @@
       </div>
     </div>
     <div v-else >
-      <Unete @handleRol="handleRol"/>
+      <Unete />
     </div>
     <p v-if="isOffcanvasOpen">El Offcanvas está abierto.</p>
   </div>
@@ -348,16 +360,23 @@ import { porcentajeTrue } from "@/helpers/utilities";
 import iziToast from "izitoast";
 import { countriesData } from "../helpers/dataCountries";
 import Spinner from "@/components/Spinner.vue";
-import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import { successAlert, errorAlert } from "@/helpers/iziToast";
+import router from '@/router';
 const fileInput = ref(null);
     const selectImage = () => {
       fileInput.value.click();
     };
-let currentPath = useRoute();
+    const videoFile = ref(null);
+    const selectVideo = () => {
+      videoFile.value.click();
+    };
+
+let currentPath = useRouter();
  currentPath = currentPath.name;
  
-let baseURL = "https://apitalentos.pruebasdeploy.online/";
+// let baseURL = "https://apitalentos.pruebasdeploy.online/";
+let baseURL = import.meta.env.VITE_BASE_URL+"/";
 let miId = ref('');
 let nombre = ref("");
 let apellido = ref("");
@@ -370,11 +389,18 @@ let userName = ref("");
 const rol = ref("");
 const imagen_portada = ref(null);
 const countries = ref(countriesData);
-const router = useRouter()
-onMounted(() => {
+const videoPresentacion = ref(null);
+const routers = useRouter()
+
+const user = ref(JSON.parse(localStorage.getItem('usuario')))
+onMounted(async () => {
   obtenerDatos();
-  getRol()
-  verifyFormInfClient()
+  getRol();
+  verifyFormInfClient();
+  if (user.value?.rol === 'Admin') {
+      router.push('/'); // Cambia '/' por la ruta deseada
+      return; // Detén la ejecución del resto del código
+    }
 });
 
 const band = ref(0)
@@ -383,9 +409,8 @@ const  openCanvas = () =>{
 }
 
 const  goToPage = ( path )=>{
-  router.push(path)
+  routers.push(path)
 }
-
 
 
 const onFileChange = (event) => {
@@ -442,7 +467,8 @@ const saveImage = async () => {
 
   try {
     loadingButton.value = true;
-    await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    // await axios.post(`https://apitalentos.pruebasdeploy.online/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
+    await axios.post(import.meta.env.VITE_BASE_URL+`/clients/cloudinary/image/${usuario.usuario_id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -520,11 +546,7 @@ const actualizar = async () => {
     userName.value == "" ||
     pais_residencia.value == ""
   ) {
-    Swal.fire({
-      icon: "error",
-      title: "Ooops...",
-      text: "Todos los campos son obligatorios",
-    });
+    errorAlert('Todos los campos son obligatorios','error','topRight');
     return;
   }
 
@@ -541,12 +563,7 @@ const actualizar = async () => {
     formLoading.value = true
     const { data } = await axios.put(baseURL + "perfil/actualizarPerfil/" + miId.value,datos);
     console.log(data);
-    Swal.fire({
-      icon: "success",
-      title: "Credenciales actualizadas",
-      showConfirmButton:false,
-      timer: 2000,
-    });
+    successAlert('Se actualizo los datos del perfil con exito','EXITO','topRight');
   } catch (error) {
     console.log(error);
   }finally{
@@ -569,8 +586,7 @@ const watchChange = ref('');
 const getRol = async ()=>{
   try {
     loading.value =true
-    // const {data} = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
-    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+`/clients/getRol/user?id=${usuario.usuario_id}`);
+    const {data} = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
     rol.value = data.rol;
   } catch (error) {
     console.log(error);    
@@ -580,7 +596,6 @@ const getRol = async ()=>{
     }, 500);
   }
 }
-
 
 const bar = ref('')
 const loadingButtonKYC = ref(false)
@@ -598,7 +613,8 @@ const verifyFormInfClient = async () => {
   }
 
   if (rol?.value === 'Cliente') {
-    verifyFields(verifyRegister,usuario.usuario_id, loadingButtonKYC,bar)
+    console.log('verifyRegister antes de verificar:', verifyRegister.value); // Depuración
+    verifyFields(verifyRegister, usuario.usuario_id, loadingButtonKYC, bar);
   }
   if( rol?.value === 'Inversionista' ){
     verifyFields(verifyRegisterInversor,usuario.usuario_id, loadingButtonKYC,bar)
@@ -609,8 +625,8 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   try {
     for (let i = 0; i < verifyRegister.value.length; i++) {
       const item = verifyRegister.value[i];
-      // const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
-      const { data } = await axios.get(import.meta.env.VITE_BASE_URL+`/utilities/${item.field}/?id=${id}`);
+      console.log(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
+      const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
       item.status = data.ok;
       item.cant = data.cant;
       console.log(`Campo: ${item.field}, Status: ${item.status}, Cant: ${item.cant}`);
@@ -618,9 +634,10 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   } catch (error) {
     console.log('Error en la petición:', error);
   } finally {
-    loadingButtonKYC.value = false;
     bar.value = porcentajeTrue(verifyRegister);
+    await axios.patch(`https://apitalentos.pruebasdeploy.online/utilities/savePercentajerUser/${usuario.usuario_id}/?porcentaje=${bar.value}`)
     console.log(`Porcentaje de progreso: ${bar.value}%`);
+    loadingButtonKYC.value = false;
   } 
 };
 
@@ -642,6 +659,92 @@ const openOffcanvas = () => {
     isOffcanvasOpen.value = false;
   });
 };
+
+const loadingButtonVideo = ref(false)
+
+    const onVideoChange = (event) => {
+    videoPresentacion.value = event.target.files[0];
+    console.log("Archivo seleccionado:", videoPresentacion.value);
+
+    // No es necesario verificar la extensión aquí, ya que se maneja en el backend
+    if (videoPresentacion.value) {
+        iziToast.success({
+            title: 'Éxito',
+            message: 'Archivo de video seleccionado correctamente',
+            position: 'center',
+            theme: 'dark',
+            color: '#34D399',
+            progressBarColor: '#FFFFFF',
+            messageColor: '#FFFFFF',
+            titleColor: '#FFFFFF',
+            iconColor: '#FFFFFF',
+        });
+    } else {
+        iziToast.warning({
+            title: 'Caution',
+            message: 'No se seleccionó ningún archivo',
+            position: 'center',
+            theme: 'dark',
+            color: '#ef4444',
+            progressBarColor: '#FFFFFF',
+            messageColor: '#FFFFFF',
+            titleColor: '#FFFFFF',
+            iconColor: '#FFFFFF',
+        });
+        cleanVideo();
+    }
+};
+const cleanVideo = () => {
+      videoPresentacion.value = null; 
+      if (videoFile.value) {
+        videoFile.value.value = ''; 
+      }
+    };
+
+    const saveVideo = async () => {
+  const formData = new FormData();
+
+  if (videoPresentacion.value) {
+    formData.append("video", videoPresentacion.value); // Agrega el archivo de video
+    formData.append("cliente_id", usuario.usuario_id); // Agrega el id del cliente
+  } else {
+    console.error("No se ha seleccionado un video.");
+    return;
+  }
+
+  try {
+    loadingButtonVideo.value = true; // Muestra el spinner mientras se carga el video
+    const response = await axios.post('https://apitalentos.pruebasdeploy.online/informacion/videoUpload', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    console.log('Video subido exitosamente:', response.data);
+    timerAlert('¡El video se cargó correctamente!', 'center', 2500, 'success');
+    
+    // Actualiza el estado del video en verifyRegister a 'true' (completado)
+    if (verifyRegister.value && verifyRegister.value[4]) {
+      console.log('Estado antes de actualizar:', verifyRegister.value[4]);
+      cleanImage()
+      verifyFormInfClient()
+    } else {
+      console.error('verifyRegister[4] no está definido');
+    }
+
+    // Llama a la función de verificación de campos después de actualizar el estado del video
+    await verifyFormInfClient(); // Verifica nuevamente todos los campos
+
+    cleanVideo(); // Limpia los datos del video
+  } catch (error) {
+    console.error("Error al cargar el video:", error.response ? error.response.data : error.message);
+    timerAlert('¡Error al cargar el video!', 'center', 2500, 'error');
+  } finally {
+    loadingButtonVideo.value = false; // Detiene el spinner
+  }
+};
+
+
 
 </script>
 

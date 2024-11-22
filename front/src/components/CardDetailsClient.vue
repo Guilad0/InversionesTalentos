@@ -338,6 +338,7 @@ onMounted(() => {
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
 let baseURL = import.meta.env.VITE_BASE_URL+"/billetera/";
+console.log(baseURL);
 
 const tokens = ref(0);
 const monto_tokens_invertir = ref(0);
@@ -383,7 +384,7 @@ const obtenerTokens_Inversionista = async () => {
 const obtenerTokens_Inversionista_Invertidos = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
-    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos;
+    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos || 0;
     console.log(tokensInvertidosInversionista.value);
   } catch (error) {
     console.log(error);
@@ -415,6 +416,7 @@ const inversionistaInvertir = async () => {
       fecha_devolucion: fecha_devolucion.value,
     };
     console.log(datos);
+    console.log(baseURL + "invertirTokens", datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
       // Swal.fire({

@@ -322,8 +322,8 @@ INNER JOIN usuarios AS inversores
     ON inversiones.inversor_id = inversores.usuario_id
 INNER JOIN usuarios AS clientes 
     ON inversiones.cliente_id = clientes.usuario_id
-WHERE inversiones.fecha_deposito > '${fecha_inicio}'
-AND inversiones.fecha_deposito < '${fecha_final}'
+WHERE inversiones.fecha_deposito >= '${fecha_inicio}'
+AND inversiones.fecha_deposito <= '${fecha_final}'
 AND inversiones.inversor_id = ${inversor_id}
 ORDER BY inversiones.fecha_deposito DESC;
 `;

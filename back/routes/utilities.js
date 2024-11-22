@@ -17,7 +17,8 @@ const {
   getImagePartners,
   getTextProposito,
   savePercentajerUser,
-  putTextPurpose
+  putTextPurpose,
+  getTotalInfoUsers
 } = require("../controllers/utilities");
 
 router.get("/informacion", isClientFormInfoRegistered);
@@ -36,5 +37,6 @@ router.get("/getTextHome/", getTextHome);
 router.get("/getImagePartners/", getImagePartners);
 router.get("/getTextProposito/", getTextProposito);
 router.patch("/savePercentajerUser/:id", savePercentajerUser);
+router.get("/total", getTotalInfoUsers);
 
 module.exports = router;

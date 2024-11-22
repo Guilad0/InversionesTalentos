@@ -720,12 +720,12 @@ const getReports = (report) => {
     case "hoy":
       const { startOfDay, endOfDay } = getDayStartAndEnd();
       fechaInicio.value = startOfDay;
-      fechaFin.value = endOfDay;
+      fechaFin.value = startOfDay;
       break;
     case "ayer":
       const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
       fechaInicio.value = startOfYesterday;
-      fechaFin.value = endOfYesterday;
+      fechaFin.value = startOfYesterday;
       console.log(fechaInicio.value, fechaFin.value);
       break;
     case "semana":
@@ -737,6 +737,10 @@ const getReports = (report) => {
       const { startOfMonth, endOfMonth } = getMonthStartAndEnd();
       fechaInicio.value = startOfMonth;
       fechaFin.value = endOfMonth;
+      break;
+    case "general":
+      fechaInicio.value = '2024-01-01'; //provisional
+      fechaFin.value = '2025-01-01';//provisional
       break;
     case "anual":
       const { startOfYear, endOfYear } = getCurrentYearStartAndEnd();
@@ -750,12 +754,16 @@ const getReports = (report) => {
     getData(
       `${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`
     );
+    // console.log(`${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
   }
   if (typeReport.value == "Retiros") {
     getData(
-      `reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`
+      `reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&usuario_id=${usuario.usuario_id}`
     );
+    // console.log(`reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
   }
+  // http://localhost:3000/reportes/reporteSolicitudesID/?fecha_inicio=2024-11-01&fecha_final=2024-11-30&usuario_id=88
+  // reporteSolicitudesID/?fecha_inicio=2024-01-01&fecha_final=2024-12-31&inversor_id=88
   bandAlert.value = true;
 };
 
