@@ -2,7 +2,7 @@
   <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeIn bg-admin" 
   :class="{ 'bg-admin': user, 'bg-user': !user }"
    >
-      <form @submit.prevent="registrar" class="mt-3">
+      <form @submit.prevent="registrar" class="mt-3" @keypress.enter="registrar()">
         <div class="card login-card shadow">
       <div class="card-body login-card-body">
         <div class="text-center">
@@ -151,17 +151,18 @@
             <label >Teléfono <label class="text-danger">*</label> </label>
 
             <input
-                      type="number"
+                      type="tel" 
+                      maxlength="8" 
                       class="form-control custom-font"
                       id="telefono"
-                      required
+                      required 
                       @invalid="handleInvalidDate"
                       :class="{ 'is-invalid': control_telefono === false, 'is-valid': control_telefono === true }"
                       placeholder=""
                       v-model="numero_telefono"
                       @input="handleTelefono">
                     <div v-if="control_telefono === false" class="invalid-feedback text-orange">
-                      Mínimo 6 Caracteres
+                      Mínimo 8 Caracteres
                     </div>
           </div>
         </div>
@@ -194,7 +195,6 @@
                   value="mujer"
                   v-model="gender"
                   @input="handleValidGender"
-                  required
                   @invalid="handleInvalid"
                 />
                 <label class="form-check-label" for="flexRadioDefault1">
@@ -433,7 +433,7 @@ const handleEmail = async ( event ) => {
 };
 
 const handleTelefono = async ( event ) => {
-  if (String(numero_telefono.value).length < 5) {
+  if (String(numero_telefono.value).length < 8) {
     event.target.setCustomValidity('');
     control_telefono.value = false;
     return;

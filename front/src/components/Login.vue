@@ -1,6 +1,6 @@
 <template>
   <main
-    class="d-flex justify-content-center py-3 animate__animated animate__fadeInLeftr background-container"
+    class="d-flex justify-content-center py-3 animate__animated animate__fadeInLeftr background-container " @keypress.enter="ingresar()"
   >
     <div class="card login-card shadow">
       <div class="card-body login-card-body">
@@ -35,7 +35,7 @@
             </RouterLink>
           </div>
           <div class="mb-3">
-            <button type="button" @click="ingresar()" class="btn btn-gray rounded-5 w-75">
+            <button type="button" @click="ingresar()" class="btn btn-gray rounded-5 w-75" >
               Ingresar
             </button>
           </div>
