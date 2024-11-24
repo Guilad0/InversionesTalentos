@@ -482,8 +482,8 @@ solicitudes_retiro.monto_recibir
 FROM solicitudes_retiro
 INNER JOIN usuarios
 ON usuarios.usuario_id = solicitudes_retiro.usuario_id
-WHERE solicitudes_retiro.fecha_solicitud > '${fecha_inicio}'
-AND solicitudes_retiro.fecha_solicitud < '${fecha_final}'
+WHERE solicitudes_retiro.fecha_solicitud >= '${fecha_inicio}'
+AND solicitudes_retiro.fecha_solicitud <= '${fecha_final}'
 AND solicitudes_retiro.usuario_id = '${usuario_id}'
 ORDER BY solicitudes_retiro.fecha_solicitud DESC;
 `;
