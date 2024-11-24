@@ -501,7 +501,7 @@ if(validatorForm()){
     })
     // alert('Error al regsitrar')
   }finally{
-    cleanFileds([name, lastName, fechaCumple,countryName,rol,selectCountry,password,confirmPassword,numero_telefono,acepta_terminos,email,gender]);
+    cleanFileds([name, lastName, fechaCumple,countryName,selectCountry,password,confirmPassword,numero_telefono,acepta_terminos,email,gender]);
     resetFileds([nameConfirm, lastNameConfirm,control_fecha,control_telefono,control_email, controlPassword])
   }
 }

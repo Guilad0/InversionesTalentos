@@ -30,7 +30,7 @@
 
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+        <button  class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalSolicitud">Solicitar Retiro <span></span></button>
         <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
@@ -74,7 +74,7 @@
           data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
         <!--<button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalInversion">Invertir<span></span></button>-->
-        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+        <button  class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
 
       </div>
@@ -98,7 +98,7 @@
 
           </div>
 
-          <div class="modal-body">            
+          <div class="modal-body">
             <!-- Cliente Info -->
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
 
@@ -152,8 +152,8 @@
 
                     <label for="montoUsd" class="form-label">Monto en USD</label>
 
-                    <input type="text" v-model="montoUsd" id="montoUsd" class="form-control " @input="calcularTokens()"
-                      required />
+                    <input type="number" v-model="montoUsd" id="montoUsd" class="form-control "
+                      @input="calcularTokens()" required />
 
                   </div>
 
@@ -185,7 +185,7 @@
             </button>
 
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
-              data-bs-dismiss="modal">
+              data-bs-dismiss="modal" @click="closeModal">
               Cerrar<span></span>
             </button>
 
@@ -335,62 +335,64 @@
 
             <form action="#" class="needs-validation" novalidate>
 
-              <div class="row">
-                <!-- Tokens a cambiar -->
-                <div class="col-md-6">
-
-                  <div class="mb-3">
-
-                    <label for="cambioTokens" class="form-label">Tokens a cambiar</label>
-
-                    <input type="text" v-model="cambioTokens" id="cambioTokens" class="form-control"
+              <div class="row justify-content-between ">
+                <div class="col m-auto d-flex flex-column">
+                  <div class="m-auto">
+                    <label for="cambioTokens" class="form-label ">Tokens a cambiar</label>
+                    <input type="number" v-model="cambioTokens" id="cambioTokens" class="form-control"
                       @input="calcularDolares()" required />
+                  </div>
+                  <div class="col">
+
+                    <div class="mb-3 my-3">
+
+                      <label class="form-label m-auto">Comisión de Retiro</label>
+
+                      <p class="text-xl text-white m-auto">{{ comision_retiro }}%</p>
+
+                    </div>
 
                   </div>
-
                 </div>
+                <div class="col">
+                  <div class="col">
+
+                    <div class="mb-3">
+
+                      <label class="form-label m-auto">Tokens Disponibles</label>
+
+                      <p class="text-xl text-white m-auto"> {{ tokensCompradosInversionista -
+                        tokensInvertidosInversionista - cambioTokens }}</p>
+
+                    </div>
+                    <div class="mb-3">
+
+                      <label class="form-label m-auto">Dólares</label>
+
+                      <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p>
+
+                    </div>
+
+                  </div>
+                  <div class="col">
+
+                    <div class="mb-3">
+
+                      <label for="retiro_inversionista " class="form-label m-auto  ">Total a Retirar</label>
+
+                      <p class="text-xl text-white m-auto">$US {{ dolares }}</p>
+
+                    </div>
+
+                  </div>
+                </div>
+                <!-- Tokens a cambiar -->
+
                 <!-- Dólares calculados -->
-                <div class="col-md-6">
 
-                  <div class="mb-3">
-
-                    <label class="form-label">Dólares</label>
-
-                    <p class="text-xl text-white text-center">$US {{ montoDolares }}</p>
-
-                  </div>
-
-                </div>
 
               </div>
 
-              <div class="row">
-                <!-- Comisión de retiro -->
-                <div class="col-md-6">
-
-                  <div class="mb-3">
-
-                    <label class="form-label">Comisión de Retiro</label>
-
-                    <p class="text-xl text-white text-center">{{ comision_retiro }}%</p>
-
-                  </div>
-
-                </div>
-                <!-- Total a retirar -->
-                <div class="col-md-6">
-
-                  <div class="mb-3">
-
-                    <label for="retiro_inversionista" class="form-label">Total a Retirar</label>
-
-                    <p class="text-xl text-white text-center">$US {{ dolares }}</p>
-
-                  </div>
-
-                </div>
-
-              </div>
 
             </form>
 
@@ -404,7 +406,7 @@
             </button>
 
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 btn-7 m-2"
-              data-bs-dismiss="modal">
+              data-bs-dismiss="modal" @click="closeModal">
               Cerrar<span></span>
             </button>
 
@@ -429,11 +431,13 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 import iziToast from 'izitoast';
+import { timerAlert } from '@/helpers/sweetAlerts';
+import { successAlert, successAlertAcept } from '@/helpers/iziToast';
 const route = useRouter();
 
 // let baseURL = 'https://apitalentos.pruebasdeploy.online/billetera/';
-let baseURL = import.meta.env.VITE_BASE_URL+'/billetera/';
-
+let baseURL = import.meta.env.VITE_BASE_URL + '/billetera/';
+const cambioTokens = ref(0)
 const clientes = ref([]);
 const valores = ref([]);
 const tokens = ref(0);
@@ -469,9 +473,9 @@ if (usuario_rol.value == 'Cliente') {
     obtenerTokens_Cliente();
   });
 }
-onMounted(() => {
-  calcularTokens();
-  calcularDolares();
+onMounted(async () => {
+  await calcularTokens();
+  await calcularDolares();
 });
 
 const tiempo_inversion = ref(0);
@@ -484,7 +488,7 @@ const dolares = ref(0);
 //Función para saber cuantos dólares invirtió el inversionista
 const obtenerDolares_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL+'dolaresInversionista/'+inversionista_ID.value);
+    const { data } = await axios.get(baseURL + 'dolaresInversionista/' + inversionista_ID.value);
     dolaresInversionista.value = data.data[0].totalUsd;
   } catch (error) {
     console.log(error);
@@ -504,22 +508,33 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
     tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos || 0;
-    console.log(tokensInvertidosInversionista.value) ;
+    console.log(tokensInvertidosInversionista.value);
   } catch (error) {
     console.log(error);
   }
 };
 
-const calcularTokens = async () => {
+const closeModal = () => {
+  montoUsd.value = 0;
+  tokens.value = 0
+}
 
-  try {
-    const { data } = await axios.get(baseURL + 'valores');
-    valores.value = data.data;
-    let valor = parseFloat(data.data[0].valor_token)
-    montoUsd.value = parseFloat(montoUsd.value);
-    tokens.value = montoUsd.value * valor;
-  } catch (error) {
-    console.log(error);
+const montoLimite = ref(0)
+const calcularTokens = async () => {
+  if (montoUsd.value <= 100000) {
+    try {
+      montoLimite.value = montoUsd.value;
+      const { data } = await axios.get(baseURL + 'valores');
+      valores.value = data.data;
+      let valor = parseFloat(data.data[0].valor_token)
+      montoUsd.value = parseFloat(montoUsd.value) || 0;
+      tokens.value = montoUsd.value * valor;
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    timerAlert('El monto maximo permitido es 100000$.', 'center', 2500, 'error')
+    montoUsd.value = montoLimite.value;
   }
 };
 
@@ -538,32 +553,25 @@ const comprarTokens = async () => {
       console.log(datos);
       try {
         await axios.post(baseURL + 'comprarTokens', datos);
-        // Swal.fire({
-        //     title: "¡Felicidades!",
-        //     text: "Tokens comprados exitosamente",
-        //     icon: "success",
-        //     allowOutsideClick: true,
-        //     allowEscapeKey: true,
-        //     color: 'var(--gray-color)',
-        //     confirmButtonColor: 'var(--yellow-orange)', 
-        //   }); 
-        iziToast.success({
-          title: 'Felicidades',
-          message: 'Tokens comprados exitosamente',
-          messageColor: 'white',
-          position: 'topRight',
-          theme: 'dark',
-          progressBarColor: '#FFFFFF',
-          closeOnEscape: true
-        })
+
+        // iziToast.success({
+        //   title: 'Felicidades',
+        //   message: 'Tokens comprados exitosamente',
+        //   messageColor: 'white',
+        //   position: 'topRight',
+        //   theme: 'dark',
+        //   progressBarColor: '#FFFFFF',
+        //   closeOnEscape: true
+        // })
+        successAlert(`Tokens comprados exitosamente`, 'Felicidades','topRight')
         var myModalEl = document.getElementById('modalTokens');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();
       } catch (error) {
         console.error('Error al guardar los tokens:', error);
       }
-      obtenerDolares_Inversionista();
-      obtenerTokens_Inversionista();
+     await obtenerDolares_Inversionista();
+     await obtenerTokens_Inversionista();
       montoUsd.value = 0;
       tokens.value = 0;
     }
@@ -602,7 +610,7 @@ const comprarTokens = async () => {
       } catch (error) {
         console.error('Error al guardar los tokens:', error);
       }
-      obtenerTokens_Cliente();
+   await obtenerTokens_Cliente();
       montoUsd.value = 0;
       tokens.value = 0;
     }
@@ -741,20 +749,28 @@ const obtenerTokens_Cliente = async () => {
   }
 };
 
+const limiteTokensRetiro = ref(0)
 const calcularDolares = async () => {
-
-  try {
-    const { data } = await axios.get(baseURL + 'valores');
-    valores.value = data.data;
-    let valor = parseFloat(data.data[0].valor_token);
-    let interes = parseFloat(data.data[0].comision_retiros);
-    comision_retiro.value = interes
-    montoDolares.value = parseInt(cambioTokens.value) / valor;
-    dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
-    console.log(cambioTokens.value);
-  } catch (error) {
-    console.log(error);
+  if (cambioTokens.value <= (tokensCompradosInversionista?.value - tokensInvertidosInversionista?.value)) {
+    try {
+      limiteTokensRetiro.value = cambioTokens.value;
+      const { data } = await axios.get(baseURL + 'valores');
+      valores.value = data.data;
+      let valor = parseFloat(data.data[0].valor_token);
+      let interes = parseFloat(data.data[0].comision_retiros);
+      comision_retiro.value = interes
+      montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
+      dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+      console.log(cambioTokens.value);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    cambioTokens.value = limiteTokensRetiro.value
+    timerAlert(`Tu monto actual de tokens es ${tokensCompradosInversionista.value - tokensInvertidosInversionista.value}`, 'center', 2500, 'error')
   }
+  limiteTokensRetiro.value = 0
+
 };
 
 const solicitarRetiro = async () => {
@@ -773,25 +789,17 @@ const solicitarRetiro = async () => {
 
       try {
         await axios.post(baseURL + 'solicitarRetiro', datos);
-        // Swal.fire({
-        //   title: "¡Felicidades!",
-        //   text: "Solicitud de Retiro realizada exitosamente",
-        //   icon: "success",
-        //   allowOutsideClick: true,
-        //   allowEscapeKey: true,
-        //   color: 'var(--gray-color)',
-        //   confirmButtonColor: 'var(--yellow-orange)', 
-        // }); 
-        iziToast.success({
-          title: 'Felicidades',
-          message: 'Solicitud de Retiro realizada exitosamente',
-          messageColor: 'white',
-          theme: 'dark',
-          color: '#5ce65c',
-          position: 'topRight',
-          progressBarColor: '#FFFFFF',
-          closeOnEscape: true
-        })
+        // iziToast.success({
+        //   title: 'Felicidades',
+        //   message: 'Solicitud de Retiro realizada exitosamente',
+        //   messageColor: 'white',
+        //   theme: 'dark',
+        //   color: '#5ce65c',
+        //   position: 'topRight',
+        //   progressBarColor: '#FFFFFF',
+        //   closeOnEscape: true
+        // })
+        successAlertAcept(`Tu solicitud de retiro se ha enviado con éxito. Ahora está en espera de revisión y aprobación por parte de nuestro personal administrativo`, 'Transaccion finalizada','center')
         var myModalEl = document.getElementById('modalSolicitud');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();
@@ -799,8 +807,8 @@ const solicitarRetiro = async () => {
         console.error('Error al realizar la solicitud:', error);
       }
 
-      obtenerTokens_Inversionista();
-      obtenerTokens_Inversionista_Invertidos();
+     await obtenerTokens_Inversionista();
+     await obtenerTokens_Inversionista_Invertidos();
 
     }
     if (usuario_rol.value == 'Cliente') {
@@ -841,14 +849,14 @@ const solicitarRetiro = async () => {
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);
       }
-      obtenerTokens_Cliente();
-      obtenerSolicitudes();
+     await obtenerTokens_Cliente();
+     await obtenerSolicitudes();
     }
     cambioTokens.value = 0;
     montoDolares.value = 0;
     comision_retiro.value = 0;
     dolares.value = 0;
-    location.reload();
+    // location.reload();
   }
   else {
     //   Swal.fire({
@@ -876,26 +884,25 @@ const solicitarRetiro = async () => {
 </script>
 
 <style scoped>
-
 .bg-degrade {
   background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
 }
 
 .title {
-  font-family: var(--font-montserrat-bold); 
-  font-weight: 700; 
-  font-size: 30px; 
-  color: var( --white-color); 
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--white-color);
   text-transform: uppercase;
 }
 
 .h1 {
-  font-family: var(--font-montserrat-bold) ;
+  font-family: var(--font-montserrat-bold);
 }
 
 p {
   font-family: var(--font-montserrat-semibold);
-  font-size: 1.2rem;  
+  font-size: 1.2rem;
   margin-right: 15px;
 }
 
@@ -950,5 +957,4 @@ input {
   border-color: white;
   background-color: rgba(255, 255, 255, 0.281);
 }
-
 </style>
