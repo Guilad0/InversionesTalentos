@@ -31,8 +31,8 @@
             <div class="modal-content bg-degrade">
               <div class="d-flex flex-row-reverse">
                 <button type="button" @click="closeModal"
-                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2"
-                  data-bs-dismiss="modal" aria-label="Close">
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2" data-bs-dismiss="modal"
+                  aria-label="Close">
                   Cerrar<span></span>
                 </button>
               </div>
@@ -124,7 +124,7 @@
 
                 <div class="px-5 d-flex justify-content-center">
                   <div class="col">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -147,7 +147,7 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -159,17 +159,19 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <td scope="col">{{  rep.retiro_id  }}</td>
-                        <td scope="col">{{  rep.monto_solicitud  }}</td>
-                        <td scope="col">{{  rep.monto_recibir  }}</td>
-                        <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString()  }}</td>
-                        <td scope="col">{{  new Date(rep.fecha_aprobacion).toLocaleDateString()  }}</td>
-                        <td scope="col">{{  rep.estado  }}</td>
+                        <tr>
+                          <td scope="col">{{ rep.retiro_id }}</td>
+                          <td scope="col">{{ rep.monto_solicitud }}</td>
+                          <td scope="col">{{ rep.monto_recibir }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</td>
+                          <td scope="col">{{ rep.estado }}</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
                   <div class="col text-dark">
-                    <div class="card m-1">
+                    <div class="card m-1" v-if="reports.length > 0">
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones de Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
@@ -178,13 +180,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                <div class="text-dark my-3" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
                     <div class="alert alert-warning" role="alert">
-                      <h4 class="alert-heading">Sin resultados!</h4>
+                      <h4 class="alert-heading">¡Sin resultados!</h4>
                       <p>
-                        No se encontraron resultados entre las fechas seleccionadas. Por
-                        favor, intenta con un rango de fechas diferente.
+                        No se encontraron resultados entre las fechas seleccionadas.<br>
+                        Por favor, intenta con un rango de fechas diferente.
                       </p>
                     </div>
                   </div>
@@ -220,6 +222,17 @@
               </div>
             </div>
           </div>
+          <div class="text-dark my-3" v-if="inversiones_recibidas.length == 0 && bandAlert">
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Sin resultados!</h4>
+                <p>
+                  No se encontraron resultados de inversiones recibidas.<br>
+                  Se mostrará en blanco hasta que reciba alguna inversión.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Lista de solicitudes de retiro -->
@@ -240,6 +253,17 @@
               <p class="text-white text-center" v-if="cliente_retiro.estado == 'Aprobado'">
                 Fecha Aprobación: {{ formatDate(cliente_retiro.fecha_aprobacion) }}
               </p>
+            </div>
+          </div>
+          <div class="text-dark my-3" v-if="clientes_retiros.length == 0 && bandAlert">
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Sin resultados!</h4>
+                <p>
+                  No se encontraron resultados de solicitudes de retiros.<br>
+                  Se mostrará en blanco hasta que realice alguna solicitud.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -265,6 +289,17 @@
                 @click="devolverTokens(inversion_vencida)">
                 Devolver Inversión<span></span>
               </button>
+            </div>
+          </div>
+          <div class="text-dark my-3" v-if="inversiones_vencidas.length == 0 && bandAlert">
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Sin resultados!</h4>
+                <p>
+                  No se encontraron resultados de inversiones vencidas para pagar.<br>
+                  Se mostrará en blanco hasta que tenga una inversión vencida.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -301,8 +336,8 @@
             <div class="modal-content position-relative bg-degrade">
               <div class="d-flex flex-row-reverse">
                 <button type="button" @click="closeModal"
-                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2"
-                  data-bs-dismiss="modal" aria-label="Close">
+                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2" data-bs-dismiss="modal"
+                  aria-label="Close">
                   Cerrar<span></span>
                 </button>
               </div>
@@ -349,7 +384,7 @@
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
                       :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
                     <label>Personalizado</label>
-                  </div>
+                  </div><br>
                   <transition name="slide">
                     <div v-if="band == true" class="mx-1 card px-1">
                       <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
@@ -363,7 +398,8 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" @click="exportToPDF()">
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                          @click="exportToPDF()">
                           <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
                         </button>
                       </div>
@@ -390,7 +426,7 @@
 
                 <div class="row px-5 d-flex justify-content-center">
                   <div class="col-7 table-responsive">
-                    <table v-if="typeReport == 'Inversiones'" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle">
                       <thead class="align-middle">
                         <tr>
                           <th scope="col">ID</th>
@@ -417,7 +453,7 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros'" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -429,29 +465,31 @@
                         </tr>
                       </thead>
                       <tbody v-for="rep in reports" :key="rep">
-                        <td scope="col">{{  rep.retiro_id  }}</td>
-                        <td scope="col">{{  rep.monto_solicitud  }}</td>
-                        <td scope="col">{{  rep.monto_recibir  }}</td>
-                        <td scope="col">{{  new Date(rep.fecha_solicitud).toLocaleDateString()  }}</td>
-                        <td scope="col">{{  new Date(rep.fecha_aprobacion).toLocaleDateString()  }}</td>
-                        <td scope="col">{{  rep.estado  }}</td>
+                        <tr>
+                          <td scope="col">{{ rep.retiro_id }}</td>
+                          <td scope="col">{{ rep.monto_solicitud }}</td>
+                          <td scope="col">{{ rep.monto_recibir }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</td>
+                          <td scope="col">{{ rep.estado }}</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                  <div class="col-5">
+                  <div class="col-5" v-if="reports.length > 0">
                     <div class="card m-1">
                       <div class="card-body">
-                        <h5 class="card-title">Compras e Inversiones Anualesde Tokens</h5>
+                        <h5 class="card-title">Compras e Inversiones Anuales de Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
                           :series="series"></apexchart>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="text-dark" v-if="reports.length == 0 && bandAlert">
+                <div class="text-dark my-3" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
                     <div class="alert alert-warning" role="alert">
-                      <h4 class="alert-heading">Sin resultados!</h4>
+                      <h4 class="alert-heading">¡Sin resultados!</h4>
                       <p>
                         No se encontraron resultados entre las fechas seleccionadas.<br> Por
                         favor, intenta con un rango de fechas diferente.
@@ -496,6 +534,17 @@
               </div>
             </div>
           </div>
+          <div class="text-dark my-3" v-if="inversiones.length == 0 && bandAlert">
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Sin resultados!</h4>
+                <p>
+                  No se encontraron resultados de inversiones realizadas.<br>
+                  Se mostrará en blanco hasta que realice una inversión.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Lista de solicitudes de retiro-->
@@ -509,6 +558,17 @@
             <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
               Fecha Aprobación: {{ formatDate(inversionista_retiro.fecha_aprobacion) }}
             </p>
+          </div>
+          <div class="text-dark my-3" v-if="inversionistas_retiros.length == 0 && bandAlert">
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Sin resultados!</h4>
+                <p>
+                  No se encontraron resultados de solicitudes de retiros.<br>
+                  Se mostrará en blanco hasta que realice una solicitud.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -540,7 +600,7 @@ var typeReport = ref("Inversiones");
 const bandAlert = ref(false);
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/inversionesRetiros/";
-let baseURL = import.meta.env.VITE_BASE_URL+"/inversionesRetiros/";
+let baseURL = import.meta.env.VITE_BASE_URL + "/inversionesRetiros/";
 const selectedReport = ref("");
 const cliente_ID = ref("");
 const inversionista_ID = ref("");
@@ -701,9 +761,9 @@ const formatDate = (date) => {
 // funciones de obtener reportes
 // const baseUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
 // const baseUrl = "https://apitalentos.pruebasdeploy.online/reportes/";
-const baseUrl = import.meta.env.VITE_BASE_URL+"/reportes/";
+const baseUrl = import.meta.env.VITE_BASE_URL + "/reportes/";
 // const reportUrl = "https://apitalentos.pruebasdeploy.online/report/";
-const reportUrl = import.meta.env.VITE_BASE_URL+"/report/";
+const reportUrl = import.meta.env.VITE_BASE_URL + "/report/";
 const band = ref(false);
 var fechaInicio = ref("");
 const typeClient = ref("");
@@ -775,8 +835,7 @@ const showReportCustom = () => {
   const fechaInicio = fechaInicioCustom.value?.trim();
   const fechaFin = fechaFinCustom.value?.trim();
   if (
-    fechaInicio &&
-    fechaFin &&
+    fechaInicio && fechaFin &&
     !isNaN(Date.parse(fechaInicio)) &&
     !isNaN(Date.parse(fechaFin))
   ) {
@@ -805,6 +864,7 @@ const showCustomDate = () => {
 
 const showTable = () => {
   typeReport.value = typeReport.value === "Inversiones" ? "Retiros" : "Inversiones";
+  console.log(typeReport.value);
 };
 
 const closeModal = () => {
@@ -1024,21 +1084,19 @@ const exportToPDF = () => {
 }
 
 label {
-  color: var( --white-color);
+  color: var(--white-color);
   font-size: 1rem;
 }
 
-
-
 .subtitle-class {
-  color: var( --white-color); 
+  color: var(--white-color);
 }
 
 .title-modal {
-  font-family: var(--font-montserrat-bold); 
-  font-weight: 700; 
-  font-size: 30px; 
-  color: var( --white-color); 
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--white-color);
   text-transform: uppercase;
 }
 
@@ -1114,11 +1172,21 @@ p {
 }
 
 tr {
-  color: var( --gray-color);
+  color: var(--gray-color);
 }
 
 .table {
   border-radius: 10px;
   overflow: hidden;
+}
+
+.alert-warning {
+  border-color: var(--gray-color) !important;
+  background-color: var(--white-color);
+  color: var(--gray-color);
+}
+
+.alert-heading {
+  color: var(--yellow-orange);
 }
 </style>
