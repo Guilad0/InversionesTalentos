@@ -4,17 +4,32 @@
       <h4 class="d-block mb-2 text-center title py-5">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
         <div class="col-2 position-relative">
-          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
-            @input="obtenerCategorias(1, search)" />
+          <input
+            name="search"
+            type="text"
+            v-model="search"
+            class="form-control"
+            placeholder="Buscar ..."
+            @input="obtenerCategorias(1, search)"
+          />
           <div v-if="search !== ''" class="custom-absolute">
-            <img class="cursor" src="../assets/svg/close.svg" alt="Descripción del SVG" width="25"
-              @click="clearSearch" />
+            <img
+              class="cursor"
+              src="../assets/svg/close.svg"
+              alt="Descripción del SVG"
+              width="25"
+              @click="clearSearch"
+            />
           </div>
         </div>
         <div class="col-8"></div>
         <div class="col-2 text-end">
-          <button class="btn bg-gray rounded-3 text-white btn-categoria" data-bs-toggle="modal"
-            data-bs-target="#modalRegisterCategorie" @click="crearCategoria">
+          <button
+            class="btn bg-gray rounded-3 text-white btn-categoria"
+            data-bs-toggle="modal"
+            data-bs-target="#modalRegisterCategorie"
+            @click="crearCategoria"
+          >
             +
             <i class="fa-solid fa-tags"></i>
           </button>
@@ -37,23 +52,38 @@
                 <td>{{ categoria.categoria_persona_id }}</td>
                 <td>{{ categoria.nombre }}</td>
                 <td>
-                  <img :src="`http://localhost:3000/uploads/categories/${categoria.imagen}`" alt="Imagen de categoría"
-                    width="50" />
+                  <img
+                    :src="`${BaseURL}/${categoria.imagen}`"
+                    alt="Imagen de categoría"
+                    width="50"
+                  />
                 </td>
                 <td>
-                  <span v-if="categoria.estado" class="badge text-bg-success">Activo</span>
+                  <span v-if="categoria.estado" class="badge text-bg-success"
+                    >Activo</span
+                  >
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
                 <td>
-                  <button @click="editarCategoria(categoria.categoria_persona_id)" class="btn btn-warning btn-sm me-2">
+                  <button
+                    @click="editarCategoria(categoria.categoria_persona_id)"
+                    class="btn btn-warning btn-sm me-2"
+                  >
                     <i class="fa fa-edit"></i>
                   </button>
 
-                  <button v-if="categoria.estado" @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="btn btn-danger btn-sm">
+                  <button
+                    v-if="categoria.estado"
+                    @click="cambiarEstado(categoria.categoria_persona_id)"
+                    class="btn btn-danger btn-sm"
+                  >
                     <i class="fa fa-times"></i>
                   </button>
-                  <button v-else @click="cambiarEstado(categoria.categoria_persona_id)" class="btn btn-success btn-sm">
+                  <button
+                    v-else
+                    @click="cambiarEstado(categoria.categoria_persona_id)"
+                    class="btn btn-success btn-sm"
+                  >
                     <i class="fa fa-check"></i>
                   </button>
                 </td>
@@ -71,15 +101,23 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button @click="obtenerCategorias(paginacion.previous)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3">
+                <button
+                  @click="obtenerCategorias(paginacion.previous)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3"
+                >
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
-              <li v-for="page in paginacion.pages" :key="page" class="page-item"
-                :class="paginacion.current === page ? 'active' : ''">
-                <button @click="obtenerCategorias(page)"
-                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
+              <li
+                v-for="page in paginacion.pages"
+                :key="page"
+                class="page-item"
+                :class="paginacion.current === page ? 'active' : ''"
+              >
+                <button
+                  @click="obtenerCategorias(page)"
+                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3"
+                >
                   {{ page }}
                 </button>
               </li>
@@ -90,8 +128,10 @@
                 </button>
               </li>
               <li v-else class="page-item">
-                <button @click="obtenerCategorias(paginacion.next)"
-                  class="page-link color-gray fw-bolder rounded-5 border border-3">
+                <button
+                  @click="obtenerCategorias(paginacion.next)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3"
+                >
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </li>
@@ -102,52 +142,77 @@
     </div>
 
     <!-- Modal para Crear/Editar Categoría -->
-    <div class="modal fade" id="modalRegisterCategorie" tabindex="-1" aria-labelledby="modalRegisterCategorieLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content modal-card">
-      <!-- Primera fila: Título -->
-      <div class="modal-header text-center">
-        <h5 class="modal-title w-100" id="modalRegisterCategorieLabel">
-          {{ editMode ? "Editar Categoría" : "Crear Nueva Categoría" }}
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <!-- Segunda fila: Contenido del formulario -->
-      <div class="modal-body" style="background-color: #17223B;">
-        <form @submit.prevent="saveCategory">
-          <div class="container">
-            <!-- Campo: Nombre -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="nombre" class="form-label custom-subtitle">Nombre de la Categoría</label>
-                <input type="text" class="form-control input" id="nombre" v-model="form.nombre" required />
-              </div>
-            </div>
-
-            <!-- Campo: Imagen -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="image" class="form-label custom-subtitle">Imagen de la Categoría</label>
-                <input type="file" class="form-control input" id="image" @change="handleFileChange" />
-              </div>
-            </div>
-
-            <!-- Botón: Crear/Guardar -->
-            <div class="row">
-              <div class="col-12 text-center modal-footer">
-                <button type="submit" class="btn custom-button">
-                  {{ editMode ? "Guardar Cambios" : "Crear Categoría" }}
-                </button>
-              </div>
-            </div>
+    <div
+      class="modal fade"
+      id="modalRegisterCategorie"
+      tabindex="-1"
+      aria-labelledby="modalRegisterCategorieLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content modal-card">
+          <!-- Primera fila: Título -->
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="modalRegisterCategorieLabel">
+              {{ editMode ? "Editar Categoría" : "Crear Nueva Categoría" }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-        </form>
+
+          <!-- Segunda fila: Contenido del formulario -->
+          <div class="modal-body" style="background-color: #17223b">
+            <form @submit.prevent="saveCategory">
+              <div class="container">
+                <!-- Campo: Nombre -->
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <label for="nombre" class="form-label custom-subtitle"
+                      >Nombre de la Categoría</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control input"
+                      id="nombre"
+                      v-model="form.nombre"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <!-- Campo: Imagen -->
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <label for="image" class="form-label custom-subtitle"
+                      >Imagen de la Categoría</label
+                    >
+                    <input
+                      type="file"
+                      class="form-control input"
+                      id="image"
+                      @change="handleFileChange"
+                    />
+                  </div>
+                </div>
+
+                <!-- Botón: Crear/Guardar -->
+                <div class="row">
+                  <div class="col-12 text-center modal-footer">
+                    <button type="submit" class="btn custom-button">
+                      {{ editMode ? "Guardar Cambios" : "Crear Categoría" }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
   </main>
 </template>
 <script setup>
@@ -161,7 +226,7 @@ const editMode = ref(false);
 const categoriaEditada = ref(null);
 const search = ref("");
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
-const BaseURL = import.meta.env.VITE_BASE_URL;
+const BaseURL = import.meta.env.VITE_BASE_URL + "/categories";
 
 const router = useRouter();
 
@@ -272,14 +337,14 @@ const saveCategory = async () => {
 <style scoped>
 .title {
   font-family: var(--font-montserrat-bold);
-  font-weight: 700; 
+  font-weight: 700;
   font-size: 30px;
-  color: var( --gray-color); 
+  color: var(--gray-color);
   text-transform: uppercase;
 }
 /*inicio de la modal*/
 .modal-header {
-  background-color: #D9C5B2 !important;
+  background-color: #d9c5b2 !important;
   width: 100%;
   height: 75px;
   border-radius: 15px 15px 0 0;
@@ -289,7 +354,7 @@ const saveCategory = async () => {
   position: relative;
 }
 .modal-footer {
-  background-color: #D9C5B2 !important;
+  background-color: #d9c5b2 !important;
   width: 100%;
   height: 75px;
   border-radius: 0 0 15px 15px;
@@ -302,7 +367,7 @@ const saveCategory = async () => {
 .modal-card {
   border-radius: 15px;
   overflow: hidden;
-  background-color: #17223B;
+  background-color: #17223b;
 }
 
 .input {
@@ -320,12 +385,11 @@ const saveCategory = async () => {
 
 .input:focus {
   background-color: var(--white-color);
-  border: 2px solid #F37926;
+  border: 2px solid #f37926;
   outline: none;
   box-shadow: none;
   color: black;
 }
-
 
 .custom-button {
   padding: 10px 20px;
@@ -339,7 +403,6 @@ const saveCategory = async () => {
   background-color: #d06a20; /* Darker orange */
 }
 
-
 .modal-dialog {
   /* background-image: url("@/assets/images/otro-fondo5.png"); */
   background-size: cover;
@@ -352,7 +415,6 @@ const saveCategory = async () => {
   justify-content: center;
   /* Centra horizontalmente el formulario */
 }
-
 
 /* Botón de cerrar modal */
 .btn-close {
@@ -399,10 +461,9 @@ const saveCategory = async () => {
   margin-top: 20px;
 }
 
-
 .custom-button {
-  background-color: #17223B;
-  color: #F3F3F4;
+  background-color: #17223b;
+  color: #f3f3f4;
   font-family: var(--font-montserrat);
   font-size: 16px;
   border: none;
@@ -410,16 +471,14 @@ const saveCategory = async () => {
   height: 30px;
   width: 180px;
   padding: 1.5rem;
-  display: flex;  
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  
 }
 
-
 .custom-button:hover {
-  background-color: #F37926 !important;
+  background-color: #f37926 !important;
   color: #fff;
 }
 
