@@ -107,10 +107,10 @@ const saveText =async () =>{
   <div class="full-background">
     <header class="header">
       
-      <h1 class="title">Propósito</h1>
+      <h1 class="h1-title">Propósito</h1>
 
     </header>
-      <EditIcon v-if="rol =='Admin'" class="ms-5 mt-5"   data-bs-toggle="modal" data-bs-target="#modalImagePurpose"/>
+      <EditIcon v-if="rol =='Admin'" class="ms-5 "   data-bs-toggle="modal" data-bs-target="#modalImagePurpose"/>
       <label v-if="rol =='Admin'" class="text-white ms-5">Editar Imagen</label>
     <main class="main-content">
       <h2 class="text-dark">
@@ -177,12 +177,20 @@ const saveText =async () =>{
 </template>
 
 <style scoped>
-.title {
+
+label.text-white {
+  color: white; /* Asegura que el texto sea blanco */
+}
+.h1-title {
   font-family: var(--font-montserrat-bold);
   font-weight: 700; 
   font-size: 30px; 
-  color: var( --gray-color); 
+  color: var( white); 
+  margin-right: 300px !important;
+  margin-top: 200px !important;
+  text-align:right;
   text-transform: uppercase;
+  margin-bottom: 0px !important;
 }
 /* Asegurarse de que el html y body tengan altura completa */
 html,
@@ -210,8 +218,7 @@ body {
 
 /* Estilos para el header */
 .header {
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Fondo semitransparente */
+
   padding: 15px;
   text-align: center;
   width: 100%;
@@ -220,7 +227,7 @@ body {
 
 .header h1 {
   font-size: 24px;
-  margin: 0;
+  margin-bottom: 0px;
   letter-spacing: 1px;
   font-style: var(--font-montserrat-bold); /* Cursiva para darle elegancia */
   font-weight: bold; /* Negrita para mayor presencia */
@@ -230,27 +237,35 @@ body {
 /* Estilos para el main-content */
 .main-content {
   color: #333;
+  padding-top: 10px;
   padding: 30px;
   max-width: 600px; /* Ajusta el ancho máximo del contenido */
   width: 100%; /* Asegura que el main-content ocupe todo el ancho posible */
-  margin: 40px 100px 100px auto; /* Desplaza el contenido a la derecha */
+  margin: 0px 100px 50px auto; /* Desplaza el contenido a la derecha */
   background-color: rgba(255, 255, 255, 0.1);
   /* Fondo semitransparente para hacer el texto más legible */
-  border-radius: 10px; /* Bordes redondeados */
+  border-radius: 20px; /* Bordes redondeados */
   display: flex;
   flex-direction: column; /* Organiza los elementos dentro de main en columna */
   justify-content: flex-start; /* Alinea los elementos hacia el principio */
   align-items: flex-end; /* Alinea el contenido a la derecha */
 }
+h2 {
+  margin-bottom: 5px; /* Reduce el margen inferior para acercar el título al cuadro de texto */
+  padding-bottom: 0px; /* Elimina cualquier padding adicional */
+  font-size: 24px; /* Ajusta el tamaño de la fuente si es necesario */
+  line-height: 1.2;
+}
 
 .main-content h2 {
+  margin-bottom: 5px;
   text-align: justify;
   font-size: 1.3rem;
   line-height: 1.6;
   margin: 0;
   font-style: italic; /* Cursiva */
   font-weight: 400; /* Grosor moderado */
-  color: #333; /* Contraste oscuro */
+  color: var(--white-color) !important; /* Contraste oscuro */
 }
 
 @media (min-width: 600px) {

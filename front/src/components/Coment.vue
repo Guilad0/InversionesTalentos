@@ -422,7 +422,7 @@ label:hover {
 }
 
 .btn-secondary {
-    border: none;
+    border: 1px solid var(--yellow-orange);
     background-color: var(--gray-color);
 
 }
@@ -479,7 +479,7 @@ label:hover {
 }
 
 .modal-footer-custom {
-    background-color: var(--dun2-color);
+    background-color: var(--gray-color);
     border-top: none
 }
 

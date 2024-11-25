@@ -125,7 +125,7 @@
         </nav>
       </div>
 
-      <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel"
+      <div class="modal fade" id="answerModal" tabindex="-1" style="background:rgba(0, 0, 0, 0.7) !important;" role="dialog" aria-labelledby="answerModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -143,7 +143,7 @@
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Cerrar
               </button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal"
                 @click="answer(userResponse, contactActive.contacto_id)">
                 Guardar
               </button>
@@ -285,7 +285,6 @@ const deleted = async (id) => {
     iziToast.success({
       title: "Exito",
       message: "Estado cambiado con exito",
-      messageColor: 'white',
       position: "topRight",
     });
   } catch (error) {
@@ -315,7 +314,7 @@ const answer = async (response, iduser) => {
         message: "Respuesta actualizada correctamente",
         position: "topRight",
         backgroundColor: "green",
-        messageColor: 'white',
+        color: "white",
       });
       await fetchContacts(pagination.value.currentPage);
 
@@ -342,12 +341,31 @@ const openModal = (item) => {
 </script>
 
 <style scoped>
-.title {
-  font-family: var(--font-montserrat-bold);
-  font-weight: 700;
-  font-size: 30px;
+.btn-dark {
+  background-color: var(--gray-color);
+  border: 1px solid var(--yellow-orange); 
+}
+  
+
+.btn-secondary {
+  background-color: var(--gray-color) !important;
+  border: 1px solid var(--yellow-orange); 
+  z-index: 9999 !important;
+}
+.modal-header {
+  background-color: var(--dun2-color);
+  border-bottom: none;
+}
+.modal-title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 24px; /* Tamaño predefinido */
   color: var(--gray-color);
   text-transform: uppercase;
+}
+.modal-footer {
+  background-color: var(--gray-color);
+  border-top: 1px solid var(--white-color);
 }
 
 .pdf-preview-container {
@@ -379,6 +397,11 @@ const openModal = (item) => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modal-body {
+  background-color: var(--gray-color) !important;
+  color: var(--white-color);
 }
 
 .btn-pdf {

@@ -256,8 +256,10 @@ td {
 }
 .btn-dark {
   background-color: var(--gray-color);
+  border: 1px solid var(--yellow-orange); 
   margin-right: 2rem;
 }
+
 .modal-custom {
   border: none;
   padding: 30px;
@@ -303,19 +305,17 @@ td {
   border: 1px solid var(--yellow-orange);
 }
 
-.modal-footer-custom {
-  background-color: var(--dun2-color);
-  border-top: none;
+.modal-footer {
+  background-color: var(--gray-color);
+  border-top: 1px solid var( --white-color);
+
 }
 .modal-item-custom {
   background-color: var(--dark-anti-flash-color);
   color: var(--white-color);
   border: 1px solid var(--yellow-orange);
 }
-.modal-footer {
-  background-color: var(--dun2-color);
-  border-top: none;
-}
+
 .form-label {
   color: var(--white-color);
   font-weight: var(--font-montserrat-semibold);
