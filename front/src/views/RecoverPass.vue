@@ -8,59 +8,35 @@
               <h5 class="fw-bold text-center mb-3 custom-color custom-title">
                 Cambiar Contraseña
               </h5>
+              <!-- Botón para volver al Perfil -->
+              <div class="back-button1">
+                <router-link to="/perfil" class="btn-back">
+                  Volver a Perfil
+                </router-link>
+              </div>
 
               <div class="row mb-3">
                 <div class="col-md-12 custom-subtitle ic1">
-                  <label for="correo" class="form-label"
-                    >Ingresa el correo con el que te registraste</label
-                  >
-                  <input
-                    type="email"
-                    v-model="correo"
-                    id="correo"
-                    class="form-control input"
-                    required
-                  />
+                  <label for="correo" class="form-label">Ingresa el correo con el que te registraste</label>
+                  <input type="email" v-model="correo" id="correo" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="old_pass" class="form-label"
-                    >Ingresa tu Contraseña actual</label
-                  >
-                  <input
-                    type="password"
-                    v-model="old_pass"
-                    id="old_pass"
-                    class="form-control input"
-                    required
-                  />
+                  <label for="old_pass" class="form-label">Ingresa tu Contraseña actual</label>
+                  <input type="password" v-model="old_pass" id="old_pass" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="new_pass" class="form-label"
-                    >Ingresa tu nueva Contraseña</label
-                  >
-                  <input
-                    type="password"
-                    v-model="new_pass"
-                    id="new_pass"
-                    class="form-control input"
-                    required
-                  />
+                  <label for="new_pass" class="form-label">Ingresa tu nueva Contraseña</label>
+                  <input type="password" v-model="new_pass" id="new_pass" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
                   <label for="repeat_pass" class="form-label">Repetir Contraseña</label>
-                  <input
-                    type="password"
-                    v-model="repeat_pass"
-                    id="repeat_pass"
-                    class="form-control input"
-                    required
-                  />
+                  <input type="password" v-model="repeat_pass" id="repeat_pass" class="form-control input" required />
                   <p v-if="mensajeErrorRepetir" class="text-danger">
                     Las Contraseñas No Coinciden
                   </p>
@@ -128,7 +104,7 @@ const guardarCambios = async () => {
       messageColor: "white",
       position: "topRight",
       theme: "dark",
-      color: "#5ce65c",
+      color: "#198754",
     });
     setTimeout(() => {
       route.push({ path: "/" });
@@ -251,6 +227,27 @@ const guardarCambios = async () => {
 
 .custom-button:hover {
   background-color: #f37926;
+  color: #fff;
+}
+
+.back-button1 {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+  margin-top: 1px;
+}
+
+.btn-back {
+  padding: 10px 20px;
+  background-color: #17223B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background-color: #F37926;
   color: #fff;
 }
 </style>

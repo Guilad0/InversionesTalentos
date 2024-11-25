@@ -4,74 +4,52 @@
     <div class="form">
       <div class="title">¡Bienvenid@ {{ nombre }}!</div>
       <div class="subtitle">Completa tu Registro</div>
-      
+      <br>
+      <!-- Botón para volver al Perfil -->
+      <div class="back-button1">
+        <router-link to="/perfil" class="btn-back">
+          Volver a Perfil
+        </router-link>
+      </div>
+
+
       <form @submit.prevent="registrarExperiencia">
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="institucion" class="label">Institución</label>
-              <input
-                id="institucion"
-                v-model="institucion"
-                type="text"
-                class="input"
-                required
-              />
+              <input id="institucion" v-model="institucion" type="text" class="input" required />
             </div>
           </div>
 
           <div class="col mb-6">
             <div class="input-container">
               <label for="cargo" class="label">Cargo</label>
-              <input
-                id="cargo"
-                v-model="cargo"
-                type="text"
-                class="input"
-                required
-              />
+              <input id="cargo" v-model="cargo" type="text" class="input" required />
             </div>
           </div>
-          
+
         </div>
-       
+
         <div class="input-container2">
           <label for="actividades" class="label">Actividades</label>
-          <textarea
-            id="actividades"
-            v-model="actividades"
-            class="input"
-            rows="3"
-            required
-          ></textarea>
+          <textarea id="actividades" v-model="actividades" class="input" rows="3" required></textarea>
         </div>
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_inicio" class="label">Fecha Inicio</label>
-              <input
-                id="fecha_inicio"
-                v-model="fecha_inicio"
-                type="date"
-                class="input"
-                required
-              />
+              <input id="fecha_inicio" v-model="fecha_inicio" type="date" class="input" required />
             </div>
           </div>
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_final" class="label">Fecha Final</label>
-              <input
-                id="fecha_final"
-                v-model="fecha_final"
-                type="date"
-                class="input"
-                required
-              />
+              <input id="fecha_final" v-model="fecha_final" type="date" class="input" required />
             </div>
           </div>
         </div>
-             
+
         <button type="submit" class="submit">Registrar</button>
       </form>
     </div>
@@ -82,49 +60,103 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
+import iziToast from 'izitoast';
 
-const router = useRouter(); 
-const cliente_id = ref(""); 
-const institucion = ref("");
-const cargo = ref("");
-const actividades = ref("");
-const nombre = ref("");
+const router = useRouter();
+const cliente_id = ref("");
+const descripcion = ref("");
 const fecha_inicio = ref("");
-const fecha_final = ref("");
-const BaseURL = import.meta.env.VITE_BASE_URL;
-// Cliente_id desde localStorage
+const fecha_fin = ref("");
+const puesto = ref("");
+const empresa = ref("");
+const minDate = "01-01-1990";
+const maxDate = new Date().toISOString().split("T")[0];
+
+// Obtener el cliente_id desde localStorage al montar el componente
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("usuario"));
+  console.log(user);
   if (user) {
     cliente_id.value = user.usuario_id;
-    nombre.value = user.nombre; 
   } else {
-    alert("Error: No se encontró el cliente_id en localStorage.");
+    // Alerta de error si no se encuentra el cliente_id en localStorage
+    iziToast.error({
+      title: 'Error',
+      message: 'No se encontró el "cliente_id" en localStorage.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#FF3B30', // Color de fondo rojo para el error
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
   }
 });
 
+// Función para registrar la experiencia
 const registrarExperiencia = async () => {
   try {
-    // const response = await axios.post("https://apitalentos.pruebasdeploy.online/api/experiencia", {
-    const response = await axios.post( import.meta.env.VITE_BASE_URL+"/experiencia", {
+    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/experiencia", {
       cliente_id: cliente_id.value,
-      institucion: institucion.value,
-      cargo: cargo.value,
-      actividades: actividades.value,
+      descripcion: descripcion.value,
       fecha_inicio: fecha_inicio.value,
-      fecha_final: fecha_final.value
+      fecha_fin: fecha_fin.value,
+      puesto: puesto.value,
+      empresa: empresa.value
     });
-    alert(response.data.message);
+
+    // Limpiar los campos después de registrar
+    descripcion.value = "";
+    fecha_inicio.value = "";
+    fecha_fin.value = "";
+    puesto.value = "";
+    empresa.value = "";
+
+    // Alerta de éxito con iziToast
+    iziToast.success({
+      title: '¡Éxito!',
+      message: 'Experiencia registrada correctamente.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#198754', // Color verde para éxito
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
+
+    // Redirigir al perfil
     router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
-    alert("Error al registrar");
+
+    // Alerta de error con iziToast
+    iziToast.error({
+      title: 'Error',
+      message: 'Hubo un problema al registrar la experiencia.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#FF3B30', // Color rojo para el error
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
   }
+
+  // Datos para depuración (console.log)
+  const datos = {
+    cliente_id: cliente_id.value,
+    descripcion: descripcion.value,
+    fecha_inicio: fecha_inicio.value,
+    fecha_fin: fecha_fin.value,
+    puesto: puesto.value,
+    empresa: empresa.value
+  };
+  console.log(datos);
 };
 </script>
 
-<style scoped>
 
+<style scoped>
 .background {
   display: flex;
   justify-content: center;
@@ -137,15 +169,20 @@ const registrarExperiencia = async () => {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(4, 4, 4, 0.563);; /* Fondo negro con opacidad del 50% */
-  z-index: 1; /* Asegura que la capa de opacidad esté encima de la imagen */
+  background-color: rgba(4, 4, 4, 0.563);
+  ;
+  /* Fondo negro con opacidad del 50% */
+  z-index: 1;
+  /* Asegura que la capa de opacidad esté encima de la imagen */
 }
+
 .form {
   border-radius: 30px;
   background-color: rgba(255, 255, 255, 0.877);
@@ -153,7 +190,7 @@ const registrarExperiencia = async () => {
   box-sizing: border-box;
   padding: 30px;
   width: 500px;
-  z-index: 2; 
+  z-index: 2;
 }
 
 .title {
@@ -199,7 +236,16 @@ const registrarExperiencia = async () => {
   width: 100%;
   box-sizing: border-box;
   outline: none;
-  height: 38px; /* Altura fija para los inputs */
+  height: 38px;
+  /* Altura fija para los inputs */
+}
+
+.input:focus {
+  background-color: var(--white-color);
+  border: 2px solid #F37926 !important;
+  outline: none;
+  box-shadow: none;
+  color: black;
 }
 
 .submit {
@@ -207,23 +253,55 @@ const registrarExperiencia = async () => {
   border-radius: 12px;
   border: none;
   color: #eee;
-  cursor: pointer; 
+  cursor: pointer;
   font-size: 18px;
   height: 50px;
   margin-top: 38px;
   text-align: center;
   width: 100%;
 }
-textarea.input {
-  height: auto; 
+
+.submit:hover {
+  background-color: #F37926;
+  color: #fff;
 }
+
+textarea.input {
+  height: auto;
+}
+
 .submit:active {
   background-color: #F37926;
 }
+
 .input:focus {
-  background-color: white; 
-  color: black; /* Fondo blanco cuando el campo está en foco */
-  border-color: #80bdff;    /* Color del borde */
-  outline: none;            /* Elimina el contorno */
+  background-color: white;
+  color: black;
+  /* Fondo blanco cuando el campo está en foco */
+  border-color: #80bdff;
+  /* Color del borde */
+  outline: none;
+  /* Elimina el contorno */
+}
+
+.back-button1 {
+  display: flex; 
+  justify-content: flex-end; 
+  margin: 10px; 
+  margin-top: 1px;
+}
+
+.btn-back {
+  padding: 10px 20px; 
+  background-color: #17223B; 
+  color: white; 
+  border: none;
+  border-radius: 5px; 
+  text-decoration: none; 
+}
+
+.btn-back:hover {
+  background-color: #F37926;
+  color: #fff;
 }
 </style>
