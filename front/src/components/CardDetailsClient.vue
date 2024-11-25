@@ -83,7 +83,7 @@
               data-bs-toggle="modal" data-bs-target="#modalInversion">
               <i class="fas fa-dollar-sign"></i> 
               <label v-if="!loadingInvertir">Invertir</label>
-              <label v-if="loadingInvertir">..cargnado</label>
+              <label v-if="loadingInvertir">..cargando</label>
               <span></span>
             </button>
 

@@ -172,6 +172,7 @@ const copiarEnlace = () => {
         class="rounded-circle border m-auto border-2" width="150" height="150">
       <div class="card-body">
         <h5 class="card-title fs-6 text-center">{{ props.client.nombre }}</h5>
+        <p class="text-muted text-center">{{ props.client.ocupacion || 'Ocupación no especificada' }}</p>
         <div class="d-flex justify-content-center">
           <div class="col tooltip-container">
             <img src="../assets/svg/cardlogro.svg" width="25" alt="" data-toggle="tooltip" data-placement="right"
