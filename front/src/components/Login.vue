@@ -65,6 +65,7 @@ import iziToast from "izitoast";
 import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
 import { decodeCredential } from "vue3-google-login";
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
@@ -134,7 +135,7 @@ const ingresar = async () => {
     //   timer: 1000,
     // });
 
-    iziToast.success({
+    /* iziToast.success({
       title: 'Bienvenido!',
       message: 'Estas de regreso :) ' + data.user.nombre + ' ' + data.user.apellido,
       messageColor: 'white',
@@ -143,7 +144,8 @@ const ingresar = async () => {
       color: '#5ce65c',
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-          })
+          }) */
+         successAlert('Estas de regreso '+data.user.nombre+ ''+ data.user.apellido, 'Bienvenid@')
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);

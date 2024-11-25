@@ -2,8 +2,9 @@
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { onMounted, ref, defineProps, computed } from "vue";
-import { successAlert, errorAlert } from "@/helpers/iziToast";
+/* import { successAlert, errorAlert } from "@/helpers/iziToast"; */
 import { getUser } from "@/helpers/utilities";
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 const enlace = ref('http://localhost:5173/marketplace');
 const mostrarBoton = ref(false);
@@ -53,7 +54,7 @@ onMounted(async () => {
 
 const showClient = (user) => {
   if (usuario.value == null) {
-    alert('debes autenticarte')
+    errorAlert('Debes autenticarte', 'Error')
   } else {
     router.push({
       name: "client",

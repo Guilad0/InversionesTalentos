@@ -107,7 +107,7 @@ import { ref, computed } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import iziToast from "izitoast";
-
+import {successAlert, errorAlert} from "../helpers/iziToast";
 import { useRouter } from "vue-router";
 import Unete from "../components/Unete.vue";
 const route = useRouter();
@@ -186,7 +186,7 @@ const registerComment = async () => {
   */
 
   if (nombreVal.value == false || apellidoVal.value == false || emailVal.value == false) {
-    iziToast.error({
+  /*   iziToast.error({
       // class: "test",
       title: "ERROR",
       message: "Debe ingresar todos los campos obligatorios",
@@ -194,7 +194,9 @@ const registerComment = async () => {
       //messageColor: "red",
       // titleColor: "red",
       backgroundColor: "red",
-    });
+    }); */
+
+    errorAlert('Debe ingresar todos los campos obligatorios','Error')
     return;
   }
   const datos = {
@@ -224,19 +226,15 @@ const registerComment = async () => {
           try {
             const { data } = await axios.post(baseURL, datos);
             console.log(data);
-            iziToast.success({
-              title: "Felicidades!!",
-              message:
-                "Tu comentario ha sido enviado con éxito, espera nuestra respuesta",
-              position: "topRight",
-            });
+            successAlert('Tu comentario ha sido enviado con éxito, espera nuestra respuesta', 'Felicidades')
             resetForm();
           } catch (error) {
             console.error(error);
-            iziToast.error({
+            /* iziToast.error({
               title: "Error",
               message: "Hubo un problema al registrar tu comentario, intenta de nuevo.",
-            });
+            }); */
+            errorAlert('Hubo un problema al registrar tu comentario, intenta de nuevo.', 'Error')
           }
         },
         true,
