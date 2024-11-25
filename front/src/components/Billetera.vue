@@ -471,11 +471,12 @@ if (usuario_rol.value == 'Cliente') {
   cliente_ID.value = usuario_id.value;
   onMounted(async() => {
   await  obtenerTokens_Cliente();
+  await obtenerDeudas_Cliente();
   });
 }
 onMounted(async () => {
   await calcularTokens();
-  await calcularDolares();
+  await calcularDolares();  
 });
 
 const tiempo_inversion = ref(0);
@@ -746,13 +747,21 @@ const inversionistaInvertir = async () => {
 const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
-    tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
-    console.log('clienteeeeeeeeeeeeeeeeeeeeeeee',tokensRecibidosCliente.value);
-    tokensDeudasCliente.value = data.data[0].totalTokensDeudas || 0;
+    tokensRecibidosCliente.value = data.data[0].tokensTotal;
+    console.log(tokensRecibidosCliente.value)
   } catch (error) {
     console.log(error);
   }
 };
+
+const obtenerDeudas_Cliente = async () => {
+  try {
+    const { data } = await axios.get(baseURL + 'tokensDeudasCliente/' + cliente_ID.value);
+    tokensDeudasCliente.value = data.data[0].totalTokensDeudas || 0;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const limiteTokensRetiro = ref(0)
 const calcularDolares = async () => {

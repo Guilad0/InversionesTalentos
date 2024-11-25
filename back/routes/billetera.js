@@ -192,17 +192,42 @@ router.post("/invertirTokens", function (req, res, next) {
 });
 
 router.get("/tokensClienteRecibido/:id", function (req, res, next) {
-  var query = `SELECT 
-    SUM(inversiones.monto) AS totalTokensRecibidos, 
-    SUM(inversiones.ganancia_estimada) AS totalTokensDeudas,
-    (
-        SELECT SUM(movimientos.token)
-        FROM movimientos
-        WHERE movimientos.usuario_id = ${req.params.id}
-        AND movimientos.descripcion = 'Compra de tokens'
-    ) AS tokensCompradosCliente
-  FROM inversiones
-  WHERE inversiones.cliente_id = ${req.params.id};`;
+  var query = `WITH movimientos_resumen AS (
+    SELECT 
+        usuario_id,
+        SUM(CASE WHEN tipo = 'Ingreso' THEN token ELSE 0 END) AS tokensRecibidosCliente,
+        SUM(CASE WHEN tipo = 'Egreso' THEN token ELSE 0 END) AS tokensEgresadosCliente
+    FROM movimientos
+    WHERE usuario_id = ${req.params.id}
+    GROUP BY usuario_id
+)
+SELECT 
+    tokensRecibidosCliente,
+    tokensEgresadosCliente,
+    (tokensRecibidosCliente - tokensEgresadosCliente) AS tokensTotal
+FROM movimientos_resumen;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Tokens del inversionista consultada correctamente",
+      });
+    }
+  });
+});
+
+router.get("/tokensDeudasCliente/:id", function (req, res, next) {
+  var query = `
+  SELECT SUM(ganancia_estimada) AS totalTokensDeudas FROM inversiones
+WHERE cliente_id=${req.params.id}
+AND estado = 1
+`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
