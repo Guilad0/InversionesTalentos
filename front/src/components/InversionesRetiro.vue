@@ -75,19 +75,24 @@
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                      :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate" :class="{ selected: band }"
+                      class="fa-regular fa-file fs-1" width="50" /><br />
                     <label>Personalizado</label>
                   </div>
 
-                  <transition name="slide">
-                    <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
-                        v-model="fechaInicioCustom" class="form-control" type="date" />
-                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
-                        v-model="fechaFinCustom" class="form-control" type="date" /><br />
-                    </div>
-                  </transition>
+                  <div class="position-absolute custom-date-wrapper">
+                    <transition name="slide">
+                      <div v-if="band" class="card px-3 py-2">
+                        <label for="fechaInicio">Fecha de Inicio</label>
+                        <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicioCustom"
+                          class="form-control" type="date" />
+
+                        <label for="fechaFin">Fecha Final</label>
+                        <input @input="showReportCustom" id="fechaFin" v-model="fechaFinCustom" class="form-control"
+                          type="date" />
+                      </div>
+                    </transition>
+                  </div>
                 </div>
 
                 <div class="card border-0">
@@ -385,14 +390,19 @@
                       :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
                     <label>Personalizado</label>
                   </div><br>
-                  <transition name="slide">
-                    <div v-if="band == true" class="mx-1 card px-1">
-                      <label for="fechaInicio">Fecha de Inicio</label><input @input="showReportCustom" id="fechaInicio"
-                        v-model="fechaInicioCustom" class="form-control" type="date" />
-                      <label for="fechaFin">Fecha Final</label><input @input="showReportCustom" id="fechaFin"
-                        v-model="fechaFinCustom" class="form-control" type="date" /><br />
-                    </div>
-                  </transition>
+                  <div class="position-absolute custom-date-wrapper">
+                    <transition name="slide">
+                      <div v-if="band" class="card px-3 py-2">
+                        <label for="fechaInicio">Fecha de Inicio</label>
+                        <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicioCustom"
+                          class="form-control" type="date" />
+
+                        <label for="fechaFin">Fecha Final</label>
+                        <input @input="showReportCustom" id="fechaFin" v-model="fechaFinCustom" class="form-control"
+                          type="date" />
+                      </div>
+                    </transition>
+                  </div>
                 </div>
                 <div class="card border-0">
                   <div class="card-body bg-degrade">
@@ -780,12 +790,12 @@ const getReports = (report) => {
     case "hoy":
       const { startOfDay, endOfDay } = getDayStartAndEnd();
       fechaInicio.value = startOfDay;
-      fechaFin.value = startOfDay;
+      fechaFin.value = endOfDay;
       break;
     case "ayer":
       const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
       fechaInicio.value = startOfYesterday;
-      fechaFin.value = startOfYesterday;
+      fechaFin.value = endOfYesterday;
       console.log(fechaInicio.value, fechaFin.value);
       break;
     case "semana":
@@ -1188,5 +1198,15 @@ tr {
 
 .alert-heading {
   color: var(--yellow-orange);
+}
+
+.custom-date-wrapper {
+  top: 100%;
+  /* Ajusta según la posición deseada */
+  left: 75%;
+  /* Centra el contenedor */
+  transform: translateX(-50%);
+  z-index: 10;
+  /* Asegúrate de que esté delante del resto */
 }
 </style>
