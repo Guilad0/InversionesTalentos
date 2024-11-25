@@ -19,12 +19,12 @@
               <div class="row mb-3">
 
                 <div class="col-md-6">
-                  <label for="ocupacion" class="form-label">Ocupación</label>
+                  <label for="ocupacion" class="form-label">Ocupación *</label>
                   <input type="text" v-model="ocupacion" id="ocupacion" class="form-control input" required />
                 </div>
 
                 <div class="col-md-6">
-                  <label for="categoria_persona_id" class="form-label">Categoría</label>
+                  <label for="categoria_persona_id" class="form-label">Categoría *</label>
                   <select id="categoria_persona_id" v-model="categoria_persona_id"
                     class="form-select form-select-sm p-1 input" aria-label="Multiple select example" required>
                     <option disabled selected value="">Selecciona tu Categoría</option>
@@ -37,20 +37,20 @@
 
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="descripcion" class="form-label">Descripción</label>
+                  <label for="descripcion" class="form-label">Descripción *</label>
                   <input type="text" v-model="descripcion" id="descripcion" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
 
                 <div class="col-md-6">
-                  <label for="monto_inversion" class="form-label">Cantidad Minima de Inversión</label>
+                  <label for="monto_inversion" class="form-label">Cantidad Mínima de Tokens *</label>
                   <input type="text" v-model="monto_inversion" id="monto_inversion" class="form-control input"
                     required />
                 </div>
 
                 <div class="col-md-6">
-                  <label for="cantidad_maxima_inversiones" class="form-label">Cantidad Máxima de Inversiones</label>
+                  <label for="cantidad_maxima_inversiones" class="form-label">Cantidad Máxima de Tokens *</label>
                   <input type="text" v-model="cantidad_maxima_inversiones" id="cantidad_maxima_inversiones"
                     class="form-control input" required />
                 </div>
@@ -59,7 +59,7 @@
               <div class="row mb-3">
 
                 <div class="col-md-6">
-                  <label for="preparacion" class="form-label">Preparación</label>
+                  <label for="preparacion" class="form-label">Preparación *</label>
                   <input type="text" v-model="preparacion" id="preparacion" class="form-control input" required />
                 </div>
 
@@ -152,42 +152,12 @@ const obtenerCategorias = async () => {
 
 /* ===== REGISTRAR INFORMACIÓN ===== */
 const registrarInformacion = async () => {
-  const datos = {
-    cliente_id: cliente_id.value,
-    ocupacion: ocupacion.value,
-    descripcion: descripcion.value,
-    monto_inversion: monto_inversion.value,
-    cantidad_maxima_inversiones: cantidad_maxima_inversiones.value,
-    preparacion: preparacion.value,
-    estudios: estudios.value,
-    vision: vision.value,
-    categoria_persona_id: categoria_persona_id.value
-  };
-
-  console.log(datos);
-
-  try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/info", datos);
-    console.log(response.data);
-
-    iziToast.success({
-      title: 'Éxito',
-      message: 'Información registrada correctamente.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#198754',
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    });
-
-    router.push({ name: 'perfil' });
-  } catch (error) {
-    console.error(error);
-
+  const minimo = parseFloat(monto_inversion.value);
+  const maximo = parseFloat(cantidad_maxima_inversiones.value);
+  if(minimo > maximo) {
     iziToast.error({
       title: 'Error',
-      message: 'Hubo un problema al registrar la información.',
+      message: 'La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.',
       messageColor: 'white',
       position: 'topRight',
       theme: 'dark',
@@ -195,7 +165,54 @@ const registrarInformacion = async () => {
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
     });
+    return;
   }
+  
+    const datos = {
+      cliente_id: cliente_id.value,
+      ocupacion: ocupacion.value,
+      descripcion: descripcion.value,
+      monto_inversion: monto_inversion.value,
+      cantidad_maxima_inversiones: cantidad_maxima_inversiones.value,
+      preparacion: preparacion.value,
+      estudios: estudios.value,
+      vision: vision.value,
+      categoria_persona_id: categoria_persona_id.value
+    };
+
+    console.log(datos);
+
+    try {
+      const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/info", datos);
+      console.log(response.data);
+
+      iziToast.success({
+        title: 'Éxito',
+        message: 'Información registrada correctamente.',
+        messageColor: 'white',
+        position: 'topRight',
+        theme: 'dark',
+        color: '#198754',
+        closeOnEscape: true,
+        progressBarColor: '#FFFFFF'
+      });
+
+      router.push({ name: 'perfil' });
+    } catch (error) {
+      console.error(error);
+
+      iziToast.error({
+        title: 'Error',
+        message: 'Hubo un problema al registrar la información.',
+        messageColor: 'white',
+        position: 'topRight',
+        theme: 'dark',
+        color: '#f00',
+        closeOnEscape: true,
+        progressBarColor: '#FFFFFF'
+      });
+    }
+  
 };
 </script>
 
