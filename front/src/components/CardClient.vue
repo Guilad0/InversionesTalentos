@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { onMounted, ref, defineProps, computed } from "vue";
 import { successAlert, errorAlert } from "@/helpers/iziToast";
+import { getUser } from "@/helpers/utilities";
 
 const enlace = ref('http://localhost:5173/marketplace');
 const mostrarBoton = ref(false);
@@ -19,36 +20,54 @@ const experiencia = ref([]);
 const comentarios = ref([]);
 const links = ref([]);
 const categorias = ref([]);
-const userId = ref(props.client.usuario_id); 
+const userId = ref(props.client.usuario_id);
 
 const router = useRouter();
+const usuario = ref(null)
 
+const loadingCard = ref(false)
+onMounted(async () => {
+  loadingCard.value = true
+  try {
+    usuario.value = await getUser();
+    console.log(user.value);
+    await obtenerLogros();
+    await obtenerExperiencia();
+    await obtenerComentarios();
+    await obtenerLinks();
+    await obtenerCategoria();
+    // Inicializa todos los tooltips en el componente 
+    import('bootstrap').then((bootstrap) => {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]')); tooltipTriggerList.map((tooltipTriggerEl) => { return new bootstrap.Tooltip(tooltipTriggerEl); });
+    });
 
-onMounted(() => {
-  obtenerLogros();
-  obtenerExperiencia();
-  obtenerComentarios();
-  obtenerLinks();
-  obtenerCategoria();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loadingCard.value = false
+  }
+}
 
-  // Inicializa todos los tooltips en el componente 
-  import('bootstrap').then((bootstrap) => { 
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]')); tooltipTriggerList.map((tooltipTriggerEl) => { return new bootstrap.Tooltip(tooltipTriggerEl); }); }); });
+);
 
 
 const showClient = (user) => {
-  router.push({
-    name: "client",
-    params: { name: `${user.nombre}-${user.apellido}` },
-    query: { user: user.usuario_id },
-  });
+  if (usuario.value == null) {
+    alert('debes autenticarte')
+  } else {
+    router.push({
+      name: "client",
+      params: { name: `${user.nombre}-${user.apellido}` },
+      query: { user: user.usuario_id },
+    });
+  }
 };
 
 const obtenerLogros = async () => {
   try {
     const { data } = await axios.get(
       // `https://apitalentos.pruebasdeploy.online/logros/logrosFechas/${userId.value}`
-      import.meta.env.VITE_BASE_URL+`/logros/logrosFechas/${userId.value}`
+      import.meta.env.VITE_BASE_URL + `/logros/logrosFechas/${userId.value}`
     );
     logros.value = data.data || [];
   } catch (error) {
@@ -60,7 +79,7 @@ const obtenerExperiencia = async () => {
   try {
     const { data } = await axios.get(
       // "https://apitalentos.pruebasdeploy.online/logros/experiencia/" + userId.value
-      import.meta.env.VITE_BASE_URL+"/logros/experiencia/" + userId.value
+      import.meta.env.VITE_BASE_URL + "/logros/experiencia/" + userId.value
     );
     experiencia.value = data.data || [];
     //console.log(experiencia.value);
@@ -73,7 +92,7 @@ const obtenerComentarios = async () => {
   try {
     const { data } = await axios.get(
       // "https://apitalentos.pruebasdeploy.online/comentarios/cliente/" + userId.value
-      import.meta.env.VITE_BASE_URL+"/comentarios/cliente/" + userId.value
+      import.meta.env.VITE_BASE_URL + "/comentarios/cliente/" + userId.value
     );
     comentarios.value = data.data || [];
     //console.log(comentarios.value);
@@ -85,7 +104,7 @@ const obtenerLinks = async () => {
   try {
     const { data } = await axios.get(
       // "https://apitalentos.pruebasdeploy.online/links/cliente/" + userId.value
-      import.meta.env.VITE_BASE_URL+"/links/cliente/" + userId.value
+      import.meta.env.VITE_BASE_URL + "/links/cliente/" + userId.value
     );
     links.value = data.data || [];
     //console.log(links.value);
@@ -96,12 +115,14 @@ const obtenerLinks = async () => {
 
 const obtenerCategoria = async () => {
   // try { const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/categories'); // URL correcta para obtener categorías 
-  try { const { data } = await axios.get(import.meta.env.VITE_BASE_URL+'/categories'); // URL correcta para obtener categorías 
-  categorias.value = data.results || []; // Accede al array de categorías dentro de results 
-  //console.log('Categorías obtenidas:', categorias.value); // Imprime todas las categorías para depuración 
-  } catch (error) { console.error('Error al obtener las categorías:', error); } };
+  try {
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/categories'); // URL correcta para obtener categorías 
+    categorias.value = data.results || []; // Accede al array de categorías dentro de results 
+    //console.log('Categorías obtenidas:', categorias.value); // Imprime todas las categorías para depuración 
+  } catch (error) { console.error('Error al obtener las categorías:', error); }
+};
 
-    const tooltipExperiencia = computed(() => {
+const tooltipExperiencia = computed(() => {
   if (experiencia.value.length > 0) {
     return experiencia.value.map((experiencia) => experiencia.cargo).join(", ");
   }
@@ -152,46 +173,26 @@ const copiarEnlace = () => {
         <h5 class="card-title fs-6 text-center">{{ props.client.nombre }}</h5>
         <div class="d-flex justify-content-center">
           <div class="col tooltip-container">
-            <img
-              src="../assets/svg/cardlogro.svg"
-              width="25"
-              alt="" data-toggle="tooltip" data-placement="right"
-              :data-bs-original-title="tooltipExperiencia" 
-              class="custom-tooltip"
-            />
+            <img src="../assets/svg/cardlogro.svg" width="25" alt="" data-toggle="tooltip" data-placement="right"
+              :data-bs-original-title="tooltipExperiencia" class="custom-tooltip" />
           </div>
           <div class="col tooltip-container">
-            <img
-              src="../assets/svg/trofeo.svg"
-              width="22"
-              alt="" data-toggle="tooltip" data-placement="right"
-              :data-bs-original-title="tooltipLogros"
-               class="custom-tooltip"
-            />
+            <img src="../assets/svg/trofeo.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
+              :data-bs-original-title="tooltipLogros" class="custom-tooltip" />
           </div>
 
           <!-- <div class="col"><img src="../assets/svg/details.svg" width="22" alt="" /></div> -->
-          <div class="col" @mouseover="mostrarBoton = true" @mouseleave="mostrarBoton = false"> 
-            <img v-if="!mostrarBoton" src="../assets/svg/links.svg" width="22" alt="" /> 
-            <button v-if="mostrarBoton" @click="copiarEnlace" class="btn-copiar"> Copiar Enlace </button> 
-            </div>
-          <div class="col tooltip-container">
-            <img
-              src="../assets/svg/like.svg"
-              width="22"
-              alt="" data-toggle="tooltip" data-placement="right"
-              :data-bs-original-title="tooltipComentarios" 
-              class="custom-tooltip"
-            />
+          <div class="col" @mouseover="mostrarBoton = true" @mouseleave="mostrarBoton = false">
+            <img v-if="!mostrarBoton" src="../assets/svg/links.svg" width="22" alt="" />
+            <button v-if="mostrarBoton" @click="copiarEnlace" class="btn-copiar"> Copiar Enlace </button>
           </div>
           <div class="col tooltip-container">
-            <img
-              src="../assets/svg/details.svg"
-              width="22"
-              alt="" data-toggle="tooltip" data-placement="right"
-              :data-bs-original-title="categoriaNombre" 
-              class="custom-tooltip"
-            />
+            <img src="../assets/svg/like.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
+              :data-bs-original-title="tooltipComentarios" class="custom-tooltip" />
+          </div>
+          <div class="col tooltip-container">
+            <img src="../assets/svg/details.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
+              :data-bs-original-title="categoriaNombre" class="custom-tooltip" />
           </div>
         </div>
         <div class="text-center">
@@ -202,7 +203,7 @@ const copiarEnlace = () => {
           }}</label>
         </div>
         <div class="row mt-2">
-          <button class="btn btn-gray" @click="showClient(props.client)">
+          <button :disabled="loadingCard" class="btn btn-gray" @click="showClient(props.client)">
             Ver Detalles
           </button>
         </div>
@@ -251,6 +252,7 @@ const copiarEnlace = () => {
   color: white;
 
 }
+
 .tooltip-container {
   position: relative;
 }
@@ -259,5 +261,4 @@ const copiarEnlace = () => {
   position: relative;
   cursor: pointer;
 }
-
 </style>

@@ -154,6 +154,7 @@
 
                     <input type="number" v-model="montoUsd" id="montoUsd" class="form-control "
                       @input="calcularTokens()" required />
+                      <label for="monotUsd" class="mt-2">Compra maxima  USD {{ limiteCompraDolares }}</label>
 
                   </div>
 
@@ -458,13 +459,13 @@ const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
 if (usuario_rol.value == 'Inversionista') {
   inversionista_ID.value = usuario_id.value;
-  onMounted(() => {
-    obtenerDolares_Inversionista();
-    obtenerTokens_Inversionista();
-    obtenerTokens_Inversionista_Invertidos();
+  onMounted(async() => {
+    await obtenerDolares_Inversionista();
+    await obtenerTokens_Inversionista();
+    await obtenerTokens_Inversionista_Invertidos();
 
-    obtenerListaClientes();
-    calcularGanancias();
+    await obtenerListaClientes();
+    await calcularGanancias();
   });
 }
 if (usuario_rol.value == 'Cliente') {
@@ -516,12 +517,16 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
 
 const closeModal = () => {
   montoUsd.value = 0;
-  tokens.value = 0
+  tokens.value = 0;
+  cambioTokens.value = 0;
+  dolares.value = 0;
+  montoDolares.value = 0
 }
 
 const montoLimite = ref(0)
+const limiteCompraDolares = ref(10000)
 const calcularTokens = async () => {
-  if (montoUsd.value <= 100000) {
+  if (montoUsd.value <= limiteCompraDolares.value) {
     try {
       montoLimite.value = montoUsd.value;
       const { data } = await axios.get(baseURL + 'valores');
@@ -533,7 +538,7 @@ const calcularTokens = async () => {
       console.log(error);
     }
   } else {
-    timerAlert('El monto maximo permitido es 100000$.', 'center', 2500, 'error')
+    timerAlert(`El monto maximo permitido es ${limiteCompraDolares.value}.`, 'center', 2500, 'error')
     montoUsd.value = montoLimite.value;
   }
 };
@@ -653,7 +658,7 @@ const calcularGanancias = async () => {
     const { data } = await axios.get(baseURL + 'valores');
     monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
     console.log(monto_tokens_invertir.value);
-    tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
+    tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion) || 0;
     porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
     console.log(porcentaje_inversion.value);
     ganancia_tokens_inv.value = monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
@@ -711,8 +716,8 @@ const inversionistaInvertir = async () => {
       console.error('Error al invertir los tokens:', error);
     }
     monto_tokens_invertir.value = 0;
-    obtenerTokens_Inversionista();
-    obtenerTokens_Inversionista_Invertidos();
+   await obtenerTokens_Inversionista();
+   await obtenerTokens_Inversionista_Invertidos();
     location.reload();
   }
   else {
@@ -743,7 +748,7 @@ const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
     tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
-    tokensDeudasCliente.value = data.data[0].totalTokensDeudas;
+    tokensDeudasCliente.value = data.data[0].totalTokensDeudas || 0;
   } catch (error) {
     console.log(error);
   }
@@ -769,7 +774,7 @@ const calcularDolares = async () => {
     cambioTokens.value = limiteTokensRetiro.value
     timerAlert(`Tu monto actual de tokens es ${tokensCompradosInversionista.value - tokensInvertidosInversionista.value}`, 'center', 2500, 'error')
   }
-  limiteTokensRetiro.value = 0
+
 
 };
 
