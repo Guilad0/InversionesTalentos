@@ -26,6 +26,9 @@ import RecoverPass from '@/views/RecoverPass.vue'
 import CompraTokenView from '@/views/CompraTokenView.vue'
 import TerminosCondicionesView from '@/views/TerminosCondicionesView.vue'
 import PoliticaPrivacidadView from '@/views/PoliticaPrivacidadView.vue'
+import NotFound from '@/views/NotFound.vue'
+import { getUser } from '@/helpers/utilities'
+import { ref } from "vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,12 +57,14 @@ const router = createRouter({
       path: '/marketplace',
       name: 'marketplace',  
       component: ClientsView, 
+      // meta: {roles: ["Admin", "Inversionista",]}
     },
    
     {
       path:'/:name',
       name:'client',
-      component:ClientView
+      component:ClientView,
+      // meta: {roles: ["Admin", "Inversionista"]} Se debe Cambiar el nombre de path
     },
     {
       path:'/login',
@@ -69,12 +74,15 @@ const router = createRouter({
     {
       path:'/admin',
       name:'admin',
-      component:ControlAdminView
+      component:ControlAdminView,
+      meta: {roles: ["Admin"]}
     },
     {
       path:'/perfil',
       name:'perfil',
-      component:PerfilView
+      component:PerfilView,
+      meta: {roles: ["Cliente","Inversionista"]}
+      
     },
     {
       path:'/sign-login',
@@ -94,7 +102,8 @@ const router = createRouter({
     {
       path:'/billetera',
       name:'billetera',
-      component:BilleteraView
+      component:BilleteraView,
+      meta: {roles: ["Cliente", "Inversionista",]}
     },
     {
       path:'/reportes',
@@ -103,19 +112,22 @@ const router = createRouter({
     },
     { path: '/forgot-password',
       name: 'forgot-password', 
-      component: ForgotPassword 
-    }, 
+      component: ForgotPassword,
+      meta: {roles: ["Inversionista", "Cliente"]}
+    },
     { path: '/reset-password/:token',
       name: 'reset-password',
-      component: ResetPassword 
+      component: ResetPassword,
+      meta: {roles: ["Inversionista", "Cliente"]}
     },
     { path: '/experiencia',
       name: 'experiencia', 
-      component: Experiencia
+      component: Experiencia,
+      meta: {roles: ["Inversionista", "Cliente"]}
     }, 
     { path: '/como-funciona',
       name: 'como-funciona',
-      component: ComoFunciona 
+      component: ComoFunciona
     },
     { path: '/comentarios',
       name: 'comentarios', 
@@ -127,30 +139,30 @@ const router = createRouter({
     },
     { path: '/logros',
       name: 'logros', 
-      component: LogrosView
+      component: LogrosView,
+      meta: {roles: ["Inversionista", "Cliente"]}
     },
 
     { path: '/addInfInversionista', 
       name: 'addInfInversionista',
-      component: AddInfInversionista
+      component: AddInfInversionista,
+      meta: {roles: ["Inversionista","Null"]}
     },
     { path: '/addInfCliente', 
       name: 'addInfCliente',
-      component: InformacionView
-    },
-    {
-      path:'/:name',
-      name:'client',
-      component:ClientView
+      component: InformacionView,
+      meta: {roles: ["Cliente","Null"]}
     },
     { path: '/RecoverPass', 
       name: 'RecoverPass',
-      component: RecoverPass
+      component: RecoverPass,
+      meta: {roles: ["Cliente", "Inversionista"]}
     },
     {
       path: '/compra-token',
       name: 'compra-token',
-      component: CompraTokenView
+      component: CompraTokenView,
+      
   },
   {
     path: '/terminos-condiciones',
@@ -161,8 +173,35 @@ const router = createRouter({
     path: '/politica-privacidad',
     name: 'politica-privacidad',
     component: PoliticaPrivacidadView
+  },
+  {
+    path: '/not-found',
+    name: 'notfound',
+    component: NotFound
   }
   ]
+})
+
+router.beforeEach (async(to, from, next) => {
+  try {
+    const user = await getUser()
+    console.log(user);
+    if(to.meta.roles){
+      if (!user) {
+        console.warn("Acceso denegado usuario no autenticado");
+       return next("/not-found")
+      }
+      if (!to.meta.roles.includes(user.rol)) {
+        return next("/not-found")
+      }
+    }
+    next();
+  }
+   catch (error) {
+    console.log("Error en la verificación del usuario:" +error);
+    next("/not-found");
+  }
+  
 })
 
 export default router
