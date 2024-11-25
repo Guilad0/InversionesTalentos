@@ -362,8 +362,7 @@
 
                       <label class="form-label m-auto">Tokens Disponibles</label>
 
-                      <p class="text-xl text-white m-auto"> {{ tokensCompradosInversionista -
-                        tokensInvertidosInversionista - cambioTokens }}</p>
+                      <p class="text-xl text-white m-auto"> {{ tokensRecibidosCliente - cambioTokens }}</p>
 
                     </div>
                     <div class="mb-3">
@@ -470,8 +469,8 @@ if (usuario_rol.value == 'Inversionista') {
 }
 if (usuario_rol.value == 'Cliente') {
   cliente_ID.value = usuario_id.value;
-  onMounted(() => {
-    obtenerTokens_Cliente();
+  onMounted(async() => {
+  await  obtenerTokens_Cliente();
   });
 }
 onMounted(async () => {
@@ -748,6 +747,7 @@ const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
     tokensRecibidosCliente.value = data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
+    console.log('clienteeeeeeeeeeeeeeeeeeeeeeee',tokensRecibidosCliente.value);
     tokensDeudasCliente.value = data.data[0].totalTokensDeudas || 0;
   } catch (error) {
     console.log(error);
@@ -756,6 +756,7 @@ const obtenerTokens_Cliente = async () => {
 
 const limiteTokensRetiro = ref(0)
 const calcularDolares = async () => {
+ if(usuario_rol.value == 'Inversionista'){
   if (cambioTokens.value <= (tokensCompradosInversionista?.value - tokensInvertidosInversionista?.value)) {
     try {
       limiteTokensRetiro.value = cambioTokens.value;
@@ -774,8 +775,27 @@ const calcularDolares = async () => {
     cambioTokens.value = limiteTokensRetiro.value
     timerAlert(`Tu monto actual de tokens es ${tokensCompradosInversionista.value - tokensInvertidosInversionista.value}`, 'center', 2500, 'error')
   }
-
-
+ }
+ if(usuario_rol.value == 'Cliente'){
+  if (cambioTokens.value <= (tokensRecibidosCliente.value)) {
+    try {
+      limiteTokensRetiro.value = cambioTokens.value;
+      const { data } = await axios.get(baseURL + 'valores');
+      valores.value = data.data;
+      let valor = parseFloat(data.data[0].valor_token);
+      let interes = parseFloat(data.data[0].comision_retiros);
+      comision_retiro.value = interes
+      montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
+      dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+      console.log(cambioTokens.value);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    cambioTokens.value = limiteTokensRetiro.value
+    timerAlert(`Tu monto actual de tokens es ${cambioTokens}`, 'center', 2500, 'error')
+  }
+ }
 };
 
 const solicitarRetiro = async () => {
@@ -828,16 +848,7 @@ const solicitarRetiro = async () => {
       };
       console.log(datos);
       try {
-        await axios.post(baseURL + 'solicitarRetiro', datos);
-        // Swal.fire({
-        //   title: "¡Felicidades!",
-        //   text: "Solicitud de Retiro realizada exitosamente",
-        //   icon: "success",
-        //   allowOutsideClick: true,
-        //   allowEscapeKey: true,
-        //   color: 'var(--gray-color)',
-        //   confirmButtonColor: 'var(--yellow-orange)', 
-        // });      
+        await axios.post(baseURL + 'solicitarRetiro', datos);     
         iziToast.success({
           title: 'Felicidades',
           message: 'Solicitud de Retiro realizada exitosamente',
@@ -848,14 +859,14 @@ const solicitarRetiro = async () => {
           progressBarColor: '#FFFFFF',
           closeOnEscape: true
         })
+        await obtenerTokens_Cliente();
         var myModalEl = document.getElementById('modalSolicitud');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);
       }
-     await obtenerTokens_Cliente();
-     await obtenerSolicitudes();
+    //  await obtenerSolicitudes();
     }
     cambioTokens.value = 0;
     montoDolares.value = 0;
