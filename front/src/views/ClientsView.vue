@@ -104,17 +104,17 @@ onMounted(async () => {
       <div class="d-flex justify-content-between">
         <div class="d-flex">
           <div class="position-relative">
-            <input type="text" v-model="name" @input="handleName" class="form-control focus-ring focus-ring-secondary"
+            <input type="text" v-model="name" @input="handleName" class=" search_input form-control focus-ring focus-ring-secondary"
               placeholder="Buscar por nombre" />
             <div class="custom-absolute">
               <img src="../assets/svg/search-svgrepo-com.svg" alt="Descripción del SVG" width="25" />
             </div>
           </div>
-          <div class="d-none d-xl-block">
+          <div class="d-none d-xl-block filter-large">
             <FilterClients :categories="categories" @getAll="getAll" @findByname="findByname"
               :activeCategory="activeCategory" />
           </div>
-          <div class="d-block d-xl-none">
+          <div class="d-block d-xl-none filter-large">
             <FilterClientsSm :categories="categories" @getAll="getAll" @findByname="findByname"
               :activeCategory="activeCategory" />
           </div>
@@ -169,6 +169,16 @@ onMounted(async () => {
   </main>
 </template>
 <style scoped>
+.search_input {
+  padding-left: 10px;
+  margin-bottom: 20px;
+  margin-top: 25px;
+  gap: 10px;
+}
+.filter-large {
+  font-size: 20px; /* Cambia el tamaño del texto dentro de este contenedor */
+  padding: 15px; /* Añade espacio adicional */
+}
 
 .titleM {
   font-family: var(--font-montserrat-bold); /* Variante bold */
@@ -176,6 +186,22 @@ onMounted(async () => {
   font-size: 30px; /* Tamaño predefinido */
   color: var( --gray-color); 
   text-transform: uppercase;
+}
+.dropdown-toggle {
+  font-size: 18px; /* Tamaño del texto */
+  padding: 10px 15px; /* Espaciado interno */
+  height: auto; /* Permite que se ajuste a su contenido */
+  border-radius: 8px; /* Esquinas redondeadas */
+}
+
+.dropdown-menu {
+  font-size: 16px; /* Ajusta el tamaño del texto en el menú */
+  padding: 10px; /* Espaciado interno */
+}
+
+.dropdown-item {
+  font-size: 16px; /* Tamaño del texto de cada opción */
+  padding: 10px 15px; /* Espaciado interno para mejor visibilidad */
 }
 
 main {
@@ -249,6 +275,13 @@ button:disabled {
   font-weight: 500;
   border-bottom: 1px solid var(--gray-color);
   text-decoration: underline !important;
+}
+.custom-absolute {
+  position: absolute; /* Asegura que se pueda ajustar la posición relativa al contenedor */
+  top: 50%; /* Centra verticalmente */
+  transform: translateY(-50%); /* Ajusta la posición para que esté exactamente en el medio */
+  right: 10px; /* Ajusta la distancia desde el borde derecho */
+  pointer-events: none; /* Evita que interfiera con el clic en el campo de texto */
 }
 
 </style>
