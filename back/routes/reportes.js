@@ -304,7 +304,7 @@ router.get("/reporteInversionesInversor", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    inversor_id
+    usuario_id
   } = req.query;
 
   var query = `                              
@@ -324,7 +324,7 @@ INNER JOIN usuarios AS clientes
     ON inversiones.cliente_id = clientes.usuario_id
 WHERE inversiones.fecha_deposito >= '${fecha_inicio}'
 AND inversiones.fecha_deposito <= '${fecha_final}'
-AND inversiones.inversor_id = ${inversor_id}
+AND inversiones.inversor_id = ${usuario_id}
 ORDER BY inversiones.fecha_deposito DESC;
 `;
 
@@ -349,7 +349,7 @@ router.get("/reporteInversionesCliente", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    cliente_id
+    usuario_id
   } = req.query;
 
   var query = `                              
@@ -369,7 +369,7 @@ INNER JOIN usuarios AS clientes
     ON inversiones.cliente_id = clientes.usuario_id
 WHERE inversiones.fecha_deposito > '${fecha_inicio}'
 AND inversiones.fecha_deposito < '${fecha_final}'
-AND inversiones.cliente_id = ${cliente_id}
+AND inversiones.cliente_id = ${usuario_id}
 ORDER BY inversiones.fecha_deposito DESC;
 `;
 
@@ -509,7 +509,7 @@ router.get("/reporteInversionesPendientes/", function(req, res, next){
   const {
     fecha_inicio,
     fecha_final,
-    cliente_id // no importa si es cliente o inversor
+    usuario_id // no importa si es cliente o inversor
   } = req.query;
   var query = ` 
 SELECT 
@@ -523,7 +523,7 @@ CASE
   ELSE 'Desconocido'
 END AS estado_descripcion
 FROM inversiones
-WHERE cliente_id = '${cliente_id}'
+WHERE cliente_id = '${usuario_id}'
 AND fecha_devolucion BETWEEN '${fecha_inicio}' AND '${fecha_final}' -- Reemplaza con las fechas deseadas
 ORDER BY inversion_id DESC;
   `;
