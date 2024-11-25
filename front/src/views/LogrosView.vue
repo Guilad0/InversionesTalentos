@@ -6,19 +6,26 @@
           <div class="card custom-card shadow">
             <div class="card-body py-5 align-items-center">
               <h5 class="fw-bold text-center mb-3 custom-title">Registra Tu Logro</h5>
+              <!-- Botón para volver al Perfil -->
+              <div class="back-button1">
+                <router-link to="/perfil" class="btn-back">
+                  Volver a Perfil
+                </router-link>
+              </div>
+             
 
               <div class="col mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic1">
                   <label for="date" class="form-label custom-subtitle">Fecha</label>
-                  <input type="date" v-model="fecha" id="date" class="form-control text-dark inputF" required :min="minDate"
-                    :max="maxDate" />
+                  <input type="date" v-model="fecha" id="date" class="form-control text-dark inputF" required
+                    :min="minDate" :max="maxDate" />
                 </div>
                 <br>
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
                   <label for="description" class="form-label custom-subtitle">Logros</label>
                   <textarea v-model="descripcion" id="description" class="form-control input" rows="3"
-                     required></textarea>
+                    required></textarea>
                 </div>
               </div>
 
@@ -40,6 +47,8 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
+import iziToast from 'izitoast';
+
 const router = useRouter();
 const cliente_id = ref("");
 const descripcion = ref("");
@@ -53,27 +62,62 @@ onMounted(() => {
   if (user) {
     cliente_id.value = user.usuario_id;
   } else {
-    alert("Error: No se encontró el 'cliente_id' en localStorage.");
+    iziToast.error({
+      title: 'Error',
+      message: 'No se encontró el "cliente_id" en localStorage.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#FF3B30', // Color de fondo rojo para el error
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
   }
 });
 
 // Función para registrar el logro
 const registrarLogro = async () => {
   try {
-    // const response = await axios.post("http://localhost:3000/logros", {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL+"/logros", {
+    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/logros", {
       cliente_id: cliente_id.value,
       descripcion: descripcion.value,
       fecha: fecha.value,
     });
+
     descripcion.value = "";
     fecha.value = "";
-    alert('logro regsitrado')
+
+    // Alerta de éxito con iziToast
+    iziToast.success({
+      title: '¡Éxito!',
+      message: 'Logro registrado correctamente.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#198754', // Color verde para éxito
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
+
+    // Redirigir al perfil
     router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
-    alert("Error al registrar");
+
+    // Alerta de error con iziToast
+    iziToast.error({
+      title: 'Error',
+      message: 'Hubo un problema al registrar el logro.',
+      messageColor: 'white',
+      position: 'topRight',
+      theme: 'dark',
+      color: '#FF3B30', // Color rojo para el error
+      closeOnEscape: true,
+      progressBarColor: '#FFFFFF'
+    });
   }
+
+  // Datos para depuración (console.log)
   const datos = {
     cliente_id: cliente_id.value,
     descripcion: descripcion.value,
@@ -84,26 +128,31 @@ const registrarLogro = async () => {
 </script>
 
 
+
 <style scoped>
 .custom-background {
   background-image: url("@/assets/images/otro-fondo3.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  background-color: rgba(0, 0, 0, 0.563); /* Color con opacidad */
-  background-blend-mode: overlay; /* Combina el color y la imagen */
+  background-color: rgba(0, 0, 0, 0.563);
+  /* Color con opacidad */
+  background-blend-mode: overlay;
+  /* Combina el color y la imagen */
   min-height: 100vh;
   display: flex;
-  align-items: center; /* Centra verticalmente el formulario */
-  justify-content: center; /* Centra horizontalmente el formulario */
+  align-items: center;
+  /* Centra verticalmente el formulario */
+  justify-content: center;
+  /* Centra horizontalmente el formulario */
 }
 
 
 .custom-card {
-  background-color:  rgba(255, 255, 255, 0.877);
+  background-color: rgba(255, 255, 255, 0.877);
   border-radius: 20px;
   box-sizing: border-box;
-  height: 525px;
+  height: 575px;
   padding: 20px;
   width: 520px;
 }
@@ -124,6 +173,7 @@ const registrarLogro = async () => {
   font-weight: 700;
   margin-top: 2px;
 }
+
 .input-container {
   height: 50px;
   position: relative;
@@ -150,10 +200,11 @@ const registrarLogro = async () => {
   padding: 4px 20px 0;
   width: 40%;
 }
+
 .inputF:focus {
-  color: #000000 !important; 
+  color: #000000 !important;
   background-color: var(--white-color);
-  border: 2px solid #F37926;  
+  border: 2px solid #F37926;
   outline: none;
   box-shadow: none;
 }
@@ -170,13 +221,14 @@ const registrarLogro = async () => {
   padding: 4px 20px 0;
   width: 100%;
 }
+
 .input:focus {
   background-color: var(--white-color);
-  border: 2px solid #F37926; 
-  outline: none; 
+  border: 2px solid #F37926;
+  outline: none;
   box-shadow: none;
   color: black;
-} 
+}
 
 
 .custom-button {
@@ -190,4 +242,26 @@ const registrarLogro = async () => {
   background-color: #F37926;
   color: #fff;
 }
+
+.back-button1 {
+  display: flex; 
+  justify-content: flex-end; 
+  margin: 10px; 
+  margin-top: 1px;
+}
+
+.btn-back {
+  padding: 10px 20px; 
+  background-color: #17223B; 
+  color: white; 
+  border: none;
+  border-radius: 5px; 
+  text-decoration: none; 
+}
+
+.btn-back:hover {
+  background-color: #F37926;
+  color: #fff;
+}
+
 </style>
