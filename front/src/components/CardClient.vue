@@ -31,7 +31,7 @@ onMounted(async () => {
   loadingCard.value = true
   try {
     usuario.value = await getUser();
-    console.log(user.value);
+    
     await obtenerLogros();
     await obtenerExperiencia();
     await obtenerComentarios();
@@ -197,7 +197,7 @@ const copiarEnlace = () => {
           </div>
         </div>
         <div class="text-center">
-          <label class="card-text token py-3 m-auto">Precio de Token: ${{
+          <label class="card-text token py-3 m-auto">Monto mínimo de inversión: ${{
             props.client.monto_inversion == null
               ? "00.00"
               : props.client.monto_inversion
