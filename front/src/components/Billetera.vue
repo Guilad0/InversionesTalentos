@@ -966,7 +966,7 @@ button {
 }
 
 .btn-7 span {
-  background-color: rgb(173, 1, 1) !important;
+  background-color: var(--yellow-orange) !important;
 }
 
 .btn-6:hover {
