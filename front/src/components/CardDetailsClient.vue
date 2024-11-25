@@ -75,21 +75,23 @@
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
-              @click="isAuthenticatedAlert()">
+            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" @click="irBilletera">
               <i class="fas fa-wallet"></i> Fondear mi Billetera<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
-              data-bs-target="#modalInversion">
-              <i class="fas fa-dollar-sign"></i> Invertir<span></span>
+            <button :disabled="loadingInvertir" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+              data-bs-toggle="modal" data-bs-target="#modalInversion">
+              <i class="fas fa-dollar-sign"></i> 
+              <label v-if="!loadingInvertir">Invertir</label>
+              <label v-if="loadingInvertir">..cargnado</label>
+              <span></span>
             </button>
 
           </div>
 
           <div class="mt-3">
 
-            <h5 class="title text-center">Descripción</h5>
+            <h5 class="title text-center text-light">Descripción</h5>
             <p class="font">{{ client.vision }}</p>
 
           </div>
@@ -211,47 +213,59 @@
 
           <div class="modal-body">
 
-            <p class="text-xl text-center">Tokens Restantes: {{ tokensCompradosInversionista -
-              tokensInvertidosInversionista }}</p>
+            <p class="text-xl text-center">Tokens Disponibles: {{ tokensCompradosInversionista -
+              tokensInvertidosInversionista - monto_tokens_invertir }}</p>
 
             <form action="#" class="needs-validation" novalidate>
-              <!-- Cliente -->
-              <div class="mb-3 text-center">
+              <div class="d-flex justify-content-center p-0 ">
+                <div class="col row justify-content-center m-auto">
+                  <div class="mb-3">
 
-                <label for="cliente_id" class="form-label">Cliente</label>
+                    <label for="monto_tokens_invertir" class="form-label">Tokens a Invertir</label>
 
-                <p>{{ client.nombre }}</p>
+                    <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
+                      class="form-control mb-2" @input="calcularGanancias()" required />
+                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMinimo }">Monto minimo de inversion:
+                      {{ rangoMinimo }} </label>
+                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMaximo }">Monto maximo de inversion:
+                      {{ rangoMaximo }} </label>
 
+                  </div>
+                </div>
+                <div class="col row justify-content-center m-auto">
+                  <!-- Cliente -->
+                  <div class="mb-3 text-center">
+
+                    <label for="cliente_id" class="form-label">Cliente</label>
+
+                    <p>{{ client.nombre }}</p>
+
+                  </div>
+                  <!-- Tokens, Meses y Ganancia -->
+
+                </div>
+                <div class="col row justify-content-center m-auto">
+                  <div class="text-center">
+
+                    <div class="mb-3">
+
+                      <label class="form-label">Meses de Inversión</label>
+
+                      <p class="text-center m-auto">{{ tiempo_inversion }}</p>
+
+                    </div>
+
+                  </div>
+                  <div class=" mb-3 text-center">
+
+                    <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+
+                    <p class="text-center">{{ ganancia_tokens_inv }}</p>
+
+                  </div>
+                </div>
               </div>
-              <!-- Tokens, Meses y Ganancia -->
-              <div class="row text-center">
 
-                <div class="col-md-4 mb-3">
-
-                  <label for="monto_tokens_invertir" class="form-label">Tokens a Invertir</label>
-
-                  <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
-                    @change="calcularGanancias()" required />
-
-                </div>
-
-                <div class="col-md-4 mb-3">
-
-                  <label class="form-label">Meses de Inversión</label>
-
-                  <p>{{ tiempo_inversion }}</p>
-
-                </div>
-
-                <div class="col-md-4 mb-3">
-
-                  <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-
-                  <p>{{ ganancia_tokens_inv }}</p>
-
-                </div>
-
-              </div>
 
             </form>
 
@@ -259,13 +273,13 @@
 
           <div class="modal-footer">
 
-            <button type="button" @click="inversionistaInvertir()"
+            <button :disabled="bandMaximo || bandMinimo" type="button" @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6" data-bs-dismiss="modal">
               Invertir<span></span>
             </button>
 
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7"
-              data-bs-dismiss="modal">Cerrar<span></span></button>
+              data-bs-dismiss="modal" @click="closeModal">Cerrar<span></span></button>
 
           </div>
 
@@ -291,7 +305,9 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 import { errorAlert, successAlert } from "@/helpers/iziToast";
+import { timerAlert } from "@/helpers/sweetAlerts";
 const route = useRoute();
+const router = useRouter();
 const userId = ref("");
 const client = ref({});
 const url = ref("");
@@ -337,14 +353,15 @@ const obtenerExperiencia = async () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   userId.value = route.query.user;
-  getUser();
-  obtenerTokens_Inversionista();
-  obtenerTokens_Inversionista_Invertidos();
-  obtenerLogros();
-  obtenerExperiencia();
-  obtenerPromedio();
+  await getUser();
+  await obtenerTokens_Inversionista();
+  await obtenerTokens_Inversionista_Invertidos();
+  await obtenerLogros();
+  await obtenerExperiencia();
+  await obtenerPromedio();
+  await cargaValoresIniciales();
 });
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
@@ -367,20 +384,68 @@ const porcentaje_inversion = ref(0);
 const ganancia_tokens_inv = ref(0);
 const tokensCompradosInversionista = ref(0);
 const tokensInvertidosInversionista = ref(0);
-const calcularGanancias = async () => {
+const rangoMinimo = ref(0)
+const rangoMaximo = ref(0)
+const loadingValores = ref(false)
+const cargaValoresIniciales = async () => {
   try {
+    loadingValores.value = true;
     const { data } = await axios.get(baseURL + "valores");
-    monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
-    console.log(monto_tokens_invertir.value);
     tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
-    porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
-    console.log(porcentaje_inversion.value);
-    ganancia_tokens_inv.value =
-      monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
+    // monto_tokens_invertir.value = client.value.monto_inversion;
+    rangoMinimo.value = client.value.monto_inversion;
+    rangoMaximo.value = client.value.cantidad_maxima_inversiones;
+
+    loadingValores.value = false;
   } catch (error) {
     console.log(error);
   }
+
+}
+
+const controlTokens = ref(0)
+const bandMinimo = ref(false)
+const bandMaximo = ref(false)
+const calcularGanancias = async () => {
+  if (monto_tokens_invertir.value >= rangoMinimo.value && monto_tokens_invertir.value <= rangoMaximo.value) {
+    try {
+      bandMinimo.value = false
+      bandMaximo.value = false
+      controlTokens.value = monto_tokens_invertir.value
+      const { data } = await axios.get(baseURL + "valores");
+      console.log(data);
+      monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
+      console.log(monto_tokens_invertir.value);
+      tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
+      porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
+      console.log(porcentaje_inversion.value);
+      ganancia_tokens_inv.value =
+        monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    if (monto_tokens_invertir.value <= rangoMinimo.value) {
+      // timerAlert(`La cantidad minima de inversion es ${rangoMinimo.value}`, 'center', 2500, 'error')
+      bandMinimo.value = true
+      bandMaximo.value = false
+      ganancia_tokens_inv.value = 0
+    }
+    if (monto_tokens_invertir.value >= rangoMaximo.value) {
+      // timerAlert(`La cantidad maxima de inversion es ${rangoMaximo.value}`, 'center', 2500, 'error')
+      bandMaximo.value = true
+      bandMinimo.value = false
+      ganancia_tokens_inv.value = 0
+    }
+  }
 };
+
+const closeModal = () => {
+  bandMaximo.value = false;
+  bandMinimo.value = false;
+  monto_tokens_invertir.value = 0
+  ganancia_tokens_inv.value = 0
+}
 
 const obtenerTokens_Inversionista = async () => {
   try {
@@ -402,9 +467,12 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
   }
 };
 
+const loadingInvertir = ref(false)
 const inversionistaInvertir = async () => {
+  
   const tokensInversionista = parseFloat(tokensCompradosInversionista.value) - parseFloat(tokensInvertidosInversionista.value);;
   if (monto_tokens_invertir.value > 0 && monto_tokens_invertir.value <= tokensInversionista) {
+    loadingInvertir.value = true
     console.log(inversionista_ID.value);
     cliente_Invertir_ID.value = parseInt(userId.value);
     console.log(cliente_Invertir_ID.value);
@@ -430,38 +498,30 @@ const inversionistaInvertir = async () => {
     console.log(baseURL + "invertirTokens", datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
-      // Swal.fire({
-      //   title: "¡Felicidades!",
-      //   text: "Inversión realizada exitosamente",
-      //   icon: "success",
-      //   allowOutsideClick: true,
-      //   allowEscapeKey: true,
-      //   color: "var(--gray-color)",
-      //   confirmButtonColor: "var(--yellow-orange)",
-      // });
+      await obtenerTokens_Inversionista();
+      await obtenerTokens_Inversionista_Invertidos();
+      await cargaValoresIniciales();
+      await obtenerTokens_Inversionista()
+      await obtenerTokens_Inversionista_Invertidos()
+      await cargaValoresIniciales()
       successAlert('Inversion realizada exitosamente', 'Felicidades!!!');
-
-
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
       modal.hide();
     } catch (error) {
       console.error("Error al invertir los tokens:", error);
+    }finally{
+    loadingInvertir.value = false
     }
     monto_tokens_invertir.value = 0;
   } else {
-    // Swal.fire({
-    //   title: "¡Error!",
-    //   text: "Por favor, ingrese una cantidad valida de tokens a invertir",
-    //   icon: "error",
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: true,
-    //   color: "var(--gray-color)",
-    //   confirmButtonColor: "var(--yellow-orange)",
-    // });
     errorAlert('Por favor, ingrese una cantidad valida de tokens a invertir', 'Error!!')
   }
 };
+
+const irBilletera = () =>{
+  router.push('/billetera')
+}
 
 const mostrarInformacion = ref(false);
 const mostrarLogros = ref(false);
@@ -493,9 +553,8 @@ const obtenerPromedio = async () => {
   try {
     // const { data } = await axios.get("https://apitalentos.pruebasdeploy.online/preview/" + userId.value);
     const { data } = await axios.get(import.meta.env.VITE_BASE_URL + "/preview/" + userId.value);
-
-    prom.value = data.data[0].promedio;
-
+    // prom.value = data.data[0]?.promedio || 0;
+    prom.value = (data.data[0]?.promedio || 0).toFixed(1).replace(/\.0$/, '');
   } catch (error) {
     console.log(error);
   }
