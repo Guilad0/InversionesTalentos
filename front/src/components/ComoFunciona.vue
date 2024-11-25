@@ -2,52 +2,54 @@
   <div>
     <div v-if="!loading">
       <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-6">
-        <h2 class="title">Cómo Funciona</h2>
-        <p class="description">
-          Mira este video para conocer qué es <br> Hamilo Inversiones y cómo funciona
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="title">Cómo Funciona</h2>
+            <p class="description">
+              Mira este video para conocer qué es <br />
+              Hamilo Inversiones y cómo funciona
+            </p>
+          </div>
+          <div class="col-md-6 video-container">
+            <iframe
+              width="100%"
+              height="315"
+              :src="videoSrc"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 video-container">
-        <iframe
-          width="100%"
-          height="315"
-          src="https://www.youtube.com/watch?si=Ofi0aaVby5vYn5P0&v=aO5GKcWe-FA&feature=youtu.be"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
+      <div v-if="user == null || user?.rol == 'Null'">
+        <Unete />
       </div>
     </div>
-  </div>
-  <div v-if="user == null || user?.rol == 'Null'">
-    <Unete />
-   </div>
-    </div>
-    <div v-else >
-      <Spinner/>
+    <div v-else>
+      <Spinner />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getUser } from '@/helpers/utilities';
-import Unete from './Unete.vue';
-import Spinner from '../components/Spinner.vue'
-const loading = ref(false)
+import { ref, onMounted } from "vue";
+import { getUser } from "@/helpers/utilities";
+import Unete from "./Unete.vue";
+import Spinner from "../components/Spinner.vue";
+const loading = ref(false);
 const user = ref(null);
+const videoSrc = ref(`https://www.youtube.com/embed/aO5GKcWe-FA`);
 
 onMounted(async () => {
-  loading.value =true;
+  loading.value = true;
   user.value = await getUser();
   console.log(user.value);
-  loading.value = false
+  loading.value = false;
 });
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
 
 .container {
   background: #ffffff;
@@ -66,15 +68,13 @@ onMounted(async () => {
     transform: translateY(0);
   }
 }
-  .title {
-    font-family: var(--font-montserrat-bold); /* Variante bold */
-    font-weight: 700; /* Asegura que sea bold */
-    font-size: 30px; /* Tamaño predefinido */
-    color: var( --gray-color); 
-    text-transform: uppercase;
+.title {
+  font-family: var(--font-montserrat-bold); /* Variante bold */
+  font-weight: 700; /* Asegura que sea bold */
+  font-size: 30px; /* Tamaño predefinido */
+  color: var(--gray-color);
+  text-transform: uppercase;
 }
-
-
 
 .description {
   font-family: var(--font-montserrat-semibold);
