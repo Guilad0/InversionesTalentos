@@ -1,12 +1,7 @@
 <template>
   <main>
     <figure>
-      <img
-        src="https://internetdevels.com/sites/default/files/public/blog_preview/404_page_cover.jpg"
-      />
-      <!-- <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5arOd5FCKgeFW7CxcKkzpGD_mW1ceI0Oeg&s"
-      /> -->
+      <img src="../assets/images/404_not-found.png" />
     </figure>
     <section id="content d-flex ">
       <h1 id="section-header">Error 404:</h1>
