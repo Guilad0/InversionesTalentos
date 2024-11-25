@@ -554,7 +554,7 @@ const loading = ref(false)
 const getRol = async () => {
   try {
     loading.value = true
-    const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getRol/user?id=${usuario.usuario_id}`);
+    const { data } = await axios.get(baseURL+`clients/getRol/user?id=${usuario.usuario_id}`);
     rol.value = data.rol;
   } catch (error) {
     console.log(error);
@@ -593,8 +593,8 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
   try {
     for (let i = 0; i < verifyRegister.value.length; i++) {
       const item = verifyRegister.value[i];
-      console.log(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
-      const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/utilities/${item.field}/?id=${id}`);
+      console.log(baseURL+`utilities/${item.field}/?id=${id}`);
+      const { data } = await axios.get(baseURL+`utilities/${item.field}/?id=${id}`);
       item.status = data.ok;
       item.cant = data.cant;
       console.log(`Campo: ${item.field}, Status: ${item.status}, Cant: ${item.cant}`);
@@ -603,7 +603,7 @@ const verifyFields = async (verifyRegister, id, loadingButtonKYC, bar) => {
     console.log('Error en la petición:', error);
   } finally {
     bar.value = porcentajeTrue(verifyRegister);
-    await axios.patch(`https://apitalentos.pruebasdeploy.online/utilities/savePercentajerUser/${usuario.usuario_id}/?porcentaje=${bar.value}`)
+    await axios.patch(baseURL+`utilities/savePercentajerUser/${usuario.usuario_id}/?porcentaje=${bar.value}`)
     console.log(`Porcentaje de progreso: ${bar.value}%`);
     loadingButtonKYC.value = false;
   }
@@ -682,7 +682,7 @@ const saveVideo = async () => {
 
   try {
     loadingButtonVideo.value = true; // Muestra el spinner mientras se carga el video
-    const response = await axios.post('https://apitalentos.pruebasdeploy.online/informacion/videoUpload', formData, {
+    const response = await axios.post(baseURL+'informacion/videoUpload', formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
