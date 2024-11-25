@@ -285,6 +285,7 @@ const deleted = async (id) => {
     iziToast.success({
       title: "Exito",
       message: "Estado cambiado con exito",
+      messageColor: 'white',
       position: "topRight",
     });
   } catch (error) {
@@ -314,7 +315,7 @@ const answer = async (response, iduser) => {
         message: "Respuesta actualizada correctamente",
         position: "topRight",
         backgroundColor: "green",
-        color: "white",
+        messageColor: 'white',
       });
       await fetchContacts(pagination.value.currentPage);
 
