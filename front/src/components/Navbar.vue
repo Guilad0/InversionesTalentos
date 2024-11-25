@@ -121,6 +121,7 @@ watch(
 
 const logout = () => {
   localStorage.clear();
+  localStorage.removeItem("usuario")
   rol.value = "";
   nombre.value = "";
   apellido.value = "";
