@@ -12,14 +12,16 @@
     </div>
     <div class="destacados-section">
       <h3 class="py-5 text-center title">Destacados</h3>
-      <div class="d-flex flex-wrap justify-content-center flex-wrap ">
+      <div class="d-none d-sm-block">
+      <div class="d-flex flex-wrap justify-content-center">
         <CardClient
           v-for="client in primerosCinco"
           :key="client.usuario_id"
           :client="client"
-          class="fade-in card-client"
+          class="animate__animated animate__fadeIn card-client"
         />
       </div>
+    </div>
     </div>
     <div class="d-flex justify-content-center pb-5">
       <div class="wrap">
@@ -159,43 +161,17 @@ const props = defineProps({
 }
 
 .destacados-section {
-  padding: 2rem 1rem;
+  padding: 2rem 1rem; 
   animation: slideIn 1s ease-in-out;
 }
 
 .card-client {
-  margin: 0.5rem;
-  flex: 1 1 calc(100% - 1rem);
-  max-width: calc(100% - 1rem);
-  min-height: 400px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card-client img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-
-.card-client .user-picture {
-  width: 120px;
-  height: 120px;
-  margin-top: -60px;
-}
-
-.card-client .name-client {
-  font-size: 1.4rem;
-  margin: 25px 0 10px;
-}
-
-.card-client .description {
-  font-size: 1.1rem;
-  padding: 0 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-client:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); */
 }
 
 @media (min-width: 600px) {
@@ -218,7 +194,7 @@ const props = defineProps({
   .card-client {
     flex: 1 1 calc( 30.33% - 2rem)!important;
     max-width: calc(30.33% - 2rem)!important;
-    min-height: 500px;
+    min-height: unset !important;
 
   }
   .fs-custom{
