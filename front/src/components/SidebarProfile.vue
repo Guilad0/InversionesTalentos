@@ -5,7 +5,9 @@
         <div class="card-body">
           <ul>
             <div class="text-center my-4">
-              <img :src="user?.imagen" alt="" width="150" class="rounded-circle" />
+              <img v-if="!user?.imagen" src="@/assets/images/profile_photo.png" alt="" width="150" class="rounded-circle" />
+              <img v-else :src="user?.imagen" alt="" width="150" class="rounded-circle" 
+            />
             </div>
 
             <!-- RouterLink para Perfil -->

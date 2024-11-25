@@ -73,7 +73,13 @@
     </div>
 
     <!-- Modal de agregar FAQ -->
-    <div
+
+     <!-- Fondo negro semi-transparente -->
+    <div 
+    v-show="showModal" 
+    class="modal-backdrop"
+    ></div>
+    <div 
       v-show="showModal"
       class="modal"
       tabindex="-1"
@@ -112,7 +118,11 @@
                   required
                 ></textarea>
               </div>
-              <button type="submit" class="btn btn-success">Agregar</button>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Agregar</button>
+
+              </div>
+              
             </form>
           </div>
         </div>
@@ -216,7 +226,22 @@ onMounted(async () => {
   font-family: 'Monoton'!important;
 } */
 
-.title {
+.btn-success {
+  background-color: var(--gray-color);
+  border: 1px solid var(--yellow-orange); 
+  margin-right: 2rem;
+}
+.modal-header {
+  background-color: var(--dun2-color);
+  border-bottom: none;
+} 
+
+.modal-footer-custom {
+  background-color: var(--dun2-color);
+  border-top: none;
+}
+
+.modal-title {
   font-family: var(--font-montserrat-bold); 
   font-weight: 700; 
   font-size: 30px; 
@@ -224,8 +249,17 @@ onMounted(async () => {
   text-transform: uppercase;
 }
 
- .font{
+.modal-body {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: 400; 
+  font-size: 18px; 
+  
+}
+
+.font{
   font-family: 'Montserrat'!important;
+
  }
 .custom-accordion-button {
   font-family: 'Montserrat', sans-serif;
@@ -300,7 +334,7 @@ button.btn-warning.mt-2.me-2 {
   border: none;
   background-color: var(--gray-color);
   color: white;
-  border: 1px solid var(--yellow-orange);
+  border: none;
   margin-right: 2rem;
 }
 
@@ -308,5 +342,18 @@ button.btn-warning.mt-2.me-2 {
   border: none;
   color: white;
   background-color: var(--yellow-orange) !important;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.922); /* Fondo negro semi-transparente */
+  z-index: 1040; /* Asegúrate de que esté debajo del modal pero encima del contenido */
+}
+
+.modal {
+  z-index: 1050; /* El modal debe estar encima del fondo negro */
 }
 </style>
