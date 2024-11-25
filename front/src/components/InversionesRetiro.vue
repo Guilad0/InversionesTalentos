@@ -20,7 +20,7 @@
 
           <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-toggle="modal"
             data-bs-target="#exportModalTal">
-            Descargar <span></span>
+            Reporte<span></span>
           </button>
         </div>
 
@@ -30,9 +30,7 @@
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content bg-degrade">
               <div class="d-flex flex-row-reverse">
-                <button type="button" @click="closeModal"
-                  class="animate__animated animate__fadeInUp animate__slow btn-7 m-2" data-bs-dismiss="modal"
-                  aria-label="Close">
+                <button type="button" @click="closeModal" class="m-2" data-bs-dismiss="modal" aria-label="Close">
                   Cerrar<span></span>
                 </button>
               </div>
@@ -46,37 +44,37 @@
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'hoy' }" class="icon-color fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Hoy</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Ayer</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Semana</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Mes</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Anual</label>
                   </div>
 
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate" :class="{ selected: band }"
-                      class="fa-regular fa-file fs-1" width="50" /><br />
+                      class="fa-regular fa-file fs-1 icon-hover" width="50" /><br />
                     <label>Personalizado</label>
                   </div>
 
@@ -100,7 +98,11 @@
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
                         <button @click="exportToPDF()">
-                          <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
+                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+                            class="bi bi-download" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                              d="M.5 15a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5zM8 0a.5.5 0 0 1 .5.5v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.293V.5A.5.5 0 0 1 8 0z" />
+                          </svg> <span></span>
                         </button>
                       </div>
 
@@ -330,7 +332,7 @@
 
           <button data-bs-toggle="modal" data-bs-target="#exportModalInv"
             class="animate__animated animate__fadeInUp animate__slow btn-6 m-2">
-            Descargar <span></span>
+            Reporte<span></span>
           </button>
         </div>
 
@@ -357,37 +359,37 @@
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('general')"
-                      :class="{ selected: selectedReport === 'general' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'general' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>General</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
-                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Ayer</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('semana')"
-                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'semana' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Semana</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('mes')"
-                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'mes' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Mes</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('anual')"
-                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1"
+                      :class="{ selected: selectedReport === 'anual' }" class="fa-regular fa-file fs-1 icon-hover"
                       width="50" /><br /><label>Anual</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="showCustomDate"
-                      :class="{ selected: band == true }" class="fa-regular fa-file fs-1" width="50" /><br />
+                      :class="{ selected: band == true }" class="fa-regular fa-file fs-1 icon-hover" width="50" /><br />
                     <label>Personalizado</label>
                   </div><br>
                   <div class="position-absolute custom-date-wrapper">
@@ -410,7 +412,11 @@
                       <div class="custom-abs-rigth">
                         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
                           @click="exportToPDF()">
-                          <img src="../assets/svg/diskette-svgrepo-com.svg" width="35" alt="" />
+                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+                            class="bi bi-download" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                              d="M.5 15a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5zM8 0a.5.5 0 0 1 .5.5v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.293V.5A.5.5 0 0 1 8 0z" />
+                          </svg> <span></span>
                         </button>
                       </div>
                       <span class="subtitle-class">Reportes</span>
@@ -1019,11 +1025,20 @@ const exportToPDF = () => {
 }
 
 .selected {
-  text-decoration: underline;
   border-radius: 50%;
-  border: 3px solid #162139;
-  padding: 10px;
-  font-weight: bold;
+  padding: 8px;
+  color: var(--yellow-orange);
+  border: 3px solid var(--yellow-orange);
+}
+
+.icon-hover {
+  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 2rem;  
+}
+
+.icon-hover:hover {
+  transform: scale(1.5);  
+  color: var(--yellow-orange) !important;  
 }
 
 .slide-enter-active,
@@ -1049,11 +1064,6 @@ const exportToPDF = () => {
 .slide-leave-to {
   transform: translateY(-20px);
   opacity: 0;
-}
-
-.selected {
-  text-decoration: underline;
-  font-weight: bold;
 }
 
 .abs-custom-icon-close {
@@ -1110,6 +1120,10 @@ label {
   text-transform: uppercase;
 }
 
+.icon-color {
+  color: white;
+}
+
 button {
   color: rgb(128, 159, 245);
   font-size: 0.8rem;
@@ -1156,7 +1170,7 @@ button {
 }
 
 .btn-7:hover {
-  background-color: rgb(173, 1, 1) !important;
+  background-color: var(--yellow-orange) !important;
   color: var(--white-color) !important;
   font-display: bold;
 }
