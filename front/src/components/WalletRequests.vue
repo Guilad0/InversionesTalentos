@@ -26,30 +26,37 @@
       <h4 class="d-block mb-2 text-center title">Solicitudes de Retiro</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
-  <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
-    <div class="card-header">
-      <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
-    </div>
-  </div>
-  <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
-    <div class="card-header text-white">
-      <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
-      &nbsp;
-    </div>
-  </div>
-  <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
-    <div class="card-header text-white">
-      <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
-      &nbsp;
-    </div>
-  </div>
-  <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
-    <div class="card-header text-white">
-      <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
-      &nbsp;
-    </div>
-  </div>
-</div>
+          <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
+            <div class="card-header">
+              <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
+            </div>
+          </div>
+          <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
+            <div class="card-header text-white">
+              <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
+              &nbsp;
+            </div>
+          </div>
+          <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
+            <div class="card-header text-white">
+              <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
+              &nbsp;
+            </div>
+          </div>
+          <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
+            <div class="card-header text-white">
+              <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
+              &nbsp;
+            </div>
+          </div>
+          <div class="custom-abs-search">
+            <div class="position-relative">
+              <input name="search" type="text" v-model="search"
+                class="form-control border-1 border-secondary border-primary rounded-5 float" placeholder="Buscar ..."
+                @input="obtenerDatos(1, search)" />
+            </div>
+          </div>
+        </div>
         <div class="table-container">
           <table class="table overflow-x-scroll">
             <thead>
@@ -161,7 +168,7 @@ import axios from "axios";
 const solicitudes = ref([]);
 const paginacion = ref({});
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
-let BaseURL = import.meta.env.VITE_BASE_URL+"/solicitudes";
+let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudes";
 const currentNav = ref("General");
 const totalSolicitudes = ref(0);
 const solicitudesPendientes = ref(0);
@@ -174,10 +181,10 @@ onMounted(() => {
 });
 
 const setActive = (estado) => {
-  currentNav.value = estado;onMounted(() => {
-  obtenerDatos(); // Carga los datos iniciales de solicitudes
-  obtenerTotales(); // Carga los totales iniciales
-});
+  currentNav.value = estado; onMounted(() => {
+    obtenerDatos(); // Carga los datos iniciales de solicitudes
+    obtenerTotales(); // Carga los totales iniciales
+  });
 
   obtenerDatos(1, "", estado);
 };
@@ -199,7 +206,7 @@ const obtenerDatos = async (page = 1, search = "", filtro = "") => {
 };
 const obtenerTotales = async () => {
   try {
-    const { data } = await axios.get(`${BaseURL}/totales`); 
+    const { data } = await axios.get(`${BaseURL}/totales`);
     console.log(data);
     totalSolicitudes.value = data.total;
     solicitudesPendientes.value = data.pendientes;
@@ -256,11 +263,12 @@ const eliminado = async (retiro_id) => {
 <style scoped>
 .title {
   font-family: var(--font-montserrat-bold);
-  font-weight: 700; 
+  font-weight: 700;
   font-size: 30px;
-  color: var( --gray-color); 
+  color: var(--gray-color);
   text-transform: uppercase;
 }
+
 .custom-size {
   font-size: 0.9rem;
   font-weight: 630;
@@ -335,8 +343,9 @@ li {
 label:hover {
   font-weight: 500;
 }
+
 .custom-abs-search {
-    position: absolute;
-    right: 0;
+  position: absolute;
+  right: 0;
 }
 </style>

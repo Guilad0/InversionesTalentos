@@ -72,13 +72,15 @@
                   </span>
                 </td>
 
-                <td>
+                <td v-if="item.estado == '1'">
                   <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <!-- <button class="btn btn-success">
+                </td>
+                <td v-else>
+                  <button class="btn btn-success btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-check" aria-hidden="true"></i>
-                  </button> -->
+                  </button>
                 </td>
               </tr>
             </tbody>
