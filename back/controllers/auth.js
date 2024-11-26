@@ -16,7 +16,7 @@ const auth = (req, res) => {
     conexion.query(sql, [correo], async (error, results) => {
         if (error) {
             res.status(500).json({
-                msg: 'Error en la petición',
+                msg: 'Error al autenticar',
                 error: error.message
             });
             return;
@@ -33,17 +33,21 @@ const auth = (req, res) => {
         const user = results[0];
         const validPassword = await bcrypt.compare(password, user.password);
 
-        if (user.verificado === 0) {
+        if (!validPassword) {
             res.status(400).json({
-                msg: 'Correo incorrecto'
+                msg: 'Credenciales no validas'
             });
             return;
         }
-
-
-        if (!validPassword) {
+        if (user.verificado === 0) {
             res.status(400).json({
-                msg: 'Contraseña incorrecta'
+                msg: 'Verifica tu bandeja de correo'
+            });
+            return;
+        }
+        if (user.estado === 0) {
+            res.status(403).json({
+                msg: 'Su cuenta está inactiva. Contacte al administrador.'
             });
             return;
         }
@@ -66,8 +70,6 @@ const auth = (req, res) => {
         });
 
     })
-
-
 }
 
 async function verifyGoogleToken(token) {
