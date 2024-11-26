@@ -79,9 +79,10 @@
               <i class="fas fa-wallet"></i> Fondear mi Billetera<span></span>
             </button>
 
-            <button :disabled="loadingInvertir" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
-              data-bs-toggle="modal" data-bs-target="#modalInversion">
-              <i class="fas fa-dollar-sign"></i> 
+            <button :disabled="loadingInvertir"
+              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+              data-bs-target="#modalInversion">
+              <i class="fas fa-dollar-sign"></i>
               <label v-if="!loadingInvertir">Invertir</label>
               <label v-if="loadingInvertir">..cargando</label>
               <span></span>
@@ -164,12 +165,10 @@
 
     <!-- Modal Video Presentación -->
     <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
-      aria-hidden="true">
+      aria-hidden="true" @shown.bs.modal="playVideo"> <!-- Agregado el evento para reproducir el video -->
 
       <div class="modal-dialog modal-dialog-centered modal-lg">
-
         <div class="modal-content bg-degrade text-white">
-
           <div class="modal-header">
             <h5 class="modal-title" id="videoModalLabel">
               {{ client.nombre }} {{ client.apellido }}
@@ -178,16 +177,14 @@
           </div>
 
           <div class="modal-body text-center">
-
-            <video class="video-presentacion" autoplay controls>
+            <video ref="video" class="video-presentacion" controls>
               <source v-if="url" :src="url" type="video/mp4"> <!-- Asegúrate de que el tipo de video sea correcto -->
               Tu navegador no soporta el elemento de video.
             </video>
-
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 col-3"
+            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 col-3"
               data-bs-dismiss="modal" @click="pauseVideo()">Cerrar <span></span></button>
           </div>
         </div>
@@ -469,7 +466,7 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
 
 const loadingInvertir = ref(false)
 const inversionistaInvertir = async () => {
-  
+
   const tokensInversionista = parseFloat(tokensCompradosInversionista.value) - parseFloat(tokensInvertidosInversionista.value);;
   if (monto_tokens_invertir.value > 0 && monto_tokens_invertir.value <= tokensInversionista) {
     loadingInvertir.value = true
@@ -510,8 +507,8 @@ const inversionistaInvertir = async () => {
       modal.hide();
     } catch (error) {
       console.error("Error al invertir los tokens:", error);
-    }finally{
-    loadingInvertir.value = false
+    } finally {
+      loadingInvertir.value = false
     }
     monto_tokens_invertir.value = 0;
   } else {
@@ -519,7 +516,7 @@ const inversionistaInvertir = async () => {
   }
 };
 
-const irBilletera = () =>{
+const irBilletera = () => {
   router.push('/billetera')
 }
 
@@ -571,6 +568,20 @@ const generarEstrellas = (promedio) => {
     }
   }
   return estrellas.join("");
+};
+
+const playVideo = () => {
+  const video = $refs.video; // Accede al elemento de video
+  if (video) {
+    video.play(); // Reproduce el video
+  }
+};
+
+const pauseVideo = () => {
+  const video = $refs.video; // Accede al elemento de video
+  if (video) {
+    video.pause(); // Pausa el video
+  }
 };
 
 </script>
@@ -648,7 +659,7 @@ button {
 }
 
 .btn-7 span {
-  background-color: rgb(173, 1, 1) !important;
+  background-color: var(--yellow-orange) !important;
 }
 
 .banner-card {
