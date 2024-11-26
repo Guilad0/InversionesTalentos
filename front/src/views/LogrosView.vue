@@ -48,6 +48,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
 import iziToast from 'izitoast';
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 const router = useRouter();
 const cliente_id = ref("");
@@ -62,7 +63,7 @@ onMounted(() => {
   if (user) {
     cliente_id.value = user.usuario_id;
   } else {
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'No se encontró el "cliente_id" en localStorage.',
       messageColor: 'white',
@@ -71,7 +72,8 @@ onMounted(() => {
       color: '#FF3B30', // Color de fondo rojo para el error
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    errorAlert ('No se encontró el "cliente_id" en localStorage.','Error')
   }
 });
 
@@ -88,7 +90,7 @@ const registrarLogro = async () => {
     fecha.value = "";
 
     // Alerta de éxito con iziToast
-    iziToast.success({
+    /* iziToast.success({
       title: '¡Éxito!',
       message: 'Logro registrado correctamente.',
       messageColor: 'white',
@@ -97,7 +99,8 @@ const registrarLogro = async () => {
       color: '#198754', // Color verde para éxito
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    successAlert ('Logro registrado correctamente.','¡Éxito!')
 
     // Redirigir al perfil
     router.push({ name: 'perfil' });
@@ -105,7 +108,7 @@ const registrarLogro = async () => {
     console.error(error);
 
     // Alerta de error con iziToast
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'Hubo un problema al registrar el logro.',
       messageColor: 'white',
@@ -114,7 +117,8 @@ const registrarLogro = async () => {
       color: '#FF3B30', // Color rojo para el error
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    errorAlert ('Hubo un problema al registrar el logro.')
   }
 
   // Datos para depuración (console.log)

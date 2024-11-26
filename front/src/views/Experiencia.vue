@@ -61,6 +61,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
 import iziToast from 'izitoast';
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 const router = useRouter();
 const cliente_id = ref("");
@@ -113,7 +114,7 @@ const registrarExperiencia = async () => {
     empresa.value = "";
 
     // Alerta de éxito con iziToast
-    iziToast.success({
+    /* iziToast.success({
       title: '¡Éxito!',
       message: 'Experiencia registrada correctamente.',
       messageColor: 'white',
@@ -122,7 +123,8 @@ const registrarExperiencia = async () => {
       color: '#198754', // Color verde para éxito
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    successAlert('Experiencia registrada correctamente','¡Éxito!')
 
     // Redirigir al perfil
     router.push({ name: 'perfil' });
@@ -130,7 +132,7 @@ const registrarExperiencia = async () => {
     console.error(error);
 
     // Alerta de error con iziToast
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'Hubo un problema al registrar la experiencia.',
       messageColor: 'white',
@@ -141,7 +143,9 @@ const registrarExperiencia = async () => {
       progressBarColor: '#FFFFFF'
     });
   }
-
+ */
+    errorAlert('Hubo un problema al registrar la experiencia.', 'Error')
+  }
   // Datos para depuración (console.log)
   const datos = {
     cliente_id: cliente_id.value,

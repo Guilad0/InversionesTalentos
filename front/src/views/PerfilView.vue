@@ -377,7 +377,7 @@ const onFileChange = (event) => {
   if (extension[extension.length - 1] == 'jpeg' || extension[extension.length - 1] == 'jpg' || extension[extension.length - 1] == 'png') {
     console.log('Formato permitido');
   } else {
-    iziToast.warning({
+    /* iziToast.warning({
       title: 'Caution',
       message: 'Formato de imagen no permitida',
       position: 'center',
@@ -388,8 +388,9 @@ const onFileChange = (event) => {
       messageColor: '#FFFFFF',
       titleColor: '#FFFFFF',
       iconColor: '#FFFFFF',
-    });
+    }); */
     // timerAlert('¡Formato de imagen no permitida!','center',2500,'warning')
+    errorAlert('Formato de imagen no permitida','Error','topCenter')
     cleanImage();
   }
 };
@@ -636,7 +637,7 @@ const onVideoChange = (event) => {
 
   // No es necesario verificar la extensión aquí, ya que se maneja en el backend
   if (videoPresentacion.value) {
-    iziToast.success({
+    /* iziToast.success({
       title: 'Éxito',
       message: 'Archivo de video seleccionado correctamente',
       position: 'center',
@@ -646,9 +647,10 @@ const onVideoChange = (event) => {
       messageColor: '#FFFFFF',
       titleColor: '#FFFFFF',
       iconColor: '#FFFFFF',
-    });
+    }); */
+    successAlert ('Archivo de video seleccionado correctamente','Éxito','topCenter')
   } else {
-    iziToast.warning({
+    /* iziToast.warning({
       title: 'Caution',
       message: 'No se seleccionó ningún archivo',
       position: 'center',
@@ -658,7 +660,8 @@ const onVideoChange = (event) => {
       messageColor: '#FFFFFF',
       titleColor: '#FFFFFF',
       iconColor: '#FFFFFF',
-    });
+    }); */
+    errorAlert('No se seleccionó ningún archivo','Error','topCenter')
     cleanVideo();
   }
 };

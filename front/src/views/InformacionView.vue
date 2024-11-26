@@ -92,6 +92,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
 import iziToast from 'izitoast';
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 /* ===== VARIABLES Y REFERENCIAS ===== */
 const router = useRouter();
@@ -115,7 +116,7 @@ onMounted(() => {
     cliente_id.value = user.usuario_id;
     nombre.value = user.nombre;
   } else {
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'No se encontró el cliente_id en localStorage.',
       messageColor: 'white',
@@ -124,7 +125,8 @@ onMounted(() => {
       color: '#f00',
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    errorAlert('No se encontró el cliente_id en localStorage.', 'Error')
   }
   obtenerCategorias();
 });
@@ -137,7 +139,7 @@ const obtenerCategorias = async () => {
     categorias.value = response.data.results;
   } catch (error) {
     console.error('Error al obtener las categorías:', error);
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'No se pudieron cargar las categorías.',
       messageColor: 'white',
@@ -146,7 +148,8 @@ const obtenerCategorias = async () => {
       color: '#f00',
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    errorAlert('No se pudieron cargar las categorías.','Error')
   }
 };
 
@@ -155,7 +158,7 @@ const registrarInformacion = async () => {
   const minimo = parseFloat(monto_inversion.value);
   const maximo = parseFloat(cantidad_maxima_inversiones.value);
   if(minimo > maximo) {
-    iziToast.error({
+    /* iziToast.error({
       title: 'Error',
       message: 'La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.',
       messageColor: 'white',
@@ -164,7 +167,8 @@ const registrarInformacion = async () => {
       color: '#f00',
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
-    });
+    }); */
+    errorAlert('La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.','Error')
     return;
   }
   
@@ -186,7 +190,7 @@ const registrarInformacion = async () => {
       const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/info", datos);
       console.log(response.data);
 
-      iziToast.success({
+      /* iziToast.success({
         title: 'Éxito',
         message: 'Información registrada correctamente.',
         messageColor: 'white',
@@ -195,13 +199,14 @@ const registrarInformacion = async () => {
         color: '#198754',
         closeOnEscape: true,
         progressBarColor: '#FFFFFF'
-      });
+      }); */
+      successAlert ('Información registrada correctamente.', 'Éxito')
 
       router.push({ name: 'perfil' });
     } catch (error) {
       console.error(error);
 
-      iziToast.error({
+      /* iziToast.error({
         title: 'Error',
         message: 'Hubo un problema al registrar la información.',
         messageColor: 'white',
@@ -210,7 +215,8 @@ const registrarInformacion = async () => {
         color: '#f00',
         closeOnEscape: true,
         progressBarColor: '#FFFFFF'
-      });
+      }); */
+      errorAlert ('Hubo un problema al registrar la información.','Error')
     }
   
 };
