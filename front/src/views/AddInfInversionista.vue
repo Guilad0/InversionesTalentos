@@ -98,6 +98,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
+import {successAlert, errorAlert} from "../helpers/iziToast";
 const router = useRouter();
 const id_inversionista = ref("");
 const nombre_completo = ref("");
@@ -136,11 +137,13 @@ const addInfoInversionista = async () => {
   console.log(datos);
   try {
     const response = await axios.post(baseURL+"/clients/addInfoInversionista", datos);
-    alert('Información registrada correctamente');
+    
+    successAlert('Informacion registrada correctamente', 'Felicidades')
     router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
-    alert("Error al registrar");
+    
+    errorAlert('Error al registrar intente de nuevo','Error')
   }
 };
 </script>
