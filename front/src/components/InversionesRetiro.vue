@@ -30,7 +30,8 @@
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content bg-degrade">
               <div class="d-flex flex-row-reverse">
-                <button type="button" @click="closeModal" class="m-2" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" @click="closeModal" class="m-2 btn  btn-orange" data-bs-dismiss="modal"
+                  aria-label="Close">
                   Cerrar<span></span>
                 </button>
               </div>
@@ -43,10 +44,11 @@
               <div class="modal-body px-5">
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <button @click="getReports('hoy')" :class="{ selected: selectedReport === 'hoy' }">
-                      Hoy
-                    </button>
+                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
+                      :class="{ selected: selectedReport === 'hoy' }"
+                      class="icon-color fa-regular fa-file fs-1 icon-hover" width="50" /><br /><label>Hoy</label>
                   </div>
+
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
                       :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1 icon-hover"
@@ -77,14 +79,14 @@
                     <label>Personalizado</label>
                   </div>
 
-                  <div class="position-absolute custom-date-wrapper">
+                  <div class="position-absolute custom-date-wrapper  ">
                     <transition name="slide">
-                      <div v-if="band" class="card px-3 py-2">
-                        <label for="fechaInicio">Fecha de Inicio</label>
+                      <div v-if="band" class="card m-auto p-1 bg-orange">
+                        <label for="fechaInicio" class="text-dark custom-font-size">Fecha de Inicio</label>
                         <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicioCustom"
                           class="form-control" type="date" />
 
-                        <label for="fechaFin">Fecha Final</label>
+                        <label for="fechaFin" class="text-dark  custom-font-size">Fecha Final</label>
                         <input @input="showReportCustom" id="fechaFin" v-model="fechaFinCustom" class="form-control"
                           type="date" />
                       </div>
@@ -95,13 +97,14 @@
                 <div class="card border-0">
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
-                      <div class="custom-abs-rigth">
-                        <button @click="exportToPDF()">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+                      <div class="custom-abs-rigth ">
+                        <button @click="exportToPDF()" class="btn ">
+                          <i class="fa-solid fa-floppy-disk fs-1 text-light floppy-hover"></i>
+                          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
                             class="bi bi-download" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                               d="M.5 15a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5zM8 0a.5.5 0 0 1 .5.5v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.293V.5A.5.5 0 0 1 8 0z" />
-                          </svg> <span></span>
+                          </svg> <span></span> -->
                         </button>
                       </div>
 
@@ -128,7 +131,7 @@
                   </div>
                 </div>
 
-                <div class="px-5 d-flex justify-content-center">
+                <div v-if="!loadingReports" class="px-5 d-flex justify-content-center">
                   <div class="col">
                     <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle">
                       <thead>
@@ -164,8 +167,8 @@
                           <th scope="col">Estado</th>
                         </tr>
                       </thead>
-                      <tbody v-for="rep in reports" :key="rep">
-                        <tr>
+                      <tbody>
+                        <tr v-for="rep in reports" :key="rep">
                           <td scope="col">{{ rep.retiro_id }}</td>
                           <td scope="col">{{ rep.monto_solicitud }}</td>
                           <td scope="col">{{ rep.monto_recibir }}</td>
@@ -176,17 +179,98 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="col text-dark">
-                    <div class="card m-1" v-if="reports.length > 0">
-                      <div class="card-body">
-                        <h5 class="card-title">Compras e Inversiones de Tokens</h5>
-                        <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
-                          :series="series"></apexchart>
+                  <div class="col text-dark ">
+                    <div class="card  m-auto " v-if="reports.length > 0" style="width: 600px; height: 300px;">
+                      <div class="card-body" style="height: 100%; padding: 0;">
+                        <h5 class="card-title" style="padding: 10px; margin: 0;">Compras e Inversiones de Tokens</h5>
+                        <div style="height: calc(100% - 40px);">
+                          <apexchart v-if="reports.length > 0" width="100%" height="100%" type="area" :options="options"
+                            :series="series"></apexchart>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-2 gap-3 flex-wrap" v-if="typeReport == 'Retiros' && bandAlert && !loadingReports">
+                        <div class="card text-bg-light" style="width: 8rem; height: 6rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens solicitados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.reduce((suma, objeto) => suma + objeto.monto_solicitud, 0) }}</p>
+                          </div>
+                        </div>
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Retiros aprobados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                            {{ reports.reduce((suma, objeto) => objeto.estado === 'Aprobado' ? suma +=1 : suma, 0) }}</p>
+                        </div>
+                      </div>
+                        <div class="card text-bg-light" style="width: 8rem; height: 6rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Retiros pendientes</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.reduce((suma, objeto) => objeto.estado === 'Pendiente' ? suma +=1 : suma, 0) }}</p>
+                          </div>
+                      </div>
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total retiros solicitados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.length}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-2 gap-3 flex-wrap" v-if="typeReport == 'Inversiones' && bandAlert && !loadingReports">
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens
+                              invertidos</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.reduce((suma, objeto) => suma + objeto.monto, 0) }}</p>
+                          </div>
+                        </div>
+                        <div v-if="client == 'cliente_id'" class="card text-bg-light" style="width: 8rem; min-height: 5rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens a devolver</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.reduce((suma, objeto) => suma + objeto.monto, 0) + reports.reduce((suma, objeto) => suma + objeto.ganancia, 0)}}
+                            </p>
+                        </div>
+                      </div>
+                      <div v-if="client == 'cliente_id'" class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Inversor destacado</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                                {{
+                                  reports && reports.length > 0 
+                                  ? (() => {
+                                      const totalInversiones = reports.reduce((inversiones, objeto) => {
+                                        inversiones[objeto.inversor] = (inversiones[objeto.inversor] || 0) + objeto.monto;
+                                        return inversiones;
+                                      }, {});
+                                      const [inversorConMas, montoMayor] = Object.entries(totalInversiones).reduce(
+                                        (mayor, actual) => actual[1] > mayor[1] ? actual : mayor,
+                                        ["Sin inversor", 0]
+                                      );
+                                      return ` ${inversorConMas} (${montoMayor.toLocaleString()} tokens)`;
+                                    })()
+                                  : 'Sin datos'
+                                }}
+                              </p>
+                        </div>
+                      </div>
+
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem ; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total Inversiones</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.length }}</p>
+                          </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="text-dark my-3" v-if="reports.length == 0 && bandAlert">
+                <div v-if="loadingReports" class="mt-5">
+                  cargando ...
+                </div>
+                <div class="text-dark my-3" v-if="reports.length == 0 && bandAlert && !loadingReports">
                   <div class="d-flex justify-content-center rounded-3">
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">¡Sin resultados!</h4>
@@ -363,8 +447,8 @@
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }"
-                      class="icon-color fa-regular fa-file fs-1 icon-hover" width="50" /><br /><label>Hoy</label>
+                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1 icon-hover"
+                      width="50" /><br /><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
@@ -409,21 +493,21 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-orange m-2 btn"
                           @click="exportToPDF()">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                            class="bi bi-download" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                              d="M.5 15a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5zM8 0a.5.5 0 0 1 .5.5v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.293V.5A.5.5 0 0 1 8 0z" />
-                          </svg> <span></span>
+                          Descargar &nbsp; <i class="fa-regular fa-file-pdf"></i>
+                        </button>
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-orange m-2 btn"
+                          @click="exportToExcel()">
+                          Descargar &nbsp; <i class="fa-regular fa-file-excel"></i>
                         </button>
                       </div>
                       <span class="subtitle-class">Reportes</span>
-                      <div class="d-flex float-left px-5 mb-3 custom-abs-left">
-                        <div class="btn-group dropup">
-                          <button type="button" class="btn btn-blue dropdown-toggle" data-bs-toggle="dropdown"
+                      <div class="d-flex float-left px-5 mb-3 custom-abs-left ">
+                        <div class="btn-group dropup ">
+                          <button type="button" class="btn btn-orange  dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <label class="text-white">{{ typeReport }} <span></span></label>
+                            <label class="text-white cursor">{{ typeReport }} <span></span></label>
                           </button>
                           <ul class="dropdown-menu">
                             <li @click="showTable('Inversiones')">
@@ -491,16 +575,108 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="col-5" v-if="reports.length > 0">
-                    <div class="card m-1">
+                  <div class="col-5" v-if="reports.length > 0" style="width: 600px; height: 300px;">
+                    <!-- <div class="card m-1" >
                       <div class="card-body">
                         <h5 class="card-title">Compras e Inversiones Anuales de Tokens</h5>
                         <apexchart v-if="reports.length > 0" width="100%" type="area" :options="options"
                           :series="series"></apexchart>
                       </div>
+                    </div> -->
+                    <div class="card  m-auto " v-if="reports.length > 0" style="width: 600px; height: 300px;">
+                      <div class="card-body" style="height: 100%; padding: 0;">
+                        <h5 class="card-title" style="padding: 10px; margin: 0;">Compras e Inversiones Anuales de Tokens</h5>
+                        <div style="height: calc(100% - 40px);">
+                          <apexchart v-if="reports.length > 0" width="100%" height="100%" type="area" :options="options"
+                            :series="series"></apexchart>
+                        </div>
+                      </div>
                     </div>
+
+
+                 <!-- terjetas inversor-->
+                      <div class="d-flex justify-content-center mt-2 gap-3 flex-wrap" v-if="typeReport == 'Retiros' && bandAlert && !loadingReports">
+                        <div class="card text-bg-light" style="width: 8rem; height: 6rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens solicitados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.reduce((suma, objeto) => suma + objeto.monto_solicitud, 0) }}</p>
+                          </div>
+                        </div>
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Retiros aprobados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                            {{ reports.reduce((suma, objeto) => objeto.estado === 'Aprobado' ? suma +=1 : suma, 0) }}</p>
+                        </div>
+                      </div>
+                        <div class="card text-bg-light" style="width: 8rem; height: 6rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Retiros pendientes</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.reduce((suma, objeto) => objeto.estado === 'Pendiente' ? suma +=1 : suma, 0) }}</p>
+                          </div>
+                      </div>
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total retiros solicitados</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.length}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-2 gap-3 flex-wrap" v-if="typeReport == 'Inversiones' && bandAlert && !loadingReports">
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens
+                              invertidos</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.reduce((suma, objeto) => suma + objeto.monto, 0) }}</p>
+                          </div>
+                        </div>
+                        <div v-if="client == 'cliente_id'" class="card text-bg-light" style="width: 8rem; min-height: 5rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total tokens a devolver</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                              {{ reports.reduce((suma, objeto) => suma + objeto.monto, 0) + reports.reduce((suma, objeto) => suma + objeto.ganancia, 0)}}
+                            </p>
+                        </div>
+                      </div>
+                      <div v-if="client == 'cliente_id'" class="card text-bg-light" style="width: 8rem; min-height: 3rem; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Inversor destacado</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">
+                                {{
+                                  reports && reports.length > 0 
+                                  ? (() => {
+                                      const totalInversiones = reports.reduce((inversiones, objeto) => {
+                                        inversiones[objeto.inversor] = (inversiones[objeto.inversor] || 0) + objeto.monto;
+                                        return inversiones;
+                                      }, {});
+                                      const [inversorConMas, montoMayor] = Object.entries(totalInversiones).reduce(
+                                        (mayor, actual) => actual[1] > mayor[1] ? actual : mayor,
+                                        ["Sin inversor", 0]
+                                      );
+                                      return ` ${inversorConMas} (${montoMayor.toLocaleString()} tokens)`;
+                                    })()
+                                  : 'Sin datos'
+                                }}
+                              </p>
+                        </div>
+                      </div>
+
+                        <div class="card text-bg-light" style="width: 8rem; min-height: 3rem ; font-size: 0.8rem;">
+                          <div class="card-body">
+                            <h5 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Total Inversiones</h5>
+                            <p class="card-text text-orange fw-bolder" style="font-size: 0.8rem;">{{ reports.length }}</p>
+                          </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
+
+            
+
+
                 <div class="text-dark my-3" v-if="reports.length == 0 && bandAlert">
                   <div class="d-flex justify-content-center rounded-3">
                     <div class="alert alert-warning" role="alert">
@@ -512,6 +688,8 @@
                     </div>
                   </div>
                 </div>
+
+                
               </div>
             </div>
           </div>
@@ -623,28 +801,29 @@ const usuario = JSON.parse(localStorage.getItem("usuario"));
 const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
 const client = ref("");
+
 if (usuario_rol.value == "Inversionista") {
   inversionista_ID.value = usuario_id.value;
-  onMounted(() => {
-    obtenerInversiones_Inversionista();
-    obtenerInversionista_retiro();
+  onMounted(async () => {
+    await obtenerInversiones_Inversionista();
+    await obtenerInversionista_retiro();
     typeClient.value = "reporteInversionesInversor";
     client.value = "inversor_id";
     getReports("mes");
-    obtenerTotales();
+    await obtenerTotales();
   });
 }
 if (usuario_rol.value == "Cliente") {
   cliente_ID.value = usuario_id.value;
-  onMounted(() => {
-    obtenerInversiones_Clientes();
-    obtenerCliente_retiro();
-    obtenerInversiones_Clientes_Vencidas();
-    obtenerTokens_Cliente();
+  onMounted(async () => {
+    await obtenerInversiones_Clientes();
+    await obtenerCliente_retiro();
+    await obtenerInversiones_Clientes_Vencidas();
+    await obtenerTokens_Cliente();
     typeClient.value = "reporteInversionesCliente";
     client.value = "cliente_id";
     getReports("mes");
-    obtenerTotales();
+    await obtenerTotales();
   });
 }
 
@@ -795,7 +974,8 @@ const getReports = (report) => {
     case "hoy":
       const { startOfDay, endOfDay } = getDayStartAndEnd();
       fechaInicio.value = startOfDay;
-      fechaFin.value = endOfDay;
+      fechaFin.value = endOfDay
+      console.log(startOfDay, endOfDay);;
       break;
     case "ayer":
       const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
@@ -815,7 +995,7 @@ const getReports = (report) => {
       break;
     case "general":
       fechaInicio.value = '2024-01-01'; //provisional
-      fechaFin.value = '2025-01-01';//provisional
+      fechaFin.value = '2030-01-01';//provisional
       break;
     case "anual":
       const { startOfYear, endOfYear } = getCurrentYearStartAndEnd();
@@ -827,18 +1007,18 @@ const getReports = (report) => {
   }
   if (typeReport.value == "Inversiones") {
     getData(
-      `${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`
+      `${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&usuario_id=${usuario.usuario_id}`
     );
-    // console.log(`${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+    console.log(`${typeClient.value}/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
   }
   if (typeReport.value == "Retiros") {
+    let fecha = new Date(fechaFin?.value);
+    fecha.setDate(fecha.getDate() + 1);
     getData(
       `reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&usuario_id=${usuario.usuario_id}`
     );
-    // console.log(`reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFin.value}&${client.value}=${usuario.usuario_id}`);
+    console.log(`reporteSolicitudesID/?fecha_inicio=${fechaInicio.value}&fecha_final=${fecha?.toISOString().split('T')[0]}&usuario_id=${usuario.usuario_id}`);
   }
-  // http://localhost:3000/reportes/reporteSolicitudesID/?fecha_inicio=2024-11-01&fecha_final=2024-11-30&usuario_id=88
-  // reporteSolicitudesID/?fecha_inicio=2024-01-01&fecha_final=2024-12-31&inversor_id=88
   bandAlert.value = true;
 };
 
@@ -847,29 +1027,40 @@ watch(typeReport, () => {
 });
 
 const showReportCustom = () => {
-  const fechaInicio = fechaInicioCustom.value?.trim();
-  const fechaFin = fechaFinCustom.value?.trim();
-  if (
-    fechaInicio && fechaFin &&
-    !isNaN(Date.parse(fechaInicio)) &&
-    !isNaN(Date.parse(fechaFin))
-  ) {
-    const fechaInicioDate = new Date(fechaInicio);
-    const fechaFinDate = new Date(fechaFin);
-    if (fechaFinDate > fechaInicioDate) {
+  if (fechaInicioCustom.value && fechaFinCustom.value) {
+    if (typeReport.value == "Inversiones") {
       getData(
-        `${typeClient.value}/?fecha_inicio=${fechaInicio}&fecha_final=${fechaFin}&inversor_id=${usuario.usuario_id}`
+        `${typeClient.value}/?fecha_inicio=${fechaInicioCustom.value}&fecha_final=${fechaFinCustom.value}&usuario_id=${usuario.usuario_id}`
       );
     }
+
+    if (typeReport.value == "Retiros") {
+      let fecha = new Date(fechaFinCustom?.value);
+      fecha.setDate(fecha.getDate() + 1);
+      getData(
+        `reporteSolicitudesID/?fecha_inicio=${fechaInicioCustom.value}&fecha_final=${fecha?.toISOString().split('T')[0]}&usuario_id=${usuario.usuario_id}`
+      );
+    }
+
+    bandAlert.value = true;
+  } else {
+    console.log('Por favor, complete ambas fechas antes de proceder.');
   }
+
 };
 
+const loadingReports = ref(false)
 const getData = async (url) => {
+  loadingReports.value = true
   console.log(baseUrl + url);
   try {
     const { data } = await axios.get(baseUrl + url);
     (reports.value = data.data), console.log(reports.value);
-  } catch (error) { }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loadingReports.value = false
+  }
 };
 
 const showCustomDate = () => {
@@ -1018,6 +1209,10 @@ const exportToPDF = () => {
 </script>
 
 <style scoped>
+h5{
+  font-size: 0.8rem !important;
+}
+
 .dropdown-item:hover {
   background-color: var(--yellow-orange);
   color: white;
@@ -1027,7 +1222,7 @@ const exportToPDF = () => {
   border-radius: 50%;
   padding: 8px;
   color: var(--yellow-orange);
-  border: 3px solid var(--yellow-orange);
+  border: 3px solid #cbd5e1;
 }
 
 .icon-hover {
@@ -1053,6 +1248,13 @@ const exportToPDF = () => {
 .slide-enter-to {
   transform: translateY(0);
   opacity: 1;
+}
+
+.floppy-hover:hover {
+  fill: wheat !important;
+  transition: 0.45s all;
+  padding: 1px;
+  transform: scale(1.1);
 }
 
 .slide-leave-from {
@@ -1214,12 +1416,18 @@ tr {
 }
 
 .custom-date-wrapper {
-  top: 100%;
+  top: -10%;
   /* Ajusta según la posición deseada */
-  left: 75%;
+  left: 78%;
   /* Centra el contenedor */
   transform: translateX(-50%);
   z-index: 10;
   /* Asegúrate de que esté delante del resto */
+}
+
+.custom-font-size {
+  font-size: 0.8rem;
+  font-weight: 500 !important;
+  color: white !important
 }
 </style>

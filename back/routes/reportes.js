@@ -304,7 +304,7 @@ router.get("/reporteInversionesInversor", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    usuario_id
+    inversor_id
   } = req.query;
 
   var query = `                              
@@ -322,11 +322,32 @@ INNER JOIN usuarios AS inversores
     ON inversiones.inversor_id = inversores.usuario_id
 INNER JOIN usuarios AS clientes 
     ON inversiones.cliente_id = clientes.usuario_id
-WHERE inversiones.fecha_deposito >= '${fecha_inicio}'
-AND inversiones.fecha_deposito <= '${fecha_final}'
-AND inversiones.inversor_id = ${usuario_id}
+WHERE inversiones.fecha_deposito 
+      BETWEEN '${fecha_inicio}' AND '${fecha_final}'
+AND inversiones.inversor_id = ${inversor_id}
 ORDER BY inversiones.fecha_deposito DESC;
+
 `;
+//   var query = `                              
+// SELECT 
+//     inversiones.inversion_id, 
+//     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
+//     inversiones.fecha_deposito, 
+//     inversiones.monto,
+//     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
+//     inversiones.fecha_devolucion, 
+//     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
+//     inversiones.estado
+// FROM inversiones
+// INNER JOIN usuarios AS inversores 
+//     ON inversiones.inversor_id = inversores.usuario_id
+// INNER JOIN usuarios AS clientes 
+//     ON inversiones.cliente_id = clientes.usuario_id
+// WHERE inversiones.fecha_deposito >= '${fecha_inicio}'
+// AND inversiones.fecha_deposito <= '${fecha_final}'
+// AND inversiones.inversor_id = ${inversor_id}
+// ORDER BY inversiones.fecha_deposito DESC;
+// `;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
@@ -349,7 +370,7 @@ router.get("/reporteInversionesCliente", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    usuario_id
+    cliente_id
   } = req.query;
 
   var query = `                              
@@ -360,18 +381,37 @@ SELECT
     inversiones.monto,
     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
     inversiones.fecha_devolucion, 
-    (inversiones.ganancia_estimada - inversiones.monto) AS ganancia,  
+    (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
     inversiones.estado
 FROM inversiones
 INNER JOIN usuarios AS inversores 
     ON inversiones.inversor_id = inversores.usuario_id
 INNER JOIN usuarios AS clientes 
     ON inversiones.cliente_id = clientes.usuario_id
-WHERE inversiones.fecha_deposito > '${fecha_inicio}'
-AND inversiones.fecha_deposito < '${fecha_final}'
-AND inversiones.cliente_id = ${usuario_id}
+WHERE inversiones.fecha_deposito 
+      BETWEEN '${fecha_inicio}' AND '${fecha_final}'
 ORDER BY inversiones.fecha_deposito DESC;
 `;
+//   var query = `                              
+// SELECT 
+//     inversiones.inversion_id, 
+//     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
+//     inversiones.fecha_deposito, 
+//     inversiones.monto,
+//     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
+//     inversiones.fecha_devolucion, 
+//     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia,  
+//     inversiones.estado
+// FROM inversiones
+// INNER JOIN usuarios AS inversores 
+//     ON inversiones.inversor_id = inversores.usuario_id
+// INNER JOIN usuarios AS clientes 
+//     ON inversiones.cliente_id = clientes.usuario_id
+// WHERE inversiones.fecha_deposito > '${fecha_inicio}'
+// AND inversiones.fecha_deposito < '${fecha_final}'
+// AND inversiones.cliente_id = ${cliente_id}
+// ORDER BY inversiones.fecha_deposito DESC;
+// `;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
@@ -474,19 +514,39 @@ router.get("/reporteSolicitudesID", function (req, res, next) {
   } = req.query;
 
   var query = `                              
-SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
-CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
-solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
-solicitudes_retiro.fecha_aprobacion,
-solicitudes_retiro.monto_recibir
+SELECT 
+    solicitudes_retiro.retiro_id, 
+    solicitudes_retiro.tipo, 
+    CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
+    solicitudes_retiro.fecha_solicitud, 
+    solicitudes_retiro.monto_solicitud, 
+    solicitudes_retiro.estado,
+    solicitudes_retiro.fecha_aprobacion,
+    solicitudes_retiro.monto_recibir
 FROM solicitudes_retiro
 INNER JOIN usuarios
 ON usuarios.usuario_id = solicitudes_retiro.usuario_id
-WHERE solicitudes_retiro.fecha_solicitud >= '${fecha_inicio}'
-AND solicitudes_retiro.fecha_solicitud <= '${fecha_final}'
+WHERE solicitudes_retiro.fecha_solicitud 
+      BETWEEN '${fecha_inicio}' AND '${fecha_final}'
 AND solicitudes_retiro.usuario_id = '${usuario_id}'
 ORDER BY solicitudes_retiro.fecha_solicitud DESC;
+
 `;
+
+//   var query = `                              
+// SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
+// CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
+// solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
+// solicitudes_retiro.fecha_aprobacion,
+// solicitudes_retiro.monto_recibir
+// FROM solicitudes_retiro
+// INNER JOIN usuarios
+// ON usuarios.usuario_id = solicitudes_retiro.usuario_id
+// WHERE solicitudes_retiro.fecha_solicitud >= '${fecha_inicio}'
+// AND solicitudes_retiro.fecha_solicitud <= '${fecha_final}'
+// AND solicitudes_retiro.usuario_id = '${usuario_id}'
+// ORDER BY solicitudes_retiro.fecha_solicitud DESC;
+// `;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
@@ -509,7 +569,7 @@ router.get("/reporteInversionesPendientes/", function(req, res, next){
   const {
     fecha_inicio,
     fecha_final,
-    usuario_id // no importa si es cliente o inversor
+    cliente_id // no importa si es cliente o inversor
   } = req.query;
   var query = ` 
 SELECT 
@@ -523,7 +583,7 @@ CASE
   ELSE 'Desconocido'
 END AS estado_descripcion
 FROM inversiones
-WHERE cliente_id = '${usuario_id}'
+WHERE cliente_id = '${cliente_id}'
 AND fecha_devolucion BETWEEN '${fecha_inicio}' AND '${fecha_final}' -- Reemplaza con las fechas deseadas
 ORDER BY inversion_id DESC;
   `;
