@@ -368,7 +368,23 @@ const updateResponse = async (req, res) => {
         });
     });
 };
-
+const obtenerTotales = async (req, res) => {
+    
+    const queryTotales = `
+      SELECT
+        (SELECT COUNT(*) FROM solicitudes_retiro) AS total,
+        (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 1) AS activos,
+        (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 0) AS inactivos;
+    `;
+  
+    connection.query(queryTotales, function (error, results) {
+      if (error) {
+        res.status(500).send({ error, message: "Error al obtener los totales" });
+      } else {
+        res.status(200).send(results[0]);
+      }
+    });
+  };
 
 
 module.exports = {
@@ -376,5 +392,6 @@ module.exports = {
     postContact,
     putStateContact,
     sendEmail,
-    updateResponse
+    updateResponse,
+    obtenerTotales
 }

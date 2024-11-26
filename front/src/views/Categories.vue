@@ -219,6 +219,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import {successAlert, errorAlert} from "../helpers/iziToast";
 const categorias = ref([]);
 const paginacion = ref({});
 const form = ref({ nombre: "", image: null });
@@ -245,8 +246,9 @@ const obtenerCategorias = async (page = 1, search = "") => {
     categorias.value = data.results;
     paginacion.value = data.paginacion;
   } catch (error) {
-    console.error("Error al obtener las categorías:", error);
-    alert("Error al cargar las categorías");
+    /* console.error("Error al obtener las categorías:", error);
+    alert("Error al cargar las categorías"); */
+    errorAlert('Error al cargar las categoria', 'Error')
     categorias.value = [];
     paginacion.value = {};
   }
@@ -257,7 +259,8 @@ const cambiarEstado = async (categoria_persona_id) => {
     const { data } = await axios.patch(BaseURL + "/state/" + categoria_persona_id);
     obtenerCategorias(); // Vuelve a obtener las categorías después de cambiar el estado
   } catch (error) {
-    console.error("Error al cambiar el estado de la categoría:", error);
+    /* console.error("Error al cambiar el estado de la categoría:", error); */
+    errorAlert('Error al cambiar el estado de la categoría:','error')
   }
 };
 
@@ -281,7 +284,8 @@ const editarCategoria = async (categoria_persona_id) => {
     const modal = new bootstrap.Modal(document.getElementById("modalRegisterCategorie"));
     modal.show();
   } catch (error) {
-    console.error("Error al obtener la categoría para editar:", error);
+    /* console.error("Error al obtener la categoría para editar:", error); */
+    errorAlert('Error al obtener la categoría para editar:')
   }
 };
 
@@ -318,7 +322,8 @@ const saveCategory = async () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Categoría creada con éxito");
+      /* alert("Categoría creada con éxito"); */
+      successAlert('Categoría creada','Exito')
     }
 
     // Cerrar el modal correctamente
@@ -329,7 +334,8 @@ const saveCategory = async () => {
     obtenerCategorias();
   } catch (error) {
     console.error("Error al guardar la categoría:", error);
-    alert("Hubo un error al guardar la categoría");
+    
+    errorAlert('Error al guardar la categoría','Error')
   }
 };
 </script>

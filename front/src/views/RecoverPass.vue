@@ -59,6 +59,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import iziToast from "izitoast";
 import { useRouter } from 'vue-router';
+import {successAlert, errorAlert} from "../helpers/iziToast";
 const route = useRouter();
 const baseUrl = import.meta.env.VITE_BASE_URL + "/auth/update-password";
 const old_pass = ref("");
@@ -79,14 +80,15 @@ const validPass = () => {
 
 const guardarCambios = async () => {
   if (!validPass()) {
-    iziToast.error({
+    /* iziToast.error({
       title: "Error",
       message: "Las contraseñas no coinciden",
       messageColor: "white",
       position: "topRight",
       theme: "dark",
       color: "#f00",
-    });
+    }); */
+    errorAlert ('Las contraseñas no coinciden','Error')
     return;
   }
 
@@ -98,45 +100,49 @@ const guardarCambios = async () => {
   try {
     const response = await axios.post(baseUrl + "/", datos);
     mensaje.value = response.data.message;
-    iziToast.success({
+    /* iziToast.success({
       title: "Success",
       message: "Contraseña actualizada correctamente",
       messageColor: "white",
       position: "topRight",
       theme: "dark",
       color: "#198754",
-    });
+    }); */
+    successAlert('Contraseña actualizada correctamente','Exito')
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
   } catch (error) {
     if (error.response.status === 404) {
-      iziToast.error({
+      /* iziToast.error({
         title: "Error",
         message: "Usuario no encontrado",
         messageColor: "white",
         position: "topRight",
         theme: "dark",
         color: "#f00",
-      });
+      }); */
+      errorAlert('Usuario no encontrado','Error')
     } else if (error.response.status === 400) {
-      iziToast.error({
+      /* iziToast.error({
         title: "Error",
         message: "Contraseña antigua incorrecta",
         messageColor: "white",
         position: "topRight",
         theme: "dark",
         color: "#f00",
-      });
+      }); */
+      errorAlert('Contraseña antigua incorrecta','Error')
     } else {
-      iziToast.error({
+      /* iziToast.error({
         title: "Error",
         message: "Error al actualizar la contraseña",
         messageColor: "white",
         position: "topRight",
         theme: "dark",
         color: "#f00",
-      });
+      }); */
+      errorAlert('Error al actualizar la contraseña','Error')
     }
   }
 };

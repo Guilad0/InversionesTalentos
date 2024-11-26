@@ -72,13 +72,15 @@
                   </span>
                 </td>
 
-                <td>
+                <td v-if="item.estado == '1'">
                   <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <!-- <button class="btn btn-success">
+                </td>
+                <td v-else>
+                  <button class="btn btn-success btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-check" aria-hidden="true"></i>
-                  </button> -->
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -163,6 +165,7 @@ import { Modal } from "bootstrap";
 import iziToast from "izitoast";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import {successAlert, errorAlert} from "../helpers/iziToast";
 
 const { results: contacts, getData: getContact } = useFetchData(ref("/contact"));
 console.log("results", contacts);
@@ -282,11 +285,12 @@ const deleted = async (id) => {
     await axios.put(import.meta.env.VITE_BASE_URL+`/contact/stateContact/${id}`);
     fetchContacts(pagination.value.currentPage);
 
-    iziToast.success({
+    /* iziToast.success({
       title: "Exito",
       message: "Estado cambiado con exito",
       position: "topRight",
-    });
+    }); */
+    successAlert('Estado cambiado con exito', 'Exito')
   } catch (error) {
     console.log(error);
   }
@@ -309,13 +313,14 @@ const answer = async (response, iduser) => {
     if (res.status === 200) {
       console.log("Respuesta actualizada correctamente", res.data);
 
-      iziToast.success({
+      /* iziToast.success({
         title: "Exito",
         message: "Respuesta actualizada correctamente",
         position: "topRight",
         backgroundColor: "green",
         color: "white",
-      });
+      }); */
+      successAlert('Respuesta actualizada correctamente','Exito')
       await fetchContacts(pagination.value.currentPage);
 
       const answerModalElement = document.getElementById("answerModal");
