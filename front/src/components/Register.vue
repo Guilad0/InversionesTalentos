@@ -587,7 +587,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .login-card {
   width: 30rem;
   padding: 2rem;
-  min-height: 45rem;
+  height: 40rem;
   margin-top: 5%;
   margin-bottom: 5%;
   background-color: #17223be8;
