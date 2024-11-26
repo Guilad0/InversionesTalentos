@@ -43,11 +43,10 @@
               <div class="modal-body px-5">
                 <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
-                    <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }" class="icon-color fa-regular fa-file fs-1 icon-hover"
-                      width="50" /><br /><label>Hoy</label>
+                    <button @click="getReports('hoy')" :class="{ selected: selectedReport === 'hoy' }">
+                      Hoy
+                    </button>
                   </div>
-
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
                       :class="{ selected: selectedReport === 'ayer' }" class="fa-regular fa-file fs-1 icon-hover"
@@ -364,8 +363,8 @@
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('hoy')"
-                      :class="{ selected: selectedReport === 'hoy' }" class="fa-regular fa-file fs-1 icon-hover"
-                      width="50" /><br /><label>Hoy</label>
+                      :class="{ selected: selectedReport === 'hoy' }"
+                      class="icon-color fa-regular fa-file fs-1 icon-hover" width="50" /><br /><label>Hoy</label>
                   </div>
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img src="../assets//svg/report-svgrepo-com.svg" @click="getReports('ayer')"
@@ -1033,12 +1032,12 @@ const exportToPDF = () => {
 
 .icon-hover {
   transition: transform 0.3s ease, color 0.3s ease;
-  font-size: 2rem;  
+  font-size: 2rem;
 }
 
 .icon-hover:hover {
-  transform: scale(1.5);  
-  color: var(--yellow-orange) !important;  
+  transform: scale(1.5);
+  color: var(--yellow-orange) !important;
 }
 
 .slide-enter-active,
