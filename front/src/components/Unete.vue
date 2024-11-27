@@ -4,7 +4,7 @@
       <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
         <div class="card border-0 text-center position-relative rounded-start">
           <img
-            src="../assets/images/profesional.png"
+            src="../assets/images/unete1.png"
             alt="Profesionales"
             class="rounded-start"
           />
@@ -28,7 +28,7 @@
       <div class="col-12 col-md-6 d-flex flex-column align-items-center p-0 m-0">
         <div class="card border-0 text-center position-relative rounded-end">
           <img
-            src="../assets/images/profesional.png"
+            src="../assets/images/unete2.png"
             alt="Inversor"
             class="rounded-end"
           />

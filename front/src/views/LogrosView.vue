@@ -159,6 +159,10 @@ const registrarLogro = async () => {
   height: 575px;
   padding: 20px;
   width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Asegura que los elementos se alineen desde arriba */
+  min-height: 500px; /* Asegura que tenga suficiente altura */
 }
 
 .custom-title {
@@ -239,7 +243,9 @@ const registrarLogro = async () => {
   background-color: #17223B;
   color: #F3F3F4;
   border: none;
-  margin-top: 170px;
+  padding: 12px 20px;
+  margin-top: auto; /* Empuja el botón hacia el fondo */
+  border-radius: 5px;
 }
 
 .custom-button:hover {
@@ -268,4 +274,127 @@ const registrarLogro = async () => {
   color: #fff;
 }
 
+@media (max-width: 768px) {
+  .custom-card {
+    width: 90%; /* Ajusta el ancho del formulario en pantallas pequeñas */
+    padding: 15px;
+    min-height: auto; /* Ajusta la altura de la tarjeta en pantallas pequeñas */
+  }
+
+  .custom-title {
+    font-size: 24px; /* Ajusta el tamaño del título */
+    margin-top: 0;
+  }
+
+  .inputF, .input {
+    width: 100%; /* Ajusta el tamaño de los campos de entrada */
+  }
+
+  
+  .custom-button {
+      margin-top: 50px; /* Más espacio en pantallas más pequeñas */
+      width: 100%; /* Hace que el botón ocupe el 100% del ancho */
+      height: 45px;
+    }
+  
+
+  .back-button1 {
+    margin-top: 5px; /* Ajusta el margen del botón de volver */
+  }
+
+}
+
+@media (max-width: 360px) {
+  .custom-card {
+    width: 100%; /* Asegura que la tarjeta ocupe el 100% en pantallas pequeñas */
+    padding: 10px;
+  }
+
+  .inputF, .input {
+    height: 40px; /* Ajusta la altura de los inputs en pantallas pequeñas */
+    font-size: 16px; /* Reduce el tamaño de la fuente */
+  }
+
+  .custom-title {
+    font-size: 20px; /* Ajusta el tamaño del título en pantallas pequeñas */
+  }
+
+  .custom-button {
+    margin-top: 50px; /* Ajusta el margen en pantallas aún más pequeñas */
+    width: 100%;
+  }
+}
+
+/* Ajustes específicos para iPhones */
+@media (max-width: 375px) { /* iPhone X, 11, SE */
+  .custom-card {
+    width: 90%; /* Ajustar el ancho */
+    padding: 15px; /* Reducir el padding */
+    min-height: 500px; /* Asegura que haya suficiente altura */
+  }
+
+  .inputF, .input {
+    font-size: 16px; /* Reducir tamaño de fuente */
+    height: 40px; /* Ajustar la altura de los inputs */
+  }
+
+  .custom-button {
+    margin-top: 30px; /* Agregar más margen si es necesario */
+    width: 100%; /* Hacer que el botón ocupe todo el ancho */
+    height: 45px; /* Ajustar la altura del botón */
+  }
+}
+
+@media (max-width: 414px) { /* iPhone 6/7/8 Plus */
+  .custom-card {
+    width: 90%;
+    min-height: 500px;
+  }
+
+  .inputF, .input {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .custom-button {
+    margin-top: 40px;
+    width: 100%;
+    height: 45px;
+  }
+}
+@media (max-width: 428px) { /* iPhone 14 plus*/
+  .custom-card {
+    width: 90%;
+    min-height: 500px;
+  }
+
+  .inputF, .input {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .custom-button {
+    margin-top: 40px;
+    width: 100%;
+    height: 45px;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 320px) { /* iPhone SE 2020 */
+  .custom-card {
+    width: 90%; /* Ajuste del ancho */
+    min-height: 400px;
+  }
+
+  .inputF, .input {
+    font-size: 14px; /* Reducir el tamaño de la fuente aún más */
+    height: 35px; /* Reducir la altura de los inputs */
+  }
+
+  .custom-button {
+    margin-top: 20px; /* Reducir el margen para pantallas más pequeñas */
+    height: 40px;
+  }
+}
 </style>
