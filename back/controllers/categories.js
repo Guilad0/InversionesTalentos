@@ -113,15 +113,24 @@ const saveCategory = (req, res) => {
     });
   }
   let { nombre } = req.body;
-  nombre = nombre.toLowerCase();
-  let query = "SELECT * FROM categoria_personas WHERE nombre = ?";
-  conexion.query(query, [nombre], async (err, data) => {
-    if (err || data.length > 0) {
-      res.status(500).json({
+  
+  
+
+  const queryCheck = "SELECT * FROM categoria_personas WHERE nombre = ?";
+  conexion.query(queryCheck, [nombre], async (err, data) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        msg: "Error al verificar la existencia de la categoría",
         err,
-        msg: "Error al buscar usuario",
       });
-      return;
+    }
+
+    if (data.length > 0) {
+      return res.status(400).json({
+        success: false,
+        msg: `La categoría '${nombre}' ya existe. Por favor, elija otro nombre.`,
+      });
     }
     try {
       const imgPath = await uploadFile(
@@ -133,17 +142,20 @@ const saveCategory = (req, res) => {
       conexion.query(query, [imgPath, nombre], (err) => {
         if (err) {
           res.status(500).json({
+            success: false, 
+            msg: "Error al insertar la categoría en la base de datos",
             err,
           });
           return;
         }
         res.status(201).json({
-          ok: "Imagen cargada",
+          success: true, msg: "Imagen y categoría cargadas exitosamente",
         });
         return;
       });
     } catch (error) {
       res.status(400).json({
+        success: false, msg: "Error al subir la imagen",
         error,
       });
     }

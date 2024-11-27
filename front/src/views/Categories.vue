@@ -25,9 +25,10 @@
         <div class="col-8"></div>
         <div class="col-2 text-end">
           <button
+            type="button"
             class="btn bg-gray rounded-3 text-white btn-categoria"
             data-bs-toggle="modal"
-            data-bs-target="#modalRegisterCategorie"
+            data-bs-target="#modalCreateCategory"
             @click="crearCategoria"
           >
             +
@@ -53,7 +54,9 @@
                 <td>{{ categoria.nombre }}</td>
                 <td>
                   <img
-                    :src="`${BaseURL}/${categoria.imagen}`"
+                    :src="`${BaseURL.replace('/categories', '')}/uploads/categories/${
+                      categoria.imagen
+                    }`"
                     alt="Imagen de categoría"
                     width="50"
                   />
@@ -140,90 +143,138 @@
         </div>
       </div>
     </div>
+  </main>
 
-    <!-- Modal para Crear/Editar Categoría -->
-    <div
-      class="modal fade"
-      id="modalRegisterCategorie"
-      tabindex="-1"
-      aria-labelledby="modalRegisterCategorieLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content modal-card">
-          <!-- Primera fila: Título -->
-          <div class="modal-header text-center">
-            <h5 class="modal-title w-100" id="modalRegisterCategorieLabel">
-              {{ editMode ? "Editar Categoría" : "Crear Nueva Categoría" }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-
-          <!-- Segunda fila: Contenido del formulario -->
-          <div class="modal-body" style="background-color: #17223b">
-            <form @submit.prevent="saveCategory">
-              <div class="container">
-                <!-- Campo: Nombre -->
-                <div class="row mb-3">
-                  <div class="col-12">
-                    <label for="nombre" class="form-label custom-subtitle"
-                      >Nombre de la Categoría</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control input"
-                      id="nombre"
-                      v-model="form.nombre"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <!-- Campo: Imagen -->
-                <div class="row mb-3">
-                  <div class="col-12">
-                    <label for="image" class="form-label custom-subtitle"
-                      >Imagen de la Categoría</label
-                    >
-                    <input
-                      type="file"
-                      class="form-control input"
-                      id="image"
-                      @change="handleFileChange"
-                    />
-                  </div>
-                </div>
-
-                <!-- Botón: Crear/Guardar -->
-                <div class="row">
-                  <div class="col-12 text-center modal-footer">
-                    <button type="submit" class="btn custom-button">
-                      {{ editMode ? "Guardar Cambios" : "Crear Categoría" }}
-                    </button>
-                  </div>
+  <div
+    class="modal fade"
+    id="modalCreateCategory"
+    aria-labelledby="modalCreateCategoryLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content modal-card">
+        <div class="modal-header text-center">
+          <h5 class="modal-title w-100">Crear Nueva Categoría</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" style="background-color: #17223b">
+          <form @submit.prevent="createCategory">
+            <div class="container">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="createNombre" class="form-label custom-subtitle">
+                    Nombre de la Categoría
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    id="createNombre"
+                    v-model="formCreate.nombre"
+                    required
+                  />
                 </div>
               </div>
-            </form>
-          </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="createImage" class="form-label custom-subtitle">
+                    Imagen de la Categoría
+                  </label>
+                  <input
+                    type="file"
+                    class="form-control input"
+                    accept="image/*"
+                    id="createImage"
+                    @change="handleFileChangeCreate"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-center modal-footer">
+                  <button type="submit" class="btn custom-button">Crear Categoría</button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </main>
+  </div>
+
+  <div
+    class="modal fade"
+    id="modalEditCategory"
+    tabindex="-1"
+    aria-labelledby="modalEditCategoryLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content modal-card">
+        <div class="modal-header text-center">
+          <h5 class="modal-title w-100" id="modalEditCategoryLabel">Editar Categoría</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" style="background-color: #17223b">
+          <form @submit.prevent="editCategory">
+            <div class="container">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="editNombre" class="form-label custom-subtitle">
+                    Nombre de la Categoría
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    id="editNombre"
+                    v-model="formEdit.nombre"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="editImage" class="form-label custom-subtitle">
+                    Imagen de la Categoría
+                  </label>
+                  <input
+                    type="file"
+                    class="form-control input"
+                    id="editImage"
+                    @change="handleFileChangeEdit"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-center modal-footer">
+                  <button type="submit" class="btn custom-button">Guardar Cambios</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-import {successAlert, errorAlert} from "../helpers/iziToast";
+import { successAlert, errorAlert } from "../helpers/iziToast";
 const categorias = ref([]);
 const paginacion = ref({});
-const form = ref({ nombre: "", image: null });
-const editMode = ref(false);
+const formCreate = ref({ nombre: "", image: null });
+const formEdit = ref({ nombre: "", image: null });
 const categoriaEditada = ref(null);
 const search = ref("");
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
@@ -232,12 +283,27 @@ const BaseURL = import.meta.env.VITE_BASE_URL + "/categories";
 const router = useRouter();
 
 onMounted(() => {
-  obtenerCategorias();
-  const modalElement = document.getElementById("modalRegisterCategorie");
-  modalElement.addEventListener("hidden.bs.modal", () => {
-    form.value = { nombre: "", image: null }; // Limpiar formulario al cerrar
-  });
+  console.log("Ejecutando onMounted");
+  obtenerCategorias(); // Esperar a que el DOM esté completamente cargado
+  const createModalElement = document.getElementById("modalCreateCategory");
+  const editModalElement = document.getElementById("modalEditCategory");
+  if (createModalElement) {
+    createModalElement.removeEventListener("hidden.bs.modal", handleModalCreateHidden);
+    createModalElement.addEventListener("hidden.bs.modal", handleModalCreateHidden);
+  }
+  if (editModalElement) {
+    editModalElement.removeEventListener("hidden.bs.modal", handleModalEditHidden);
+    editModalElement.addEventListener("hidden.bs.modal", handleModalEditHidden);
+  }
 });
+const handleModalCreateHidden = () => {
+  console.log("Modal de creación cerrado");
+  formCreate.value = { nombre: "", image: null }; // Limpiar formulario al cerrar
+};
+const handleModalEditHidden = () => {
+  console.log("Modal de edición cerrado");
+  formEdit.value = { nombre: "", image: null }; // Limpiar formulario al cerrar
+};
 
 const obtenerCategorias = async (page = 1, search = "") => {
   try {
@@ -248,7 +314,7 @@ const obtenerCategorias = async (page = 1, search = "") => {
   } catch (error) {
     /* console.error("Error al obtener las categorías:", error);
     alert("Error al cargar las categorías"); */
-    errorAlert('Error al cargar las categoria', 'Error')
+    errorAlert("Error al cargar las categoria", "Error");
     categorias.value = [];
     paginacion.value = {};
   }
@@ -260,83 +326,90 @@ const cambiarEstado = async (categoria_persona_id) => {
     obtenerCategorias(); // Vuelve a obtener las categorías después de cambiar el estado
   } catch (error) {
     /* console.error("Error al cambiar el estado de la categoría:", error); */
-    errorAlert('Error al cambiar el estado de la categoría:','error')
+    errorAlert("Error al cambiar el estado de la categoría:", "error");
   }
 };
 
 // Mostrar el modal para crear una nueva categoría
 const crearCategoria = () => {
-  form.value = { nombre: "", image: null }; // Limpiar los campos del formulario
-  editMode.value = false; // Modo de creación
-  categoriaEditada.value = null; // No hay categoría seleccionada
-  const modalElement = document.getElementById("modalRegisterCategorie");
-  const modal = new bootstrap.Modal(modalElement);
-  modal.show();
+  formCreate.value = { nombre: "", image: null }; // Limpiar los campos del formulario
 };
 
 // Mostrar el modal para editar una categoría existente
 const editarCategoria = async (categoria_persona_id) => {
   try {
     const { data } = await axios.get(`${BaseURL}/${categoria_persona_id}`);
-    form.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
+    formEdit.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
     categoriaEditada.value = data; // Guardar la categoría seleccionada para editar
-    editMode.value = true; // Modo de edición
-    const modal = new bootstrap.Modal(document.getElementById("modalRegisterCategorie"));
-    modal.show();
+    const editModal = new bootstrap.Modal(document.getElementById("modalEditCategory"));
+    editModal.show();
   } catch (error) {
-    /* console.error("Error al obtener la categoría para editar:", error); */
-    errorAlert('Error al obtener la categoría para editar:')
+    errorAlert("Error al obtener la categoría para editar:", "Error");
   }
 };
 
 // Manejar el cambio de archivo (imagen)
-const handleFileChange = (event) => {
-  form.value.image = event.target.files[0]; // Guardar la imagen seleccionada
+const handleFileChangeCreate = (event) => {
+  formCreate.value.image = event.target.files[0]; // Guardar la imagen seleccionada
+};
+const handleFileChangeEdit = (event) => {
+  formEdit.value.image = event.target.files[0]; // Guardar la imagen seleccionada
 };
 
-// Guardar la categoría (crear o editar)
-const saveCategory = async () => {
+const createCategory = async () => {
   const formData = new FormData();
-  formData.append("nombre", form.value.nombre);
-  if (form.value.image) {
-    formData.append("image", form.value.image); // Añadir la imagen al FormData
+  formData.append("nombre", formCreate.value.nombre);
+  if (formCreate.value.image) {
+    formData.append("image", formCreate.value.image);
   }
-
   try {
-    if (editMode.value) {
-      // Si estamos en modo edición, hacemos un PUT o PATCH para actualizar la categoría
-      await axios.put(
-        `${BaseURL}/${categoriaEditada.value.categoria_persona_id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      alert("Categoría actualizada con éxito");
+    console.log("Enviando datos al servidor", formCreate.value);
+    const { data } = await axios.post(BaseURL, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log("Respuesta recibida:", data);
+
+    if (data.success) {
+      successAlert(data.msg, "Éxito"); // Mostrar mensaje de éxito
+      const createModalElement = document.getElementById("modalCreateCategory");
+      const createModalInstance = bootstrap.Modal.getInstance(createModalElement);
+      console.log("Ocultando el modal", createModalInstance);
+      createModalInstance.hide();
+      console.log("Obteniendo categorías");
+      obtenerCategorias();
     } else {
-      // Si estamos en modo creación, hacemos un POST para crear una nueva categoría
-      await axios.post(BaseURL, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      /* alert("Categoría creada con éxito"); */
-      successAlert('Categoría creada','Exito')
+      errorAlert(data.msg, "Error"); // Mostrar mensaje de error si no fue exitoso
     }
+  } catch (error) {
+    console.error("Error al crear la categoría", error);
+    errorAlert("Error al crear la categoría", "Error"); // Mostrar mensaje de error en caso de excepción
+  }
+};
 
-    // Cerrar el modal correctamente
-    const modalElement = document.getElementById("modalRegisterCategorie");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    modalInstance.hide();
-
+const editCategory = async () => {
+  const formData = new FormData();
+  formData.append("nombre", formEdit.value.nombre);
+  if (formEdit.value.image) {
+    formData.append("image", formEdit.value.image); // Añadir la imagen al FormData
+  }
+  try {
+    await axios.put(
+      `${BaseURL}/${categoriaEditada.value.categoria_persona_id}`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    successAlert("Categoría actualizada con éxito", "Exito");
+    const editModalElement = document.getElementById("modalEditCategory");
+    const editModalInstance = bootstrap.Modal.getInstance(editModalElement);
+    editModalInstance.hide();
     obtenerCategorias();
   } catch (error) {
-    console.error("Error al guardar la categoría:", error);
-    
-    errorAlert('Error al guardar la categoría','Error')
+    errorAlert("Error al actualizar la categoría", "Error");
   }
+};
+const clearSearch = () => {
+  search.value = "";
+  obtenerCategorias();
 };
 </script>
 
@@ -350,7 +423,7 @@ const saveCategory = async () => {
 }
 /*inicio de la modal*/
 .modal-header {
-  background-color: var(--dun2-color) !important;
+  background-color: #d9c5b2 !important;
   width: 100%;
   height: 75px;
   border-radius: 15px 15px 0 0;
@@ -359,7 +432,7 @@ const saveCategory = async () => {
   justify-content: center;
   position: relative;
 }
-/*.modal-footer {
+.modal-footer {
   background-color: #d9c5b2 !important;
   width: 100%;
   height: 75px;
@@ -368,7 +441,7 @@ const saveCategory = async () => {
   align-items: center;
   justify-content: center;
   position: relative;
-}*/
+}
 
 .modal-card {
   border-radius: 15px;
@@ -377,7 +450,7 @@ const saveCategory = async () => {
 }
 
 .input {
-  /* background-color: rgba(44, 46, 51, 1.1); */
+  background-color: rgba(44, 46, 51, 1.1);
   border-radius: 12px;
   border: 0;
   box-sizing: border-box;
@@ -472,7 +545,6 @@ const saveCategory = async () => {
   color: #f3f3f4;
   font-family: var(--font-montserrat);
   font-size: 16px;
-  border: 1px solid #F37926 !important;
   border: none;
   margin-top: 2px;
   height: 30px;
