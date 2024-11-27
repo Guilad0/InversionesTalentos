@@ -1,28 +1,30 @@
 <template>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <button class="btn border-0" :disabled="isLoading">
-                <li v-if="prev != null" class="page-item my-auto" @click="$emit('prevAction')" >
-                <a class="page-link btn-gray">Anterior</a>
-            </li>
-            </button>
-            <li class="page-item my-auto"><a class="page-link color-gray fw-bolder mx-2 rounded-5 border border-3 ">{{
-                page
-                    }}</a></li>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item mx-2" :class="{ disabled: !prev }" @click="prev && $emit('prevAction')">
+                    <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                </li>
 
-            <button class="btn border-0" :disabled="isLoading">
-                <li class="page-item my-auto" v-if="next != null"
-                :class="{ 'disabled cursor-blocked': next == null || isLoading == true }" @click="$emit('nextAction')">
-                <a class="page-link btn-gray">Siguiente</a>
-            </li>
-            </button>
-        </ul>
-      
-    </nav>
+                <li class="page-item mx-2 active">
+                    <button class="page-link number-page color-gray fw-bolder rounded-5 border border-3">
+                        <span>{{ page }}</span>
+                    </button>
+                </li>
+
+                <li class="page-item mx-2" :class="{ disabled: !next }" @click="next && $emit('nextAction')">
+                    <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </template>
 
 <script setup>
-
 const props = defineProps({
     page: {
         type: Number,
@@ -51,4 +53,41 @@ const props = defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.pagination {
+    margin-top: 1rem;
+}
+
+.pagination .page-item {
+    display: inline-block;
+}
+
+.pagination .page-item.disabled button {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.pagination .page-item .number-page {
+    color: black;
+    /* Color negro */
+    text-decoration: none;
+    /* Sin subrayado */
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+}
+
+.pagination .page-item.active .page-link {
+    color: #080808;
+    font-weight: bold;
+    border: 1.5px solid #b0b8ff;
+    box-shadow: 0px 0px 6px rgb(3, 3, 3);
+    transform: scale(1.05);
+}
+
+.active-button {
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-color);
+    text-decoration: underline !important;
+}
+</style>
