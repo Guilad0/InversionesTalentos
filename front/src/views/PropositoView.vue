@@ -225,7 +225,7 @@ label.text-white {
   position: relative;
   width: 100%;
   height: 100vh;
-  /* background-image: url('proposito_fondo'); */
+  background-image: url('proposito_fondo');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
