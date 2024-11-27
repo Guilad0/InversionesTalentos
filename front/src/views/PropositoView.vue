@@ -25,11 +25,16 @@ watchEffect(() => {
     image.value = results.value[0].proposito_imagen;
     const element = document.querySelector('.full-background');
     
-    // Aseguramos que la imagen de fondo sea fija, ocupe todo el espacio y no se mueva
+    // La imagen de fondo sea fija, ocupe todo el espacio y no se mueva
     element.style.backgroundImage = `url(${image.value})`;
-
+    element.style.backgroundSize = 'cover';
+    element.style.backgroundAttachment = 'fixed';  // Asegura que la imagen sea fija
+    element.style.backgroundPosition = 'center';
+    element.style.backgroundRepeat = 'no-repeat';
   }
 });
+
+
 
 
 const onFileChange = (event) => {
@@ -184,17 +189,28 @@ const saveText = async () => {
 </template>
 
 <style scoped>
+/* ========================== Estilos generales ========================== */
 
+/* Asegurarse de que el html y body tengan altura completa */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* ========================== Estilos de la fuente ========================== */
+
+/* Estilos para el texto en blanco */
 label.text-white {
   color: white;
   /* Asegura que el texto sea blanco */
 }
 
+/* Títulos */
 .h1-title {
   font-family: var(--font-montserrat-bold);
   font-weight: 700;
   font-size: 30px;
-  color: var(white);
+  color: var(--white-color);
   margin-right: 300px !important;
   margin-top: 200px !important;
   text-align: right;
@@ -202,79 +218,57 @@ label.text-white {
   margin-bottom: 0px !important;
 }
 
-/* Asegurarse de que el html y body tengan altura completa */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  /* Elimina los márgenes predeterminados del body */
-}
+/* ========================== Estilos del contenedor principal ========================== */
 
 /* Contenedor principal que incluirá el header y main-content */
 .full-background {
   position: relative;
   width: 100%;
-  height: 100vh; 
-  background-attachment: fixed; 
-  background-size: cover;      
-  background-position: center; 
-} 
+  height: 100vh;
+  background-image: url('proposito_fondo');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
+/* ========================== Estilos para el header ========================== */
 
 /* Estilos para el header */
 .header {
-
   padding: 15px;
   text-align: center;
   width: 100%;
-  /* Asegura que el header ocupe todo el ancho */
 }
 
+/* Estilo para el título del header */
 .header h1 {
   font-size: 24px;
   margin-bottom: 0px;
   letter-spacing: 1px;
-  font-style: var(--font-montserrat-bold);
-  /* Cursiva para darle elegancia */
+  font-family: var(--font-montserrat-bold);
   font-weight: bold;
-  /* Negrita para mayor presencia */
   color: #fff;
 }
 
-/* Estilos para el main-content */
+/* ========================== Estilos para el main-content ========================== */
+
 .main-content {
   color: #333;
   padding-top: 10px;
   padding: 30px;
   max-width: 600px;
-  /* Ajusta el ancho máximo del contenido */
   width: 100%;
-  /* Asegura que el main-content ocupe todo el ancho posible */
   margin: 0px 100px 50px auto;
-  /* Desplaza el contenido a la derecha */
   background-color: rgba(255, 255, 255, 0.1);
-  /* Fondo semitransparente para hacer el texto más legible */
   border-radius: 20px;
-  /* Bordes redondeados */
   display: flex;
   flex-direction: column;
-  /* Organiza los elementos dentro de main en columna */
   justify-content: flex-start;
-  /* Alinea los elementos hacia el principio */
   align-items: flex-end;
-  /* Alinea el contenido a la derecha */
 }
 
-h2 {
-  margin-bottom: 5px;
-  /* Reduce el margen inferior para acercar el título al cuadro de texto */
-  padding-bottom: 0px;
-  /* Elimina cualquier padding adicional */
-  font-size: 24px;
-  /* Ajusta el tamaño de la fuente si es necesario */
-  line-height: 1.2;
-}
-
+/* Títulos dentro de main-content */
 .main-content h2 {
   margin-bottom: 5px;
   text-align: justify;
@@ -282,59 +276,38 @@ h2 {
   line-height: 1.6;
   margin: 0;
   font-style: italic;
-  /* Cursiva */
   font-weight: 400;
-  /* Grosor moderado */
   color: var(--white-color) !important;
-  /* Contraste oscuro */
 }
 
-@media (min-width: 600px) {
+/* ========================== Estilos de los botones ========================== */
 
-
-  .fs-custom-text {
-    font-size: 1rem;
-
-  }
+/* Estilo base para los botones personalizados */
+.custom-button {
+  background-color: #17223b;
+  color: #f3f3f4;
+  font-family: var(--font-montserrat);
+  font-size: 16px;
+  border: 1px solid #F37926 !important;
+  border-radius: 5px;
+  margin-top: 2px;
+  height: 40px;
+  width: 180px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-@media (min-width: 900px) {
-
-
-  .fs-custom-text {
-    font-size: 1rem;
-
-  }
+/* Efecto hover para el botón */
+.custom-button:hover {
+  background-color: #f37926 !important;
+  color: #fff;
 }
 
-@media (min-width: 1200px) {
-
-
-  .fs-custom-text {
-    font-size: 1rem;
-
-  }
-}
-
-@media (max-width: 600px) {
-
-
-  .fs-custom-text {
-    font-size: 1rem;
-
-  }
-}
-
-@media (max-width: 400px) {
-
-
-  .fs-custom-text {
-    font-size: 0.9rem;
-
-  }
-}
-
-/*modal*/
+/* ========================== Estilos del modal ========================== */
 
 .modal-title {
   color: var(--gray-color);
@@ -366,28 +339,47 @@ h2 {
   height: 100%;
 }
 
-/* Estilo base para los botones personalizados */
-.custom-button {
-  background-color: #17223b;
-  color: #f3f3f4;
-  font-family: var(--font-montserrat);
-  font-size: 16px;
-  border: 1px solid #F37926 !important;
-  border-radius: 5px;
-  margin-top: 2px;
-  height: 40px;
-  width: 180px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
+/* ========================== Estilos responsivos generales ========================== */
+
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .main-content h2 {
+    font-size: 1rem;
+  }
+
+  .fs-custom-text {
+    font-size: 1rem;
+  }
+
+  .custom-button {
+    width: 90%;
+  }
 }
 
-/* Efecto hover para el botón */
-.custom-button:hover {
-  background-color: #f37926 !important;
-  color: #fff;
+@media (max-width: 400px) {
+  .fs-custom-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .fs-custom-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .fs-custom-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fs-custom-text {
+    font-size: 1rem;
+  }
 }
 </style>
