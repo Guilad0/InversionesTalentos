@@ -7,6 +7,10 @@
             @click="showView('wallRequests')">
             <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Retiro
           </li>
+          <li class="py-3 ps-2 rounded  nav-link  my-3 retiro " :class="{ 'border-custom': view == 'SolicitudesTokens' }"
+            @click="showView('SolicitudesTokens')">
+            <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Compra de Tokens
+          </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
             @click="showView('users')">
             <i class="fa-solid fa-users "></i> &nbsp; Usuarios
@@ -44,6 +48,7 @@
       </div>
       <div class="col-10">
         <Solicitudes v-if="view == 'wallRequests'" />
+        <SolicitudesTokens v-if="view == 'SolicitudesTokens'" />
         <Users v-if="view == 'users'" />
         <Posts v-if="view == 'posts'" />
         <Ajustes v-if="view == 'ajustes'" />
@@ -60,6 +65,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import Solicitudes from '../components/WalletRequests.vue'
+import SolicitudesTokens from '../components/WalletRequestsTokens.vue'
 import Users from '../components/Users.vue';
 import Posts from '../components/Posts.vue'
 import Ajustes from '@/components/Ajustes.vue';
