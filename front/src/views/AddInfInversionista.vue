@@ -1,21 +1,29 @@
 <template>
-  <div class="custom-background">
-    <div class="d-flex justify-content-center align-items-center container">
-      <div class="container col-md-6 mt-5 mb-5">
-        <form @submit.prevent="addInfoInversionista">
+  <div class="custom-background" >
+    <div class="container animate__animated animate__fadeIn">
+      <div class="container col-md-6 d-flex justify-content-center">
+        <form @submit.prevent="addInfoInversionista" novalidate>
           <div class="card custom-card shadow">
             <div class="card-body py-5 align-items-center">
-              <label class="fw-bold text-center d-block w-100 custom-subtitle-up">¡Bienvenid@ {{ nombre }} completa tu
+              <label class="fw-bold text-center d-block w-100 custom-subtitle-up">¡Bienvenid@ {{ user?.nombre }} completa tu
                 registro!</label>
               <br>
               <h5 class="fw-bold text-center mb-3 custom-color custom-title">Registra tus datos</h5>
 
-              <div class="row mb-3">
+              <div class="row mb-4">
                 <div class="col-md-6 custom-subtitle input-container ic1">
                   <label for="nombre_completo" class="form-label">Nombre Completo</label>
-                  <input type="text" v-model="nombre_completo" id="nombre_completo" class="form-control text-dark input"
+                  <input
+                    type="text"
+                    v-model="nombre_completo"
+                    id="nombre_completo"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
+                     @input="validarCampoNombre"
+                    class="form-control text-dark input"
                     required />
+                    <div v-if="errorNombre" class="invalid-feedback fs-custom">{{ errorNombre }}</div>
                 </div>
+                
 
                 <div class="col-md-6 custom-subtitle input-container ic2">
                   <label for="tipo_dni" class="form-label ">Tipo de Documento</label>
@@ -23,67 +31,101 @@
                     <option value="ci" class="btn-gray ">CI</option>
                     <option value="pasaporte" class="btn-gray ">Pasaporte</option>
                   </select>
+                  <div  class="invalid-feedback fs-custom">Debes seleccionar un tipo de DNI</div>
                 </div>
               </div>
 
-              <div class="row mb-3">
+              <div class="row mb-4">
                 <div class="col-md-6 custom-subtitle input-container ic3">
                   <label for="dni" class="form-label">Número de Documento</label>
-                  <input type="text" v-model="dni" id="dni" class="form-control text-dark input" required />
+                  <input
+                    type="text"
+                    v-model="dni"
+                    pattern="^[A-Za-z0-9]{7,9}$"
+                    id="dni"
+                    class="form-control text-dark input"
+                    required />
+                <div  class="invalid-feedback fs-custom">{{ errorDni }}</div>
                 </div>
-
                 <div class="col-md-6 custom-subtitle input-container ic4">
                   <label for="domicilio" class="form-label">Dirección</label>
-                  <input type="text" v-model="domicilio" id="domicilio" class="form-control text-dark input" required />
+                  <input
+                    type="text"
+                    v-model="domicilio"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{10,}$"
+                    id="domicilio"
+                    class="form-control text-dark input"
+                    required />
+                <div  class="invalid-feedback fs-custom">Minimo 10 caracteres </div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic5">
                   <label for="ciudad" class="form-label">Ciudad</label>
-                  <input type="text" v-model="ciudad" id="ciudad" class="form-control text-dark input" required />
+                  <input
+                    type="text"
+                    v-model="ciudad"
+                    id="ciudad"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{10,}$"
+                    class="form-control text-dark input"
+                    required />
+                <div  class="invalid-feedback fs-custom">Minimo 10 caracteres </div>
                 </div>
 
                 <div class="col-md-6 custom-subtitle input-container ic6">
                   <label for="fuente_de_ingresos" class="form-label">Fuente de Ingresos</label>
-                  <input type="text" v-model="fuente_de_ingresos" id="fuente_de_ingresos"
-                    class="form-control text-dark input" required />
+                  <input
+                    type="text"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{10,}$"
+                    v-model="fuente_de_ingresos"
+                    id="fuente_de_ingresos"
+                    class="form-control text-dark input"
+                    required />
+                <div  class="invalid-feedback fs-custom">Minimo 10 caracteres </div>
                 </div>
 
 
                 <!-- botones de radio -->
-                <div class="col-md-6 mt-3">
-                  <div class="col-md-12">
-                    <br>
-                    <label class="form-label custom-subtitle">Situación Laboral</label>
-                    <div class="form-check">
-                      <input type="radio" v-model="situacion_laboral" id="empleado" value="Empleado"
-                        class="form-check-input" />
-                      <label class="form-check-label" for="empleado">Empleado</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" v-model="situacion_laboral" id="independiente" value="Independiente"
-                        class="form-check-input" />
-                      <label class="form-check-label" for="independiente">Independiente</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" v-model="situacion_laboral" id="estudiante" value="Estudiante"
-                        class="form-check-input" />
-                      <label class="form-check-label" for="estudiante">Estudiante</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" v-model="situacion_laboral" id="desempleado" value="desempleado"
-                        class="form-check-input" />
-                      <label class="form-check-label" for="desempleado">Desempleado</label>
-                    </div>
+               
+              </div>
+
+              <div class="row pt-2">
+              <div class="col">
+                <div class="col-md-12">
+                  <br>
+                  <label class="form-label custom-subtitle">Situación Laboral</label>
+                  <div class="form-check">
+                    <input type="radio" v-model="situacion_laboral" id="empleado" value="Profesional" 
+                      class="form-check-input" />
+                    <label class="form-check-label" for="empleado">Profesional</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" v-model="situacion_laboral" id="independiente" value="Independiente"
+                      class="form-check-input" />
+                    <label class="form-check-label" for="independiente">Independiente</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" v-model="situacion_laboral" id="estudiante" value="Estudiante"
+                      class="form-check-input" />
+                    <label class="form-check-label" for="estudiante">Estudiante</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" v-model="situacion_laboral" id="desempleado" value="Desempleado"
+                      class="form-check-input" />
+                    <label class="form-check-label" for="desempleado">Desempleado</label>
                   </div>
                 </div>
               </div>
+            </div>
 
 
-              <button type="submit" class="btn custom-button rounded-3">
-                Registrar
+            <div class="text-center d-flex justify-content-center align-content-center mt-2 ">
+              <button  type="submit" class="btn custom-button rounded-3 m-auto">
+                <label v-if="loading">Registrar</label>
+                <label v-else>Registrar</label>
               </button>
+            </div>
             </div>
           </div>
         </form>
@@ -98,7 +140,14 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
-import {successAlert, errorAlert} from "../helpers/iziToast";
+import { successAlert, errorAlert } from "../helpers/iziToast";
+import { getUser, validarNombre } from "@/helpers/utilities";
+const errorNombre = ref('')
+const errorDni = ref('Solo se permiten letras y numeros')
+const validarCampoNombre = () => {
+  errorNombre.value = validarNombre(nombre_completo.value);
+};
+
 const router = useRouter();
 const id_inversionista = ref("");
 const nombre_completo = ref("");
@@ -106,49 +155,81 @@ const dni = ref("");
 const tipo_dni = ref("");
 const domicilio = ref("");
 const ciudad = ref("");
-const situacion_laboral = ref("");
+const situacion_laboral = ref("Profesional");
 const fuente_de_ingresos = ref("");
 const baseURL = import.meta.env.VITE_BASE_URL;
+const user = ref(null)
 // Cliente_id desde localStorage
-onMounted(() => {
-  const user = JSON.parse(localStorage.getItem("usuario"));
-  console.log(user);
+onMounted(async() => {
+  user.value =await getUser()
   if (user) {
-    id_inversionista.value = user.usuario_id;
-    console.log(id_inversionista.value);
-    nombre_completo.value = user.nombre;
+    id_inversionista.value = user.value.usuario_id;
+    nombre_completo.value = user.value.nombre;
   } else {
     alert("Error: No se encontró el cliente_id en localStorage.");
   }
 });
 
-// Función registro de información
-const addInfoInversionista = async () => {
+// Función para validar el formulario
+const validarFormulario = (event) => {
+  const form = event.target.closest("form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+  return true;
+};
+
+const loading = ref(false)
+const addInfoInversionista = async (event) => {
+  if (!validarFormulario(event)) return;
+  if ( tipo_dni.value == 'ci' && !/^\d{8}$/.test(dni.value)) {
+  errorAlert('La cédula de identidad debe tener exactamente 8 dígitos numéricos.','Error')
+  dni.value = ''
+  errorDni.value = 'Formato no valido'
+  return;
+}
+  if ( tipo_dni.value == 'pasaporte' && !/^[A-Z]\d{8}$/.test(dni.value)) {
+      dni.value = ''
+  errorDni.value = 'Formato no valido'
+    errorAlert('El número de pasaporte debe comenzar con una letra mayuscula, seguida de 8 dígitos numéricos.', 'Error');
+    return;
+}
   const datos = {
     id_inversionista: id_inversionista.value,
-    nombre_completo: nombre_completo.value,
+    nombre_completo: nombre_completo.value.trim(),
     dni: dni.value,
     tipo_dni: tipo_dni.value,
-    domicilio: domicilio.value,
-    ciudad: ciudad.value,
+    domicilio: domicilio.value.trim(),
+    ciudad: ciudad.value.trim(),
     situacion_laboral: situacion_laboral.value,
-    fuente_de_ingresos: fuente_de_ingresos.value
+    fuente_de_ingresos: fuente_de_ingresos.value.trim(),
   };
+
   console.log(datos);
+  loading.value = true
   try {
-    const response = await axios.post(baseURL+"/clients/addInfoInversionista", datos);
-    
-    successAlert('Informacion registrada correctamente', 'Felicidades')
-    router.push({ name: 'perfil' });
+    await axios.post(baseURL + "/clients/addInfoInversionista", datos);
+    setTimeout(() => {
+      loading.value = false
+    }, 500);
+    successAlert("Información registrada correctamente", "Felicidades");
+    router.push({ name: "perfil" });
   } catch (error) {
     console.error(error);
-    
-    errorAlert('Error al registrar intente de nuevo','Error')
+    errorAlert("Error al registrar, intente de nuevo", "Error");
   }
+
+  
 };
 </script>
 
 <style scoped>
+.fs-custom{
+  font-size: 0.6rem;
+}
 .custom-background {
   background-image: url("@/assets/images/otro-fondo3.png");
   background-size: cover;
