@@ -339,7 +339,7 @@ label.text-white {
   height: 100%;
 }
 
-/* ========================== Estilos responsivos ========================== */
+/* ========================== Estilos responsivos generales ========================== */
 
 @media (max-width: 600px) {
   .header h1 {
