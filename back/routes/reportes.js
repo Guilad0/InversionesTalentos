@@ -3,7 +3,9 @@ var router = express.Router();
 var connection = require("../database");
 
 router.get("/usuariosCantidad", function (req, res, next) {
-  var query = ` SELECT rol, COUNT(*) AS cantidad FROM usuarios GROUP BY rol;`;
+  var query = ` SELECT rol, COUNT(*) AS cantidad 
+                FROM usuarios 
+                GROUP BY rol;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
