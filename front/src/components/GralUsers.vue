@@ -190,13 +190,13 @@ const closeModal = () =>{
             <i class="fa-solid fa-user-minus"></i> <strong class=""> Inactivos</strong> {{inaactivos}} &nbsp; 
           </div>
         </div>
-        <div class="">
+        <div class="custom-abs-search">
             <div class="position-relative">
           <input
             name="search"
             type="text"
             v-model="search"
-            class="form-control border-1 border-secondary  rounded-5" 
+            class="form-control border-1 border-secondary rounded-5" 
             placeholder="Buscar ..."
             @input="handleName"
           />
@@ -212,7 +212,7 @@ const closeModal = () =>{
         </div>
         </div>
       </div>
-      <div class="table-responsive shadow  animate__animated  animate__fadeIn" v-if="!isLoading">
+      <div class="table-responsive animate__animated  animate__fadeIn" v-if="!isLoading">
         <table class="table overflow-x-scroll table-sm  table-light">
           <thead class="table-dark">
             <tr class="table-secondary">
@@ -372,7 +372,7 @@ const closeModal = () =>{
     <div v-if="isLoading">
         <Spinner/>
     </div>
-    <div class="footer pt-5">
+    <div class="footer">
       <Pagination
         :page="page"
         :prev="prev"
