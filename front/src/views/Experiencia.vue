@@ -1,31 +1,49 @@
 <template>
   <div class="background">
-    <div class="overlay"></div>
-    <div class="form">
-      <div class="title">¡Bienvenid@ {{ nombre }}!</div>
+    <div class="overlay  "></div>
+    <div class="form animate__animated animate__fadeIn">
+      <div class="title">¡Bienvenid@ {{ user?.nombre }}!</div>
       <div class="subtitle">Completa tu Registro</div>
       <br>
       <!-- Botón para volver al Perfil -->
-      <div class="back-button1">
+      <!-- <div class="back-button1">
         <router-link to="/perfil" class="btn-back">
           Volver a Perfil
         </router-link>
-      </div>
+      </div> -->
 
 
-      <form @submit.prevent="registrarExperiencia">
+      <form @submit.prevent="registrarExperiencia" novalidate >
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="institucion" class="label">Institución</label>
-              <input id="institucion" v-model="institucion" type="text" class="input" required />
+              <input
+                id="institucion"
+                v-model="institucion"
+                ref="refInstitucion"
+                type="text"
+                class="input form-control"
+                required />
+                <div class="ms-2 invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
+                  </div>
             </div>
           </div>
 
           <div class="col mb-6">
             <div class="input-container">
               <label for="cargo" class="label">Cargo</label>
-              <input id="cargo" v-model="cargo" type="text" class="input" required />
+              <input
+                id="cargo"
+                v-model="cargo"
+                ref="refCargo"
+                type="text"
+                class="input form-control"
+                required />
+                <div class="ms-2 invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
+                  </div>
             </div>
           </div>
 
@@ -33,24 +51,36 @@
 
         <div class="input-container2">
           <label for="actividades" class="label">Actividades</label>
-          <textarea id="actividades" v-model="actividades" class="input" rows="3" required></textarea>
+          <textarea
+            id="actividades"
+            ref="refActividades"
+            v-model="descripcion"
+            pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
+            class="input form-control"
+            rows="3"
+            required></textarea>
+            <div class="ms-2 invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
+                  </div>
         </div>
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_inicio" class="label">Fecha Inicio</label>
-              <input id="fecha_inicio" v-model="fecha_inicio" type="date" class="input" required />
+              <input ref="refMinDate" id="fecha_inicio" v-model="fecha_inicio" type="date" class="input form-control" required />
             </div>
           </div>
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_final" class="label">Fecha Final</label>
-              <input id="fecha_final" v-model="fecha_final" type="date" class="input" required />
+              <input ref="refMaxDate" id="fecha_final" v-model="fecha_final" type="date" class="input form-control" required />
             </div>
           </div>
         </div>
 
-        <button type="submit" class="submit">Registrar</button>
+        <div class="text-center">
+          <button type="submit" class="btn-gray mt-3 btn">Registrar</button>
+        </div>
       </form>
     </div>
   </div>
@@ -66,24 +96,41 @@ import {successAlert, errorAlert} from "../helpers/iziToast";
 const router = useRouter();
 const cliente_id = ref("");
 const descripcion = ref("");
+const institucion = ref("");
+const cargo = ref("");
 const fecha_inicio = ref("");
-const fecha_fin = ref("");
-const puesto = ref("");
-const empresa = ref("");
-const minDate = "01-01-1990";
-const maxDate = new Date().toISOString().split("T")[0];
+const fecha_final = ref("");
+const refMinDate = ref("");
+const refActividades = ref("");
+const refCargo = ref("");
+const refInstitucion = ref("");
+const refMaxDate = ref("");
+const minDate = ref("1970-01-01");
+const maxDate = ref(new Date().toISOString().split("T")[0]);
 
 // Obtener el cliente_id desde localStorage al montar el componente
+const user = ref(JSON.parse(localStorage.getItem("usuario")));
+const validarFormulario = (event) => {
+  const form = event.target.closest("form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+  return true;
+};
+
+
 onMounted(() => {
-  const user = JSON.parse(localStorage.getItem("usuario"));
-  console.log(user);
+  console.log(user.value);
   if (user) {
-    cliente_id.value = user.usuario_id;
+    cliente_id.value = user.value.usuario_id;
   } else {
     // Alerta de error si no se encuentra el cliente_id en localStorage
     iziToast.error({
       title: 'Error',
-      message: 'No se encontró el "cliente_id" en localStorage.',
+      message: 'Usuario no valido para esta seccion',
       messageColor: 'white',
       position: 'topRight',
       theme: 'dark',
@@ -91,71 +138,74 @@ onMounted(() => {
       closeOnEscape: true,
       progressBarColor: '#FFFFFF'
     });
+
   }
 });
 
 // Función para registrar la experiencia
-const registrarExperiencia = async () => {
-  try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/experiencia", {
-      cliente_id: cliente_id.value,
-      descripcion: descripcion.value,
-      fecha_inicio: fecha_inicio.value,
-      fecha_fin: fecha_fin.value,
-      puesto: puesto.value,
-      empresa: empresa.value
-    });
+const registrarExperiencia = async ( event ) => {
+  if (!validarFormulario(event)) return;
+  if (institucion.value && institucion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
+  institucion.value = (institucion.value.trim() =='')? '': institucion.value;
+  refInstitucion.value.focus();
+  errorAlert('La institución debe contener más de 5 letras.', 'Error');
+  return;
+}
+  if (cargo.value && cargo.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
+    cargo.value = (cargo.value.trim() =='')? '': cargo.value;
+    refCargo.value.focus()
+  errorAlert('El campo cargo  debe contener más de 5 letras.', 'Error');
+  return;
+}
 
+  if (descripcion.value && descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
+    descripcion.value = (descripcion.value.trim() =='')? '': descripcion.value;
+    refActividades.value.focus();
+    errorAlert('La descripción no puede estar vacía ni contener solo espacios.', 'Error')
+  return
+} 
+  if( fecha_inicio.value <= minDate.value ){
+    errorAlert('Fecha de inicio no valida.', 'Error')
+    refMinDate.value.focus()
+    return
+  }
+  if( fecha_final.value > maxDate.value ){
+    errorAlert('Fecha de inicio no valida.', 'Error')
+    refMaxDate.value.focus()
+    return
+  }
+  if( fecha_inicio.value >= fecha_final.value ){
+    errorAlert('La fecha de inicio no puede ser mayor a la fecha final.', 'Error')
+    refMinDate.value.focus()
+    return
+  }
+
+  const datos = {
+    cliente_id: cliente_id.value,
+    actividades: descripcion.value.trim(),
+    fecha_inicio: fecha_inicio.value,
+    fecha_final: fecha_final.value,
+    cargo: cargo.value.trim(),
+    institucion: institucion.value.trim()
+  };
+  console.log(datos);
+  try {
+      await axios.post(import.meta.env.VITE_BASE_URL + "/experiencia", datos);
     // Limpiar los campos después de registrar
     descripcion.value = "";
     fecha_inicio.value = "";
-    fecha_fin.value = "";
-    puesto.value = "";
-    empresa.value = "";
-
-    // Alerta de éxito con iziToast
-    /* iziToast.success({
-      title: '¡Éxito!',
-      message: 'Experiencia registrada correctamente.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#198754', // Color verde para éxito
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    }); */
+    fecha_final.value = "";
+    cargo.value = "";
+    institucion.value = "";
     successAlert('Experiencia registrada correctamente','¡Éxito!')
-
     // Redirigir al perfil
     router.push({ name: 'perfil' });
   } catch (error) {
     console.error(error);
-
-    // Alerta de error con iziToast
-    /* iziToast.error({
-      title: 'Error',
-      message: 'Hubo un problema al registrar la experiencia.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#FF3B30', // Color rojo para el error
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    });
-  }
- */
     errorAlert('Hubo un problema al registrar la experiencia.', 'Error')
+    window.location.reload();
   }
-  // Datos para depuración (console.log)
-  const datos = {
-    cliente_id: cliente_id.value,
-    descripcion: descripcion.value,
-    fecha_inicio: fecha_inicio.value,
-    fecha_fin: fecha_fin.value,
-    puesto: puesto.value,
-    empresa: empresa.value
-  };
-  console.log(datos);
+
 };
 </script>
 
@@ -165,7 +215,7 @@ const registrarExperiencia = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 93vh;
   margin: 0;
   position: relative;
   background-image: url('@/assets/images/otro-fondo3.png');
