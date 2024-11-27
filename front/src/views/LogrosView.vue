@@ -2,39 +2,37 @@
   <div class="custom-background">
     <div class="container form-container">
       <div class="container col-md-6 mt-5 mb-5">
-        <form @submit.prevent="registrarLogro">
+        <form @submit.prevent="registrarLogro" novalidate>
           <div class="card custom-card shadow">
             <div class="card-body py-5 align-items-center">
-              <h5 class="fw-bold text-center mb-3 custom-title">Registra Tu Logro</h5>
+              <h5 class="fw-bold text-center mb-3 custom-title">¡Bienvenid@ {{ user?.nombre }} completa tu
+                registro!</h5>
               <!-- Botón para volver al Perfil -->
-              <div class="back-button1">
+              <!-- <div class="back-button1">
                 <router-link to="/perfil" class="btn-back">
                   Volver a Perfil
                 </router-link>
-              </div>
-             
-
+              </div> -->
               <div class="col mb-3">
                 <div class="col-md-6 custom-subtitle input-container ic1">
                   <label for="date" class="form-label custom-subtitle">Fecha</label>
-                  <input type="date" v-model="fecha" id="date" class="form-control text-dark inputF" required
-                    :min="minDate" :max="maxDate" />
+                  <input type="date" v-model="fecha" id="date" class="form-control text-dark inputF" required ref="refFecha"  />
+                  <div class="invalid-feedback fs-custom">Campo requerido</div>
                 </div>
                 <br>
-
                 <div class="col-md-6 custom-subtitle input-container ic2">
                   <label for="description" class="form-label custom-subtitle">Logros</label>
-                  <textarea v-model="descripcion" id="description" class="form-control input" rows="3"
+                  <textarea v-model="descripcion" id="description" class="form-control input" rows="3" ref="refDescripcion"
                     required></textarea>
+                  <div class="invalid-feedback fs-custom">Campo requerido</div>
                 </div>
               </div>
-
-
-
-              <button type="submit" class="btn custom-button rounded-3">
+            </div>
+             <div class="text-center">
+              <button :disabled="loading" type="submit" class="btn custom-button rounded-3">
                 Registrar Logro
               </button>
-            </div>
+             </div>
           </div>
         </form>
       </div>
@@ -54,86 +52,82 @@ const router = useRouter();
 const cliente_id = ref("");
 const descripcion = ref("");
 const fecha = ref("");
-const minDate = "01-01-1990";
-const maxDate = new Date().toISOString().split("T")[0];
+const minDate = ref("1970-01-01");
+const maxDate = ref(new Date().toISOString().split("T")[0]);
+const user = ref(JSON.parse(localStorage.getItem("usuario")));
+
+
+const validarFormulario = (event) => {
+  const form = event.target.closest("form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+  return true;
+};
+
 
 onMounted(() => {
-  const user = JSON.parse(localStorage.getItem("usuario"));
   console.log(user);
   if (user) {
-    cliente_id.value = user.usuario_id;
+    cliente_id.value = user.value.usuario_id;
   } else {
-    /* iziToast.error({
-      title: 'Error',
-      message: 'No se encontró el "cliente_id" en localStorage.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#FF3B30', // Color de fondo rojo para el error
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    }); */
-    errorAlert ('No se encontró el "cliente_id" en localStorage.','Error')
+    errorAlert ('Usuario no valido para esta seccion.','Error')
   }
 });
 
-// Función para registrar el logro
-const registrarLogro = async () => {
-  try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/logros", {
-      cliente_id: cliente_id.value,
-      descripcion: descripcion.value,
-      fecha: fecha.value,
-    });
 
+const refDescripcion = ref('')
+const refFecha = ref('')
+const loading = ref(false)
+const registrarLogro = async (event) => {
+  console.log(fecha.value);
+  if (!validarFormulario(event)) return;
+  if( fecha.value > maxDate.value || fecha.value < minDate.value){
+    refFecha.value.focus()
+    errorAlert('Fecha no permitida', 'Error');
+    fecha.value = ''
+    return
+  }
+  if (descripcion.value && descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
+    descripcion.value = (descripcion.value.trim() =='')? '': descripcion.value;
+    refDescripcion.value.focus()
+  errorAlert('El campo cargo  debe contener más de 5 letras.', 'Error');
+  return;
+}
+  const data = {
+       cliente_id: cliente_id.value,
+       descripcion: descripcion.value.trim(),
+       fecha: fecha.value,
+  }
+  console.log(data); 
+
+
+  try {
+    loading.value = true
+    await axios.post(import.meta.env.VITE_BASE_URL + "/logros", data);
+    successAlert ('Logro registrado correctamente.','¡Éxito!')
     descripcion.value = "";
     fecha.value = "";
-
-    // Alerta de éxito con iziToast
-    /* iziToast.success({
-      title: '¡Éxito!',
-      message: 'Logro registrado correctamente.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#198754', // Color verde para éxito
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    }); */
-    successAlert ('Logro registrado correctamente.','¡Éxito!')
-
-    // Redirigir al perfil
     router.push({ name: 'perfil' });
   } catch (error) {
-    console.error(error);
-
-    // Alerta de error con iziToast
-    /* iziToast.error({
-      title: 'Error',
-      message: 'Hubo un problema al registrar el logro.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#FF3B30', // Color rojo para el error
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    }); */
     errorAlert ('Hubo un problema al registrar el logro.')
+  }finally{
+    loading.value = false
   }
 
-  // Datos para depuración (console.log)
-  const datos = {
-    cliente_id: cliente_id.value,
-    descripcion: descripcion.value,
-    fecha: fecha.value,
-  };
-  console.log(datos);
+
 };
 </script>
 
 
 
 <style scoped>
+.fs-custom{
+  font-size: 0.7rem;
+}
 .custom-background {
   background-image: url("@/assets/images/otro-fondo3.png");
   background-size: cover;
