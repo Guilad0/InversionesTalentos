@@ -1,5 +1,5 @@
 <template>
-  <div class="container animate__animated animate__fadeInLeftBig">
+  <div class="container animate__animated animate__fadeInLeftBig container-mobile" >
     <div class="col">
       <div class="card">
         <div class="card-body">
@@ -115,5 +115,21 @@ ul {
 .my-3 {
   margin-top: 12px;
   margin-bottom: 12px;
+}
+
+@media screen and (max-width: 300px) {
+  .container-mobile {
+    display: flex;
+    justify-content: center;
+    width: 100vw !important;
+    padding: 0px;
+    margin: 0px;
+    /* position: absolute; */
+    /* margin-left: 1! important; */
+
+
+    
+  }
+  
 }
 </style>

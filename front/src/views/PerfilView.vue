@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="mobile row">
     <div v-if="!loading" class="my-5 px-4">
 
       <div v-if="rol == 'Cliente' || rol == 'Inversionista'" class="d-flex justify-content-evenly">
-        <div class="col-2  text-center">
+        <div class="col-2  text-center container-mobile">
           <SidebarProfile :currentPath="currentPath" />
         </div>
-        <div class="col-6 d-flex justify-content-center px-4">
+        <div class="col-6 d-flex justify-content-center px-4 container-mobile-card">
           <div class="card  shadow w-75">
             <div class="card-body">
               <p :style="{ fontSize: '1rem' }" class="text-secondary text-center">
@@ -81,7 +81,7 @@
 
           </div>
         </div>
-        <div class="col-3 custom-profile shadow px-4">
+        <div class="col-3 custom-profile shadow px-4 mobile-custom">
           <div class="d-flex justify-content-between py-4">
             <div class="">
               <i class="fa fa-lock" aria-hidden="true"></i>
@@ -766,4 +766,39 @@ li {
   border: 1px solid #d95c00;
   background-color: #d95c00;
 }
+@media (max-width: 800px) {
+  .container-mobile {
+    display: flex;
+    position: absolute;
+    /* Apila los elementos verticalmente */
+    justify-content: center; /* Centra los elementos en pantallas pequeñas */
+    gap: 20px; /* Espaciado entre elementos */
+    width: 380px;
+    margin-left: 20px;
+    padding: 0px;
+
+    
+    
+  }
+  .mobile {
+    width: 90vw; /* Ajusta el ancho del formulario */
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .container-mobile-card {
+    width: 600px;/* Ancho de la tarjeta en dispositivos móviles */
+    display: flex;
+    flex-direction: column;
+    /* position: absolute; */
+    margin-top: 370px;
+    margin-left: -40px;
+    width: 553px;
+  }
+  .mobile-custom {
+    
+  }
+
+}
+
 </style>
