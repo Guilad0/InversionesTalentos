@@ -136,3 +136,23 @@ export const getCurrentYearStartAndEnd = ()=> {
   const endOfYearFormatted = endOfYear.toISOString().split('T')[0];
   return { startOfYear: startOfYearFormatted, endOfYear: endOfYearFormatted };
 }
+
+
+export const validarNombre = (nombre) => {
+  const regex = /^[A-Za-z]{3,}$/;
+
+
+  if (!regex.test(nombre)) {
+    if (/\d/.test(nombre)) {
+      return "El nombre no puede contener números.";
+    } else if (nombre.trim().length < 3) {
+      return "El nombre debe tener al menos 3 letras.";
+    } else if (/\s/.test(nombre)) {
+      return "El nombre no debe incluir espacios.";
+    } else {
+      return "El nombre solo debe contener letras.";
+    }
+  }
+
+  return ""; 
+};
