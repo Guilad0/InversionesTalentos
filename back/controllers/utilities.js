@@ -108,7 +108,7 @@ const isClientFormAchievements = (req, res) => {
           msg: "El usuario ya cuenta con un registro de su logros",
           ok: true,
           cant: results.length,
-          cant: 1,
+          cant: results.length,
         });
         return;
       }
