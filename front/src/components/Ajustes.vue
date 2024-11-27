@@ -2,7 +2,7 @@
   <main class="bg-light">
     <div class="content">
       <h2 class="d-block text-start mb-5 mt-5 text-center title">
-        Datos de Usuarios
+        Ajustes
       </h2>
       <div class="mt-5">
         <div class="table-responsive table-center col-md-10 offset-md-1">
