@@ -306,7 +306,7 @@ router.get("/reporteInversionesInversor", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    inversor_id
+    usuario_id
   } = req.query;
 
   var query = `                              
@@ -326,31 +326,9 @@ INNER JOIN usuarios AS clientes
     ON inversiones.cliente_id = clientes.usuario_id
 WHERE inversiones.fecha_deposito 
       BETWEEN '${fecha_inicio}' AND '${fecha_final}'
-AND inversiones.inversor_id = ${inversor_id}
+AND inversiones.inversor_id = ${usuario_id}
 ORDER BY inversiones.fecha_deposito DESC;
-
 `;
-//   var query = `                              
-// SELECT 
-//     inversiones.inversion_id, 
-//     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
-//     inversiones.fecha_deposito, 
-//     inversiones.monto,
-//     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
-//     inversiones.fecha_devolucion, 
-//     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
-//     inversiones.estado
-// FROM inversiones
-// INNER JOIN usuarios AS inversores 
-//     ON inversiones.inversor_id = inversores.usuario_id
-// INNER JOIN usuarios AS clientes 
-//     ON inversiones.cliente_id = clientes.usuario_id
-// WHERE inversiones.fecha_deposito >= '${fecha_inicio}'
-// AND inversiones.fecha_deposito <= '${fecha_final}'
-// AND inversiones.inversor_id = ${inversor_id}
-// ORDER BY inversiones.fecha_deposito DESC;
-// `;
-
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -372,7 +350,7 @@ router.get("/reporteInversionesCliente", function (req, res, next) {
   const {
     fecha_inicio,
     fecha_final,
-    cliente_id
+    usuario_id
   } = req.query;
 
   var query = `                              
@@ -392,29 +370,9 @@ INNER JOIN usuarios AS clientes
     ON inversiones.cliente_id = clientes.usuario_id
 WHERE inversiones.fecha_deposito 
       BETWEEN '${fecha_inicio}' AND '${fecha_final}'
+AND inversiones.cliente_id = ${usuario_id}
 ORDER BY inversiones.fecha_deposito DESC;
 `;
-//   var query = `                              
-// SELECT 
-//     inversiones.inversion_id, 
-//     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
-//     inversiones.fecha_deposito, 
-//     inversiones.monto,
-//     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
-//     inversiones.fecha_devolucion, 
-//     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia,  
-//     inversiones.estado
-// FROM inversiones
-// INNER JOIN usuarios AS inversores 
-//     ON inversiones.inversor_id = inversores.usuario_id
-// INNER JOIN usuarios AS clientes 
-//     ON inversiones.cliente_id = clientes.usuario_id
-// WHERE inversiones.fecha_deposito > '${fecha_inicio}'
-// AND inversiones.fecha_deposito < '${fecha_final}'
-// AND inversiones.cliente_id = ${cliente_id}
-// ORDER BY inversiones.fecha_deposito DESC;
-// `;
-
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -487,7 +445,7 @@ INNER JOIN usuarios
 ON usuarios.usuario_id = solicitudes_retiro.usuario_id
 WHERE solicitudes_retiro.fecha_solicitud > '${fecha_inicio}'
 AND solicitudes_retiro.fecha_solicitud < '${fecha_final}'
-AND solicitudes_retiro.tipo = '${tipo}'
+AND solicitudes_retiro.tipo IN ('${tipo}')
 ORDER BY solicitudes_retiro.fecha_solicitud DESC;
 `;
 
