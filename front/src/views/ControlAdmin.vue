@@ -66,7 +66,7 @@ import Ajustes from '@/components/Ajustes.vue';
 import Categories from './Categories.vue';
 import ConsultasReclamos from '@/components/ConsultasReclamos.vue';
 import Coment from '../components/Coment.vue';
-import Reportes from '../components/Reportes.vue';
+import Reportes from '../components/ReportesAdmin.vue';
 import Faqs from '../components/Faqs.vue';
 import { getUser } from '@/helpers/utilities';
 // import router from '@/router';
