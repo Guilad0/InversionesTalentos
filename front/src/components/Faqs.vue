@@ -225,7 +225,13 @@ onMounted(async () => {
 /* .font{
   font-family: 'Monoton'!important;
 } */
-
+.form-control:focus {
+  background-color: var(--white-color);
+  border: 2px solid #f37926;
+  outline: none;
+  box-shadow: none;
+  color: black;
+}
 .btn-success {
   background-color: var(--gray-color);
   border: 1px solid var(--yellow-orange); 

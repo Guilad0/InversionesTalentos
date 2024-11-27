@@ -209,13 +209,12 @@ const registrarExperiencia = async ( event ) => {
 };
 </script>
 
-
 <style scoped>
 .background {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 93vh;
+  height: 100vh;
   margin: 0;
   position: relative;
   background-image: url('@/assets/images/otro-fondo3.png');
@@ -357,5 +356,129 @@ textarea.input {
 .btn-back:hover {
   background-color: #F37926;
   color: #fff;
+}
+/*resposividad*/
+@media (max-width: 768px) {
+  .form {
+    width: 80%;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 22px;
+  }
+
+  .input {
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+
+  .submit {
+    font-size: 16px;
+    height: 45px;
+  }
+
+  .back-button1 {
+    margin: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form {
+    width: 85%;
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .input {
+    font-size: 14px;
+  }
+
+  .submit {
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .back-button1 {
+    margin: 5px;
+  }
+
+  .btn-back {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .form {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .input {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .submit {
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .back-button1 {
+    margin: 5px;
+  }
+}
+
+@media (max-height: 600px) {
+  .form {
+    padding: 10px;
+    width: 100%;
+    height: auto;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .submit {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .input {
+    height: 35px;
+  }
+
+  .back-button1 {
+    margin: 5px;
+  }
+
+  .input-container {
+    margin-top: 10px;
+  }
 }
 </style>

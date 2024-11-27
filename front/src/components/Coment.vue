@@ -183,7 +183,7 @@
                             </div>
                         </div>
                         <div class="modal-footer modal-footer-custom">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            <button type="button" class="btn btn-secondary btn-cerrar2" data-bs-dismiss="modal"
                                 @click="cerrarModal">Cerrar</button>
 
                         </div>
@@ -322,6 +322,17 @@ const seleccionarCliente = async (cliente) => {
 </script>
 
 <style scoped>
+.form-control:focus {
+    background-color: var(--white-color);
+    border: 2px solid #f37926;
+    outline: none;
+    box-shadow: none;
+    color: black;
+  }
+
+.btn-cerrar2 {
+    margin: 0 auto;
+}
 .title {
     font-family: var(--font-montserrat-bold);
     font-weight: 700;
@@ -480,7 +491,7 @@ label:hover {
 
 .modal-footer-custom {
     background-color: var(--gray-color);
-    border-top: none
+    border-top: 1px solid var( --white-color);
 }
 
 .star {
