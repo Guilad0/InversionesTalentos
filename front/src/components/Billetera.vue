@@ -241,8 +241,6 @@
 
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-
-import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 import iziToast from 'izitoast';
 import { timerAlert } from '@/helpers/sweetAlerts';
@@ -254,12 +252,6 @@ let baseURL = import.meta.env.VITE_BASE_URL + '/billetera/';
 const cambioTokens = ref(0)
 
 const valores = ref([]);
-
-
-
-const tokensCompradosInversionista = ref(0);
-const tokensInvertidosInversionista = ref(0);
-const tokensRecibidosCliente = ref(0);
 const tokensDeudasCliente = ref(0);
 
 const monto_tokens_invertir = ref(0);
@@ -270,6 +262,27 @@ const inversionista_ID = ref('');
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
+
+const tiempo_inversion = ref(0);
+const porcentaje_inversion = ref(0);
+const ganancia_tokens_inv = ref(0);
+const montoDolares = ref(0);
+const comision_retiro = ref(0);
+const dolares = ref(0);
+
+const dolaresInversionista = ref(0);
+
+const tokensIngresan = ref(0);
+const tokensEgresan = ref(0);
+const tokensTOTAL = ref(0);
+
+const montoLimite = ref(0)
+const limiteCompraDolares = ref(10000)
+const montoUsd = ref(0);
+const tokens = ref(0);
+
+const limiteTokensRetiro = ref(0)
+
 if (usuario_rol.value == 'Inversionista') {
   inversionista_ID.value = usuario_id.value;
   onMounted(async () => {
@@ -293,15 +306,10 @@ onMounted(async () => {
   await calcularDolares();
 });
 
-const tiempo_inversion = ref(0);
-const porcentaje_inversion = ref(0);
-const ganancia_tokens_inv = ref(0);
-const montoDolares = ref(0);
-const comision_retiro = ref(0);
-const dolares = ref(0);
+
 
 //Función para saber cuantos dólares invirtió el inversionista
-const dolaresInversionista = ref(0);
+
 const obtenerDolares_Inversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + 'dolaresInversionista/' + inversionista_ID.value);
@@ -311,9 +319,7 @@ const obtenerDolares_Inversionista = async () => {
   }
 };
 //Función para saber cuantos tokens tiene el inversionista
-const tokensIngresan = ref(0);
-const tokensEgresan = ref(0);
-const tokensTOTAL = ref(0);
+
 const obtenerTokens_Inversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + 'totalTokens/' + inversionista_ID.value);
@@ -342,10 +348,6 @@ const closeModal = () => {
   montoDolares.value = 0
 }
 
-const montoLimite = ref(0)
-const limiteCompraDolares = ref(10000)
-const montoUsd = ref(0);
-const tokens = ref(0);
 const calcularTokens = async () => {
   if (montoUsd.value <= limiteCompraDolares.value) {
     try {
@@ -518,7 +520,6 @@ const obtenerTokens_Cliente = async () => {
     tokensIngresan.value = data.data[0].token;
     tokensEgresan.value = data.data[1].token || 0;
     tokensTOTAL.value = parseFloat(tokensIngresan.value) - parseFloat(tokensEgresan.value);
-    tokensRecibidosCliente.value = data.data[0].tokensTotal;
     console.log(cliente_ID.value);
     console.log(tokensTOTAL.value)
   } catch (error) {
@@ -535,7 +536,6 @@ const obtenerDeudas_Cliente = async () => {
   }
 }
 
-const limiteTokensRetiro = ref(0)
 const calcularDolares = async () => {
   if (usuario_rol.value == 'Inversionista') {
     if (cambioTokens.value <= (tokensTOTAL.value)) {
