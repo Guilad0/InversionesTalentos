@@ -35,7 +35,7 @@
             </RouterLink>
           </div>
           <div class="mb-3">
-            <button type="button" @click="ingresar()" class="btn btn-gray rounded-5 w-75" >
+            <button :disabled="loading" type="button" @click="ingresar()" class="btn btn-gray rounded-5 w-75" >
               Ingresar
             </button>
           </div>
@@ -80,7 +80,7 @@ const user = ref(null);
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
 let baseURL = import.meta.env.VITE_BASE_URL+"/auth";
-
+const loading = ref(false);
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
     // iziToast.show({
@@ -118,6 +118,7 @@ const ingresar = async () => {
   };
 
   try {
+    loading.value = true
     const { data } = await axios.post(baseURL + "/", datos);
     console.log(data);
     localStorage.setItem("token", data.token);
@@ -176,6 +177,9 @@ const ingresar = async () => {
       progressBarColor: '#FFFFFF'
     })
 
+  }finally{
+    loading.value = false;
+    password.value = ''
   }
 };
 
@@ -236,7 +240,7 @@ const callback =async (response) => {
 .login-card {
   width: 30rem;
   padding: 2rem;
-  height: 45rem;
+  height: 40rem;
   margin-top: 5%;
   margin-bottom: 5%;
   background-color: rgba(0, 0, 0, 0.705);

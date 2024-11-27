@@ -182,23 +182,22 @@ const obtenerCategorias = async () => {
 };
 
 /* ===== REGISTRAR INFORMACIÓN ===== */
+
 const registrarInformacion = async () => {
+  // Validar valores numéricos
   const minimo = parseFloat(monto_inversion.value);
   const maximo = parseFloat(cantidad_maxima_inversiones.value);
+
+  if (isNaN(minimo) || isNaN(maximo)) {
+    errorAlert("Los valores de inversión deben ser numéricos.", "Error");
+    return;
+  }
+
   if (minimo > maximo) {
-    iziToast.error({
-  if(minimo > maximo) {
-    /* iziToast.error({
-      title: 'Error',
-      message: 'La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#f00',
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    }); */
-    errorAlert('La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.','Error')
+    errorAlert(
+      "La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.",
+      "Error"
+    );
     return;
   }
 
@@ -211,67 +210,32 @@ const registrarInformacion = async () => {
     preparacion: preparacion.value,
     estudios: estudios.value,
     vision: vision.value,
-    categoria_persona_id: categoria_persona_id.value
+    categoria_persona_id: categoria_persona_id.value,
   };
 
-  console.log(datos);
+  console.log("Datos enviados:", datos);
 
   try {
-    const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/info", datos);
-    console.log(response.data);
+    // Realizar solicitud POST
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/info`,
+      datos
+    );
+    console.log("Respuesta del servidor:", response.data);
 
-    iziToast.success({
-      title: 'Éxito',
-      message: 'Información registrada correctamente.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#198754',
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    });
-      /* iziToast.success({
-        title: 'Éxito',
-        message: 'Información registrada correctamente.',
-        messageColor: 'white',
-        position: 'topRight',
-        theme: 'dark',
-        color: '#198754',
-        closeOnEscape: true,
-        progressBarColor: '#FFFFFF'
-      }); */
-      successAlert ('Información registrada correctamente.', 'Éxito')
+    // Mostrar mensaje de éxito
+    successAlert("Información registrada correctamente.", "Éxito");
 
-    router.push({ name: 'perfil' });
+    // Redirigir al perfil
+    router.push({ name: "perfil" });
   } catch (error) {
-    console.error(error);
+    console.error("Error en el registro:", error);
 
-    iziToast.error({
-      title: 'Error',
-      message: 'Hubo un problema al registrar la información.',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#f00',
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-    });
+    // Mostrar mensaje de error
+    errorAlert("Hubo un problema al registrar la información.", "Error");
   }
-
-      /* iziToast.error({
-        title: 'Error',
-        message: 'Hubo un problema al registrar la información.',
-        messageColor: 'white',
-        position: 'topRight',
-        theme: 'dark',
-        color: '#f00',
-        closeOnEscape: true,
-        progressBarColor: '#FFFFFF'
-      }); */
-      errorAlert ('Hubo un problema al registrar la información.','Error')
-    }
-  
 };
+
 </script>
 
 <style scoped>
