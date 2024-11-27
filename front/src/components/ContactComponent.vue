@@ -5,11 +5,6 @@
     </p>
 
     <div class="contact-icons d-flex text-center">
-      
-      <a href="https://wa.me/59179367210" target="_blank" class="contact-item">
-        <i class="fab fa-whatsapp"></i>
-        <span class="">WhatsApp</span>
-      </a>
       <a href="mailto:proyecto.inver24@gmail.com" class="contact-item">
         <i class="fas fa-envelope"></i>
         <span>Email</span>
@@ -18,6 +13,10 @@
         <i class="fas fa-list"></i>
         <span>Form</span>
       </RouterLink>
+      <a href="https://wa.me/59179367210" target="_blank" class="contact-item">
+        <i class="fab fa-whatsapp"></i>
+        <span class="">WhatsApp</span>
+      </a>
     </div>
   </div>
 </template>
@@ -62,19 +61,25 @@
 
 .contact-icons {
   display: flex;
-  justify-content: center;
+  justify-content: center; 
+  align-items: center; 
   gap: 1.5rem; 
   margin-top: 15px;
   max-width: 300px; 
 }
 
 .contact-item {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
   text-align: center;
   text-decoration: none;
   color: var(--white-anti-flash-color);
   font-size: 12px;
   transition: transform 0.3s ease;
 }
+
 
 .contact-item i {
   font-size: 16px;
@@ -109,7 +114,7 @@
   }
 
   .contact-icons {
-    gap: 1rem; 
+    gap: 1rem;
   }
 
   .contact-item i {
@@ -120,13 +125,20 @@
   }
 
   .contact-item span {
-    font-size: 10px; 
+    font-size: 10px;
+  }
+
+  .whatsapp-icon i {
+    font-size: 14px; /* Ajusta proporcionalmente */
+    padding: 8px;
+    width: 35px;
+    height: 35px;
   }
 }
 
 @media (max-width: 480px) {
   .contact-container {
-    padding: 10px; 
+    padding: 10px;
   }
 
   .contact-container p {
@@ -134,18 +146,25 @@
   }
 
   .contact-icons {
-    gap: 0.5rem; 
+    gap: 0.5rem;
   }
 
   .contact-item i {
     font-size: 12px;
     padding: 6px;
-    width: 30px; 
+    width: 30px;
     height: 30px;
   }
 
   .contact-item span {
     font-size: 8px;
+  }
+
+  .whatsapp-icon i {
+    font-size: 12px; /* Tamaño más pequeño */
+    padding: 6px;
+    width: 30px;
+    height: 30px;
   }
 }
 </style>
