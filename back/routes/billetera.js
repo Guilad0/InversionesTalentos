@@ -24,10 +24,10 @@ router.get("/valores", function (req, res, next) {
 });
 
 router.post("/comprarTokens", function (req, res, next) {
-  const { usuario_id, tokens, monto, tipo, descripcion } = req.body;
+  const { usuario_id, tokens, monto, tipo, descripcion, estado } = req.body;
 
-  var query = ` INSERT INTO movimientos (tipo, monto, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
-                VALUES ('${tipo}', '${monto}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${tokens}', '${usuario_id}', NULL, NULL);`;
+  var query = ` INSERT INTO movimientos (tipo, monto, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id, estado)
+                VALUES ('${tipo}', '${monto}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${tokens}', '${usuario_id}', NULL, NULL, '${estado}');`;
 
   connection.query(query, function (error, results, fields) {
     if (error) {
@@ -61,6 +61,36 @@ router.get("/dolaresInversionista/:id", function (req, res, next) {
       res.status(200).send({
         data: results,
         message: "Dólares del inversionista consultada correctamente",
+      });
+    }
+  });
+});
+
+router.get("/totalTokens/:id", function (req, res, next) {
+  
+  var query = ` 
+SELECT 
+    t.tipo, 
+    COALESCE(SUM(m.token), 0) AS token
+FROM 
+    (SELECT 'Egreso' AS tipo
+     UNION ALL
+     SELECT 'Ingreso' AS tipo) t
+LEFT JOIN movimientos m
+ON t.tipo = m.tipo AND m.usuario_id = ${req.params.id}
+GROUP BY t.tipo
+ORDER BY tipo DESC;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Tokens del inversionista consultada correctamente",
       });
     }
   });
@@ -103,24 +133,6 @@ router.get("/tokensInversionistaInvertidos/:id", function (req, res, next) {
       res.status(200).send({
         data: results,
         message: "Tokens del inversionista consultada correctamente",
-      });
-    }
-  });
-});
-
-router.get("/clientes", function (req, res, next) {
-  var query = ` SELECT * FROM usuarios WHERE rol = 'Cliente';`;
-  connection.query(query, function (error, results) {
-    if (error) {
-      console.log(error);
-      res.status(500).send({
-        error: error,
-        message: "Error al realizar la petición",
-      });
-    } else {
-      res.status(200).send({
-        data: results,
-        message: "Inversiones consultadas correctamente",
       });
     }
   });
@@ -224,9 +236,33 @@ FROM movimientos_resumen;`;
 
 router.get("/tokensDeudasCliente/:id", function (req, res, next) {
   var query = `
-  SELECT SUM(ganancia_estimada) AS totalTokensDeudas FROM inversiones
-WHERE cliente_id=${req.params.id}
-AND estado = 1
+  SELECT SUM(ganancia_estimada) AS totalTokensDeudas 
+  FROM inversiones
+  WHERE cliente_id=${req.params.id}
+  AND estado = 1
+`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Tokens del inversionista consultada correctamente",
+      });
+    }
+  });
+});
+
+router.get("/tokensGananciasInversionista/:id", function (req, res, next) {
+  var query = `
+  SELECT SUM(ganancia_estimada) AS gananciaTokens 
+  FROM inversiones
+  WHERE inversor_id=${req.params.id}
+  AND estado = 1
 `;
   connection.query(query, function (error, results, fields) {
     if (error) {

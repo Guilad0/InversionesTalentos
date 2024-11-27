@@ -1,341 +1,184 @@
 <template>
-
   <div>
-
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
-
       <h1 class="font-bold mb-4 title">Balance de Fondos</h1>
-
       <div>
-
         <div class="row">
-
           <div class="col-md-6">
-
-            <p class="text-white">Total de Tokens Recibidos: {{ tokensRecibidosCliente }} </p>
-
+            <p class="text-white">Tokens del Cliente: {{ tokensTOTAL }} </p>
           </div>
-
           <div class="col-md-6">
-
-            <p class="text-white">Total de Tokens por Devolver: {{ tokensDeudasCliente }} </p>
-
+            <p class="text-white">Tokens por Devolver: {{ tokensDeudasCliente }} </p>
           </div>
-
         </div>
-
       </div>
-
       <div class="d-flex justify-content-around mb-6">
-
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
-        <button  class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalSolicitud">Solicitar Retiro <span></span></button>
-        <!-- <button class="btn btn-dark">Copy address</button> -->
       </div>
 
     </div>
 
     <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
-
       <h1 class="text-2xl font-bold mb-4">Balance de Fondos</h1>
-
       <div class="bg-zinc-100 p-4 rounded-lg mb-6">
-
-        <div class="row">
-
-          <div class="col-md-4">
-
-            <p class="text-xl text-white">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
-
+        <div class="row d-flex justify-content-around">
+          <div class="col-md-5">
+            <p class="text-xl text-white">Tokens del Inversionista: {{ tokensTOTAL }}</p>
           </div>
 
-          <div class="col-md-4">
-
-            <p class="text-xl text-white">Tokens Restantes: {{ tokensCompradosInversionista -
-              tokensInvertidosInversionista }}</p>
-
+          <div class="col-md-5">
+            <p class="text-xl text-white">Inversiones con Ganancias Pendientes: {{ gananciasTokenInversionista }}</p>
           </div>
-
-          <div class="col-md-4">
-
+          <!-- <div class="col-md-4">
             <p class="text-xl text-white">Total de USD Ingresados: $US {{ dolaresInversionista }}</p>
-
-          </div>
-
+          </div> -->
         </div>
-
       </div>
 
       <div class="d-flex justify-content-around mb-6">
-
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
-        <!--<button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
-          data-bs-target="#modalInversion">Invertir<span></span></button>-->
-        <button  class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
+        <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalSolicitud">Solicitar Retiro<span></span></button>
-
       </div>
 
     </div>
     <!-- Modal Tokens -->
     <div class="modal fade" id="modalTokens" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content bg-degrade">
-
           <div class="modal-header">
-
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-              Datos de la Compra de Tokens
-            </h1>
-
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la Compra de Tokens</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
           </div>
-
           <div class="modal-body">
             <!-- Cliente Info -->
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Cliente'">
-
-              <div class="row">
-
+              <div class="row d-flex justify-content-around">
                 <div class="col-md-6">
-
-                  <p class="text-xl text-white text-center">Total de Tokens Recibidos: {{ tokensRecibidosCliente }}</p>
-
+                  <p class="text-xl text-white text-center">Tokens del Cliente: {{ tokensTOTAL }}</p>
                 </div>
-
                 <div class="col-md-6">
-
-                  <p class="text-xl text-white text-center">Total de Tokens por Devolver: {{ tokensDeudasCliente }}</p>
-
+                  <p class="text-xl text-white text-center">Tokens por Devolver: {{ tokensDeudasCliente }}</p>
                 </div>
-
               </div>
-
             </div>
-
             <!-- Inversionista Info -->
             <div class="container mx-auto p-4" v-if="usuario_rol == 'Inversionista'">
-
-              <div class="row">
-
+              <div class="row d-flex justify-content-around">
+                <!-- <div class="col-md-6">
+                  <p class="text-xl text-white text-center">Tokens Invertidos: {{ gananciasTokenInversionista }}</p>
+                </div> -->
                 <div class="col-md-6">
-
-                  <p class="text-xl text-white text-center">Tokens Invertidos: {{ tokensInvertidosInversionista }}</p>
-
+                  <p class="text-xl text-white text-center">Tokens del Inversionista: {{ tokensTOTAL }}</p>
                 </div>
-
-                <div class="col-md-6">
-
-                  <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensCompradosInversionista -
-                    tokensInvertidosInversionista }}</p>
-
-                </div>
-
               </div>
-
             </div>
             <!-- Formulario -->
             <form action="#" class="needs-validation" novalidate>
-
               <div class="row">
-
                 <div class="col-md-5 offset-md-2">
-
                   <div class="mb-3">
-
-                    <label for="montoUsd" class="form-label">Monto en USD</label>
-
+                    <label for="montoUsd" class="form-label"><b>Monto en USD</b></label>
                     <input type="number" v-model="montoUsd" id="montoUsd" class="form-control "
                       @input="calcularTokens()" required />
-                      <label for="monotUsd" class="mt-2">Compra maxima  USD {{ limiteCompraDolares }}</label>
-
+                    <label for="monotUsd" class="mt-2">Compra maxima USD {{ limiteCompraDolares }}</label>
                   </div>
-
                 </div>
-
                 <div class="col-md-5">
-
                   <div class="mb-3">
-
                     <label class="form-label">Tokens</label>
-
                     <p class="text-xl text-white text-center">{{ tokens }}</p>
-
                   </div>
-
                 </div>
-
               </div>
-
             </form>
-
           </div>
-
           <div class="modal-footer">
-
             <button type="button" @click="comprarTokens()"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
               Comprar<span></span>
             </button>
-
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
               data-bs-dismiss="modal" @click="closeModal">
               Cerrar<span></span>
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
 
     <!-- Modal Inversión -->
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content bg-degrade">
-
           <div class="modal-header">
-
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-              Datos de la Inversión
-            </h1>
-
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la Inversión</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
           </div>
-
           <div class="modal-body">
-
             <form action="#" class="needs-validation" novalidate>
-
-              <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensCompradosInversionista -
-                tokensInvertidosInversionista }}</p>
-
+              <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensTOTAL }}</p>
               <div class="row">
                 <!-- Selección de Cliente -->
-                <div class="col-md-8 offset-md-2">
-
-                  <div class="mb-3">
-
-                    <label for="cliente_Invertir_ID" class="form-label">Cliente</label>
-
-                    <select v-model="cliente_Invertir_ID" id="cliente_Invertir_ID" class="form-select" required>
-
-                      <option disabled>Seleccione un Cliente</option>
-
-                      <option v-for="cliente in clientes" :key="cliente.usuario_id" :value="cliente.usuario_id">
-                        {{ cliente.nombre + ' ' + cliente.apellido }}
-                      </option>
-
-                    </select>
-
-                  </div>
-
-                </div>
-
               </div>
-
               <div class="row">
                 <!-- Tokens a Invertir -->
                 <div class="col-md-4 offset-md-2">
-
                   <div class="mb-3">
-
                     <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-
                     <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
                       @input="calcularGanancias()" required />
-
                   </div>
-
                 </div>
                 <!-- Meses de Inversión -->
                 <div class="col-md-4">
-
                   <div class="mb-3">
-
                     <label class="form-label">Meses de Inversión</label>
-
                     <p class="text-xl text-white text-center">{{ tiempo_inversion }}</p>
-
                   </div>
-
                 </div>
-
               </div>
-
               <div class="row">
                 <!-- Ganancias -->
                 <div class="col-md-4 offset-md-4">
-
                   <div class="mb-3 text-center">
-
                     <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-
                     <p class="text-xl text-white text-center">{{ ganancia_tokens_inv }}</p>
-
                   </div>
-
                 </div>
-
               </div>
-
             </form>
-
           </div>
-
           <div class="modal-footer">
-
             <button type="button" @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
               Invertir<span></span>
             </button>
-
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
               data-bs-dismiss="modal">Cerrar<span></span></button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
     <!-- Modal Solicitud Retiro -->
     <div class="modal fade" id="modalSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content bg-degrade">
-
           <div class="modal-header">
-
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Datos del Retiro
             </h1>
-
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
           </div>
-
           <div class="modal-body">
-
             <form action="#" class="needs-validation" novalidate>
-
               <div class="row justify-content-between ">
                 <div class="col m-auto d-flex flex-column">
                   <div class="m-auto">
@@ -357,68 +200,39 @@
                 </div>
                 <div class="col">
                   <div class="col">
-
                     <div class="mb-3">
-
                       <label class="form-label m-auto">Tokens Disponibles</label>
-
-                      <p class="text-xl text-white m-auto"> {{ tokensRecibidosCliente - cambioTokens }}</p>
-
+                      <p class="text-xl text-white m-auto"> {{ tokensTOTAL - cambioTokens }}</p>
                     </div>
                     <div class="mb-3">
-
                       <label class="form-label m-auto">Dólares</label>
-
                       <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p>
-
                     </div>
-
                   </div>
                   <div class="col">
-
                     <div class="mb-3">
-
                       <label for="retiro_inversionista " class="form-label m-auto  ">Total a Retirar</label>
-
                       <p class="text-xl text-white m-auto">$US {{ dolares }}</p>
-
                     </div>
-
                   </div>
                 </div>
-                <!-- Tokens a cambiar -->
-
-                <!-- Dólares calculados -->
-
-
               </div>
-
-
             </form>
-
           </div>
 
           <div class="modal-footer">
-
             <button type="button" @click="solicitarRetiro()"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
               Solicitar Retiro<span></span>
             </button>
-
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 btn-7 m-2"
               data-bs-dismiss="modal" @click="closeModal">
               Cerrar<span></span>
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
-
   </div>
 
 </template>
@@ -438,11 +252,11 @@ const route = useRouter();
 // let baseURL = 'https://apitalentos.pruebasdeploy.online/billetera/';
 let baseURL = import.meta.env.VITE_BASE_URL + '/billetera/';
 const cambioTokens = ref(0)
-const clientes = ref([]);
+
 const valores = ref([]);
-const tokens = ref(0);
-const montoUsd = ref(0);
-const dolaresInversionista = ref(0);
+
+
+
 const tokensCompradosInversionista = ref(0);
 const tokensInvertidosInversionista = ref(0);
 const tokensRecibidosCliente = ref(0);
@@ -458,10 +272,10 @@ const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
 if (usuario_rol.value == 'Inversionista') {
   inversionista_ID.value = usuario_id.value;
-  onMounted(async() => {
+  onMounted(async () => {
     await obtenerDolares_Inversionista();
     await obtenerTokens_Inversionista();
-    await obtenerTokens_Inversionista_Invertidos();
+    await ganancias_Inversionista();
 
     await obtenerListaClientes();
     await calcularGanancias();
@@ -469,14 +283,14 @@ if (usuario_rol.value == 'Inversionista') {
 }
 if (usuario_rol.value == 'Cliente') {
   cliente_ID.value = usuario_id.value;
-  onMounted(async() => {
-  await  obtenerTokens_Cliente();
-  await obtenerDeudas_Cliente();
+  onMounted(async () => {
+    await obtenerTokens_Cliente();
+    await obtenerDeudas_Cliente();
   });
 }
 onMounted(async () => {
   await calcularTokens();
-  await calcularDolares();  
+  await calcularDolares();
 });
 
 const tiempo_inversion = ref(0);
@@ -487,6 +301,7 @@ const comision_retiro = ref(0);
 const dolares = ref(0);
 
 //Función para saber cuantos dólares invirtió el inversionista
+const dolaresInversionista = ref(0);
 const obtenerDolares_Inversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + 'dolaresInversionista/' + inversionista_ID.value);
@@ -495,21 +310,25 @@ const obtenerDolares_Inversionista = async () => {
     console.log(error);
   }
 };
-
+//Función para saber cuantos tokens tiene el inversionista
+const tokensIngresan = ref(0);
+const tokensEgresan = ref(0);
+const tokensTOTAL = ref(0);
 const obtenerTokens_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensInversionistaComprados/' + inversionista_ID.value);
-    tokensCompradosInversionista.value = data.data[0].totalTokensComprados;
+    const { data } = await axios.get(baseURL + 'totalTokens/' + inversionista_ID.value);
+    tokensIngresan.value = data.data[0].token;
+    tokensEgresan.value = data.data[1].token || 0;
+    tokensTOTAL.value = tokensIngresan.value - tokensEgresan.value;
   } catch (error) {
     console.log(error);
   }
 };
-
-const obtenerTokens_Inversionista_Invertidos = async () => {
+const gananciasTokenInversionista = ref(0);
+const ganancias_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensInversionistaInvertidos/' + inversionista_ID.value);
-    tokensInvertidosInversionista.value = data.data[0].totalTokensInvertidos || 0;
-    console.log(tokensInvertidosInversionista.value);
+    const { data } = await axios.get(baseURL + 'tokensGananciasInversionista/' + inversionista_ID.value);
+    gananciasTokenInversionista.value = data.data[0].gananciaTokens || 0;
   } catch (error) {
     console.log(error);
   }
@@ -525,6 +344,8 @@ const closeModal = () => {
 
 const montoLimite = ref(0)
 const limiteCompraDolares = ref(10000)
+const montoUsd = ref(0);
+const tokens = ref(0);
 const calcularTokens = async () => {
   if (montoUsd.value <= limiteCompraDolares.value) {
     try {
@@ -544,7 +365,7 @@ const calcularTokens = async () => {
 };
 
 const comprarTokens = async () => {
-  if (montoUsd.value > 0 && tokens.value > 0) {
+  if (montoUsd.value > 0 && tokens.value > 0 && montoUsd.value != NaN) {
     if (usuario_rol.value == 'Inversionista') {
       const datos = {
         monto: montoUsd.value,
@@ -552,31 +373,20 @@ const comprarTokens = async () => {
         usuario_id: inversionista_ID.value,
         tipo: 'Ingreso',
         descripcion: 'Compra de tokens',
-        color: 'var(--gray-color)',
-        confirmButtonColor: 'var(--yellow-orange)',
+        estado: 0,
       };
       console.log(datos);
       try {
         await axios.post(baseURL + 'comprarTokens', datos);
-
-        // iziToast.success({
-        //   title: 'Felicidades',
-        //   message: 'Tokens comprados exitosamente',
-        //   messageColor: 'white',
-        //   position: 'topRight',
-        //   theme: 'dark',
-        //   progressBarColor: '#FFFFFF',
-        //   closeOnEscape: true
-        // })
-        successAlert(`Tokens comprados exitosamente`, 'Felicidades','topRight')
+        successAlert(`Tokens comprados exitosamente`, 'Felicidades', 'topRight')
         var myModalEl = document.getElementById('modalTokens');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();
       } catch (error) {
         console.error('Error al guardar los tokens:', error);
       }
-     await obtenerDolares_Inversionista();
-     await obtenerTokens_Inversionista();
+      await obtenerDolares_Inversionista();
+      await obtenerTokens_Inversionista();
       montoUsd.value = 0;
       tokens.value = 0;
     }
@@ -587,18 +397,10 @@ const comprarTokens = async () => {
         usuario_id: cliente_ID.value,
         tipo: 'Ingreso',
         descripcion: 'Compra de tokens',
+        estado: 0,
       };
       try {
         await axios.post(baseURL + 'comprarTokens', datos);
-        // Swal.fire({
-        //     title: "¡Felicidades!",
-        //     text: "Tokens comprados exitosamente",
-        //     icon: "success",
-        //     allowOutsideClick: true,
-        //     allowEscapeKey: true,
-        //     color: 'var(--gray-color)',
-        //     confirmButtonColor: 'var(--yellow-orange)', 
-        //   }); 
         iziToast.success({
           title: 'Felicidades',
           message: 'Tokens comprados exitosamente',
@@ -615,21 +417,12 @@ const comprarTokens = async () => {
       } catch (error) {
         console.error('Error al guardar los tokens:', error);
       }
-   await obtenerTokens_Cliente();
+      await obtenerTokens_Cliente();
       montoUsd.value = 0;
       tokens.value = 0;
     }
   }
   else {
-    // Swal.fire({
-    // title: "¡Error!",
-    // text: "Ingrese un valor mayor a 0 para comprar tokens",
-    // icon: "error",
-    // allowOutsideClick: true,
-    // allowEscapeKey: true,
-    // color: 'var(--gray-color)',
-    //   // confirmButtonColor: 'var(--yellow-orange)', 
-    // });
     iziToast.error({
       title: 'Error',
       message: 'Ingrese un valor mayor a 0 para comprar tokens',
@@ -640,15 +433,7 @@ const comprarTokens = async () => {
       progressBarColor: '#FFFFFF',
       closeOnEscape: true,
     })
-  }
-};
 
-const obtenerListaClientes = async () => {
-  try {
-    const { data } = await axios.get(baseURL + 'clientes');
-    clientes.value = data.data;
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -668,8 +453,8 @@ const calcularGanancias = async () => {
 };
 const inversionistaInvertir = async () => {
   const tokens_invertir = parseFloat(monto_tokens_invertir.value);
-  const tokens_inversionista = parseFloat(tokensCompradosInversionista.value) - parseFloat(tokensInvertidosInversionista.value);
-  if (tokens_invertir > 0 && tokens_invertir <= tokens_inversionista || cliente_Invertir_ID.value == 0) {
+  const tokens_inversionista = parseFloat(tokensIngresan.value) - parseFloat(tokensEgresan.value);
+  if (tokens_invertir > 0 && tokens_invertir <= tokens_inversionista && tokens_invertir != NaN || cliente_Invertir_ID.value == 0) {
     ganancia_estimada.value = monto_tokens_invertir.value + ganancia_tokens_inv.value;
     const fecha_devolucion = ref('');
     const fecha = new Date();
@@ -691,15 +476,7 @@ const inversionistaInvertir = async () => {
     console.log(datos);
     try {
       await axios.post(baseURL + 'invertirTokens', datos);
-      // Swal.fire({
-      //     title: "¡Felicidades!",
-      //     text: "Inversión realizada exitosamente",
-      //     icon: "success",
-      //     allowOutsideClick: true,
-      //     allowEscapeKey: true,
-      //     color: 'var(--gray-color)',
-      //     confirmButtonColor: 'var(--yellow-orange)', 
-      // }); 
+
       iziToast.success({
         title: 'Felicidades',
         message: 'Inversión realizada exitosamente',
@@ -716,39 +493,34 @@ const inversionistaInvertir = async () => {
       console.error('Error al invertir los tokens:', error);
     }
     monto_tokens_invertir.value = 0;
-   await obtenerTokens_Inversionista();
-   await obtenerTokens_Inversionista_Invertidos();
+    await obtenerTokens_Inversionista();
+
     location.reload();
   }
   else {
-    Swal.fire({
-      title: "¡Error!",
-      text: "Por favor, ingrese una cantidad de tokens a invertir",
-      icon: "error",
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      color: 'var(--gray-color)',
-      confirmButtonColor: 'var(--yellow-orange)',
-    });
-    /* iziToast.error({
+    iziToast.error({
       title: 'Error',
-      message: 'Por favor, ingrese una cantidad de tokens a invertir',
+      message: 'Ingrese un valor mayor a 0 para solicitar retiro',
       messageColor: 'white',
       position: 'topRight',
       theme: 'dark',
       color: '#f00',
       progressBarColor: '#FFFFFF',
       closeOnEscape: true
-    }) */
+    })
   }
 
 };
 
 const obtenerTokens_Cliente = async () => {
   try {
-    const { data } = await axios.get(baseURL + 'tokensClienteRecibido/' + cliente_ID.value);
+    const { data } = await axios.get(baseURL + 'totalTokens/' + cliente_ID.value);
+    tokensIngresan.value = data.data[0].token;
+    tokensEgresan.value = data.data[1].token || 0;
+    tokensTOTAL.value = parseFloat(tokensIngresan.value) - parseFloat(tokensEgresan.value);
     tokensRecibidosCliente.value = data.data[0].tokensTotal;
-    console.log(tokensRecibidosCliente.value)
+    console.log(cliente_ID.value);
+    console.log(tokensTOTAL.value)
   } catch (error) {
     console.log(error);
   }
@@ -765,46 +537,46 @@ const obtenerDeudas_Cliente = async () => {
 
 const limiteTokensRetiro = ref(0)
 const calcularDolares = async () => {
- if(usuario_rol.value == 'Inversionista'){
-  if (cambioTokens.value <= (tokensCompradosInversionista?.value - tokensInvertidosInversionista?.value)) {
-    try {
-      limiteTokensRetiro.value = cambioTokens.value;
-      const { data } = await axios.get(baseURL + 'valores');
-      valores.value = data.data;
-      let valor = parseFloat(data.data[0].valor_token);
-      let interes = parseFloat(data.data[0].comision_retiros);
-      comision_retiro.value = interes
-      montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
-      dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
-      console.log(cambioTokens.value);
-    } catch (error) {
-      console.log(error);
+  if (usuario_rol.value == 'Inversionista') {
+    if (cambioTokens.value <= (tokensTOTAL.value)) {
+      try {
+        limiteTokensRetiro.value = cambioTokens.value;
+        const { data } = await axios.get(baseURL + 'valores');
+        valores.value = data.data;
+        let valor = parseFloat(data.data[0].valor_token);
+        let interes = parseFloat(data.data[0].comision_retiros);
+        comision_retiro.value = interes
+        montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
+        dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        console.log(cambioTokens.value);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      cambioTokens.value = limiteTokensRetiro.value
+      timerAlert(`Tu monto actual de tokens es ${tokensTOTAL.value}`, 'center', 2500, 'error')
     }
-  } else {
-    cambioTokens.value = limiteTokensRetiro.value
-    timerAlert(`Tu monto actual de tokens es ${tokensCompradosInversionista.value - tokensInvertidosInversionista.value}`, 'center', 2500, 'error')
   }
- }
- if(usuario_rol.value == 'Cliente'){
-  if (cambioTokens.value <= (tokensRecibidosCliente.value)) {
-    try {
-      limiteTokensRetiro.value = cambioTokens.value;
-      const { data } = await axios.get(baseURL + 'valores');
-      valores.value = data.data;
-      let valor = parseFloat(data.data[0].valor_token);
-      let interes = parseFloat(data.data[0].comision_retiros);
-      comision_retiro.value = interes
-      montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
-      dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
-      console.log(cambioTokens.value);
-    } catch (error) {
-      console.log(error);
+  if (usuario_rol.value == 'Cliente') {
+    if (cambioTokens.value <= (tokensTOTAL.value)) {
+      try {
+        limiteTokensRetiro.value = cambioTokens.value;
+        const { data } = await axios.get(baseURL + 'valores');
+        valores.value = data.data;
+        let valor = parseFloat(data.data[0].valor_token);
+        let interes = parseFloat(data.data[0].comision_retiros);
+        comision_retiro.value = interes
+        montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
+        dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        console.log(cambioTokens.value);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      cambioTokens.value = limiteTokensRetiro.value
+      timerAlert(`Tu monto actual de tokens es ${tokensTOTAL.value}`, 'center', 2500, 'error')
     }
-  } else {
-    cambioTokens.value = limiteTokensRetiro.value
-    timerAlert(`Tu monto actual de tokens es ${cambioTokens}`, 'center', 2500, 'error')
   }
- }
 };
 
 const solicitarRetiro = async () => {
@@ -823,17 +595,7 @@ const solicitarRetiro = async () => {
 
       try {
         await axios.post(baseURL + 'solicitarRetiro', datos);
-        // iziToast.success({
-        //   title: 'Felicidades',
-        //   message: 'Solicitud de Retiro realizada exitosamente',
-        //   messageColor: 'white',
-        //   theme: 'dark',
-        //   color: '#5ce65c',
-        //   position: 'topRight',
-        //   progressBarColor: '#FFFFFF',
-        //   closeOnEscape: true
-        // })
-        successAlertAcept(`Tu solicitud de retiro se ha enviado con éxito. Ahora está en espera de revisión y aprobación por parte de nuestro personal administrativo`, 'Transaccion finalizada','center')
+        successAlertAcept(`Tu solicitud de retiro se ha enviado con éxito. Ahora está en espera de revisión y aprobación por parte de nuestro personal administrativo`, 'Transaccion finalizada', 'center')
         var myModalEl = document.getElementById('modalSolicitud');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();
@@ -841,8 +603,8 @@ const solicitarRetiro = async () => {
         console.error('Error al realizar la solicitud:', error);
       }
 
-     await obtenerTokens_Inversionista();
-     await obtenerTokens_Inversionista_Invertidos();
+      await obtenerTokens_Inversionista();
+
 
     }
     if (usuario_rol.value == 'Cliente') {
@@ -857,17 +619,8 @@ const solicitarRetiro = async () => {
       };
       console.log(datos);
       try {
-        await axios.post(baseURL + 'solicitarRetiro', datos);     
-        iziToast.success({
-          title: 'Felicidades',
-          message: 'Solicitud de Retiro realizada exitosamente',
-          messageColor: 'white',
-          theme: 'dark',
-          color: '#5ce65c',
-          position: 'topRight',
-          progressBarColor: '#FFFFFF',
-          closeOnEscape: true
-        })
+        await axios.post(baseURL + 'solicitarRetiro', datos);
+        successAlertAcept(`Tu solicitud de retiro se ha enviado con éxito. Ahora está en espera de revisión y aprobación por parte de nuestro personal administrativo`, 'Transaccion finalizada', 'center')
         await obtenerTokens_Cliente();
         var myModalEl = document.getElementById('modalSolicitud');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
@@ -875,24 +628,14 @@ const solicitarRetiro = async () => {
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);
       }
-    //  await obtenerSolicitudes();
     }
     cambioTokens.value = 0;
     montoDolares.value = 0;
     comision_retiro.value = 0;
     dolares.value = 0;
-    // location.reload();
+
   }
   else {
-    //   Swal.fire({
-    //   title: "¡Error!",
-    //   text: "Ingrese un valor mayor a 0 para solicitar retiro",
-    //   icon: "error",
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: true,
-    //   color: 'var(--gray-color)',
-    //   confirmButtonColor: 'var(--yellow-orange)', 
-    // });
     iziToast.error({
       title: 'Error',
       message: 'Ingrese un valor mayor a 0 para solicitar retiro',
@@ -904,6 +647,7 @@ const solicitarRetiro = async () => {
       closeOnEscape: true
     })
   }
+  //location.reload();
 }
 
 </script>
