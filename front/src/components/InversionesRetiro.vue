@@ -98,14 +98,16 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth ">
-                        <button @click="exportToPDF()" class="btn ">
-                          <i class="fa-solid fa-floppy-disk fs-1 text-light floppy-hover"></i>
+                        <button @click="exportToPDF()" class="btn btn-danger text-light">
+                          <strong>PDF</strong>
+                          <!-- <i class="fa-solid fa-floppy-disk fs-1 text-light floppy-hover"></i> -->
                           <!-- <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
                             class="bi bi-download" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                               d="M.5 15a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5zM8 0a.5.5 0 0 1 .5.5v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.293V.5A.5.5 0 0 1 8 0z" />
                           </svg> <span></span> -->
                         </button>
+                        <button @click="exportToExcel()" class="btn btn-success text-light"><strong>Excel</strong></button>
                       </div>
 
                       <span class="subtitle-class">Reportes</span>
@@ -133,7 +135,7 @@
 
                 <div v-if="!loadingReports" class="px-5 d-flex justify-content-center">
                   <div class="col">
-                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle" id="reporteCliente">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -156,7 +158,7 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle" id="reporteRetiroCliente">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -493,13 +495,13 @@
                   <div class="card-body bg-degrade">
                     <h3 class="card-title text-center text-dark mt-5 mb-3 position-relative">
                       <div class="custom-abs-rigth">
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-orange m-2 btn"
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-danger m-2 btn text-white"
                           @click="exportToPDF()">
-                          Descargar &nbsp; <i class="fa-regular fa-file-pdf"></i>
+                          <strong>PDF</strong>
                         </button>
-                        <button class="animate__animated animate__fadeInUp animate__slow btn-orange m-2 btn"
+                        <button class="animate__animated animate__fadeInUp animate__slow btn-success text-white m-2 btn"
                           @click="exportToExcel()">
-                          Descargar &nbsp; <i class="fa-regular fa-file-excel"></i>
+                          <strong>Excel</strong>
                         </button>
                       </div>
                       <span class="subtitle-class">Reportes</span>
@@ -525,7 +527,7 @@
 
                 <div class="row px-5 d-flex justify-content-center">
                   <div class="col-7 table-responsive">
-                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Inversiones' && reports.length > 0" class="table table-sm align-middle" id="reporteInversionista">
                       <thead class="align-middle">
                         <tr>
                           <th scope="col">ID</th>
@@ -552,7 +554,7 @@
                       </tbody>
                     </table>
 
-                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle">
+                    <table v-if="typeReport == 'Retiros' && reports.length > 0" class="table table-sm align-middle" id="reporteRetiroInvesionista">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -782,11 +784,11 @@ import {
 } from "@/helpers/utilities";
 import apexchart from "vue3-apexcharts";
 import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
 // import autoTable from "jspdf-autotable";
 // const route = useRouter();
 const tabsInv = ref(["Inversiones", "Retiros"]);
 var activeTabInv = ref(0);
-
 const tabsCli = ref(["Inversiones", "Retiros", "Devoluciones"]);
 var activeTabCli = ref(0);
 var typeReport = ref("Inversiones");
@@ -1206,6 +1208,39 @@ const exportToPDF = () => {
   });
   doc.save("Reporte de Inversiones y Retiros.pdf");
 };
+
+
+const exportToExcel = () =>{
+  if (typeReport.value == "Inversiones") {
+    const datos = reports.value.map((report) => ({
+    ID: report.inversion_id,
+    Inversionista: report.inversor,
+    "Tokens Invertidos": report.monto,
+    "Tokens a Devolver": monto_devolver(report.monto, report.ganancia),
+    "Fecha de Inversión": new Date(report.fecha_deposito).toLocaleDateString(),
+    "Fecha de Retorno (Aprox)": new Date(report.fecha_devolucion).toLocaleDateString(),
+  }))
+  const worksheet = XLSX.utils.json_to_sheet(datos);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Inversiones");
+  XLSX.writeFile(workbook, "reporte_inversiones.xlsx");
+  }
+  if (typeReport.value == "Retiros") {
+
+     const datos = reports.value.map((report) => ({
+      ID: report.retiro_id,
+      "Monto Solicitado": report.monto_solicitud,
+      "Monto a Recibir": report.monto_recibir,
+      "Fecha Solicitud": new Date(report.fecha_solicitud).toLocaleDateString(),
+      "Fecha de Aprobación": new Date(report.fecha_aprobacion).toLocaleDateString(),
+      
+    }))
+  const worksheet = XLSX.utils.json_to_sheet(datos);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Retiros");
+  XLSX.writeFile(workbook, "reporte_retiros.xlsx");
+}
+}
 </script>
 
 <style scoped>
