@@ -423,7 +423,7 @@ const clearSearch = () => {
 }
 /*inicio de la modal*/
 .modal-header {
-  background-color: #d9c5b2 !important;
+  background-color: var(--dun2-color) !important;
   width: 100%;
   height: 75px;
   border-radius: 15px 15px 0 0;
@@ -432,7 +432,7 @@ const clearSearch = () => {
   justify-content: center;
   position: relative;
 }
-.modal-footer {
+/* .modal-footer {
   background-color: #d9c5b2 !important;
   width: 100%;
   height: 75px;
@@ -441,7 +441,7 @@ const clearSearch = () => {
   align-items: center;
   justify-content: center;
   position: relative;
-}
+} */
 
 .modal-card {
   border-radius: 15px;
@@ -450,9 +450,9 @@ const clearSearch = () => {
 }
 
 .input {
-  background-color: rgba(44, 46, 51, 1.1);
+  /* background-color: rgba(44, 46, 51, 1.1); */
   border-radius: 12px;
-  border: 0;
+  border: 1px solid #F37926 !important;
   box-sizing: border-box;
   color: var(--white-color);
   font-size: 13px;
