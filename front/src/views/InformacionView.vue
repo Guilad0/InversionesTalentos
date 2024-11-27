@@ -3,103 +3,129 @@
     <div class="overlay"></div>
     <div class="d-flex justify-content-center align-items-center container">
       <div class="container col-md-6 mt-5 mb-5">
-        <form @submit.prevent="registrarInformacion" class="was-validated" >
+        <form @submit.prevent="registrarInformacion" novalidate >
           <div class="card shadow">
             <div class="card-body py-2 align-items-center">
               <label class="fw-bold text-center d-block w-100">¡Bienvenid@ {{ nombre }} completa tus datos!</label>
               <h5 class="fw-bold text-center mb-3">Registra tu Talento</h5>
               <br>
               <!-- Botón para volver al Perfil -->
-              <div class="back-button1">
+              <!-- <div class="back-button1">
                 <router-link to="/perfil" class="btn-back">
                   Volver a Perfil
                 </router-link>
-              </div>
+              </div> -->
 
               <div class="row mb-3">
 
                 <div class="col-md-6">
-                  <label for="ocupacion" class="form-label">Ocupación *</label>
-                  <input type="text" v-model="ocupacion" id="ocupacion" class="form-control input" required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
-                  </div>
+                  <label for="ocupacion" class="form-label">Ocupación <code>*</code> </label>
+                  <input
+                    type="text"
+                    v-model="ocupacion"
+                    id="ocupacion"
+                    class="form-control input"
+                    required
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{5,}$"
+
+                    />
+                  <div class="invalid-feedback fs-custom">Campo requerido, minimo 5 caracteres</div>
                 </div>
 
                 <div class="col-md-6">
-                  <label for="categoria_persona_id" class="form-label">Categoría *</label>
+                  <label for="categoria_persona_id" class="form-label">Categoría <code>*</code></label>
                   <select id="categoria_persona_id" v-model="categoria_persona_id"
                     class="form-select form-select-sm p-1 input" aria-label="Multiple select example" required>
-                    <option disabled selected value="">Selecciona tu Categoría</option>
-                    <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                    <option disabled selected value="" >Selecciona tu Categoría</option>
+                    <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.categoria_persona_id" class="btn-grayz">
                       {{ categoria.nombre }}
                     </option>
                   </select>
-                  <div class="invalid-feedback">
-                    Por favor, seleccione una opción
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
                   </div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="descripcion" class="form-label">Descripción *</label>
-                  <input type="text" v-model="descripcion" id="descripcion" class="form-control input" required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
+                  <label for="descripcion" class="form-label">Descripción <code>*</code></label>
+                  <input
+                    type="text"
+                    v-model="descripcion"
+                    id="descripcion"
+                    class="form-control input"
+                    required
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{5,}$"                    />
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
                   </div>
                 </div>
               </div>
               <div class="row mb-3">
 
                 <div class="col-md-6">
-                  <label for="monto_inversion" class="form-label">Cantidad Mínima de Tokens *</label>
-                  <input type="text" v-model="monto_inversion" id="monto_inversion" class="form-control input"
+                  <label for="monto_inversion" class="form-label">Cantidad Mínima de Tokens <code>*</code></label>
+                  <input type="number" v-model="monto_inversion" id="monto_inversion" class="form-control input"
+                    required min="0"  ref="minRef"/>
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="cantidad_maxima_inversiones" class="form-label">Cantidad Máxima de Tokens <code>*</code></label>
+                  <input ref="maxRef" type="number" v-model="cantidad_maxima_inversiones" id="cantidad_maxima_inversiones"
+                    class="form-control input" required min="0" />
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+
+                <div class="col-md-6">
+                  <label for="preparacion" class="form-label">Preparación <code>*</code></label>
+                  <input
+                    type="text"
+                    v-model="preparacion"
+                    id="preparacion"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{5,}$"
+                    class="form-control input"
                     required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
                   </div>
                 </div>
 
                 <div class="col-md-6">
-                  <label for="cantidad_maxima_inversiones" class="form-label">Cantidad Máxima de Tokens *</label>
-                  <input type="text" v-model="cantidad_maxima_inversiones" id="cantidad_maxima_inversiones"
-                    class="form-control input" required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
-                  </div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-
-                <div class="col-md-6">
-                  <label for="preparacion" class="form-label">Preparación *</label>
-                  <input type="text" v-model="preparacion" id="preparacion" class="form-control input" required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <label for="estudios" class="form-label">Estudios *</label>
-                  <input type="text" v-model="estudios" id="estudios" class="form-control input" required />
-                  <div class="invalid-feedback">
-                    Por favor, llene este campo requerido
+                  <label for="estudios" class="form-label">Estudios <code>*</code></label>
+                  <input
+                    type="text"
+                    v-model="estudios"
+                    id="estudios"
+                    pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{5,}$"
+                    class="form-control input"
+                    required />
+                  <div class="invalid-feedback fs-custom">
+                    Campo requerido, minimo 5 caracteres
                   </div>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="vision" class="form-label">Visión</label>
-                <textarea v-model="vision" id="vision" class="form-control input" rows="3" required></textarea>
-                <div class="invalid-feedback">
-                  Por favor, llene este campo requerido
-                </div>
+                <label for="vision" class="form-label">Visión <code>*</code></label>
+                <textarea ref="visionRef"   v-model="vision" id="vision" pattern="^(?!\s*$)([A-Za-z]+(\s[A-Za-z]+)*){15,}$" class="form-control " rows="3"  required ></textarea>
+                <div v-if="visionError" class="invalid-feedback">
+                El campo debe contener al menos 15 caracteres y no solo espacios.
               </div>
-              <button type="submit" class="btn custom-button rounded-3">
+              </div>
+             <div class="text-center mt-4">
+              <button :disabled="loading" type="submit" class="btn custom-button rounded-3">
                 Registrar
               </button>
+             </div>
 
             </div>
           </div>
@@ -121,6 +147,8 @@ import iziToast from 'izitoast';
 
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 import {successAlert, errorAlert} from "../helpers/iziToast";
+const visionError = ref(false)
+const errMin = ref('Campo requerido')
 
 /* ===== VARIABLES Y REFERENCIAS ===== */
 const router = useRouter();
@@ -159,12 +187,25 @@ onMounted(() => {
   obtenerCategorias();
 });
 
+const validarFormulario = (event) => {
+  const form = event.target.closest("form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+  return true;
+};
+
 /* ===== OBTENER CATEGORÍAS ===== */
 const obtenerCategorias = async () => {
+
   try {
     const response = await axios.get(import.meta.env.VITE_BASE_URL + '/categories');
     console.log(response.data.results);
     categorias.value = response.data.results;
+    categorias.value = categorias.value.filter(categoria => categoria.nombre !== "sin categoria ");
   } catch (error) {
     console.error('Error al obtener las categorías:', error);
     /* iziToast.error({
@@ -182,9 +223,13 @@ const obtenerCategorias = async () => {
 };
 
 /* ===== REGISTRAR INFORMACIÓN ===== */
-
+const visionRef = ref(null)
+const minRef = ref(null)
+const maxRef = ref(null)
+const loading = ref(false)
 const registrarInformacion = async () => {
   // Validar valores numéricos
+  if (!validarFormulario(event)) return;
   const minimo = parseFloat(monto_inversion.value);
   const maximo = parseFloat(cantidad_maxima_inversiones.value);
 
@@ -192,30 +237,41 @@ const registrarInformacion = async () => {
     errorAlert("Los valores de inversión deben ser numéricos.", "Error");
     return;
   }
-
+  
   if (minimo > maximo) {
+    minRef.value.focus()
     errorAlert(
       "La cantidad mínima de tokens debe ser menor a la cantidad máxima de tokens.",
       "Error"
     );
+    monto_inversion.value = ''
+cantidad_maxima_inversiones.value = ''
     return;
+  }
+  if( vision.value.length < 16 ){
+    visionRef.value.focus();
+    errorAlert(
+      "La vision debe tener al menos 15 caracteres.",
+      "Error"
+    );
   }
 
   const datos = {
     cliente_id: cliente_id.value,
-    ocupacion: ocupacion.value,
-    descripcion: descripcion.value,
+    ocupacion: ocupacion.value.trim(),
+    descripcion: descripcion.value.trim(),
     monto_inversion: monto_inversion.value,
     cantidad_maxima_inversiones: cantidad_maxima_inversiones.value,
-    preparacion: preparacion.value,
-    estudios: estudios.value,
-    vision: vision.value,
+    preparacion: preparacion.value.trim(),
+    estudios: estudios.value.trim(),
+    vision: vision.value.trim(),
     categoria_persona_id: categoria_persona_id.value,
   };
 
   console.log("Datos enviados:", datos);
 
   try {
+    loading.value = true
     // Realizar solicitud POST
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/users/info`,
@@ -233,12 +289,19 @@ const registrarInformacion = async () => {
 
     // Mostrar mensaje de error
     errorAlert("Hubo un problema al registrar la información.", "Error");
+  }finally{
+    loading.value = false
   }
 };
 
 </script>
 
 <style scoped>
+.fs-custom{
+  font-size: 0.8rem;
+  color:red !important;
+  
+}
 .background {
   display: flex;
   justify-content: center;
@@ -282,7 +345,7 @@ const registrarInformacion = async () => {
 label {
   color: #17223B;
   font-family: sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 5px;
   font-weight: bold;
 }

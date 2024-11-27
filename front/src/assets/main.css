@@ -197,5 +197,11 @@ input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+textarea::-webkit-scrollbar {
+  display: none; /* Ocultar la barra de desplazamiento en navegadores webkit */
+}
 
-
+/* Para Firefox */
+textarea {
+  scrollbar-width: none; /* Eliminar barra de desplazamiento en Firefox */
+}
