@@ -6,7 +6,8 @@
 
       <div class="container-fluid mx-3">
 
-        <button class="navbar-toggler" type="button" @click="toggleMenu" aria-controls="navbarNav" aria-expanded="isMenuOpen" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" @click="toggleMenu" aria-controls="navbarNav"
+          aria-expanded="isMenuOpen" aria-label="Toggle navigation">
 
           <span class="text-white"> <i class="fa fa-bars"></i> </span>
 
@@ -50,14 +51,28 @@
             </li>
 
             <li class="nav-item">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas Frecuentes</RouterLink>
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas Frecuentes
+              </RouterLink>
+            </li>
+
+            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="perfil">Ir a Perfil
+              </RouterLink>
+            </li>
+            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/billetera">Ir a Billetera
+              </RouterLink>
+            </li>
+            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+              <RouterLink exact-active-class="active" @click="logout" class="nav-link underline-dynamic"
+                to="sign-login">Cerrar Sesión</RouterLink>
             </li>
 
           </ul>
 
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center flex-wrap">
 
-            <RouterLink class="nav-link wallet-icon" to="/billetera">
+            <RouterLink class="nav-link wallet-icon" to="/billetera" :class="{ hidden: isMenuOpen }">
               <i v-if="rol == 'Cliente' || rol == 'Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
 
@@ -65,13 +80,13 @@
               <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
             </RouterLink>
 
-            <RouterLink class="nav-link user-icon pb-1" to="perfil"
+            <RouterLink class="nav-link user-icon pb-1" to="perfil" :class="{ hidden: isMenuOpen }"
               v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'">
               <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
                 class="rounded-circle me-2" width="30" alt="" />
             </RouterLink>
 
-            <RouterLink class="nav-link user-icon" to="sign-login">
+            <RouterLink class="nav-link user-icon" to="sign-login" :class="{ hidden: isMenuOpen }">
               <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
               <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
             </RouterLink>
@@ -146,12 +161,11 @@ const toggleMenu = () => {
 </script>
 
 <style scoped>
-
 /* hacer query para que se vea bien en mobile tewmbnien sacar el icono al centro para inicio de sesion y sacar los iconos */
 .burger-menu {
   background-color: var(--gray-color);
   text-align: center;
-  border-radius: 10px;  
+  border-radius: 10px;
 }
 
 .active {
@@ -242,5 +256,67 @@ i:hover {
 
 .greeting:hover {
   color: var(--yellow-orange);
+}
+
+.menu-open-layout {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.centered-wallet {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .nav-link {
+    font-size: 0.9rem;
+    margin-right: 8px;
+  }
+
+  nav {
+    height: 10vh;
+  }
+
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+
+  img {
+    width: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-link {
+    font-size: 0.8rem;
+    margin-right: 5px;
+  }
+
+
+  .burger-menu {
+    padding: 10px;
+  }
+
+  nav {
+    height: 12vh;
+    flex-wrap: wrap;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+    font-size: 1rem;
+  }
+
+  img {
+    width: 25px;
+  }
 }
 </style>
