@@ -10,7 +10,7 @@
           <div class="card  shadow w-75">
             <div class="card-body">
               <p :style="{ fontSize: '1rem' }" class="text-secondary text-center">
-                Bienvenid@!!! <strong>{{ nombre + " " + apellido }}</strong>
+                Bienvenid@!!! <strong>{{ nombre.charAt(0).toUpperCase()+nombre.slice(1)+ " " + apellido.charAt(0).toUpperCase()+apellido.slice(1) }}</strong>
               </p>
               <h5 class="fs-6 text-secondary">Datos Personales</h5>
 
