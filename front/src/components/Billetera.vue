@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-content-around mb-6">
+      <div class="d-flex justify-content-around mb-6 button-container">
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens <span></span></button>
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
@@ -725,5 +725,101 @@ button {
 input {
   border-color: white;
   background-color: rgba(255, 255, 255, 0.281);
+}
+
+
+@media (max-width: 1200px) {
+  .title {
+    font-size: 26px;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+
+  .btn-6, .btn-7 {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .button-container {
+    flex-direction: column;
+    align-items: center;    
+  }
+
+  .button-container .btn {
+    width: 100%; 
+    max-width: 300px; 
+    margin-bottom: 0.5rem; 
+  }
+  .col-md-5, .col-md-6, .col-md-4 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .modal-dialog {
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 22px;
+  }
+  .button-container {
+    flex-direction: column; 
+    align-items: center;    
+  }
+
+  .button-container .btn {
+    width: 50%; 
+    max-width: 50px; 
+    margin-bottom: 0.5rem; 
+  }
+  p {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .btn-6, .btn-7 {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+  }
+
+  .modal-dialog {
+    width: 95%;
+    max-width: 400px;
+  }
 }
 </style>
