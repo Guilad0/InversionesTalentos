@@ -1,9 +1,12 @@
 <template>
   <main class="bg-light">
     <div class="content">
-      <h4 class="d-block mb-2 text-center title py-5">Categorías</h4>
+      <h4 class="d-block mb-2 text-center title py-4">Categorías</h4>
       <div class="d-flex justify-content-between px-5 mt-2 mb-3">
-        <div class="col-2 position-relative">
+
+        <div class="row">
+          <div class="col-3">
+            <label for="search" class="form-label">Buscar Categoría</label>
           <input
             name="search"
             type="text"
@@ -12,29 +15,45 @@
             placeholder="Buscar ..."
             @input="obtenerCategorias(1, search)"
           />
-          <div v-if="search !== ''" class="custom-absolute">
-            <img
-              class="cursor"
-              src="../assets/svg/close.svg"
-              alt="Descripción del SVG"
-              width="25"
-              @click="clearSearch"
+          </div>
+          <div class="col-1"></div>
+          <div class="col-8">
+            <div class="row">
+              <div class="col-6">
+                <label for="createNombre" class="form-label">Nombre de la Categoría</label>
+            <input
+              type="text"
+              class="form-control"
+              id="createNombre"
+              v-model="formCreate.nombre"
+              placeholder="Nueva categoría"
+              required
             />
+              </div>
+              <div class="col-6">
+                <label for="createImage" class="form-label">Imagen de la Categoría</label>
+            <input
+              type="file"
+              class="form-control"
+              id="createImage"
+              accept="image/*"
+              @change="handleFileChangeCreate"
+            />
+              </div>
+            </div>
+            <div class="row py-3">
+              <button
+            type="button"
+            class="btn btn-cat rounded-3"
+            @click="createCategory"
+          >
+            <i class="fa-solid fa-check"></i> Crear Categoría
+          </button>
+            </div>
           </div>
         </div>
-        <div class="col-8"></div>
-        <div class="col-2 text-end">
-          <button
-            type="button"
-            class="btn bg-gray rounded-3 text-white btn-categoria"
-            data-bs-toggle="modal"
-            data-bs-target="#modalCreateCategory"
-            @click="crearCategoria"
-          >
-            +
-            <i class="fa-solid fa-tags"></i>
-          </button>
-        </div>
+
+        
       </div>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="table-container">
@@ -95,9 +114,9 @@
           </table>
         </div>
 
-        <div class="d-flex justify-content-center">
-          <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
-            <ul class="pagination">
+        <div class="d-flex justify-content-center overflow-auto">
+          <nav v-if="paginacion.total > 0" aria-label="Page navigation example" class="pagination-container">
+            <ul class="pagination flex-wrap">
               <li v-if="paginacion.previous == null" class="page-item disabled">
                 <button class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-left"></i>
@@ -145,65 +164,6 @@
     </div>
   </main>
 
-  <div
-    class="modal fade"
-    id="modalCreateCategory"
-    aria-labelledby="modalCreateCategoryLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content modal-card">
-        <div class="modal-header text-center">
-          <h5 class="modal-title w-100">Crear Nueva Categoría</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body" style="background-color: #17223b">
-          <form @submit.prevent="createCategory">
-            <div class="container">
-              <div class="row mb-3">
-                <div class="col-12">
-                  <label for="createNombre" class="form-label custom-subtitle">
-                    Nombre de la Categoría
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control input"
-                    id="createNombre"
-                    v-model="formCreate.nombre"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="row mb-3">
-                <div class="col-12">
-                  <label for="createImage" class="form-label custom-subtitle">
-                    Imagen de la Categoría
-                  </label>
-                  <input
-                    type="file"
-                    class="form-control input"
-                    accept="image/*"
-                    id="createImage"
-                    @change="handleFileChangeCreate"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 text-center modal-footer">
-                  <button type="submit" class="btn custom-button">Crear Categoría</button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div
     class="modal fade"
@@ -267,7 +227,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { successAlert, errorAlert } from "../helpers/iziToast";
@@ -330,17 +290,14 @@ const cambiarEstado = async (categoria_persona_id) => {
   }
 };
 
-// Mostrar el modal para crear una nueva categoría
-const crearCategoria = () => {
-  formCreate.value = { nombre: "", image: null }; // Limpiar los campos del formulario
-};
-
 // Mostrar el modal para editar una categoría existente
 const editarCategoria = async (categoria_persona_id) => {
   try {
     const { data } = await axios.get(`${BaseURL}/${categoria_persona_id}`);
     formEdit.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
     categoriaEditada.value = data; // Guardar la categoría seleccionada para editar
+    // Forzar actualización del DOM antes de mostrar el modal 
+    await nextTick();
     const editModal = new bootstrap.Modal(document.getElementById("modalEditCategory"));
     editModal.show();
   } catch (error) {
@@ -371,12 +328,13 @@ const createCategory = async () => {
 
     if (data.success) {
       successAlert(data.msg, "Éxito"); // Mostrar mensaje de éxito
-      const createModalElement = document.getElementById("modalCreateCategory");
-      const createModalInstance = bootstrap.Modal.getInstance(createModalElement);
-      console.log("Ocultando el modal", createModalInstance);
-      createModalInstance.hide();
-      console.log("Obteniendo categorías");
       obtenerCategorias();
+      // Limpiar los campos de input 
+      formCreate.value.nombre = ""; 
+      formCreate.value.image = null
+      document.getElementById("createNombre").value = ""; // Limpiar input de nombre 
+      document.getElementById("createImage").value = null
+      
     } else {
       errorAlert(data.msg, "Error"); // Mostrar mensaje de error si no fue exitoso
     }
@@ -478,9 +436,29 @@ const clearSearch = () => {
   transition: background-color 0.3s ease;
 }
 
+.btn-cat{
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--gray-color);
+  color: white;
+  transition: background-color 0.3s ease; 
+}
+.btn-cat:hover{
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--yellow-orange)!important;
+  color: var(--gray-color);
+  transition: background-color 0.3s ease; 
+}
+
 .custom-button:hover {
   background-color: #d06a20; /* Darker orange */
 }
+
 
 .modal-dialog {
   /* background-image: url("@/assets/images/otro-fondo5.png"); */
@@ -614,6 +592,11 @@ td {
 .pagination {
   margin-top: 1rem;
   /* Separación superior para los botones */
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem; /* Espaciado entre botones */
+  flex-wrap: wrap; /* Ajusta los botones en varias filas si es necesario */
+  
 }
 
 .pagination .page-item {
@@ -637,4 +620,11 @@ td {
   color: white;
   background-color: var(--yellow-orange) !important;
 }
+
+.pagination-container {
+  max-width: 100%; /* Limita la anchura al contenedor */
+  overflow-x: auto; /* Activa el desplazamiento horizontal si es necesario */
+  white-space: nowrap; /* Evita saltos de línea */
+}
+
 </style>
