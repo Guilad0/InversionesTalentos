@@ -25,10 +25,9 @@ watchEffect(() => {
     image.value = results.value[0].proposito_imagen;
     const element = document.querySelector('.full-background');
 
-    // La imagen de fondo sea fija, ocupe todo el espacio y no se mueva
     element.style.backgroundImage = `url(${image.value})`;
     element.style.backgroundSize = 'cover';
-    element.style.backgroundAttachment = 'fixed';  // Asegura que la imagen sea fija
+    element.style.backgroundAttachment = 'scroll';
     element.style.backgroundPosition = 'center';
     element.style.backgroundRepeat = 'no-repeat';
   }
