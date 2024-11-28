@@ -546,7 +546,7 @@
                   <strong>Tokens Recibidos:</strong> {{ inversion_recibida.monto }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha:</strong> {{ formatDate(inversion_recibida.fecha_deposito) }}
+                  <strong>Fecha:</strong> {{ new Date(inversion_recibida.fecha_deposito).toLocaleDateString() }}
                 </p>
               </div>
 
@@ -588,17 +588,17 @@
                 ${{ cliente_retiro.monto_recibir }}
               </h3>
               <p class="text-white text-center">
-                Solicitud: {{ cliente_retiro.retiro_id }}
+                <strong>Solicitud:</strong> {{ cliente_retiro.retiro_id }}
               </p>
               <p class="text-white text-center">
-                Fecha Solicitud: {{ formatDate(cliente_retiro.fecha_solicitud) }}
+                <strong>Fecha Solicitud:</strong> {{ new Date(cliente_retiro.fecha_solicitud).toLocaleDateString() }}
               </p>
-              <p class="text-white text-center">Estado: {{ cliente_retiro.estado }}</p>
+              <p class="text-white text-center"><strong>Estado:</strong> {{ cliente_retiro.estado }}</p>
               <p
                 class="text-white text-center"
                 v-if="cliente_retiro.estado == 'Aprobado'"
               >
-                Fecha Aprobación: {{ formatDate(cliente_retiro.fecha_aprobacion) }}
+                Fecha Aprobación: {{ new Date(cliente_retiro.fecha_aprobacion).toLocaleDateString() }}
               </p>
             </div>
           </div>
@@ -626,16 +626,16 @@
               class="custom-card bg-degrade-inverso p-3 d-flex flex-column align-items-center"
             >
               <p class="text-white text-center">
-                Solicitud: {{ inversion_vencida.inversion_id }}
+                <strong>Solicitud:</strong> {{ inversion_vencida.inversion_id }}
               </p>
               <p class="text-white text-center">
-                Tokens Pendientes: {{ inversion_vencida.ganancia_estimada }}
+                <strong>Tokens Pendientes:</strong> {{ inversion_vencida.ganancia_estimada }}
               </p>
               <p class="text-white text-center">
-                Fecha de Inversion: {{ formatDate(inversion_vencida.fecha_deposito) }}
+                <strong>Fecha de Inversion:</strong> {{ new Date(inversion_vencida.fecha_deposito).toLocaleDateString }}
               </p>
               <p class="text-white text-center">
-                Fecha de Vencimiento: {{ formatDate(inversion_vencida.fecha_devolucion) }}
+                <strong>Fecha de Vencimiento:</strong> {{ new Date(inversion_vencida.fecha_devolucion).toLocaleDateString }}
               </p>
               <button
                 class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
@@ -1202,29 +1202,29 @@
             v-for="inversion in inversiones"
             :key="inversion"
           >
-            <div class="custom-card row bg-degrade-inverso p-3">
-              <div class="col-9 text-white text-center border-end p-3">
+            <div class="custom-card row bg-degrade-inverso p-3 card-container">
+              <div class="col-9 text-white text-center border-end p-3 info-container">
                 <p class="text-white text-center">
-                  Inversión ID: {{ inversion.inversion_id }}
+                  <strong>Inversión ID:</strong> {{ inversion.inversion_id }}
                 </p>
                 <p class="text-white text-center">
-                  Cliente: {{ inversion.nombre_cliente }}
+                  <strong>Cliente:</strong> {{ inversion.nombre_cliente }}
                 </p>
                 <p class="text-white text-center">
-                  Tokens Invertidos: {{ inversion.monto }}
+                  <strong>Tokens Invertidos:</strong> {{ inversion.monto }}
                 </p>
                 <p class="text-white text-center">
-                  Ganancia de Tokens: {{ inversion.ganancia_estimada - inversion.monto }}
+                  <strong>Ganancia de Tokens:</strong> {{ inversion.ganancia_estimada - inversion.monto }}
                 </p>
                 <p class="text-white text-center">
-                  Fecha de Inversión: {{ formatDate(inversion.fecha_deposito) }}
+                  <strong>Fecha de Inversión:</strong> {{ new Date(inversion.fecha_deposito).toLocaleDateString }}
                 </p>
                 <p class="text-white text-center">
-                  Fecha de Retorno Aprox.: {{ formatDate(inversion.fecha_devolucion) }}
+                  <strong>Fecha de Retorno Aprox.:</strong> {{ new Date(inversion.fecha_devolucion).toLocaleDateString }}
                 </p>
               </div>
 
-              <div class="col-3 p-3">
+              <div class="col p-3 image-container m-auto">
                 <img :src="inversion.imagen" width="200" class="rounded-circle" alt="" />
               </div>
             </div>
@@ -1245,16 +1245,16 @@
         <!-- Lista de solicitudes de retiro-->
         <div class="tab-content" v-if="activeTabInv === 1">
           <div
-            class="card bg-degrade-inverso p-4 rounded-lg shadow-md"
+            class="card bg-degrade-inverso p-4 rounded-lg shadow-md my-3"
             v-for="inversionista_retiro in inversionistas_retiros"
             :key="inversionista_retiro"
           >
-            <p class="text-white">Monto: ${{ inversionista_retiro.monto_recibir }}</p>
-            <p class="text-white">Solicitud: {{ inversionista_retiro.retiro_id }}</p>
-            <p class="text-white">Fecha: {{ inversionista_retiro.fecha_solicitud }}</p>
-            <p class="text-white">Estado: {{ inversionista_retiro.estado }}</p>
+            <p class="text-white"><strong>Monto:</strong> ${{ inversionista_retiro.monto_recibir }}</p>
+            <p class="text-white"><strong>Solicitud:</strong> {{ inversionista_retiro.retiro_id }}</p>
+            <p class="text-white"><strong>Fecha:</strong> {{ new Date(inversionista_retiro.fecha_solicitud).toLocaleDateString() }}</p>
+            <p class="text-white"><strong>Estado:</strong> {{ inversionista_retiro.estado }}</p>
             <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
-              Fecha Aprobación: {{ formatDate(inversionista_retiro.fecha_aprobacion) }}
+              <strong>Fecha Aprobación:</strong> {{ new Date(inversionista_retiro.fecha_aprobacion).toLocaleDateString() }}
             </p>
           </div>
           <div
@@ -1814,7 +1814,7 @@ h5 {
 }
 
 .icon-hover:hover {
-  transform: scale(1.5);
+  transform: scale(1.1);
   color: var(--yellow-orange) !important;
 }
 
@@ -1986,6 +1986,8 @@ tr {
 .table {
   border-radius: 10px;
   overflow: hidden;
+  width: 100%;
+  table-layout: auto;
 }
 
 .alert-warning {
