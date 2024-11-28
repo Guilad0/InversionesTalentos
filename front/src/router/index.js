@@ -81,8 +81,6 @@ const router = createRouter({
       path:'/perfil',
       name:'perfil',
       component:PerfilView,
-      meta: {roles: ["Cliente","Inversionista"]}
-      
     },
     {
       path:'/sign-login',
