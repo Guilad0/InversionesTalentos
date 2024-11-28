@@ -101,14 +101,12 @@ onMounted(async () => {
     <div class="container">
       <h1 class="text-center titleM pt-5">Marketplace</h1>
       <p class="mt-5 fw-bold fs-5">Profesionales</p>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between flex-column flex-md-row">
         <div class="d-flex">
-          <div class="position-relative">
+          <div class="position-relative w-75">
             <input type="text" v-model="name" @input="handleName" class=" search_input form-control focus-ring focus-ring-secondary"
               placeholder="Buscar por nombre" />
-            <div class="custom-absolute">
-              <img src="../assets/svg/search-svgrepo-com.svg" alt="Descripción del SVG" width="25" />
-            </div>
+            
           </div>
           <div class="d-none d-xl-block filter-large">
             <FilterClients :categories="categories" @getAll="getAll" @findByname="findByname"
@@ -119,7 +117,7 @@ onMounted(async () => {
               :activeCategory="activeCategory" />
           </div>
         </div>
-        <div class="dropdown">
+        <div class="dropdown mt-md-0">
           <div class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <small>Orden por
               <img src="../assets/svg/menu-order-svgrepo-com.svg" width="15" />
@@ -141,7 +139,7 @@ onMounted(async () => {
     </div>
     <div class="container mt-3">
       <div class="content" v-if="clients.length > 0">
-        <div class="d-none d-sm-block">
+        <div class="">
           <div v-if="!isLoading" class="d-flex flex-wrap justify-content-start">
             <CardClient v-for="client in clients" :key="client.usuario_id" :client="client"
               class="animate__animated animate__fadeIn card-client" />
@@ -176,32 +174,32 @@ onMounted(async () => {
   gap: 10px;
 }
 .filter-large {
-  font-size: 20px; /* Cambia el tamaño del texto dentro de este contenedor */
-  padding: 15px; /* Añade espacio adicional */
+  font-size: 20px;
+  padding: 15px;
 }
 
 .titleM {
-  font-family: var(--font-montserrat-bold); /* Variante bold */
-  font-weight: 700; /* Asegura que sea bold */
-  font-size: 30px; /* Tamaño predefinido */
+  font-family: var(--font-montserrat-bold);
+  font-weight: 700;
+  font-size: 30px;
   color: var( --gray-color); 
   text-transform: uppercase;
 }
 .dropdown-toggle {
-  font-size: 18px; /* Tamaño del texto */
-  padding: 10px 15px; /* Espaciado interno */
-  height: auto; /* Permite que se ajuste a su contenido */
-  border-radius: 8px; /* Esquinas redondeadas */
+  font-size: 18px; 
+  padding: 10px 15px; 
+  height: auto; 
+  border-radius: 8px; 
 }
 
 .dropdown-menu {
-  font-size: 16px; /* Ajusta el tamaño del texto en el menú */
-  padding: 10px; /* Espaciado interno */
+  font-size: 16px; 
+  padding: 10px; 
 }
 
 .dropdown-item {
-  font-size: 16px; /* Tamaño del texto de cada opción */
-  padding: 10px 15px; /* Espaciado interno para mejor visibilidad */
+  font-size: 16px; 
+  padding: 10px 15px; 
 }
 
 main {
@@ -277,11 +275,12 @@ button:disabled {
   text-decoration: underline !important;
 }
 .custom-absolute {
-  position: absolute; /* Asegura que se pueda ajustar la posición relativa al contenedor */
-  top: 50%; /* Centra verticalmente */
-  transform: translateY(-50%); /* Ajusta la posición para que esté exactamente en el medio */
-  right: 10px; /* Ajusta la distancia desde el borde derecho */
-  pointer-events: none; /* Evita que interfiera con el clic en el campo de texto */
+  position: absolute;
+  top: 50%; 
+  transform: translateY(-50%); 
+  
+  right: 10px; 
+  pointer-events: none;
 }
 
 </style>

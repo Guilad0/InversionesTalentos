@@ -166,7 +166,7 @@ const copiarEnlace = () => {
 };
 </script>
 <template>
-  <div class="col-xxl-3-custom  col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 ">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 ">
     <div class="card m-2 rounded-3 position-relative p-2 shadow">
       <img :src="client.imagen || 'https://cdn-icons-png.flaticon.com/512/6429/6429059.png'"
         class="rounded-circle border m-auto border-2" width="150" height="150">
@@ -174,25 +174,25 @@ const copiarEnlace = () => {
         <h5 class="card-title fs-6 text-center">{{ props.client.nombre }}</h5>
         <p class="text-muted text-center">{{ props.client.ocupacion || 'Ocupación no especificada' }}</p>
         <div class="d-flex justify-content-center">
-          <div class="col tooltip-container">
+          <div class="col-auto tooltip-container">
             <img src="../assets/svg/cardlogro.svg" width="25" alt="" data-toggle="tooltip" data-placement="right"
               :data-bs-original-title="tooltipExperiencia" class="custom-tooltip" />
           </div>
-          <div class="col tooltip-container">
+          <div class="col-auto tooltip-container">
             <img src="../assets/svg/trofeo.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
               :data-bs-original-title="tooltipLogros" class="custom-tooltip" />
           </div>
 
           <!-- <div class="col"><img src="../assets/svg/details.svg" width="22" alt="" /></div> -->
-          <div class="col" @mouseover="mostrarBoton = true" @mouseleave="mostrarBoton = false">
+          <div class="col-auto  " @mouseover="mostrarBoton = true" @mouseleave="mostrarBoton = false">
             <img v-if="!mostrarBoton" src="../assets/svg/links.svg" width="22" alt="" />
             <button v-if="mostrarBoton" @click="copiarEnlace" class="btn-copiar"> Copiar Enlace </button>
           </div>
-          <div class="col tooltip-container">
+          <div class="col-auto  tooltip-container">
             <img src="../assets/svg/like.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
               :data-bs-original-title="tooltipComentarios" class="custom-tooltip" />
           </div>
-          <div class="col tooltip-container">
+          <div class="col-auto  tooltip-container">
             <img src="../assets/svg/details.svg" width="22" alt="" data-toggle="tooltip" data-placement="right"
               :data-bs-original-title="categoriaNombre" class="custom-tooltip" />
           </div>
@@ -227,13 +227,11 @@ const copiarEnlace = () => {
 .card {
   border: 1px solid var(--gray-color);
 }
-
 @media (min-width: 1400px) {
   .col-xxl-3-custom {
     width: 20%;
   }
 }
-
 .btn-copiar {
   display: flex;
   background-color: white;
