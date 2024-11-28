@@ -24,7 +24,7 @@ watchEffect(() => {
     text.value = results.value[0].propositoText;
     image.value = results.value[0].proposito_imagen;
     const element = document.querySelector('.full-background');
-    
+
     // La imagen de fondo sea fija, ocupe todo el espacio y no se mueva
     element.style.backgroundImage = `url(${image.value})`;
     element.style.backgroundSize = 'cover';
@@ -139,12 +139,17 @@ const saveText = async () => {
           <div class="modal-body">
             <textarea class="form-control" v-model="text" rows="4"></textarea>
           </div>
-          <div class="modal-footer m-auto">
-            <Button message="Cerrar" typeButton="btn-red" data-bs-dismiss="modal" />
-            <Button v-if="!loading" message="Actualizar" typeButton="btn-blue" @click="saveText()" />
-            <LoadingButton v-else />
+          <div class="modal-footer text-center m-auto d-flex justify-content-center position-relative">
+            <!-- Botón Cerrar con estilo personalizado -->
+            <button type="button" class="btn custom-button" data-bs-dismiss="modal">Cerrar</button>
 
+            <!-- Botón Actualizar con estilo personalizado, solo si no está cargando -->
+            <button v-if="!loading" type="button" class="btn custom-button" @click="saveText()">Actualizar</button>
+
+            <!-- Botón de carga, solo si está cargando -->
+            <LoadingButton v-else />
           </div>
+
         </div>
       </div>
 
@@ -192,7 +197,8 @@ const saveText = async () => {
 /* ========================== Estilos generales ========================== */
 
 /* Asegurarse de que el html y body tengan altura completa */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }

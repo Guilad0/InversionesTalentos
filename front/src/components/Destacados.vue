@@ -39,12 +39,16 @@
       <div class="modal-body">
           <input type="text" class="form-control"  v-model="text">         
       </div>
-      <div class="modal-footer m-auto">
-        <Button message="Cerrar" typeButton="btn-red" data-bs-dismiss="modal" />
-        <Button v-if="!loading" message="Actualizar" typeButton="btn-blue" @click="saveText()" />
-        <LoadingButton v-if="loading"/>
+      <div class="modal-footer text-center m-auto d-flex justify-content-center position-relative">
+            <!-- Botón Cerrar con estilo personalizado -->
+            <button type="button" class="btn custom-button" data-bs-dismiss="modal">Cerrar</button>
 
-      </div>
+            <!-- Botón Actualizar con estilo personalizado, solo si no está cargando -->
+            <button v-if="!loading" type="button" class="btn custom-button" @click="saveText()">Actualizar</button>
+
+            <!-- Botón de carga, solo si está cargando -->
+            <LoadingButton v-else />
+          </div>
     </div>
   </div>
 
@@ -320,5 +324,61 @@ a:hover {
     transform: translateY(0);
     opacity: 1;
   }
+}
+/*modal*/
+
+.modal-title {
+  color: var(--gray-color);
+  font-family: var(--font-montserrat);
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 1px;
+  text-transform: uppercase;
+}
+
+.modal-header {
+  background-color: var(--dun2-color);
+  border-bottom: none;
+}
+
+.modal-body {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.modal-footer {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: 400;
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilo base para los botones personalizados */
+.custom-button {
+  background-color: #17223b; 
+  color: #f3f3f4;  
+  font-family: var(--font-montserrat);
+  font-size: 16px;  
+  border: 1px solid #F37926 !important; 
+  border-radius: 5px; 
+  margin-top: 2px;
+  height: 40px;  
+  width: 180px; 
+  padding: 1.5rem;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;  
+}
+
+/* Efecto hover para el botón */
+.custom-button:hover {
+  background-color: #f37926 !important; 
+  color: #fff; 
 }
 </style>

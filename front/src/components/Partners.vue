@@ -1,46 +1,47 @@
 <template>
-    <div>
-        <main>
-        <div class="partners bg-dark d-flex align-items-center justify-content-center position-relative">
-            <img :src="image">
-            <EditIcon v-if="rol == 'Admin'" class="abs-custom "   data-bs-toggle="modal" data-bs-target="#updatePartners"/>
-        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar Imagen</label>
+  <div>
+    <main>
+      <div class="partners bg-dark d-flex align-items-center justify-content-center position-relative">
+        <img :src="image">
+        <EditIcon v-if="rol == 'Admin'" class="abs-custom " data-bs-toggle="modal" data-bs-target="#updatePartners" />
+        <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar Imagen</label>
 
-        </div>
+      </div>
 
-        <div class="modal fade" id="updatePartners" tabindex="-1" aria-labelledby="updatePartnersLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-6 text-center m-auto" id="updatePartnersLabel">Selecciona una imagen para la pantalla de inicio</h1>
-                    </div>
-                    <div class="modal-body">
-                        <div class="custom-file-upload text-center m-auto d-flex justify-content-center position-relative">
-                            <label for="filePartner" class="btn btn-outline-primary border-3 px-4 me-3">
-                                <i class="fa-solid fa-upload"></i>
-                            </label>
-                            <input
-                                type="file"
-                                id="filePartner"
-                                class="form-control"
-                                @change="onFileChange"
-                                accept="image/*"
-                                style="display: none;"
-                            />
-                            <i v-if="file" class="cursor mx-2 fa-solid fa-image fs-1"></i>
-                            <i v-if="file" class="cursor mx-2 text-danger fa-solid fa-ban fs-1" @click="cleanImage()"></i>
-                        </div>
-                    </div> 
-                    <div class="modal-footer text-center m-auto">
-                        <Button message="Cerrar" data-bs-dismiss="modal" typeButton="btn-red"/>
-                        <Button v-if="!loading" message="Subir imagen" typeButton="btn-blue" @click="saveImage()"/> 
-                        <LoadingButton v-else /> 
-                    </div>
-                </div>
+      <div class="modal fade" id="updatePartners" tabindex="-1" aria-labelledby="updatePartnersLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-6 text-center m-auto" id="updatePartnersLabel">Selecciona una imagen para la
+                pantalla de inicio</h1>
             </div>
+            <div class="modal-body">
+              <div class="custom-file-upload text-center m-auto d-flex justify-content-center position-relative">
+                <label for="filePartner" class="btn btn-outline-primary border-3 px-4 me-3 custom-button">
+                  <i class="fa-solid fa-upload"></i>
+                </label>
+                <input type="file" id="filePartner" class="form-control" @change="onFileChange" accept="image/*"
+                  style="display: none;" />
+                <i v-if="file" class="cursor mx-2 fa-solid fa-image fs-1"></i>
+                <i v-if="file" class="cursor mx-2 text-danger fa-solid fa-ban fs-1" @click="cleanImage()"></i>
+              </div>
+            </div>
+            <div class="modal-footer text-center m-auto d-flex justify-content-center position-relative">
+              <!-- Botón Cerrar con estilo personalizado -->
+              <button type="button" class="btn custom-button" data-bs-dismiss="modal">Cerrar</button>
+
+              <!-- Botón Subir imagen con estilo personalizado, solo si no está cargando -->
+              <button v-if="!loading" type="button" class="btn custom-button" @click="saveImage()">Subir imagen</button>
+
+              <!-- Botón de carga, solo si está cargando -->
+              <LoadingButton v-else />
+            </div>
+          </div>
         </div>
-        </main>
-    </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script setup>
@@ -51,10 +52,10 @@ import axios from 'axios';
 import LoadingButton from './Buttons/LoadingButton.vue';
 
 const props = defineProps({
-    rol:{
-        type:String,
-        required:true
-    }
+  rol: {
+    type: String,
+    required: true
+  }
 })
 
 
@@ -95,54 +96,54 @@ const onFileChange = (event) => {
 };
 
 
-const cleanImage = () =>{
+const cleanImage = () => {
   file.value = ''
 }
 
 const loading = ref(false);
 
-const saveImage = async() =>{
+const saveImage = async () => {
   const formData = new FormData();
-  if( file.value ){
+  if (file.value) {
     loading.value = true
     formData.append("image", file.value);
     console.log(file.value);
     try {
       // await axios.post(`https://apitalentos.pruebasdeploy.online/utilities/uploadimageUserCloudinaryHome/partners`,
-      await axios.post(import.meta.env.VITE_BASE_URL+`/utilities/uploadimageUserCloudinaryHome/partners`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      await axios.post(import.meta.env.VITE_BASE_URL + `/utilities/uploadimageUserCloudinaryHome/partners`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       )
       console.log('imagen cargada');
       cleanImage()
     } catch (error) {
-        console.log(error);
-        cleanImage()
-        alert('Error al subir la imagen')
+      console.log(error);
+      cleanImage()
+      alert('Error al subir la imagen')
 
-    }finally{
+    } finally {
       loading.value = false
       getImagePartner();
     }
-  }else{
+  } else {
     alert('Debes seleccionar una imagen')
   }
 
 
 }
-onMounted(()=>{
-    getImagePartner();
+onMounted(() => {
+  getImagePartner();
 })
 
-const getImagePartner =async ()=>{
+const getImagePartner = async () => {
   // const {data} = await axios.get('https://apitalentos.pruebasdeploy.online/utilities/getImagePartners');
-  const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getImagePartners');
+  const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/utilities/getImagePartners');
   image.value = data.results[0].partners
-  
+
 }
 
 
@@ -151,24 +152,83 @@ const getImagePartner =async ()=>{
 
 <style scoped>
 .partners {
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
 }
 
 .partners img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.abs-custom{
-    position: absolute;
-    top: 12px;
-    right: 50px;
+
+.abs-custom {
+  position: absolute;
+  top: 12px;
+  right: 50px;
 }
-.abs-custom-label{
-    position: absolute;
-    top:   70px;
-    right: 70px;
+
+.abs-custom-label {
+  position: absolute;
+  top: 70px;
+  right: 70px;
+}
+
+/*modal*/
+
+.modal-title {
+  color: var(--gray-color);
+  font-family: var(--font-montserrat);
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 1px;
+  text-transform: uppercase;
+}
+
+.modal-header {
+  background-color: var(--dun2-color);
+  border-bottom: none;
+}
+
+.modal-body {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.modal-footer {
+  background-color: var(--gray-color);
+  color: var(--white-anti-flash-color);
+  font-weight: 400;
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilo base para los botones personalizados */
+.custom-button {
+  background-color: #17223b;
+  color: #f3f3f4;
+  font-family: var(--font-montserrat);
+  font-size: 16px;
+  border: 1px solid #F37926 !important;
+  border-radius: 5px;
+  margin-top: 2px;
+  height: 40px;
+  width: 180px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+.custom-button:hover {
+  background-color: #f37926 !important;
+  color: #fff;
 }
 </style>
