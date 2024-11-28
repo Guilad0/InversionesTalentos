@@ -80,7 +80,8 @@
                 <td>{{ item.comision_aplicar }}</td>
                 <td>{{ item.monto_recibir }}</td>
                 <td>{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
-                <td>{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
+                <td v-if="item.fecha_aprobacion !==null " >{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
+                <td v-else></td>
                 <td>
                   <span v-if="item.estado == 'Pendiente'" class="badge text-bg-warning">{{
                     item.estado
