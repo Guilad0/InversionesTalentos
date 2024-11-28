@@ -81,7 +81,7 @@
 
           </div>
         </div>
-        <div class="col-3 custom-profile shadow px-4 mobile-custom">
+        <div class="col-3 custom-profile shadow px-4 mobile-customer">
           <div class="d-flex justify-content-between py-4">
             <div class="">
               <i class="fa fa-lock" aria-hidden="true"></i>
@@ -791,12 +791,19 @@ li {
     display: flex;
     flex-direction: column;
     /* position: absolute; */
-    margin-top: 370px;
+    margin-top: -20px;
     margin-left: -40px;
     width: 553px;
   }
-  .mobile-custom {
-    
+  .mobile-customer {
+    width: 400px  !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: -550px !important;
+    margin-top: 1180px;
   }
 
 }

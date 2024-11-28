@@ -11,11 +11,11 @@ const client = ref({});
 const getUser = async () => {
   try {
     const { data } = await axios.get(
-      import.meta.env.VITE_BASE_URL+"/users/getUserById/" + userId.value
+      import.meta.env.VITE_BASE_URL + "/users/getUserById/" + userId.value
     );
     client.value = data.results[0];
     console.log(client.value);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 onMounted(() => {
@@ -28,6 +28,7 @@ img {
   width: auto;
   height: 23vh;
 }
+
 .card {
   height: 95%;
   font-size: 0.9rem;
@@ -37,17 +38,33 @@ img {
   .col-custom {
     width: 40%;
   }
+  .fotoperfil{
+    border-radius: 50% !important;
+    margin-top:10px ;
+  }
+
 }
+
 @media (width < 418px) {
   .col-custom {
     width: 45%;
   }
+  .fotoperfil{
+    border-radius: 50% !important;
+    margin-top:10px ;
+  }
 }
+
 @media (width < 380px) {
   .col-custom {
     width: 50%;
   }
+  .fotoperfil{
+    border-radius: 50% !important;
+    margin-top:10px ;
+  }
 }
+
 .custom-link:hover {
   text-decoration: underline;
 }
@@ -66,10 +83,8 @@ img {
     </p>
     <div class="card shadow">
       <div class="row justify-content-center">
-        <img
-          src="https://slicetokenfrontendassets.s3.amazonaws.com/players/img_white/61.webp"
-          class="rounded-3"
-        />
+        <!-- <img src="https://slicetokenfrontendassets.s3.amazonaws.com/players/img_white/61.webp" class="rounded-3" /> -->
+        <img :src="client.imagen || '../assets/images/fotoperfil.png'" class="rounded-3 fotoperfil" />
       </div>
       <div class="card-body">
         <h3 class="card-title">{{ client.nombre }}</h3>
@@ -85,7 +100,7 @@ img {
           {{
             client.descripcion == null
               ? `Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha
-                    sido el texto de relleno n`
+          sido el texto de relleno n`
               : client.descripcion
           }}
         </p>
@@ -97,30 +112,20 @@ img {
             </p>
           </div>
           <div class="col-4 col-sm-4 col-custom">
-            <button class="border-custom btn-sm available rounded-3">
+            <!-- <button class="border-custom btn-sm available rounded-3">
               0 Disponibles
-            </button>
+            </button> -->
           </div>
         </div>
         <div class="accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed bg-light rounded-2 p-2"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseOne"
-                aria-expanded="false"
-                aria-controls="flush-collapseOne"
-              >
+              <!-- <button class="accordion-button collapsed bg-light rounded-2 p-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                 Detalles Token
-              </button>
+              </button> -->
             </h2>
-            <div
-              id="flush-collapseOne"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionFlushExample"
-            >
+            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">Detalles.</div>
             </div>
           </div>
