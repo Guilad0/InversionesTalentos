@@ -475,7 +475,38 @@ const getTotalInfoUsers = (req, res) =>{
   })
 }
 
- 
+const getVideoSettings = ( req, res ) =>{
+  let query = 'select video from ajustes';
+  conexion.query(query, (err, results) =>{
+      if(err){
+        res.status(500).json({
+          err
+        })
+        return
+      }
+      res.status(200).json({
+        video:results[0].video
+      })
+  })
+} 
+
+const putVideoSetting = (req, res) =>{
+  const { id, url } = req.query;
+  console.log(req.query);
+  let query = 'update ajustes set video = ? where ajuste_id = ?';
+  conexion.query(query,[ url,id],(err, results) =>{
+    if(err){
+      res.status(500).json({
+        err
+      })
+      return
+    }
+    res.status(201).json({
+      msg: 'video actualizado'
+    })
+  })
+  
+}
 
 module.exports = {
   isClientFormInfoRegistered,
@@ -494,5 +525,7 @@ module.exports = {
   getTextProposito,
   putTextPurpose,
   savePercentajerUser,
-  getTotalInfoUsers
+  getTotalInfoUsers,
+  getVideoSettings,
+  putVideoSetting
 };

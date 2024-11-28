@@ -18,7 +18,9 @@ const {
   getTextProposito,
   savePercentajerUser,
   putTextPurpose,
-  getTotalInfoUsers
+  getTotalInfoUsers,
+  getVideoSettings,
+  putVideoSetting
 } = require("../controllers/utilities");
 
 router.get("/informacion", isClientFormInfoRegistered);
@@ -38,5 +40,7 @@ router.get("/getImagePartners/", getImagePartners);
 router.get("/getTextProposito/", getTextProposito);
 router.patch("/savePercentajerUser/:id", savePercentajerUser);
 router.get("/total", getTotalInfoUsers);
+router.get("/getVideoSettings", getVideoSettings);
+router.put("/putVideoSetting", putVideoSetting);
 
 module.exports = router;
