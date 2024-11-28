@@ -183,7 +183,6 @@ const getById = (req, res) => {
  */
 const updateImgCategory = (req, res) => {
   let { nombre } = req.body;
-  nombre = nombre.toLowerCase();
   let query = "";
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
     const query =
