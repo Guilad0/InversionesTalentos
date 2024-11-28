@@ -1681,8 +1681,10 @@ const obtenerTotales = async () => {
 
 const exportToPDF = () => {
   const doc = new jsPDF();
+  
 
-  const columns = [
+  if (typeReport.value == "Inversiones") {
+    const columns = [
     { header: "ID", dataKey: "inversion_id" },
     { header: "Inversionista", dataKey: "inversor" },
     { header: "Token Invertidos", dataKey: "monto" },
@@ -1695,13 +1697,11 @@ const exportToPDF = () => {
     inversion_id: report.inversion_id,
     inversor: report.inversor,
     monto: report.monto,
-    ganancia: report.ganancia,
+    ganancia: monto_devolver(report.monto, report.ganancia),
     fecha_deposito: report.fecha_deposito,
     fecha_devolucion: report.fecha_devolucion,
   }));
-
   console.log("Rows para PDF Cliente", rows);
-
   doc.autoTable({
     columns: columns,
     body: rows,
@@ -1717,6 +1717,44 @@ const exportToPDF = () => {
     align: "center",
   });
   doc.save("Reporte de Inversiones y Retiros.pdf");
+  }
+
+  if (typeReport.value == "Retiros") {
+    const columns = [
+      { header: "ID", dataKey: "retiro_id" },
+    { header: "Monto de la Solicitud", dataKey: "monto_solicitud" },
+    { header: "Monto a Recibir", dataKey: "monto_recibir" },
+    { header: "Fecha de Solicitud", dataKey: "fecha_solicitud" },
+    { header: "Fecha de Aprobacion", dataKey: "fecha_aprobacion" },
+    { header: "Estado", dataKey: "estado" },
+    ]
+
+    const rows = reports.value.map((report) => ({
+      retiro_id: report.retiro_id,
+      monto_solicitud: report.monto_solicitud,
+      monto_recibir: report.monto_recibir,
+      fecha_solicitud: new Date(report.fecha_solicitud).toLocaleDateString(),
+      fecha_aprobacion: new Date(report.fecha_aprobacion).toLocaleDateString(),
+      estado: report.estado
+      
+    }));
+
+    doc.autoTable({
+    columns: columns,
+    body: rows,
+    startY: 20,
+    theme: "grid",
+    styles: {
+      overflow: "linebreak",
+      cellPadding: 2,
+      fontSize: 9,
+    },
+  });
+  doc.text("Reporte de Inversiones y Retiros", doc.internal.pageSize.width / 2, 10, {
+    align: "center",
+  });
+  doc.save("Reporte de Inversiones y Retiros.pdf");
+  }
 };
 
 const exportToExcel = () => {
