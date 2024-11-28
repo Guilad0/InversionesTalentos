@@ -317,7 +317,13 @@ const resetForm = () => {
   background-color: rgba(44, 46, 51, 0.8); /* Color de fondo personalizado */
   color: #F3F3F4;
 }
-
+.form-control:focus {
+  background-color: var(--white-color);
+  border: 2px solid #F37926;
+  outline: none;
+  box-shadow: none;
+  color: black;
+}
 .text-form-title{
   font-size: 26px;
   font-weight: bold;
