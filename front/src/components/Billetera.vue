@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-around mb-6">
+      <div class="d-flex justify-content-around mb-6 button-container">
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
           data-bs-target="#modalTokens">Comprar Tokens<span></span></button>
         <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
