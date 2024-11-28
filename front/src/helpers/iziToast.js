@@ -36,6 +36,17 @@ export const successAlertAcept = (message, title, position ) => {
     ]
   })
 };
+export const infoAlert = (message, title, position) => {
+    iziToast.info({
+        title,
+        message,
+        position: "bottomRight",
+        closeOnEscape:true,
+        closeOnClick:true,  
+        timeout: 30000,
+      })
+}
+
 
 
 export const errorAlert = (message, title, position) => {

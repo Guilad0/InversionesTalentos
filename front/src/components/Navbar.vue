@@ -109,13 +109,15 @@ import { getUser } from "@/helpers/utilities";
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import {errorAlert, infoAlert} from "@/helpers/iziToast"
+import iziToast from "izitoast";
 
 const router = useRouter();
 const rol = ref("");
 const nombre = ref("");
 const apellido = ref("");
 
-let storedUser = JSON.parse(localStorage.getItem("usuario"));
+let storedUser = JSON.parse(localStorage.getItem("usuario")) || {};
 const updateRole = async () => {
   storedUser = await getUser();
   rol.value = storedUser?.rol || "";
@@ -125,6 +127,12 @@ const updateRole = async () => {
 
 onMounted(() => {
   updateRole();
+  if (!localStorage.getItem("usuario")
+    || !localStorage.getItem("token")) {
+      
+      infoAlert("No estas logueado, inicia sesión para acceder a todas las funciones de la plataforma.", "Por favor inicia sesión", "bottomRight")
+  }
+
 });
 
 watch(
@@ -161,7 +169,8 @@ const toggleMenu = () => {
 </script>
 
 <style scoped>
-/* hacer query para que se vea bien en mobile tewmbnien sacar el icono al centro para inicio de sesion y sacar los iconos */
+/* hacer query para que se vea bien en mobile
+ tewmbnien sacar el icono al centro para inicio de sesion y sacar los iconos */
 .burger-menu {
   background-color: var(--gray-color);
   text-align: center;

@@ -12,8 +12,8 @@ import router from "./router";
 const user = ref({});
 onMounted(async () => {
   user.value = await getUser();
-  localStorage.setItem("usuario", JSON.stringify(user.value));
-  console.log("actualizado usuario");
+  // localStorage.setItem("usuario", JSON.stringify(user.value));
+  // console.log("actualizado usuario");
 });
 </script>
 
