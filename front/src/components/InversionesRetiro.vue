@@ -921,8 +921,11 @@
                           <td scope="col">
                             {{ new Date(rep.fecha_solicitud).toLocaleDateString() }}
                           </td>
-                          <td scope="col">
+                          <td scope="col" v-if="rep.fecha_aprobacion !== null">
                             {{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}
+                          </td>
+                          <td scope="col" v-else>
+                            
                           </td>
                           <td scope="col">{{ rep.estado }}</td>
                         </tr>
