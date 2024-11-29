@@ -133,7 +133,6 @@ router.get("/totalInversiones/:id", function (req, res, next) {
   });
 });
 
-
 router.get("/totalInversionesRecibidas/:id", function (req, res, next) {
   var anho = new Date().getFullYear();
 

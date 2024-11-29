@@ -31,13 +31,18 @@ ORDER BY inversiones.inversion_id DESC;`;
 
 router.get("/cliente/:id", function (req, res, next) {
 
-  var query = ` SELECT inversiones.*, usuarios.imagen, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_inversor
-                FROM inversiones
-                INNER JOIN usuarios
-                ON inversiones.inversor_id = usuarios.usuario_id
-                WHERE inversiones.cliente_id = ${req.params.id}
-                AND inversiones.estado = 1
-                ORDER BY inversiones.inversion_id DESC;`;
+  var query = ` SELECT inversiones.inversion_id, inversiones.cliente_id, inversiones.inversor_id, inversiones.monto, inversiones.ganancia_estimada,
+DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_deposito,
+DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion,
+inversiones.estado,
+usuarios.imagen, 
+CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_inversor
+FROM inversiones
+INNER JOIN usuarios
+ON inversiones.inversor_id = usuarios.usuario_id
+WHERE inversiones.cliente_id = ${req.params.id}
+AND inversiones.estado = 1
+ORDER BY inversiones.inversion_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -80,10 +85,13 @@ ORDER BY retiro_id DESC;`;
 });
 
 router.get("/cliente_retiros/:id", function(req, res, next){
-  var query = ` SELECT *
-                FROM solicitudes_retiro                
-                WHERE usuario_id = ${req.params.id}
-                ORDER BY retiro_id DESC;`;
+  var query = ` 
+  SELECT retiro_id, tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado,
+DATE_FORMAT(fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud,
+DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
+FROM solicitudes_retiro                
+WHERE usuario_id = ${req.params.id}
+ORDER BY retiro_id DESC;`;
   connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
@@ -95,7 +103,7 @@ router.get("/cliente_retiros/:id", function(req, res, next){
       console.log(results);
       res.status(200).send({
         data: results,
-        message: "Inversiones consultadas correctamente",
+        message: "Retiros consultadas correctamente",
         
       });
     }
@@ -103,12 +111,15 @@ router.get("/cliente_retiros/:id", function(req, res, next){
 });
 
 router.get("/inversiones_vencidas/:id", function(req, res, next){
-  var query = ` SELECT *
-                FROM inversiones                
-                WHERE cliente_id = ${req.params.id}
-                AND fecha_devolucion <= CURRENT_DATE()
-                AND estado = 1
-                ORDER BY inversion_id DESC;`;
+  var query = ` 
+  SELECT inversion_id, cliente_id, inversor_id, monto, tipo_ganancia, ganancia_estimada, estado,
+  DATE_FORMAT(fecha_deposito, '%Y-%m-%d') AS fecha_deposito,
+  DATE_FORMAT(fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion
+  FROM inversiones                
+  WHERE cliente_id = ${req.params.id}
+  AND fecha_devolucion <= CURRENT_DATE()
+  AND estado = 1
+  ORDER BY inversion_id DESC;`;
   connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
