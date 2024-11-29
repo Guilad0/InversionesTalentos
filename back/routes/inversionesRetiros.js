@@ -4,12 +4,15 @@ var connection = require("../database");
 
 router.get("/inversionista/:id", function (req, res, next) {
 
-  var query = ` SELECT inversiones.*, usuarios.imagen, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente
-                FROM inversiones
-                INNER JOIN usuarios
-                ON inversiones.cliente_id = usuarios.usuario_id
-                WHERE inversiones.inversor_id = ${req.params.id}
-                ORDER BY inversiones.inversion_id DESC;`;
+  var query = ` SELECT inversiones.*, usuarios.imagen, 
+CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
+DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_inversion,
+DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_retorno
+FROM inversiones
+INNER JOIN usuarios
+ON inversiones.cliente_id = usuarios.usuario_id
+WHERE inversiones.inversor_id = ${req.params.id}
+ORDER BY inversiones.inversion_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -53,10 +56,13 @@ router.get("/cliente/:id", function (req, res, next) {
 
 router.get("/inversionista_retiros/:id", function (req, res, next) {
 
-  var query = ` SELECT *
-                FROM solicitudes_retiro                
-                WHERE usuario_id = ${req.params.id}
-                ORDER BY retiro_id DESC;`;
+  var query = ` 
+SELECT retiro_id, tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado,
+DATE_FORMAT(fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud,
+DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
+FROM solicitudes_retiro                
+WHERE usuario_id = ${req.params.id}
+ORDER BY retiro_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);

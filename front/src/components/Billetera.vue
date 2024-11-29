@@ -290,7 +290,6 @@ if (usuario_rol.value == 'Inversionista') {
     await obtenerTokens_Inversionista();
     await ganancias_Inversionista();
 
-    await obtenerListaClientes();
     await calcularGanancias();
   });
 }
