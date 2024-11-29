@@ -269,10 +269,10 @@ router.get("/reporteInversionesGnral", function (req, res, next) {
 SELECT 
     inversiones.inversion_id, 
     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
-    inversiones.fecha_deposito, 
+    DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_deposito,
     inversiones.monto,
     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
-    inversiones.fecha_devolucion, 
+    DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion, 
     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
     inversiones.estado
 FROM inversiones
@@ -313,10 +313,10 @@ router.get("/reporteInversionesInversor", function (req, res, next) {
 SELECT 
     inversiones.inversion_id, 
     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
-    inversiones.fecha_deposito, 
+    DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_deposito,
     inversiones.monto,
     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
-    inversiones.fecha_devolucion, 
+    DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion,
     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
     inversiones.estado
 FROM inversiones
@@ -357,10 +357,10 @@ router.get("/reporteInversionesCliente", function (req, res, next) {
 SELECT 
     inversiones.inversion_id, 
     CONCAT(inversores.nombre, ' ', inversores.apellido) AS inversor, 
-    inversiones.fecha_deposito, 
+    DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_deposito, 
     inversiones.monto,
     CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente, 
-    inversiones.fecha_devolucion, 
+    DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion, 
     (inversiones.ganancia_estimada - inversiones.monto) AS ganancia, 
     inversiones.estado
 FROM inversiones
@@ -399,8 +399,10 @@ router.get("/reporteSolicitudesGnral", function (req, res, next) {
   var query = `                              
 SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
 CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
-solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
-solicitudes_retiro.fecha_aprobacion,
+DATE_FORMAT(solicitudes_retiro.fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud,
+solicitudes_retiro.monto_solicitud, 
+solicitudes_retiro.estado,
+DATE_FORMAT(solicitudes_retiro.fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion,
 solicitudes_retiro.monto_recibir
 FROM solicitudes_retiro
 INNER JOIN usuarios
@@ -437,8 +439,10 @@ router.get("/reporteSolicitudesTipo", function (req, res, next) {
   var query = `                              
 SELECT solicitudes_retiro.retiro_id, solicitudes_retiro.tipo, 
 CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
-solicitudes_retiro.fecha_solicitud, solicitudes_retiro.monto_solicitud, solicitudes_retiro.estado,
-solicitudes_retiro.fecha_aprobacion,
+DATE_FORMAT(solicitudes_retiro.fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud, 
+solicitudes_retiro.monto_solicitud, 
+solicitudes_retiro.estado,
+DATE_FORMAT(solicitudes_retiro.fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion,
 solicitudes_retiro.monto_recibir
 FROM solicitudes_retiro
 INNER JOIN usuarios
@@ -478,10 +482,10 @@ SELECT
     solicitudes_retiro.retiro_id, 
     solicitudes_retiro.tipo, 
     CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre,
-    solicitudes_retiro.fecha_solicitud, 
+	DATE_FORMAT(solicitudes_retiro.fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud,
     solicitudes_retiro.monto_solicitud, 
     solicitudes_retiro.estado,
-    solicitudes_retiro.fecha_aprobacion,
+	DATE_FORMAT(solicitudes_retiro.fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion,
     solicitudes_retiro.monto_recibir
 FROM solicitudes_retiro
 INNER JOIN usuarios
@@ -535,7 +539,7 @@ router.get("/reporteInversionesPendientes/", function(req, res, next){
 SELECT 
   inversion_id,
   cliente_id,
-  fecha_devolucion,
+  DATE_FORMAT(fecha_devolucion, '%Y-%m-%d') AS fecha_devolucion,
   monto,
 CASE 
   WHEN estado = 1 THEN 'Pendiente'
