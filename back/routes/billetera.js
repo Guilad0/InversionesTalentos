@@ -77,9 +77,9 @@ FROM
      UNION ALL
      SELECT 'Ingreso' AS tipo) t
 LEFT JOIN movimientos m
-ON t.tipo = m.tipo AND m.usuario_id = ${req.params.id}
+ON t.tipo = m.tipo AND m.usuario_id = 140 AND m.estado = 1
 GROUP BY t.tipo
-ORDER BY tipo DESC;`;
+ORDER BY t.tipo DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);

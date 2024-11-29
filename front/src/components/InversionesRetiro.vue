@@ -673,11 +673,7 @@
             v-for="(tabInv, index) in tabsInv"
             :key="index"
             :class="[
-              'animate__animated',
-              'animate__fadeInUp',
-              'animate__slow',
-              'btn-6',
-              'm-2',
+              'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
               { active: activeTabInv === index },
             ]"
             @click="activeTabInv = index"
@@ -1217,10 +1213,10 @@
                   <strong>Ganancia de Tokens:</strong> {{ inversion.ganancia_estimada - inversion.monto }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha de Inversión:</strong> {{ new Date(inversion.fecha_deposito).toLocaleDateString }}
+                  <strong>Fecha de Inversión:</strong> {{ inversion.fecha_inversion }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha de Retorno Aprox.:</strong> {{ new Date(inversion.fecha_devolucion).toLocaleDateString }}
+                  <strong>Fecha de Retorno Aprox.:</strong> {{ inversion.fecha_retorno }}
                 </p>
               </div>
 
@@ -1251,10 +1247,10 @@
           >
             <p class="text-white"><strong>Monto:</strong> ${{ inversionista_retiro.monto_recibir }}</p>
             <p class="text-white"><strong>Solicitud:</strong> {{ inversionista_retiro.retiro_id }}</p>
-            <p class="text-white"><strong>Fecha:</strong> {{ new Date(inversionista_retiro.fecha_solicitud).toLocaleDateString() }}</p>
+            <p class="text-white"><strong>Fecha:</strong> {{ inversionista_retiro.fecha_solicitud }}</p>
             <p class="text-white"><strong>Estado:</strong> {{ inversionista_retiro.estado }}</p>
             <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
-              <strong>Fecha Aprobación:</strong> {{ new Date(inversionista_retiro.fecha_aprobacion).toLocaleDateString() }}
+              <strong>Fecha Aprobación:</strong> {{ inversionista_retiro.fecha_aprobacion }}
             </p>
           </div>
           <div
