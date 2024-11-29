@@ -132,8 +132,8 @@
           <div class="col-12" v-for="logro in logros" :key="logro">
             <div class="card mb-3">
               <div class="card-body bg-degrade-inverso text-center text-white">
-                <h5 class="card-title">{{ logro.descripcion }}</h5>
-                <p class="card-text">Fecha: {{ formatDate(logro.fecha) }}</p>
+                <h5>{{ logro.descripcion }}</h5>
+                <p>Fecha: {{ new Date(logro.fecha).toLocaleDateString() }}</p>
               </div>
             </div>
           </div>
@@ -154,8 +154,8 @@
           <h4 class="text-uppercase">{{ exp.institucion }}</h4>
           <h6>Cargo: {{ exp.cargo }}</h6>
           <h6>Actividades: {{ exp.actividades }}</h6>
-          <h6>Fecha de Inicio: {{ formatDate(exp.fecha_inicio) }}</h6>
-          <h6>Fecha Final: {{ formatDate(exp.fecha_final) }}</h6>
+          <h6>Fecha de Inicio: {{ new Date(exp.fecha_inicio).toLocaleDateString() }}</h6>
+          <h6>Fecha Final: {{ new Date(exp.fecha_final).toLocaleDateString() }}</h6>
 
         </div>
 
@@ -593,6 +593,7 @@ const pauseVideo = () => {
 
 .bg-degrade-inverso {
   background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
+  border-radius: 10px;
 }
 
 .font {
