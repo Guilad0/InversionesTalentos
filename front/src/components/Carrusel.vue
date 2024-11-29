@@ -14,7 +14,7 @@
           <img :src="images[0]?.image1" class="d-block w-100 " alt="...">
           <EditIcon v-if="rol == 'Admin'" class="abs-custom" @click="openModal('image1')" data-bs-toggle="modal"
             data-bs-target="#exampleModal" />
-          <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Cambiar imagen</label>
+          <!-- <label class="text-white abs-custom-label " v-if="rol == 'Admin'">Cambiar imagen</label> -->
         </div>
       </div>
       <div class="carousel-item">
@@ -89,6 +89,7 @@ import Button from '../components/Buttons/Button.vue';
 import { ref, onMounted, defineProps } from 'vue';
 import axios from 'axios';
 import LoadingButton from './Buttons/LoadingButton.vue';
+import { errorAlert } from '@/helpers/iziToast';
 const fieldName = ref('')
 const file = ref(null);
 const images = ref([])
@@ -100,7 +101,7 @@ const onFileChange = (event) => {
   if (fileInput) {
     const img = new Image();
     const objectURL = URL.createObjectURL(fileInput);
-
+  
     img.onload = () => {
       const width = img.width;
       const height = img.height;
@@ -150,20 +151,20 @@ const saveImage = async () => {
     } catch (error) {
       console.log(error);
       cleanImage()
-      alert('Error al subir la imagen')
+      errorAlert('Error al subir la imagen','Error')
 
     } finally {
       loading.value = false
       getImages();
     }
   } else {
-    alert('Debes seleccionar una imagen')
+    errorAlert('Debes seleccionar una imagen','Error')
   }
 
 
 }
-onMounted(() => {
-  getImages();
+onMounted(async() => {
+  await getImages();
 })
 
 const getImages = async () => {

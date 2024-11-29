@@ -14,6 +14,7 @@ onMounted(async () => {
   user.value = await getUser();
   // localStorage.setItem("usuario", JSON.stringify(user.value));
   // console.log("actualizado usuario");
+  
 });
 </script>
 
