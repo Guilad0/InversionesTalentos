@@ -237,15 +237,6 @@ const pendienteTokens = async (movimiento_id) => {
   }
 };
 
-/* const eliminadoTokens = async (movimiento_id) => {
-  try {
-    const { data } = await axios.patch(BaseURL + "/tokens/" + movimiento_id);
-    // Al eliminar, recargar la lista de pendientes
-    obtenerDatosTokens(1, "", "Pendiente");
-  } catch (error) {
-    console.log(error);
-  }
-}; */
 </script>
 
 <style scoped>
