@@ -10,33 +10,76 @@
               </h5>
               <!-- Botón para volver al Perfil -->
               <div class="back-button1">
-                <router-link to="/perfil" class="btn-back">
-                  Volver a Perfil
-                </router-link>
+                <router-link to="/perfil" class="btn-back"> Volver a Perfil </router-link>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-12 custom-subtitle ic1">
-                  <label for="correo" class="form-label">Ingresa el correo con el que te registraste</label>
-                  <input type="email" v-model="correo" id="correo" class="form-control input" required />
+                  <label for="correo" class="form-label"
+                    >Ingresa el correo con el que te registraste</label
+                  >
+                  <input
+                    type="email"
+                    v-model="correo"
+                    id="correo"
+                    class="form-control input"
+                    required
+                  />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="old_pass" class="form-label">Ingresa tu Contraseña actual</label>
-                  <input type="password" v-model="old_pass" id="old_pass" class="form-control input" required />
+                  <label for="old_pass" class="form-label"
+                    >Ingresa tu Contraseña actual</label
+                  >
+                  <input
+                    type="password"
+                    v-model="old_pass"
+                    id="old_pass"
+                    class="form-control input"
+                    required
+                  />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="new_pass" class="form-label">Ingresa tu nueva Contraseña</label>
-                  <input type="password" v-model="new_pass" id="new_pass" class="form-control input" required />
+                  <label for="password">Ingresa tu nueva Contraseña <label class="text-danger">*</label></label>
+                  <input
+                    :type="typeInput"
+                    @input="handlePassword"
+                    v-model="new_pass"
+                    @invalid="handleInvalid"
+                    id="new_pass"
+                    class="form-control input"
+                    required
+                    :class="{ 'is-invalid': new_pass_error, 'is-valid': !new_pass_error && new_pass.length > 0 }"
+                    placeholder="" />
+                    <i v-if="typeInput=='text'" class="fa-solid fa-eye-slash cursor custom-abs-icon-eye" @click="showPass"></i>
+                    <i v-if="typeInput=='password'" class="fa fa-eye custom-abs-icon-eye cursor" @click="showPass"></i>
+                  <div class="invalid-feedback">
+                    <ul class="text-danger">
+                      <li v-if="new_pass.length < 8">Debe tener más de 7 caracteres</li>
+                      <li v-if="!haveLetter(new_pass)">Debe contener al menos una letra minúscula</li>
+                      <li v-if="!haveLetterCapital(new_pass)">Debe contener al menos una letra mayúscula</li>
+                      <li v-if="!tieneNumero(new_pass)">Debe contener al menos un número</li>
+                      <li v-if="!tieneCaracterEspecial(new_pass)">Debe contener al menos un caracter especial</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="repeat_pass" class="form-label">Repetir Contraseña</label>
-                  <input type="password" v-model="repeat_pass" id="repeat_pass" class="form-control input" required />
+                  <label >Confirmar Contraseña <label class="text-danger">*</label></label>
+                  <input
+                    :type="typeInput"
+                    v-model="repeat_pass"
+                    id="repeat_pass"
+                    :class="{ 'is-invalid': new_pass !== repeat_pass && repeat_pass.length > 0, 'is-valid': new_pass === repeat_pass && repeat_pass.length > 0 }"
+                    class="form-control input"
+                    @invalid="handleInvalid"
+                    @input="validatePasswordsMatch"
+                    required
+                    placeholder="" />
                   <p v-if="mensajeErrorRepetir" class="text-danger">
                     Las Contraseñas No Coinciden
                   </p>
@@ -54,41 +97,52 @@
   </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
-import iziToast from "izitoast";
-import { useRouter } from 'vue-router';
-import {successAlert, errorAlert} from "../helpers/iziToast";
+import { useRouter } from "vue-router";
+import { successAlert, errorAlert } from "../helpers/iziToast";
+import { haveLetter, haveLetterCapital, tieneNumero, tieneCaracterEspecial, validatePassword } from '@/helpers/validatorsForm';
+
 const route = useRouter();
 const baseUrl = import.meta.env.VITE_BASE_URL + "/auth/update-password";
 const old_pass = ref("");
 const new_pass = ref("");
 const repeat_pass = ref("");
-const mensaje = ref("");
-const mensajeError = ref(false);
-const mensajeErrorRepetir = ref(false);
 const correo = ref("");
 
+const typeInput = ref('password');
+const controlPassword = ref(null);
+const new_pass_error = ref(false);
+const mensajeErrorRepetir = ref(false);
+
+const handleInvalid = (event) => {
+  event.target.setCustomValidity('Por favor, completa este campo');
+};
+
+const handlePassword = () => {
+  new_pass_error.value = !validatePassword(new_pass.value);
+  controlPassword.value = !new_pass_error.value;
+};
+
+const showPass = () => {
+  typeInput.value = (typeInput.value === 'password') ? 'text' : 'password';
+};
+
+const validatePasswordsMatch = () => {
+  mensajeErrorRepetir.value = new_pass.value !== repeat_pass.value;
+};
+
 const validPass = () => {
-  if (new_pass.value !== repeat_pass.value) {
-    return false;
-  } else {
-    return true;
-  }
+  validatePasswordsMatch();
+  handlePassword();
+  return !new_pass_error.value && !mensajeErrorRepetir.value;
 };
 
 const guardarCambios = async () => {
   if (!validPass()) {
-    /* iziToast.error({
-      title: "Error",
-      message: "Las contraseñas no coinciden",
-      messageColor: "white",
-      position: "topRight",
-      theme: "dark",
-      color: "#f00",
-    }); */
-    errorAlert ('Las contraseñas no coinciden','Error')
+    errorAlert("Las contraseñas no coinciden o no cumplen con los requisitos", "Error");
     return;
   }
 
@@ -97,56 +151,25 @@ const guardarCambios = async () => {
     oldPassword: old_pass.value,
     newPassword: new_pass.value,
   };
+  
   try {
-    const response = await axios.post(baseUrl + "/", datos);
-    mensaje.value = response.data.message;
-    /* iziToast.success({
-      title: "Success",
-      message: "Contraseña actualizada correctamente",
-      messageColor: "white",
-      position: "topRight",
-      theme: "dark",
-      color: "#198754",
-    }); */
-    successAlert('Contraseña actualizada correctamente','Exito')
+    const response = await axios.post(baseUrl, datos);
+    successAlert("Contraseña actualizada correctamente", "Exito");
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
   } catch (error) {
     if (error.response.status === 404) {
-      /* iziToast.error({
-        title: "Error",
-        message: "Usuario no encontrado",
-        messageColor: "white",
-        position: "topRight",
-        theme: "dark",
-        color: "#f00",
-      }); */
-      errorAlert('Usuario no encontrado','Error')
+      errorAlert("Usuario no encontrado", "Error");
     } else if (error.response.status === 400) {
-      /* iziToast.error({
-        title: "Error",
-        message: "Contraseña antigua incorrecta",
-        messageColor: "white",
-        position: "topRight",
-        theme: "dark",
-        color: "#f00",
-      }); */
-      errorAlert('Contraseña antigua incorrecta','Error')
+      errorAlert("Contraseña antigua incorrecta", "Error");
     } else {
-      /* iziToast.error({
-        title: "Error",
-        message: "Error al actualizar la contraseña",
-        messageColor: "white",
-        position: "topRight",
-        theme: "dark",
-        color: "#f00",
-      }); */
-      errorAlert('Error al actualizar la contraseña','Error')
+      errorAlert("Error al actualizar la contraseña", "Error");
     }
   }
 };
 </script>
+
 
 <style scoped>
 .custom-background {
@@ -245,7 +268,7 @@ const guardarCambios = async () => {
 
 .btn-back {
   padding: 10px 20px;
-  background-color: #17223B;
+  background-color: #17223b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -253,7 +276,7 @@ const guardarCambios = async () => {
 }
 
 .btn-back:hover {
-  background-color: #F37926;
+  background-color: #f37926;
   color: #fff;
 }
 </style>
