@@ -63,7 +63,8 @@
               <tr class="table-secondary">
                 <th class="custom-size">ID</th>
                 <th class="custom-size">Nombre Usuario - Rol</th>
-                <th class="custom-size">Monto a Comprar</th>
+                <th class="custom-size">Monto en Dólares</th>
+                <th class="custom-size">Monto de Tokens</th>
                 <th class="custom-size">Fecha de Solicitud</th>
                 <th class="custom-size">Fecha de Aprobacion</th>
                 <th class="custom-size">Estado</th>
@@ -74,40 +75,32 @@
               <tr v-for="item in solicitudes" :key="item.retiro_id">
                 <td>{{ item.movimiento_id }}</td>
                 <td>{{ item.username }}</td>
-                <td>{{ item.monto }}</td>                
+                <td>{{ item.monto }}</td>
+                <td>{{ item.token }}</td> 
                 <td>{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
                 <td>{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
                 <td>
-                  <span v-if="item.estado == 'Pendiente'" class="badge text-bg-warning">{{
-                    item.estado
-                  }}</span>
-                  <span v-if="item.estado == 'Aprobado'" class="badge text-bg-success">{{
-                    item.estado
-                  }}</span>
-                  <span v-if="item.estado == 'Rechazado'" class="badge text-bg-danger">{{
-                    item.estado
-                  }}</span>
-                  <span v-if="item.estado == 'Eliminado'" class="badge text-bg-danger">{{
-                    item.estado
-                  }}</span>
+                  <span v-if="item.estado == 0 && item.descripcion =='Compra de tokens'" class="badge text-bg-warning">Pendiente</span>
+                  <span v-if="item.estado == 1 && item.descripcion =='Compra de tokens'" class="badge text-bg-success">Aprobada</span>
+                  <span v-if="item.estado == 0 && item.descripcion == 'Compra de tokens rechazada'" class="badge text-bg-danger">Rechazada</span>                  
                 </td>
-                <td v-if="item.estado == 'Pendiente'">
+                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens'">
                   <button class="btn btn-success btn-sm mx-1" @click="aprobadoTokens(item)">
                     <i class="fa fa-check"></i>
                   </button>
-                  <button class="btn btn-danger btn-sm mx-1" @click="rechazadoTokens(item.retiro_id)">
+                  <button class="btn btn-danger btn-sm mx-1" @click="rechazadoTokens(item.movimiento_id)">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
-                <td v-if="item.estado == 'Aprobado'">
+                <td v-if="item.estado == 1 && item.descripcion == 'Compra de tokens'">
                   <!-- Botones específicos para el estado Aprobado -->
                 </td>
-                <td v-if="item.estado == 'Rechazado'">
-                  <button class="btn btn-warning btn-sm mx-1" @click="pendienteTokens(item.retiro_id)">
+                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens rechazada'">
+                  <button class="btn btn-warning btn-sm mx-1" @click="pendienteTokens(item.movimiento_id)">
                     <i class="fa fa-clock"></i>
                   </button>
                   <button class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
-                    @click="eliminadoTokens(item.retiro_id)">
+                    @click="eliminadoTokens(item.movimiento_id)">
                     <i class="fa fa-trash"></i>
                   </button>
                 </td>
@@ -163,7 +156,7 @@ import axios from "axios";
 
 const solicitudes = ref([]);
 const paginacion = ref({});
-// let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
+
 let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudes";
 const currentNav = ref("General");
 const totalSolicitudesTokens = ref(0);
@@ -187,7 +180,7 @@ const setActive = (estado) => {
 
 const obtenerDatosTokens = async (page = 1, search = "", filtro = "") => {
   try {
-    let url = `${BaseURL}?page=${page}&search=${search}`;
+    let url = `${BaseURL}/tokens?page=${page}&search=${search}`;
     if (filtro && filtro !== "General") {
       url += `&estado=${filtro}`;
     }
@@ -212,31 +205,31 @@ const obtenerTotalesTokens = async () => {
     console.log("Error al obtener totales:", error);
   }
 };
-const aprobadoTokens = async (retiro) => {
+const aprobadoTokens = async (movimiento) => {
 
   try {
-    await axios.put(BaseURL + "/aprobarTokens/" + retiro.retiro_id, retiro);
+    await axios.put(BaseURL + "/aprobarTokens/" + movimiento.movimiento_id, movimiento);
     // Al aprobar, se vuelve a cargar la lista de pendientes
-    await obtenerDatos(1, "", "Pendiente");
-    await obtenerTotales();
+    await obtenerDatosTokens(1, "", "Pendiente");
+    await obtenerTotalesTokens();
   } catch (error) {
     console.log(error);
   }
 };
-const rechazadoTokens = async (retiro_id) => {
+const rechazadoTokens = async (movimiento_id) => {
   try {
-    const { data } = await axios.patch(BaseURL + "/rechazarTokens/" + retiro_id);
+    const { data } = await axios.patch(BaseURL + "/rechazarTokens/" + movimiento_id);
     // Al rechazar, se vuelve a cargar la lista de pendientes
     await obtenerDatosTokens(1, "", "Pendiente");
-    await obtenerTotales();
+    await obtenerTotalesTokens();
   } catch (error) {
     console.log(error);
   }
 };
 
-const pendienteTokens = async (retiro_id) => {
+const pendienteTokens = async (movimiento_id) => {
   try {
-    const { data } = await axios.patch(BaseURL + "/pendienteTokens/" + retiro_id);
+    const { data } = await axios.patch(BaseURL + "/pendienteTokens/" + movimiento_id);
     // Al poner en pendiente, se recarga la lista de rechazados
     obtenerDatosTokens(1, "", "Rechazado");
   } catch (error) {
@@ -244,15 +237,15 @@ const pendienteTokens = async (retiro_id) => {
   }
 };
 
-const eliminadoTokens = async (retiro_id) => {
+/* const eliminadoTokens = async (movimiento_id) => {
   try {
-    const { data } = await axios.patch(BaseURL + "/tokens/" + retiro_id);
+    const { data } = await axios.patch(BaseURL + "/tokens/" + movimiento_id);
     // Al eliminar, recargar la lista de pendientes
     obtenerDatosTokens(1, "", "Pendiente");
   } catch (error) {
     console.log(error);
   }
-};
+}; */
 </script>
 
 <style scoped>

@@ -7,11 +7,10 @@
             @click="showView('wallRequests')">
             <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Retiro
           </li>
-          <!-- Solicitudes Compra de Tokens retirado para poder trabajar como adicion de req en el futuro
-            <li class="py-3 ps-2 rounded  nav-link  my-3 retiro " :class="{ 'border-custom': view == 'SolicitudesTokens' }"
-            @click="showView('SolicitudesTokens')">
+          <li class="py-3 ps-2 rounded  nav-link  my-3 retiro "
+            :class="{ 'border-custom': view == 'SolicitudesTokens' }" @click="showView('SolicitudesTokens')">
             <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Compra de Tokens
-          </li> -->
+          </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
             @click="showView('users')">
             <i class="fa-solid fa-users "></i> &nbsp; Usuarios
@@ -90,7 +89,6 @@ const showView = (typeView) => {
 }
 </script>
 <style scoped>
-
 .d-flex {
   height: 100%;
 }
@@ -118,11 +116,11 @@ li:hover {
   color: white;
 
 }
+
 .retiro:hover {
   font-weight: 600;
   background-color: #17223B;
   color: white !important;
-  
-}
 
+}
 </style>

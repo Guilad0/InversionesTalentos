@@ -534,7 +534,8 @@ router.get("/tokens", function (req, res, next) {
     INNER JOIN usuarios ON movimientos.usuario_id = usuarios.usuario_id
     WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
     ${filtroEstado}
-    AND movimientos.descripcion = 'Compra de tokens';`;
+    AND movimientos.descripcion = 'Compra de tokens'
+    ;`;
 
   connection.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
@@ -547,6 +548,7 @@ router.get("/tokens", function (req, res, next) {
       WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
       ${filtroEstado} 
       AND movimientos.descripcion = 'Compra de tokens'
+      ORDER BY movimientos.fecha_solicitud DESC
       LIMIT ${salto}, ${porPagina};`;
 
     connection.query(query, function (error, results) {
@@ -572,28 +574,26 @@ router.get("/tokens", function (req, res, next) {
 
 //Aprobación de compra de tokens
 router.put("/aprobarTokens/:id", function (req, res, next) {
-  const { monto_recibir, inversion_id, retiro_id, usuario_id, tokens_cambio } = req.body;
-  console.log(req.body);
-  let query = `UPDATE movimientos SET 
-  estado = 1, fecha_aprobacion = ?
+  let query = `
+  UPDATE movimientos
+  SET 
+    estado = 1,
+    fecha_desembolso = CURRENT_TIMESTAMP()
   WHERE movimiento_id = '${req.params.id}';`;
   let date = new Date();
   
   connection.query(query, function (error, results) {
     if (error) {
-      res.status(500).send({ error, message: "Error al realizar la petición" });
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
     } else {
+      console.log(results.insertId);
       res.status(200).send({
-        pagination: {
-          total: numFilas,
-          current: pagina,
-          pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
-          perPage: porPagina,
-          previous: pagina > 1 ? pagina - 1 : null,
-          next: pagina < numPaginas ? pagina + 1 : null,
-        },
-        data: results,
-        message: "Listando clientes",
+        data: results.insertId,
+        message: "Tokens aprobados correctamente",
       });
     }
 });
@@ -601,8 +601,11 @@ router.put("/aprobarTokens/:id", function (req, res, next) {
 
 //Rechazo de compra de tokens
 router.patch("/rechazarTokens/:id", function (req, res, next) { //rechazar la solicitud de retiro
-  var query = `UPDATE movimientos 
-  SET (estado, descripcion) = (0, 'Compra de tokens rechazada')
+  var query = `
+  UPDATE movimientos 
+  SET
+    estado = 0,
+    descripcion = 'Compra de tokens rechazada'
   WHERE movimiento_id = '${req.params.id}';`;
 
   connection.query(query, function (error, results, fields) {
