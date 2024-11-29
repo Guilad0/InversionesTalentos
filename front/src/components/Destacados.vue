@@ -1,11 +1,10 @@
 <template>
   <main>
     <div class="proposito bg-dark d-flex align-items-center justify-content-center">
-      <div class="text-container">
-        <h1 class="text-center text-white  fs-custom position-relative ">
+      <div class="text-container position-relative">
+        <EditIcon v-if="rol == 'Admin'" class="mt-3 abs-custom "  data-bs-toggle="modal" data-bs-target="#textHome" />
+        <h1 class="text-center text-white  fs-custom  ">
           {{ text }}
-        <EditIcon v-if="rol == 'Admin'" class="mt-3"  data-bs-toggle="modal" data-bs-target="#textHome"/>
-        <label  class="text-white abs-custom-label " v-if="rol == 'Admin'">Editar Campo</label>
         
         </h1>
       </div>
@@ -112,6 +111,11 @@ const props = defineProps({
 
 <style scoped>
 
+.abs-custom{
+  position: absolute;
+  right: -200px;
+}
+
 .title {
   font-family: var(--font-montserrat-bold); /* Variante bold */
   font-weight: 700; /* Asegura que sea bold */
@@ -119,6 +123,8 @@ const props = defineProps({
   color: var( --gray-color); 
   text-transform: uppercase;
 }
+
+
 
 @media (max-width: 1500px) {
   .abs-custom-label{
@@ -218,7 +224,7 @@ const props = defineProps({
 
   }
   .fs-custom{
-    font-size: 1.8rem !important;
+    font-size: 1.6rem !important;
 
   }
     .fs-custom-text{

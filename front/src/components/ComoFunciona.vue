@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="col-md-6 video-container position-relative">
-            <EditIcon v-if="user?.rol == 'Admin'" class="abs-custom btn-blue  btn cess rounded-5  m-auto p-2"
+            <EditIconBlack v-if="user?.rol == 'Admin'" class="abs-custom   btn cess rounded-5  m-auto p-2"
                data-bs-toggle="modal" data-bs-target="#video" />
             <iframe
               width="100%"
@@ -58,7 +58,7 @@ import { ref, onMounted } from "vue";
 import { getUser } from "@/helpers/utilities";
 import Unete from "./Unete.vue";
 import Spinner from "../components/Spinner.vue";
-import EditIcon from "./Icons/EditIcon.vue";
+import EditIconBlack from "./Icons/EditIcon black.vue";
 import axios from "axios";
 import { errorAlert, successAlert, successAlertAcept } from "@/helpers/iziToast";
 const loading = ref(false);
