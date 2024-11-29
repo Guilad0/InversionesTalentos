@@ -227,8 +227,8 @@
                           <td scope="col">{{ rep.inversor }}</td>
                           <td scope="col">{{ rep.monto }}</td>
                           <td scope="col">{{ monto_devolver(rep.monto, rep.ganancia) }}</td>
-                          <td scope="col">{{ rep.fecha_deposito }}</td>
-                          <td scope="col">{{ rep.fecha_devolucion }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -253,8 +253,8 @@
                           <td scope="col">{{ rep.retiro_id }}</td>
                           <td scope="col">{{ rep.monto_solicitud }}</td>
                           <td scope="col">{{ rep.monto_recibir }}</td>
-                          <td scope="col">{{ rep.fecha_solicitud }}</td>
-                          <td scope="col">{{ rep.fecha_aprobacion }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</td>
                           <td scope="col">{{ rep.estado }}</td>
                         </tr>
                       </tbody>
@@ -532,7 +532,7 @@
                   <strong>Tokens Recibidos:</strong> {{ inversion_recibida.monto }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha:</strong> {{ inversion_recibida.fecha_deposito }}
+                  <strong>Fecha:</strong> {{ new Date(inversion_recibida.fecha_deposito).toLocaleDateString() }}
                 </p>
               </div>
 
@@ -577,14 +577,14 @@
                 <strong>Solicitud:</strong> {{ cliente_retiro.retiro_id }}
               </p>
               <p class="text-white text-center">
-                <strong>Fecha Solicitud:</strong> {{ cliente_retiro.fecha_solicitud }}
+                <strong>Fecha Solicitud:</strong> {{ new Date(cliente_retiro.fecha_solicitud).toLocaleDateString() }}
               </p>
               <p class="text-white text-center"><strong>Estado:</strong> {{ cliente_retiro.estado }}</p>
               <p
                 class="text-white text-center"
                 v-if="cliente_retiro.estado == 'Aprobado'"
               >
-                Fecha Aprobación: {{ cliente_retiro.fecha_aprobacion }}
+                Fecha Aprobación: {{ new Date(cliente_retiro.fecha_aprobacion).toLocaleDateString() }}
               </p>
             </div>
           </div>
@@ -618,10 +618,10 @@
                 <strong>Tokens Pendientes:</strong> {{ inversion_vencida.ganancia_estimada }}
               </p>
               <p class="text-white text-center">
-                <strong>Fecha de Inversion:</strong> {{ inversion_vencida.fecha_deposito }}
+                <strong>Fecha de Inversion:</strong> {{ new Date(inversion_vencida.fecha_deposito).toLocaleDateString() }}
               </p>
               <p class="text-white text-center">
-                <strong>Fecha de Vencimiento:</strong> {{ inversion_vencida.fecha_devolucion }}
+                <strong>Fecha de Vencimiento:</strong> {{ new Date(inversion_vencida.fecha_devolucion).toLocaleDateString() }}
               </p>
               <button
                 class="animate__animated animate__fadeInUp animate__slow btn-6 m-2"
@@ -870,8 +870,8 @@
                           <td scope="col">{{ rep.cliente }}</td>
                           <td scope="col">{{ rep.monto }}</td>
                           <td scope="col">{{ rep.ganancia }}</td>
-                          <td scope="col">{{ rep.fecha_deposito }}</td>
-                          <td scope="col">{{ rep.fecha_devolucion }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_deposito).toLocaleDateString() }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_devolucion).toLocaleDateString() }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -896,8 +896,8 @@
                           <td scope="col">{{ rep.retiro_id }}</td>
                           <td scope="col">{{ rep.monto_solicitud }}</td>
                           <td scope="col">{{ rep.monto_recibir }}</td>
-                          <td scope="col">{{ rep.fecha_solicitud }}</td>
-                          <td scope="col" v-if="rep.fecha_aprobacion !== null">{{ rep.fecha_aprobacion }}</td>
+                          <td scope="col">{{ new Date(rep.fecha_solicitud).toLocaleDateString() }}</td>
+                          <td scope="col" v-if="rep.fecha_aprobacion !== null">{{ new Date(rep.fecha_aprobacion).toLocaleDateString() }}</td>
                           <td scope="col" v-else></td>
                           <td scope="col">{{ rep.estado }}</td>
                         </tr>
@@ -1189,10 +1189,10 @@
                   <strong>Ganancia de Tokens:</strong> {{ inversion.ganancia_estimada - inversion.monto }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha de Inversión:</strong> {{ inversion.fecha_inversion }}
+                  <strong>Fecha de Inversión:</strong> {{ new Date(inversion.fecha_inversion).toLocaleDateString() }}
                 </p>
                 <p class="text-white text-center">
-                  <strong>Fecha de Retorno Aprox.:</strong> {{ inversion.fecha_retorno }}
+                  <strong>Fecha de Retorno Aprox.:</strong> {{ new Date(inversion.fecha_retorno).toLocaleDateString() }}
                 </p>
               </div>
 
@@ -1223,10 +1223,10 @@
           >
             <p class="text-white"><strong>Monto:</strong> ${{ inversionista_retiro.monto_recibir }}</p>
             <p class="text-white"><strong>Solicitud:</strong> {{ inversionista_retiro.retiro_id }}</p>
-            <p class="text-white"><strong>Fecha:</strong> {{ inversionista_retiro.fecha_solicitud }}</p>
+            <p class="text-white"><strong>Fecha:</strong> {{ new Date(inversionista_retiro.fecha_solicitud).toLocaleDateString() }}</p>
             <p class="text-white"><strong>Estado:</strong> {{ inversionista_retiro.estado }}</p>
             <p class="text-white" v-if="inversionista_retiro.estado == 'Aprobado'">
-              <strong>Fecha Aprobación:</strong> {{ inversionista_retiro.fecha_aprobacion }}
+              <strong>Fecha Aprobación:</strong> {{ new Date(inversionista_retiro.fecha_aprobacion).toLocaleDateString() }}
             </p>
           </div>
           <div
