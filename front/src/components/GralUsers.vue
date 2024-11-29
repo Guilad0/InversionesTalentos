@@ -322,6 +322,7 @@ const closeModal = () =>{
                   <option value="Inversionista">Inversionista</option>
                   <option value="Cliente">Cliente</option>
                   <option value="Admin">Admin</option>
+                  <option value="Null">Null</option>
                 </select>
               </td>
               <td class="text-center">

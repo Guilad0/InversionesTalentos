@@ -1,6 +1,9 @@
 <template>
   <div class="m-3">
-    <h2 class="text-xl text-center title mb-4">Gráficos de Resumen</h2>
+    <h2 class="text-xl text-center title mb-4">DashBoard</h2>
+    <h2 class="text-xl font-bold mb-4">
+        Graficos de resumen
+      </h2>
 
     <div class="row my-3">
       <div class="col-md-5">
@@ -99,7 +102,58 @@
       <h2 class="text-xl font-bold mb-4">
         Reportes de administrador
       </h2>
-
+    <div class="d-flex gap-3 ">
+      <div class="col-2">
+        <div class="card  mb-3" style="max-width: 15rem;">
+        <div class="card-header bg-primary text-light">Mayor inversionista</div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Usuario:</strong> Juan Perez <br>
+            <strong>Tokens:</strong> 800 <br>
+            <strong>USD:</strong> 800
+          </p>
+        </div>
+      </div>
+      </div>
+     <div class="col-2">
+      <div class="card  mb-3" style="max-width: 15rem;">
+        <div class="card-header bg-success text-light">Talento con mas inversiones</div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Usuario:</strong> Juan Perez <br>
+            <strong>Tokens:</strong> 800 <br>
+            <strong>USD:</strong> 800
+          </p>
+        </div>
+      </div>
+     </div>
+     <div class="col-2">
+      <div class="card  mb-3" style="max-width: 15rem;">
+        <div class="card-header bg-orange text-light">Ganancia de la pagina</div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>USD:</strong> 50 <br>
+            <strong>Tokens:</strong> 800
+          </p>
+        </div>
+      </div>
+     </div>
+     <div class="col-2">
+      <div class="card  mb-3" style="max-width: 15rem;">
+        <div class="card-header bg-secondary text-light">Movimientos</div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Inversiones:</strong> 50 <br>
+            <strong>Retiros:</strong> 50 <br>
+            <strong>Devoluciones:</strong> 800
+          </p>
+        </div>
+      </div>
+     </div>
+    </div>
+    <h2 class="text-xl font-bold mb-4">
+        Filtros
+      </h2>
       <div class="d-flex justify-content-center">
         <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
           'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
