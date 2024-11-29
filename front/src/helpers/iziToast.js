@@ -47,19 +47,40 @@ export const infoAlert = (message, title, position) => {
       })
 }
 
-
+let isProcessingError = false;
 
 export const errorAlert = (message, title, position) => {
-    iziToast.error({
-        title, 
-        message,
-        position: position || 'topRight',
-        theme:'dark',
-        progressBarColor:'#FFFFFF',
-        messageColor:'#FFFFFF',
-        iconColor:'#FFFFFF',
-        color:'#ff0000',
-        closeOnEscape:true,
-        closeOnClick:true,  
-      })
-}
+  if (isProcessingError) return;
+
+  isProcessingError = true; 
+  iziToast.error({
+    title,
+    message,
+    position: position || 'topRight',
+    theme: 'dark',
+    progressBarColor: '#FFFFFF',
+    messageColor: '#FFFFFF',
+    iconColor: '#FFFFFF',
+    color: '#ff0000',
+    closeOnEscape: true,
+    closeOnClick: true,
+    onClosed: function () {
+      isProcessingError = false; 
+    }
+  });
+};
+
+// export const errorAlert = (message, title, position) => {
+//     iziToast.error({
+//         title, 
+//         message,
+//         position: position || 'topRight',
+//         theme:'dark',
+//         progressBarColor:'#FFFFFF',
+//         messageColor:'#FFFFFF',
+//         iconColor:'#FFFFFF',
+//         color:'#ff0000',
+//         closeOnEscape:true,
+//         closeOnClick:true,  
+//       })
+// }

@@ -1,7 +1,8 @@
 <template>
 <div>
   
-  <div class="custom-main d-none d-lg-block animate__animated animate__fadeIn bg-dark">
+  <div class="custom-main d-none d-lg-block animate__animated animate__fadeIn bg-dark position-relative">
+    <label class="abs-custom text-light fw-bolder"> {{ nameSyystem }} </label>
     <main class="d-flex justify-content-center align-items-center">
         
       <div class="container-wrapper  d-flex">
@@ -29,6 +30,14 @@
 </template>
 
 <style scoped>
+.abs-custom{
+  position: absolute;
+  top: 44%;
+  left: 5%;
+  font-size: 8rem;
+  color: red !important;
+  z-index: 9999;
+}
 main {
   height: 93vh;
   width: 100%;
@@ -91,9 +100,22 @@ main {
 import { ref, onMounted } from 'vue';
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
-onMounted(()=>{
+import axios from 'axios';
+onMounted(async()=>{
+  await getNameSstem()
   localStorage.clear()
 })
+const nameSyystem = ref('')
+const getNameSstem = async() =>{
+  try {
+    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getNameSystem')
+  console.log(data);
+  nameSyystem.value = data.nombre
+  } catch (error) {
+    console.log(error);
+  }
+
+}
 
 const currentPage = ref(0);
 const changePage = () => {

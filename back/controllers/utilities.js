@@ -508,6 +508,50 @@ const putVideoSetting = (req, res) =>{
   
 }
 
+const changeNameSystem = (req, res) =>{
+  let query= 'update ajustes set nombre =? where ajuste_id = 6';
+  conexion.query(query,[ req.query.nombre    ],(err) =>{
+    if(err){
+      res.status(500).json({
+        err
+      })
+      return
+    }
+    res.status(201).json({
+      msg: 'Nombre del sistema actualizado'
+    })
+  })
+}
+
+const getNameSystem = (req, res)=>{
+  let query = 'select nombre  from ajustes where ajuste_id = 6';
+  conexion.query(query,(err, results) =>{
+    if(err){
+      res.status(500).json({
+        err
+      })
+      return
+    }
+    res.status(201).json({
+      nombre:results[0].nombre
+    })
+  })
+}
+const getLogoSystem = (req, res)=>{
+  let query = 'select logo  from ajustes where ajuste_id = 6';
+  conexion.query(query,(err, results) =>{
+    if(err){
+      res.status(500).json({
+        err
+      })
+      return
+    }
+    res.status(201).json({
+      logo:results[0].logo
+    })
+  })
+}
+
 module.exports = {
   isClientFormInfoRegistered,
   isClientFormAchievements,
@@ -527,5 +571,8 @@ module.exports = {
   savePercentajerUser,
   getTotalInfoUsers,
   getVideoSettings,
-  putVideoSetting
+  putVideoSetting,
+  changeNameSystem,
+  getNameSystem,
+  getLogoSystem
 };

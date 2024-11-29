@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse burger-menu " :class="{ show: isMenuOpen }" id="navbarNav">
 
           <RouterLink class="nav-link" to="/">
-            <img src="@/assets/images/logo-manos.png" alt="" width="40" class="rounded me-2" />
+            <img :src="logo" alt="" width="40" class="rounded me-2" />
           </RouterLink>
 
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -119,6 +119,7 @@ const apellido = ref("");
 
 let storedUser = JSON.parse(localStorage.getItem("usuario")) || {};
 const updateRole = async () => {
+  await getLogoSstem()
   storedUser = await getUser();
   rol.value = storedUser?.rol || "";
   nombre.value = storedUser?.nombre || "";
@@ -134,6 +135,13 @@ onMounted(() => {
   }
 
 });
+const logo = ref('')
+const getLogoSstem = async() =>{
+    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getLogoSystem')
+    console.log(data);
+    logo.value = data.logo
+    
+}
 
 watch(
   () => router.currentRoute.value,
