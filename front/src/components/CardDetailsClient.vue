@@ -75,11 +75,11 @@
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" @click="irBilletera">
+            <button v-if="user.rol !== 'Admin'" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" @click="irBilletera">
               <i class="fas fa-wallet"></i> Fondear mi Billetera<span></span>
             </button>
 
-            <button :disabled="loadingInvertir"
+            <button :disabled="loadingInvertir" v-if="user.rol !== 'Admin'"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2" data-bs-toggle="modal"
               data-bs-target="#modalInversion">
               <i class="fas fa-dollar-sign"></i>
@@ -109,14 +109,14 @@
 
         <h3>Información</h3>
 
-        <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> Monto de inversión: ${{ client.monto_inversion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-dollar-sign"></i> <strong>Monto de inversión:</strong> ${{ client.monto_inversion }}</h6>
         <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
-        <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> Estudios: {{ client.estudios }}</h6>
-        <h6 class="mt-3"><i class="fas fa-info-circle"></i> Descripción: {{ client.descripcion }}</h6>
-        <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> Edad: {{ client.edad }}</h6>
-        <h6 class="mt-3"><i class="fas fa-venus-mars"></i> Género: {{ client.genero }}</h6>
-        <h6 class="mt-3"><i class="fas fa-phone"></i> Número de teléfono: {{ client.numero_telefono }}</h6>
-        <h6 class="mt-3"><i class="fas fa-envelope"></i> Correo: {{ client.correo }}</h6>
+        <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> <strong>Estudios:</strong> {{ client.estudios }}</h6>
+        <h6 class="mt-3"><i class="fas fa-info-circle"></i> <strong>Descripción:</strong> {{ client.descripcion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> <strong>Edad:</strong> {{ client.edad }}</h6>
+        <h6 class="mt-3"><i class="fas fa-venus-mars"></i> <strong>Género:</strong> {{ client.genero }}</h6>
+        <h6 class="mt-3"><i class="fas fa-phone"></i> <strong>Número de teléfono:</strong> {{ client.numero_telefono }}</h6>
+        <h6 class="mt-3"><i class="fas fa-envelope"></i> <strong>Correo:</strong> {{ client.correo }}</h6>
 
       </div>
 
@@ -133,7 +133,7 @@
             <div class="card mb-3">
               <div class="card-body bg-degrade-inverso text-center text-white">
                 <h5>{{ logro.descripcion }}</h5>
-                <p>Fecha: {{ new Date(logro.fecha).toLocaleDateString() }}</p>
+                <p><strong>Fecha: </strong>{{ new Date(logro.fecha).toLocaleDateString() }}</p>
               </div>
             </div>
           </div>
@@ -152,10 +152,10 @@
         <div class="card p-4 bg-degrade-inverso text-white text-center mt-3" v-for="exp in experiencia" :key="exp.id">
 
           <h4 class="text-uppercase">{{ exp.institucion }}</h4>
-          <h6>Cargo: {{ exp.cargo }}</h6>
-          <h6>Actividades: {{ exp.actividades }}</h6>
-          <h6>Fecha de Inicio: {{ new Date(exp.fecha_inicio).toLocaleDateString() }}</h6>
-          <h6>Fecha Final: {{ new Date(exp.fecha_final).toLocaleDateString() }}</h6>
+          <h6><strong>Cargo:</strong> {{ exp.cargo }}</h6>
+          <h6><strong>Actividades:</strong> {{ exp.actividades }}</h6>
+          <h6><strong>Fecha de Inicio:</strong> {{ new Date(exp.fecha_inicio).toLocaleDateString() }}</h6>
+          <h6><strong>Fecha Final:</strong> {{ new Date(exp.fecha_final).toLocaleDateString() }}</h6>
 
         </div>
 
@@ -164,8 +164,9 @@
     </div>
 
     <!-- Modal Video Presentación -->
-    <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
-      aria-hidden="true" @shown.bs.modal="playVideo"> <!-- Agregado el evento para reproducir el video -->
+    <!-- <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel"
+      aria-hidden="true" @shown.bs.modal="playVideo">  -->
+      <div class="modal fade" id="modalVideoPresentacion" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
 
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content bg-degrade text-white">
@@ -309,7 +310,7 @@ const userId = ref("");
 const client = ref({});
 const url = ref("");
 const prom = ref("");
-
+const user = ref(JSON.parse(localStorage.getItem('usuario')))
 
 const getUser = async () => {
   try {
@@ -351,10 +352,13 @@ const obtenerExperiencia = async () => {
 };
 
 onMounted(async () => {
+  
   userId.value = route.query.user;
   await getUser();
-  await obtenerTokens_Inversionista();
-  await obtenerTokens_Inversionista_Invertidos();
+  if( user.value.rol !== 'Admin' ){
+    await obtenerTokens_Inversionista();
+    await obtenerTokens_Inversionista_Invertidos();
+  }
   await obtenerLogros();
   await obtenerExperiencia();
   await obtenerPromedio();
@@ -570,12 +574,12 @@ const generarEstrellas = (promedio) => {
   return estrellas.join("");
 };
 
-const playVideo = () => {
-  const video = $refs.video; // Accede al elemento de video
-  if (video) {
-    video.play(); // Reproduce el video
-  }
-};
+// const playVideo = () => {
+//   const video = $refs.video; // Accede al elemento de video
+//   if (video) {
+//     video.play(); // Reproduce el video
+//   }
+// };
 
 const pauseVideo = () => {
   const video = $refs.video; // Accede al elemento de video

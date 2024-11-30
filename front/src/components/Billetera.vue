@@ -206,13 +206,15 @@
                     </div>
                     <div class="mb-3">
                       <label class="form-label m-auto">Dólares</label>
-                      <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p>
+                      <!-- <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p> -->
+                      <p class="text-xl text-white text-center m-auto">$US {{ montoDolares.toFixed(3) }}</p>
                     </div>
                   </div>
                   <div class="col">
                     <div class="mb-3">
                       <label for="retiro_inversionista " class="form-label m-auto  ">Total a Retirar</label>
-                      <p class="text-xl text-white m-auto">$US {{ dolares }}</p>
+                      <!-- <p class="text-xl text-white m-auto">$US {{ dolares }}</p> -->
+                      <p class="text-xl text-white m-auto">$US {{ dolares.toFixed(3) }}</p>
                     </div>
                   </div>
                 </div>
@@ -379,7 +381,8 @@ const comprarTokens = async () => {
       console.log(datos);
       try {
         await axios.post(baseURL + 'comprarTokens', datos);
-        successAlert(`Tokens comprados exitosamente`, 'Felicidades', 'topRight')
+        // successAlert(`Tokens comprados exitosamente`, 'Felicidades', 'topRight')
+        successAlertAcept(`Tokens comprados exitosamente. Ahora está en espera de revisión y aprobación por parte de nuestro personal administrativo`, 'Felicidades', 'center')
         var myModalEl = document.getElementById('modalTokens');
         var modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
         modal.hide();

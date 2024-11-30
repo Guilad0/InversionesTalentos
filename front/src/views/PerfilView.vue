@@ -281,8 +281,8 @@
               </div>
             </div>
           </div>
-          <hr>
-          <div class="d-flex justify-content-between py-4 ">
+          <!-- <hr> -->
+          <!-- <div class="d-flex justify-content-between py-4 ">
             <div class="">
               <i class="fas fa-smile"></i>
               Referir Amigos
@@ -290,7 +290,7 @@
             <div class="">
               <button class="btn btn-orange rounded-5 px-3">Referir</button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div v-else>
@@ -316,7 +316,7 @@ import { porcentajeTrue } from "@/helpers/utilities";
 import iziToast from "izitoast";
 import { countriesData } from "../helpers/dataCountries";
 import Spinner from "@/components/Spinner.vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { successAlert, errorAlert } from "@/helpers/iziToast";
 import router from '@/router';
 const fileInput = ref(null);
@@ -328,7 +328,7 @@ const selectVideo = () => {
   videoFile.value.click();
 };
 
-let currentPath = useRouter();
+let currentPath = useRoute();
 currentPath = currentPath.name;
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/";
@@ -727,7 +727,7 @@ const saveVideo = async () => {
 }
 
 .container-custom {
-  height: 85vh;
+  min-height: 85vh;
 }
 
 .perfilbutton {
@@ -740,7 +740,8 @@ li {
 }
 
 .custom-profile {
-  max-height: 321px;
+  max-height: 220px;
+  
 }
 
 .btn-orange {
