@@ -92,7 +92,9 @@ ul {
 }
 
 .nav-link:hover li {
-  background-color: #e2e6ea;
+  background-color: var(--gray-color);
+
+  color:white
 }
 
 .nav-link:hover img {
@@ -108,8 +110,10 @@ ul {
 }
 
 .active {
-  border-bottom: 3px solid #d95c00;
-  color: #d95c00 !important;
+  /* border-bottom: 3px solid #d95c00; */
+  background-color: var(--yellow-orange);
+
+  color: white !important;
 }
 
 .my-3 {
