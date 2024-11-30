@@ -152,7 +152,7 @@ const router = createRouter({
     { path: '/RecoverPass', 
       name: 'RecoverPass',
       component: RecoverPass,
-      meta: {roles: ["Cliente", "Inversionista"]}
+      // meta: {roles: ["Cliente", "Inversionista"]}
     },
     {
       path: '/compra-token',
