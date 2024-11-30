@@ -268,9 +268,11 @@ const resetForm = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Corregir el error de sintaxis */
+  height: 90vh; /* Reduce la altura del fondo a un 90% de la altura de la ventana */
+  width: 100vw; /* Ancho completo de la ventana */
   margin: 0;
-  position: relative; /* Asegura que el overlay se posicione bien dentro de este contenedor */
+  padding: 0;
+  position: relative;
   background-image: url('@/assets/images/otro-fondo2.png');
   background-size: cover;
   background-position: center;
@@ -291,24 +293,31 @@ const resetForm = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: sans-serif; /* Asegúrate de definir tu fuente personalizada */
+  font-family: sans-serif;
+  width: 100vw;
+  padding: 0;
+  max-height: 90vh; /* Limita la altura del contenedor */
 }
-
 .custom-card {
-  padding: 3rem;
-  width: 50%;
-  margin: 3rem;
+  padding: 2rem; /* Reduce el padding para menos altura */
+  width: 100vw; /* Ahora ocupa el 100% del ancho de la pantalla */
+  max-width: 100vw; /* Asegura que el formulario no se limite en ancho */
+  margin: 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   animation: fadeIn 1s ease;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco */
+  z-index: 2;
+  box-sizing: border-box;
+  height: auto; /* Asegura que el alto del formulario sea dinámico */
 }
-
 .card {
   border-radius: 30px;
   background-color: rgba(255, 255, 255, 0.871);
   border-radius: none;
   box-sizing: border-box;
-  padding: 30px;
-  width: 500px;
+  padding: 10px;
+  width: 1000px;
   z-index: 2; /* Asegura que el formulario esté encima del overlay */
 }
 
@@ -317,15 +326,9 @@ const resetForm = () => {
   background-color: rgba(44, 46, 51, 0.8); /* Color de fondo personalizado */
   color: #F3F3F4;
 }
-.form-control:focus {
-  background-color: var(--white-color);
-  border: 2px solid #F37926;
-  outline: none;
-  box-shadow: none;
-  color: black;
-}
+
 .text-form-title{
-  font-size: 26px;
+  font-size: 28px;
   font-weight: bold;
   color:  #17223B;
 
@@ -602,5 +605,7 @@ const resetForm = () => {
   }
 
 }
+
+
 
 </style>
