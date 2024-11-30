@@ -1,9 +1,9 @@
 <template>
-  <div class="m-3">
+  <div class="m-3 min-vh-100">
     <h2 class="text-xl text-center title mb-4">DashBoard</h2>
     <h2 class="text-xl font-bold mb-4">
-        Graficos de resumen
-      </h2>
+      Graficos de resumen
+    </h2>
 
     <div class="row my-3">
       <div class="col-md-5">
@@ -32,245 +32,110 @@
       </div>
     </div>
 
-    <!--  <div class="row my-3">
-      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Cantidad de Usuarios</h5>
-            <table class="table">
-              <tbody v-for="(cantUsuario, index) in cantUsuarios" :key="index">
-                <tr>
-                  <td>{{ cantUsuario.rol }}s: </td>
-                  <td>{{ cantUsuario.cantidad }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-5 col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Cantidad de Inversiones</h5>
-            <table class="table">
-              <tbody v-for="(cantInversion, index) in cantInversiones" :key="index">
-                <tr>
-                  <td>{{ cantInversion.estado_descripcion }}s: </td>
-                  <td>{{ cantInversion.cantidad }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row my-3">
-      <div class="col-md-5 col-sm-6 mb-3 mb-sm-0">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Cantidad de Solicitudes de Retiro</h5>
-            <table class="table">
-              <tbody v-for="(cantSolicitud, index) in cantSolicitudes" :key="index">
-                <tr>
-                  <td>{{ cantSolicitud.estado }}s: </td>
-                  <td>{{ cantSolicitud.cantidad }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-5 col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Ganancia en Dólares de la página</h5>
-            <table class="table">
-              <tbody v-for="(cantSumComision, index) in cantSumComisiones" :key="index">
-                <tr>
-                  <td>{{ cantSumComision.estado }}s: </td>
-                  <td>$US {{ cantSumComision.total_comisiones }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div>
       <h2 class="text-xl font-bold mb-4">
         Reportes de administrador
       </h2>
-    <div class="d-flex gap-3 ">
-      <div class="col-2">
-        <div class="card  mb-3" style="max-width: 15rem;">
-        <div class="card-header bg-primary text-light">Mayor inversionista</div>
-        <div class="card-body">
-          <p class="card-text">
-            <strong>Usuario:</strong> Juan Perez <br>
-            <strong>Tokens:</strong> 800 <br>
-            <strong>USD:</strong> 800
-          </p>
+      <div class="d-flex gap-3 ">
+        <div class="col-2">
+          <div class="card  mb-3" style="max-width: 15rem;">
+            <div class="card-header bg-primary text-light">Mayor inversionista</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Usuario:</strong> {{ nombre_inversor }} <br>
+                <strong>Inversiones realizadas:</strong> {{ total_inversiones }} <br>
+                <strong>Tokens:</strong> {{total_tokens}} <br>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      </div>
-     <div class="col-2">
-      <div class="card  mb-3" style="max-width: 15rem;">
-        <div class="card-header bg-success text-light">Talento con mas inversiones</div>
-        <div class="card-body">
-          <p class="card-text">
-            <strong>Usuario:</strong> Juan Perez <br>
-            <strong>Tokens:</strong> 800 <br>
-            <strong>USD:</strong> 800
-          </p>
+        <div class="col-2">
+          <div class="card  mb-3" style="max-width: 15rem;">
+            <div class="card-header bg-success text-light">Talento con mas inversiones</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Usuario:</strong> {{ nombre_cliente }} <br>
+                <strong>Inversiones obtenidas:</strong> {{ total_inversiones_cliente }} <br>
+                <strong>Tokens:</strong> {{ total_tokens_cliente }}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-     </div>
-     <div class="col-2">
-      <div class="card  mb-3" style="max-width: 15rem;">
-        <div class="card-header bg-orange text-light">Ganancia de la pagina</div>
-        <div class="card-body">
-          <p class="card-text">
-            <strong>USD:</strong> 50 <br>
-            <strong>Tokens:</strong> 800
-          </p>
-        </div>
-      </div>
-     </div>
-     <div class="col-2">
-      <div class="card  mb-3" style="max-width: 15rem;">
-        <div class="card-header bg-secondary text-light">Movimientos</div>
-        <div class="card-body">
-          <p class="card-text">
-            <strong>Inversiones:</strong> 50 <br>
-            <strong>Retiros:</strong> 50 <br>
-            <strong>Devoluciones:</strong> 800
-          </p>
-        </div>
-      </div>
-     </div>
-    </div>
-    <h2 class="text-xl font-bold mb-4">
-        Filtros
-      </h2>
-      <div class="d-flex justify-content-center">
-        <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
-          'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
-          { active: activeTabAdmin === index },
-        ]" @click="activeTabAdmin = index">
-          {{ tabAdmin }} <span></span>
-        </button>
-      </div>
+        <div class="col-2">
+          <div class="card  mb-3" style="max-width: 15rem;">
+            <div class="card-header bg-orange text-light">Ganancia de la pagina</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>USD:</strong> {{ total_comisiones }} <br>
 
-      <!-- Lista Inversiones -->
-      <div class="tab-content" v-if="activeTabAdmin === 0">
-        <div class="mb-3">
-          <label for="fechaInicio">Fecha de Inicio</label>
-          <input id="fechaInicio" v-model="fechaInicio" class="form-control" type="date" />
-          <label for="fechaFinal">Fecha Final</label>
-          <input id="fechaFinal" v-model="fechaFinal" class="form-control" type="date" />
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="col-9 table-responsive">
-          <table v-if="reportes_inversiones.length > 0" class="table table-sm align-middle">
-            <thead class="align-middle">
-              <tr>
-                <th scope="col">Inversión ID</th>
-                <th scope="col">Inversionista</th>
-                <th scope="col">Fecha de Inversión</th>
-                <th scope="col">Tokens Invertidos</th>
-                <th scope="col">Talento Invertido</th>
-                <th scope="col">Fecha de Devolución</th>
-                <th scope="col">Ganancia de Tokens</th>
-              </tr>
-            </thead>
-            <tbody v-for="reporte_inversion in reportes_inversiones" :key="reporte_inversion">
-              <tr>
-                <td scope="col">{{ reporte_inversion.inversion_id }}</td>
-                <td scope="col">{{ reporte_inversion.inversor }}</td>
-                <td scope="col">
-                  {{ new Date(reporte_inversion.fecha_deposito).toLocaleDateString() }}</td>
-                <td scope="col">{{ reporte_inversion.monto }}</td>
-                <td scope="col">{{ reporte_inversion.cliente }}</td>
-                <td scope="col">
-                  {{ new Date(reporte_inversion.fecha_devolucion).toLocaleDateString() }}</td>
-                <td scope="col">{{ reporte_inversion.ganancia }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-
-        <div class="text-dark my-3" v-if="reportes_inversiones.length == 0">
-          <div class="d-flex justify-content-center rounded-3">
-            <div class="alert alert-warning" role="alert">
-              <h4 class="alert-heading">¡Sin resultados!</h4>
-              <p>
-                No se encontraron resultados de inversiones recibidas.<br>
-                Se mostrará en blanco hasta que reciba alguna inversión.
+        <div class="col-2">
+          <div class="card  mb-3" style="max-width: 15rem;">
+            <div class="card-header bg-secondary text-light">Movimientos</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Compras de token:</strong> {{ movTokens.movimientos_realizados }} <br>
+                <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }} <br>
+                <strong>Devoluciones:</strong> {{ movDeveoluciones.movimientos_realizados }} <br>
+                
               </p>
             </div>
           </div>
         </div>
       </div>
+      <div class="">
 
-      <!-- Lista de solicitudes de retiro -->
-      <div class="tab-content" v-if="activeTabAdmin === 1">
-        <div class="mb-3">
-          <label for="rolReporte" class="form-label">Rol</label><br>
-          <select v-model="tipo" id="rolReporte" class="form-select" required>
-            <option value="'inversor','cliente'">Todas</option>
-            <option value="inversor">Inversor</option>
-            <option value="cliente">Talentos</option>
-          </select>
-          <label for="fechaInicio">Fecha de Inicio</label>
-          <input id="fechaInicio" v-model="fechaInicio" class="form-control" type="date" />
-          <label for="fechaFin">Fecha Final</label>
-          <input id="fechaFin" v-model="fechaFinal" class="form-control" type="date" />
+        <h2 class="text-xl font-bold mb-4">
+          Filtros
+        </h2>
+        <div class="d-flex justify-content-center">
+          <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
+            'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
+            { active: activeTabAdmin === index },
+          ]" @click="showReports(reportes_inversiones[index])">
+            {{ tabAdmin }} <span></span>
+          </button>
+
         </div>
-        <div class="col-9 table-responsive">
-          <table v-if="reportes_retiro.length > 0" class="table table-sm align-middle">
-            <thead>
-              <tr>
-                <th scope="col">Tetiro ID</th>
-                <th scope="col">Rol de Usuario</th>
-                <th scope="col">Nombre Usuario</th>
-                <th scope="col">Fecha Solicitud Retiro</th>
-                <th scope="col">Monto Solicitud</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Fecha de Aprobación</th>
-                <th scope="col">Monto a Entregar</th>
-                <th scope="col">Monto Ganancia Empresa</th>
-              </tr>
-            </thead>
-            <tbody v-for="reporte_retiro in reportes_retiro" :key="reporte_retiro">
-              <tr>
-                <td scope="col">{{ reportes_retiro.retiro_id }}</td>
-                <td scope="col">{{ reportes_retiro.tipo }}</td>
-                <td scope="col">{{ reportes_retiro.usuario_nombre }}</td>
-                <td scope="col">{{ new Date(reportes_retiro.fecha_solicitud).toLocaleDateString() }}</td>
-                <td scope="col">{{ reportes_retiro.monto_solicitud }}</td>
-                <td scope="col">{{ reportes_retiro.estado }}</td>
-                <td scope="col">{{ new Date(reportes_retiro.fecha_aprobacion).toLocaleDateString() }}</td>
-                <td scope="col">{{ reportes_retiro.monto_recibir }}</td>
-                <td scope="col">{{ reportes_retiro.monto_solicitud - reportes_retiro.monto_recibir }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="text-dark my-3" v-if="reportes_retiro.length == 0">
-          <div class="d-flex justify-content-center rounded-3">
-            <div class="alert alert-warning" role="alert">
-              <h4 class="alert-heading">¡Sin resultados!</h4>
-              <p>
-                No se encontraron resultados de solicitudes de retiros.<br>
-                Se mostrará en blanco hasta que realice alguna solicitud.
-              </p>
-            </div>
+        <div class="d-flex justify-content-center gap-3 my-3 py-3">
+
+          <div class=" col-2 btn-secondary  btn text-light text-center rounded-3">
+            <label for="fechaInicio" class="py-2">Fecha de Inicio</label>
+            <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicioCustom" class="form-control rounded-0"
+              type="date" />
+
+          </div>
+          <div class="col-2 btn-secondary btn text-light text-center rounded-3 ">
+            <label for="fechaFin" class="py-2">Fecha Final</label>
+            <input @input="showReportCustom" id="fechaFin" v-model="fechaFinCustom" class="form-control rounded-0"
+              type="date" />
           </div>
         </div>
       </div>
-
+      <div class="table-responsive animate__animated  animate__fadeIn w-75 m-auto">
+      <h3 class="card-title text-center my-2">Resultados</h3>
+        <table class="table overflow-x-scroll table-sm  ">
+          <thead class="table table-primary">
+            <tr class="table-secondary">
+              <td class="td-custom">#</td>
+              <td class="td-custom">Nombre</td>
+              <td class="td-custom">Apellido</td>
+              <td class="td-custom">Apellido</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">fdsa</td>
+              <td class="text-center">fdsfdsa</td>
+              <td class="text-center">fdsfdsa</td>
+              <td class="text-center">fdsfdsa</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </div>
@@ -281,25 +146,18 @@ import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import apexchart from "vue3-apexcharts";
-
-import {
-  getCurrentYearStartAndEnd,
-  getDayStartAndEnd,
-  getMonthStartAndEnd,
-  getWeekStartAndEnd,
-  getYesterdayStartAndEnd,
-} from "@/helpers/utilities";
-
+import { errorAlert } from "@/helpers/iziToast";
 let currentPath = useRouter();
 currentPath = currentPath.name;
 
 const route = useRouter();
 let baseURL = import.meta.env.VITE_BASE_URL + "/reportes/";
 
-onMounted(() => {
-  obtenerTotales();
-  obtenerGanancias();
-  obtenerUsuarios();
+onMounted(async () => {
+  await obtenerTotales();
+  await obtenerGanancias();
+  await obtenerUsuarios();
+  await getReportsTotals()
 })
 
 const series = ref([]);
@@ -405,7 +263,6 @@ const obtenerTotales = async () => {
       data: datosMesCompra,
     };
     series.value.push(datos);
-    console.log(datos);
   } catch (error) {
     console.log(error);
   }
@@ -487,126 +344,51 @@ const obtenerGanancias = async () => {
   }
 };
 //-----REPORTES-----
-const tabsAdmin = ref(["Inversiones", "Retiros", "Devoluciones"]);
-const rolReporte = ref("");
-var activeTabAdmin = ref(0);
-var typeReport = ref("Inversiones");
-const bandAlert = ref(false);
-let reportesURL = import.meta.env.VITE_BASE_URL + "/reportes/";
-const selectedReport = ref("");
-onMounted(async () => {
-  await reporte_RetiroTipo();
-  await reporte_InversionesGnral();
-});
+const tabsAdmin = ref(["Mayores inversores", "Talento que genera mas tokens", "Ganancia global de la aplicacion", ]);
+const reportes_inversiones = ref(['inversiones', 'talento', 'ganancia', ]);
 
-const formatDate = (date) => {
-  return new Date(date).toISOString().split("T")[0];
-};
+let fechaInicioCustom = ref("");
+let fechaFinCustom = ref("");
 
-const reportes_retiro = ref([]);
-const reportes_inversiones = ref([]);
-
-let fechaInicio = ref("");
-let fechaFinal = ref("");
-
-const reporte_RetiroTipo = async () => {
-  try {
-    const { data } = await axios.get(
-      `${reportesURL}reporteSolicitudesTipo/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFinal.value}&rol=${rolReporte.value}`
-    );
-    reportes_retiro.value = data.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const reporte_InversionesGnral = async () => {
-  try {
-    const { data } = await axios.get(
-      `${reportesURL}reporteInversionesGnral/?fecha_inicio=${fechaInicio.value}&fecha_final=${fechaFinal.value}`
-    );
-    reportes_inversiones = data.data
-  }
-  catch (error) {
-    console.error(error);
-  }
-};
-
-
-const exportToPDF = () => {
-  const doc = new jsPDF();
-
-  const columns = [
-    { header: "ID", dataKey: "inversion_id" },
-    { header: "Inversionista", dataKey: "inversor" },
-    { header: "Token Invertidos", dataKey: "monto" },
-    { header: "Tokens a Devolver", dataKey: "ganancia" },
-    { header: "Fecha de Inversion", dataKey: "fecha_deposito" },
-    { header: "Fecha de Retorno(Aproximado)", dataKey: "fecha_devolucion" },
-  ];
-
-  const rows = reports.value.map((report) => ({
-    inversion_id: report.inversion_id,
-    inversor: report.inversor,
-    monto: report.monto,
-    ganancia: report.ganancia,
-    fecha_deposito: report.fecha_deposito,
-    fecha_devolucion: report.fecha_devolucion,
-  }));
-
-  console.log("Rows para PDF Cliente", rows);
-
-  doc.autoTable({
-    columns: columns,
-    body: rows,
-    startY: 20,
-    theme: "grid",
-    styles: {
-      overflow: "linebreak",
-      cellPadding: 2,
-      fontSize: 9,
-    },
-  });
-  doc.text("Reporte de Inversiones y Retiros", doc.internal.pageSize.width / 2, 10, {
-    align: "center",
-  });
-  doc.save("Reporte de Inversiones y Retiros.pdf");
-};
-
-
-const exportToExcel = () => {
-  if (typeReport.value == "Inversiones") {
-    const datos = reports.value.map((report) => ({
-      ID: report.inversion_id,
-      Inversionista: report.inversor,
-      "Tokens Invertidos": report.monto,
-      "Tokens a Devolver": monto_devolver(report.monto, report.ganancia),
-      "Fecha de Inversión": new Date(report.fecha_deposito).toLocaleDateString(),
-      "Fecha de Retorno (Aprox)": new Date(report.fecha_devolucion).toLocaleDateString(),
-    }))
-    const worksheet = XLSX.utils.json_to_sheet(datos);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Inversiones");
-    XLSX.writeFile(workbook, "reporte_inversiones.xlsx");
-  }
-  if (typeReport.value == "Retiros") {
-
-    const datos = reports.value.map((report) => ({
-      ID: report.retiro_id,
-      "Monto Solicitado": report.monto_solicitud,
-      "Monto a Recibir": report.monto_recibir,
-      "Fecha Solicitud": new Date(report.fecha_solicitud).toLocaleDateString(),
-      "Fecha de Aprobación": new Date(report.fecha_aprobacion).toLocaleDateString(),
-
-    }))
-    const worksheet = XLSX.utils.json_to_sheet(datos);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Retiros");
-    XLSX.writeFile(workbook, "reporte_retiros.xlsx");
-  }
+const showReports = (report) => {
+  console.log(report);
 }
 
+var activeTabAdmin = ref(0);
+const nombre_inversor = ref(0)
+const total_inversiones = ref(0)
+const total_tokens = ref(0)
+const nombre_cliente = ref(0)
+const total_inversiones_cliente = ref(0)
+const total_tokens_cliente = ref(0)
+const total_comisiones = ref(0)
+const movTokens = ref({})
+const movRetiros = ref({})
+const movDeveoluciones = ref({})
+const getReportsTotals = async() =>{
+  try {
+        const {data} = await axios.get(baseURL+'/mayorInversionista')
+        nombre_inversor.value =   data.data[0].nombre_inversor
+        total_inversiones.value = data.data[0].total_inversiones
+        total_tokens.value = data.data[0].total_tokens
+        const {data:data2} = await axios.get(baseURL+'/mayorCliente')
+        nombre_cliente.value = data2.data[0].nombre_cliente
+        total_inversiones_cliente.value = data2.data[0].total_inversiones
+        total_tokens_cliente.value = data2.data[0].total_tokens
+        const {data:data3} = await axios.get(baseURL+'/sumaComisiones')
+        total_comisiones.value =data3.data[1].total_comisiones
+        const {data:data4} = await axios.get(baseURL+'/totalMovimientos')
+        movTokens.value = data4.data[0];
+        movRetiros.value = data4.data[3];
+        movDeveoluciones.value = data4.data[5];
+  } catch (error) {
+      errorAlert('Error al realizar la peticion','Error')
+  }
+}
 </script>
+
+
+
 
 <style scoped>
 .title {
@@ -629,12 +411,12 @@ const exportToExcel = () => {
   transform-origin: left !important;
 }
 
-nav {
+/* nav {
   height: 7vh;
   width: 50vw;
   border-radius: 10px !important;
   box-shadow: 0 4px 6px #17223B;
-}
+} */
 
 .card-title {
   color: var(--gray-color);
@@ -645,6 +427,7 @@ td {
   font-size: 1rem;
   color: var(--gray-color);
 }
+
 
 .tabs {
   font-size: 1.1rem;
@@ -661,7 +444,7 @@ td {
   color: var(--yellow-orange) !important;
 }
 
-.nav-link {
+/* .nav-link {
   font-size: 1.1rem;
   color: #17223B;
   margin-right: 15px;
@@ -670,7 +453,7 @@ td {
 
 .nav-link:hover {
   color: var(--yellow-orange) !important;
-}
+} */
 
 .underline-dynamic {
   display: inline-block;
@@ -694,4 +477,8 @@ td {
   transform-origin: right;
   transition: transform 0.6s, background-color 0.3s ease;
 }
+
+
+
+
 </style>

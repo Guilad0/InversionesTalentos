@@ -205,3 +205,10 @@ textarea::-webkit-scrollbar {
 textarea {
   scrollbar-width: none; /* Eliminar barra de desplazamiento en Firefox */
 }
+
+
+.td-custom{
+  background-color: var(--yellow-orange) !important;
+  color: white !important;
+  text-align: center;
+}
