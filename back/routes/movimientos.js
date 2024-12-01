@@ -55,4 +55,18 @@ router.patch('/:id', (req, res) => {
     });
 });
 
+router.get('/estado/:valor', (req, res) => {
+    const { valor } = req.params;
+
+    if (!['0', '1'].includes(valor)) {
+        return res.status(400).send('Valor inválido para estado');
+    }
+
+    conexion.query('SELECT * FROM movimientos WHERE estado = ?', [valor], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.json(results);
+    });
+});
+
+
 module.exports = router;
