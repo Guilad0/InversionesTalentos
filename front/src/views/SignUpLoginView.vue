@@ -32,10 +32,10 @@
 <style scoped>
 .abs-custom{
   position: absolute;
-  top: 44%;
-  left: 5%;
+  top: 50%;
+  left: 8%;
   font-size: 8rem;
-  color: red !important;
+  color: rgba(255, 255, 255, 0.801) !important;
   z-index: 9999;
 }
 main {
@@ -76,7 +76,7 @@ main {
   left: 0;
   width: 50%;
   height: 100%;
-  background-image: url('../assets/images/register10.jpg');
+  background-image: url('../assets/images/main.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

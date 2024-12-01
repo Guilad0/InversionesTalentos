@@ -216,20 +216,19 @@ const closeModal = () =>{
         <table class="table overflow-x-scroll table-sm  table-light">
           <thead class="table-dark">
             <tr class="table-secondary">
-              <th class="custom-size">#</th>
-              <th class="custom-size">Nombre</th>
-              <th class="custom-size">Apellido</th>
-              <!-- <th class="custom-size">Correo</th> -->
-              <th class="custom-size">Imagen</th>
-              <th class="custom-size">Logros</th>
-              <th class="custom-size">Experiencia</th>
-              <th class="custom-size text-center">Informacion</th>
-              <th class="custom-size text-center">Video</th>
-              <th class="custom-size">Rol</th>
-              <th class="custom-size">% Registro</th>
-              <th class="custom-size">Aprobado</th>
-              <th class="custom-size">Estado</th>
-              <th class="custom-size">Acciones</th>
+              <th class=" td-custom custom-size">#</th>
+              <th class=" td-custom custom-size">Nombre</th>
+              <th class=" td-custom custom-size">Apellido</th>
+              <th class="td-custom custom-size">Imagen</th>
+              <th class="td-custom custom-size">Logros</th>
+              <th class="td-custom custom-size">Experiencia</th>
+              <th class="td-custom custom-size text-center">Informacion</th>
+              <th class="td-custom custom-size text-center">Video</th>
+              <th class="td-custom custom-size">Rol</th>
+              <th class="td-custom custom-size">% Registro</th>
+              <th class="td-custom custom-size">Aprobado</th>
+              <th class="td-custom custom-size">Estado</th>
+              <th class="td-custom custom-size">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -249,7 +248,7 @@ const closeModal = () =>{
                                 </div>
                                 </div>
                             </td> -->
-              <td class="text-secondary text-center">
+              <td class="text-secondary text-center align-middle">
                 <i
                   v-if="user.rol !== 'Admin' || user.rol == 'Inversionista'"
                   class="fas fa-image"
@@ -259,7 +258,7 @@ const closeModal = () =>{
                 ></i>
                 <i v-else class="fa-solid fa-xmark text-danger"></i>
               </td>
-              <td class="text-center">
+              <td class="text-center align-middle">
                 <i
                   v-if="user.rol == 'Cliente'"
                   data-bs-toggle="modal"
@@ -270,7 +269,7 @@ const closeModal = () =>{
                 ></i>
                 <i v-else class="fa-solid fa-xmark text-danger"></i>
               </td>
-              <td class="text-center">
+              <td class="text-center align-middle">
                 <i
                   v-if="user.rol == 'Cliente'"
                   data-bs-toggle="modal"
@@ -281,7 +280,7 @@ const closeModal = () =>{
                 ></i>
                 <i v-else class="fa-solid fa-xmark text-danger"></i>
               </td>
-              <td class="text-center">
+              <td class="text-center align-middle">
                 <i
                   v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'"
                   data-bs-toggle="modal"
@@ -293,7 +292,7 @@ const closeModal = () =>{
                 <i v-else class="fa-solid fa-xmark text-danger"></i>
               </td>
 
-              <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary">
+              <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary align-middle">
                 <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
                 <i
                   v-else
@@ -308,12 +307,12 @@ const closeModal = () =>{
                 v-if="
                   user.rol == 'Inversionista' || user.rol == 'Admin' || user.rol == 'Null'
                 "
-                class="text-center text-danger"
+                class="text-center text-danger align-middle"
               >
                 <i class="fa-solid fa-xmark"></i>
               </td>
 
-              <td>
+              <td class="align-middle text-center">
                 <select
                   v-model="user.rol"
                   @change="updateRol(user.usuario_id, user.rol)"
@@ -325,11 +324,11 @@ const closeModal = () =>{
                   <option value="Null">Null</option>
                 </select>
               </td>
-              <td class="text-center">
+              <td class="text-center align-middle">
                 <label v-if="user.rol !== 'Admin'">{{ user.porcentaje_registro }}</label>
                 <label v-else>Null</label>
               </td>
-              <td>
+              <td class="text-center align-middle">
                 <div class="form-check form-switch">
                   <div class="form-check form-switch">
                     <input
@@ -344,7 +343,7 @@ const closeModal = () =>{
                   </div>
                 </div>
               </td>
-              <td v-if="user.estado == '1'">
+              <td v-if="user.estado == '1'" class="text-center align-middle">
                 <span
                   class="badge text-bg-success cursor"
                   @mouseover="toggleStatus"
@@ -352,7 +351,7 @@ const closeModal = () =>{
                   >Activo</span
                 >
               </td>
-              <td v-if="user.estado == '0'">
+              <td v-if="user.estado == '0'" class="text-center align-middle">
                 <span class="badge text-bg-danger cursor">No activo</span>
               </td>
               <td v-if="user.estado == '1'" class="text-center">
@@ -360,7 +359,7 @@ const closeModal = () =>{
                   <img src="../assets/svg/delete.svg" width="25" />
                 </div>
               </td>
-              <td v-if="user.estado == '0'" class="text-center">
+              <td v-if="user.estado == '0'" class="text-center align-middle">
                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                   <img src="../assets/svg/user-plus.svg" width="25" />
                 </div>

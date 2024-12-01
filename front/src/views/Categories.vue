@@ -60,11 +60,11 @@
           <table class="table overflow-x-scroll">
             <thead>
               <tr class="table-secondary">
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Imagen</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th class="td-custom">ID</th>
+                <th class="td-custom">Nombre</th>
+                <th class="td-custom">Imagen</th>
+                <th class="td-custom">Estado</th>
+                <th class="td-custom">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -161,11 +161,7 @@
           </nav>
         </div>
       </div>
-    </div>
-  </main>
-
-
-  <div
+      <div
     class="modal fade"
     id="modalEditCategory"
     tabindex="-1"
@@ -224,6 +220,11 @@
       </div>
     </div>
   </div>
+    </div>
+  </main>
+
+
+ 
 </template>
 
 <script setup>
