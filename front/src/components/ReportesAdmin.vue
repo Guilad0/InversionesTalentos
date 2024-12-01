@@ -39,7 +39,7 @@
       <div class="d-flex gap-3 ">
         <div class="col-2">
           <div class="card  mb-3" style="max-width: 15rem;">
-            <div class="card-header bg-primary text-light">Mayor inversionista</div>
+            <div class="card-header bg-gray text-light">Mayor inversionista</div>
             <div class="card-body">
               <p class="card-text">
                 <strong>Usuario:</strong> {{ nombre_inversor }} <br>
@@ -51,7 +51,7 @@
         </div>
         <div class="col-2">
           <div class="card  mb-3" style="max-width: 15rem;">
-            <div class="card-header bg-success text-light">Talento con mas inversiones</div>
+            <div class="card-header bg-gray text-light">Talento con mas inversiones</div>
             <div class="card-body">
               <p class="card-text">
                 <strong>Usuario:</strong> {{ nombre_cliente }} <br>
@@ -63,7 +63,7 @@
         </div>
         <div class="col-2">
           <div class="card  mb-3" style="max-width: 15rem;">
-            <div class="card-header bg-orange text-light">Ganancia de la pagina</div>
+            <div class="card-header bg-gray text-light">Ganancia de la pagina</div>
             <div class="card-body">
               <p class="card-text">
                 <strong>USD:</strong> {{ total_comisiones }} <br>
@@ -74,7 +74,7 @@
         </div>
         <div class="col-2">
           <div class="card  mb-3" style="max-width: 15rem;">
-            <div class="card-header bg-secondary text-light">Movimientos</div>
+            <div class="card-header bg-gray text-light">Movimientos</div>
             <div class="card-body">
               <p class="card-text">
                 <strong>Compras de token:</strong> {{ movTokens.movimientos_realizados }} <br>
@@ -92,8 +92,9 @@
           Filtros
         </h2>
         <div class="d-flex justify-content-center">
-          <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
-            'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
+          <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" 
+           :class="[
+            'animate__animated', 'animate__fadeInUp bg-gray text-light rounded-3 ', 'animate__slow', 'btn-6', 'm-2 ', ,
             { active: activeTabAdmin === index },
           ]" @click="showReports(reportes_inversiones[index])">
             {{ tabAdmin }} <span></span>
@@ -102,40 +103,100 @@
         </div>
         <div class="d-flex justify-content-center gap-3 my-3 py-3">
 
-          <div class=" col-2 btn-secondary  btn text-light text-center rounded-3">
+          <div class=" col-2 bg-gray  btn text-light text-center rounded-3">
             <label for="fechaInicio" class="py-2">Fecha de Inicio</label>
-            <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicioCustom" class="form-control rounded-0"
+            <input @input="showReportCustom" id="fechaInicio" v-model="fechaInicio" class="form-control rounded-0"
               type="date" />
 
           </div>
-          <div class="col-2 btn-secondary btn text-light text-center rounded-3 ">
+          <div class="col-2 bg-gray btn text-light text-center rounded-3 ">
             <label for="fechaFin" class="py-2">Fecha Final</label>
-            <input @input="showReportCustom" id="fechaFin" v-model="fechaFinCustom" class="form-control rounded-0"
+            <input @input="showReportCustom" id="fechaFin" v-model="fechaFinal" class="form-control rounded-0"
               type="date" />
           </div>
         </div>
       </div>
-      <div class="table-responsive animate__animated  animate__fadeIn w-75 m-auto">
-      <h3 class="card-title text-center my-2">Resultados</h3>
-        <table class="table overflow-x-scroll table-sm  ">
+      <div class="table-responsive animate__animated  animate__fadeIn w-75 m-auto"  >
+      <h3 class="card-title text-center my-2">Resultados 
+        <button
+                          @click="exportToExcel()"
+                          v-if="reports.length > 0 && typeReport == 'mayorInversionistaCustom' || reports.length > 0 && typeReport == 'mayorClienteCustom' "
+                          class="btn btn-success  text-light btn-sm fw-light "
+                        >
+                          <strong>Exportar</strong>
+                        </button> </h3>
+        <table v-if="typeReport== 'mayorInversionistaCustom' && reports.length > 0 && bandReport == true" class="table overflow-x-scroll table-sm  ">
           <thead class="table table-primary">
             <tr class="table-secondary">
-              <td class="td-custom">#</td>
-              <td class="td-custom">Nombre</td>
-              <td class="td-custom">Apellido</td>
-              <td class="td-custom">Apellido</td>
+              <td class="td-custom text-center align-middle">#</td>
+              <td class="td-custom text-center align-middle">Nombre Inversor</td>
+              <td class="td-custom text-center align-middle">total tokens invertido</td>
+              <td class="td-custom text-center align-middle">Cantidad de inversiones</td>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-center">fdsa</td>
-              <td class="text-center">fdsfdsa</td>
-              <td class="text-center">fdsfdsa</td>
-              <td class="text-center">fdsfdsa</td>
+            <tr v-for="(report,index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index + 1}}</td>
+              <td class="text-center align-middle">{{report.nombre_inversor}}</td>
+              <td class="text-center align-middle">{{report.total_tokens}}</td>
+              <td class="text-center align-middle">{{report.total_inversiones}}</td>
             </tr>
           </tbody>
         </table>
+        <div v-if="typeReport== 'mayorInversionistaCustom' && reports.length == 0 && bandReport" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
+        <table v-if="typeReport== 'mayorClienteCustom' && reports.length > 0 && bandReport == true" class="table overflow-x-scroll table-sm  ">
+          <thead class="table table-primary">
+            <tr class="table-secondary">
+              <td class="td-custom text-center align-middle">#</td>
+              <td class="td-custom text-center align-middle">Nombre Talento</td>
+              <td class="td-custom text-center align-middle">total tokens invertido generados</td>
+              <td class="td-custom text-center align-middle">Cantidad de inversiones recibidas</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(report,index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index + 1}}</td>
+              <td class="text-center align-middle">{{report.nombre_cliente}}</td>
+              <td class="text-center align-middle">{{report.total_tokens}}</td>
+              <td class="text-center align-middle">{{report.total_inversiones}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="typeReport== 'mayorClienteCustom' && reports.length == 0 && bandReport == true" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
+        <table v-if="typeReport== 'sumaComisionesCustom' && reports[0]?.estado != null && bandReport == true" class="table overflow-x-scroll table-sm  ">
+          <thead class="table table-primary">
+            <tr class="table-secondary">
+              <td class="td-custom text-center align-middle">#</td>
+              <td class="td-custom text-center align-middle">Total comisiones obtenidas</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(report,index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index+1 }}</td>
+              <td class="text-center align-middle">{{report.total_comisiones}} USD</td>
+              
+              
+            </tr>
+          </tbody>
+        </table>
+        <div  v-if="typeReport== 'sumaComisionesCustom' && reports[0]?.estado == null && bandReport == true" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
+
       </div>
+      <div
+            class="text-dark my-3"
+            v-if="!bandReport"
+          >
+            <div class="d-flex justify-content-center rounded-3">
+              <div class="alert alert-orange card  rounded-3" role="alert">
+                <div class="card-b">
+                  <h4 class="alert-heading fs-6">Por favor, selecciona una fecha de inicio y una fecha de fin para obtener los resultados esperados <br>
+                  La busqueda tomara los 3 usuarios que cumplan con los filtros. <br>
+                  Si el filtro es de ganancia global, mostrara solo un resultado en caso de existir.
+                   </h4>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 
   </div>
@@ -147,6 +208,8 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import apexchart from "vue3-apexcharts";
 import { errorAlert } from "@/helpers/iziToast";
+import * as XLSX from "xlsx";
+
 let currentPath = useRouter();
 currentPath = currentPath.name;
 
@@ -344,14 +407,45 @@ const obtenerGanancias = async () => {
   }
 };
 //-----REPORTES-----
-const tabsAdmin = ref(["Mayores inversores", "Talento que genera mas tokens", "Ganancia global de la aplicacion", ]);
-const reportes_inversiones = ref(['inversiones', 'talento', 'ganancia', ]);
+const tabsAdmin = ref(["Mayores inversores", "Talento con mas inversiones", "Ganancia global de la aplicacion", ]);
+const reportes_inversiones = ref(['mayorInversionistaCustom', 'mayorClienteCustom', 'sumaComisionesCustom', ]);
 
-let fechaInicioCustom = ref("");
-let fechaFinCustom = ref("");
+const reports = ref([])
+const fechaInicio = ref("");
+const  fechaFinal = ref("");
 
+const showReportCustom = async() => {
+  const isValidDate = (date) => {
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (!datePattern.test(date)) return false;
+
+    const [year, month, day] = date.split('-').map(Number);
+
+    return year >= 1900 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
+  };
+
+  if (fechaInicio.value && isValidDate(fechaFinal.value)) {
+    bandReport.value = true
+      if( fechaInicio.value <= fechaFinal.value ){
+        try {
+            const {data} = await axios.get(import.meta.env.VITE_BASE_URL+`/reportes/${typeReport.value}?fechaInicial=${fechaInicio.value}&fechaFinal=${fechaFinal.value}`)
+            reports.value = data.data;
+            console.log(reports.value);
+        } catch (error) {
+          
+        }
+      }
+  } 
+};
+const bandReport = ref(false)
+const typeReport = ref('mayorInversionistaCustom')
 const showReports = (report) => {
-  console.log(report);
+  reports.value = []
+  typeReport.value = report
+  console.log(typeReport.value);
+  fechaInicio.value = ''
+  fechaFinal.value = ''
+  bandReport.value = false
 }
 
 var activeTabAdmin = ref(0);
@@ -385,6 +479,35 @@ const getReportsTotals = async() =>{
       errorAlert('Error al realizar la peticion','Error')
   }
 }
+
+const exportToExcel =()=>{
+  if (typeReport.value == "mayorInversionistaCustom" && reports.value.length >0) {
+    const datos = reports.value.map((report, index) => ({
+      "#": index+1,
+      "Nombre inversor": report.nombre_inversor,
+      "Tokens invertidos": report.total_tokens,
+      "Cantidad de inversiones": report.total_inversiones,
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(datos);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Top 3 inversores");
+    XLSX.writeFile(workbook, "reporte_mayores_inversores.xlsx");
+  }
+  if (typeReport.value == "mayorClienteCustom" && reports.value.length >0) {
+    const datos = reports.value.map((report, index) => ({
+      "#": index+1,
+      "Nombre talento": report.nombre_cliente,
+      "Tokens invertidos": report.total_tokens,
+      "Cantidad de inversiones": report.total_inversiones,
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(datos);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Top 3 talentos");
+    XLSX.writeFile(workbook, "reporte_talentos.xlsx");
+  }
+}
+
+
 </script>
 
 
@@ -400,7 +523,7 @@ const getReportsTotals = async() =>{
 }
 
 .active {
-  color: var(--yellow-orange) !important;
+  color: red !important;
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;
@@ -431,7 +554,7 @@ td {
 
 .tabs {
   font-size: 1.1rem;
-  color: var(--white-color);
+  color: var(--white-color) !important;
   background: #ffffff;
   border-color: #ffffff;
   border-radius: 10px !important;
