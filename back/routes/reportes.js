@@ -640,4 +640,79 @@ ORDER BY COUNT(*) DESC;`;
 });
 
 
+//mayor inversionista por ragnos de fechas
+router.get("/mayorInversionistaCustom", function (req, res, next) {
+  const {fechaInicial, fechaFinal} = req.query;
+  var query = ` 
+  SELECT inversiones.inversor_id, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_inversor, SUM(inversiones.monto) AS total_tokens, COUNT(*) AS total_inversiones
+  FROM inversiones INNER JOIN usuarios ON inversiones.inversor_id = usuarios.usuario_id
+  WHERE inversiones.fecha_deposito BETWEEN  '${fechaInicial}' AND '${fechaFinal}'
+  GROUP BY inversiones.inversor_id
+  ORDER BY SUM(inversiones.monto) DESC
+  LIMIT 3;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de usuarios consultados correctamente",
+      });
+    }
+  });
+});
+
+
+router.get("/mayorClienteCustom", function (req, res, next) {
+  const {fechaInicial, fechaFinal} = req.query;
+  var query = ` 
+  SELECT inversiones.cliente_id, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente, SUM(inversiones.monto) AS total_tokens, COUNT(*) AS total_inversiones
+  FROM inversiones INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
+  WHERE inversiones.fecha_deposito BETWEEN  '${fechaInicial}' AND '${fechaFinal}'
+  GROUP BY inversiones.cliente_id
+  ORDER BY SUM(inversiones.monto) DESC
+  LIMIT 3;`;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de usuarios consultados correctamente",
+      });
+    }
+  });
+});
+
+
+router.get("/sumaComisionesCustom", function (req, res, next) {
+  const {fechaInicial, fechaFinal} = req.query;
+  var query = `
+  SELECT estado, SUM(comision_aplicar) AS total_comisiones 
+  FROM solicitudes_retiro 
+  WHERE estado='Aprobado'  AND fecha_aprobacion BETWEEN  '${fechaInicial}' AND '${fechaFinal}' ` ;
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al realizar la petición",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Cantidad de inversiones consultados correctamente",
+      });
+    }
+  });
+});
+
 module.exports = router;
