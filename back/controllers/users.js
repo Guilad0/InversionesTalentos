@@ -335,6 +335,7 @@ const getInfoInvestor = (req, res) => {
           u.verificado,
           u.rol, 
           u.estado,
+          u.created_at,
           u.genero,
           i.nombre_completo, 
           i.dni, 

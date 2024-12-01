@@ -1,6 +1,6 @@
 <template>
   <main class="d-flex justify-content-center bgf py-3 animate__animated animate__fadeIn bg-admin" 
-  :class="{ 'bg-admin': user, 'bg-user': !user }"
+  :class="{ 'bg-admin': user, 'bg-user': user == '' }"
    >
       <form @submit.prevent="registrar" class="mt-3" @keypress.enter="registrar()">
         <div class="card login-card shadow">
@@ -416,7 +416,7 @@ const handleEmail = async ( event ) => {
   }
   try {
     const response = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/handleEmail/correo?correo=" + email.value
+      import.meta.env.VITE_BASE_URL+"/users/handleEmail/correo?correo=" + email.value
     );
     if (response.data.existe == true) {
       control_email.value = false;
@@ -441,7 +441,7 @@ const handleTelefono = async ( event ) => {
   }
   try {
     const response = await axios.get(
-      "https://apitalentos.pruebasdeploy.online/users/handleTelefono/telefono?telefono=" +
+      import.meta.env.VITE_BASE_URL+"/users/handleTelefono/telefono?telefono=" +
       numero_telefono.value
     );
     if (response.data.existe == true) {
@@ -543,7 +543,7 @@ ustom-abs-icon-eye:hover{
 }
 
 .bg-admin{
-  background-image: url("../assets/images/iniciar_sesion.png");
+  background-color: var(--yellow-orange) !important;
   
 }
 .bg-user{
@@ -587,7 +587,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .login-card {
   width: 30rem;
   padding: 2rem;
-  height: 40rem;
+  min-height: 40rem;
   margin-top: 5%;
   margin-bottom: 5%;
   background-color: #17223be8;

@@ -8,7 +8,11 @@
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header"></div>
+        <div class="modal-header">
+          <h1 v-if="typeMedia == 'image'" class="modal-title fs-5 m-auto" id="modalUserl">Imagen del Usuario</h1>
+          <h1 v-if="typeMedia == 'video'" class="modal-title fs-5 m-auto" id="modalUserl">Video del Usuario</h1>
+
+        </div>
         <div class="modal-body">
           <div class="card">
             <div v-if="typeMedia == 'image'">

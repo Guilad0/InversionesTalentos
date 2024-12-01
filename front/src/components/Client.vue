@@ -7,6 +7,7 @@ import ModalCreateUserAdmin from './ModalCreateUserAdmin.vue';
 import ModalInforUser from '../components/ModalInforUser.vue'
 import ModalMedia from './ModalMedia.vue';
 import axios from 'axios';
+import Spinner from './Spinner.vue';
 
 const props = defineProps({
     rol: {
@@ -48,8 +49,9 @@ const prevAction = () => {
     baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
     getData();
 }
-onMounted(() => {
-    getData();
+onMounted(async() => {
+    await getData();
+    console.log(results.value);
     myRol.value = props.rol;
 });
 
@@ -61,6 +63,12 @@ const clearSearch = () => {
     getData();
 }
 
+const selecionatedMedia = (user) => {
+    image.value =
+        // "https://apitalentos.pruebasdeploy.online/categories/video/" + user.usuario_id;
+        import.meta.env.VITE_BASE_URL + "/categories/video/" + user.usuario_id;
+    typeMedia.value = "video";
+};
 const handleName = () => {
     if (search.value.trim() !== '') {
 
@@ -100,23 +108,23 @@ const clearId = () => {
 
 const typeMedia = ref('')
 
-const handleAproved =async (id, name, event, porcentaje_registro)=>{
-    if (confirm("¿Quieres aprobar al usuario " + name+" ?")) {
+const handleAproved = async (id, name, event, porcentaje_registro) => {
+    if (confirm("¿Quieres aprobar al usuario " + name + " ?")) {
         try {
-        //    await axios.patch(`https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`);
-           await axios.patch(import.meta.env.VITE_BASE_URL+`/users/approved/${id}?rol=${user.rol}`);
-           
-            
+            //    await axios.patch(`https://apitalentos.pruebasdeploy.online/users/approved/${id}?rol=${user.rol}`);
+            await axios.patch(import.meta.env.VITE_BASE_URL + `/users/approved/${id}?rol=${user.rol}`);
+
+
         } catch (err) {
             console.log(err);
-        }finally{
+        } finally {
             baseUrl.value = `/users/filterByRol/${myRol.value}/?rol=${user.rol}&page=${page.value}`;
             getData();
         }
-      } 
-      else{
+    }
+    else {
         event.target.checked = !event.target.checked;
-      }
+    }
 }
 
 
@@ -124,10 +132,10 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
 <template>
     <main class="bg-light">
         <div class="content ">
-            <h4 class="d-block text-start mb-2 text-center underline"> {{ myRol }}s </h4>
+            <h4 class="d-block text-start mb-2 text-center title"> {{ myRol }}s </h4>
             <div class="d-flex justify-content-between px-5 mt-2 mb-3">
                 <div class="col-2 position-relative">
-                    <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+                    <input name="search" type="text" v-model="search" class="form-control rounded-5" placeholder="Buscar ..."
                         @input="handleName">
                     <div v-if="search !== ''" class="custom-absolute">
                         <img class="cursor" src="../assets/svg/close.svg" alt="Descripción del SVG" width="25"
@@ -143,24 +151,26 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
                     </button>
                 </div>
             </div>
-            <div class="table-responsive shadow">
+            <div class="table-responsive" v-if="!isLoading">
                 <table class="table overflow-x-scroll">
                     <thead>
                         <tr class="table-secondary">
-                            <th class="custom-size">Nombre</th>
-                            <th class="custom-size">Apellido</th>
-                            <!-- <th class="custom-size">Correo</th> -->
-                            <th v-if="myRol == 'Cliente'" class="custom-size">Imagen</th>
-                            <th v-if="myRol == 'Cliente'" class="custom-size">Logros</th>
-                            <th v-if="myRol == 'Cliente'" class="custom-size">Experiencia</th>
-                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size text-center">
+                            <th class="td-custom custom-size">Nombre</th>
+                            <th class="td-custom custom-size">Apellido</th>
+                            <!-- <th class="td-custom custom-size">Correo</th> -->
+                            <th v-if="myRol == 'Cliente'" class="td-custom custom-size">Imagen</th>
+                            <th v-if="myRol == 'Cliente'" class="td-custom custom-size">Logros</th>
+                            <th v-if="myRol == 'Cliente'" class="td-custom custom-size">Experiencia</th>
+                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'"
+                                class="td-custom custom-size text-center">
                                 Información</th>
-                            <th v-if="myRol == 'Cliente'" class="custom-size text-center">Vídeo</th>
-                            <th class="custom-size">Rol</th>
-                            <th v-if="myRol !== 'Admin'" class="custom-size">% Registro</th>
-                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="custom-size">Aprobado</th>
-                            <th class="custom-size">Estado</th>
-                            <th class="custom-size ">Acciones</th>
+                            <th v-if="myRol == 'Cliente'" class="td-custom custom-size text-center">Vídeo</th>
+                            <th class="td-custom custom-size">Rol</th>
+                            <th v-if="myRol !== 'Admin'" class="td-custom custom-size">% Registro</th>
+                            <th v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="td-custom custom-size">
+                                Aprobado</th>
+                            <th class="td-custom custom-size">Estado</th>
+                            <th class="td-custom custom-size ">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,67 +189,67 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
                                     </div>
                                 </div>
                             </td> -->
-                            <td class="text-secondary text-center" v-if="myRol == 'Cliente'">
+                            <td class="text-secondary text-center align-middle" v-if="myRol == 'Cliente'">
                                 <i class="fas fa-image cursor" data-bs-toggle="modal" data-bs-target="#media"
                                     @click="selectImage(user.imagen, user)"></i>
                             </td>
-                            <td v-if="myRol == 'Cliente'" class="text-center eye" data-bs-toggle="modal"
+                            <td v-if="myRol == 'Cliente'" class="text-center eye align-middle" data-bs-toggle="modal"
                                 data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id, 'logros')">
                                 <img src="../assets/svg/eye.svg" width="18">
 
                             </td>
-                            <td v-if="myRol == 'Cliente'" class="text-center eye" data-bs-toggle="modal"
+                            <td v-if="myRol == 'Cliente'" class="text-center eye align-middle" data-bs-toggle="modal"
                                 data-bs-target="#modalUser" @click="selecionatedUser(user.usuario_id, 'experiencia')">
                                 <img src="../assets/svg/eye.svg" width="18">
 
                             </td>
-                            <td class="text-center"  v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
-                                <i
-                                  v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'"
-                                 data-bs-toggle="modal"
-                                  data-bs-target="#modalUser" 
-                                  @click="selecionatedUser(user.usuario_id,'informacion',user.rol)"
-                                  class="fa fa-eye text-secondary cursor"
-                                  aria-hidden="true"
-                                 ></i>
-                                <i v-else  class="fa-solid fa-xmark text-danger"></i>
+                            <td class="text-center align-middle"
+                                v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
+                                <i v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'" data-bs-toggle="modal"
+                                    data-bs-target="#modalUser"
+                                    @click="selecionatedUser(user.usuario_id, 'informacion', user.rol)"
+                                    class="fa fa-eye text-secondary cursor" aria-hidden="true"></i>
+                                <i v-else class="fa-solid fa-xmark text-danger"></i>
                             </td>
-                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary"
-                                data-bs-toggle="modal" data-bs-target="#modalUser" @click="selecionatedUser(user)">
+                            <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary align-middle">
                                 <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
-                                <i v-else class="fa-solid fa-video"></i>
+                                <i v-else class="fa-solid fa-video" data-bs-toggle="modal" data-bs-target="#media"
+                                    @click="selecionatedMedia(user)"></i>
                             </td>
-                            <td>
+                            <td class="text-center align-middle">
                                 {{ user.rol }}
                             </td>
-                            <td class="text-center" v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
+                            <td class="text-center align-middle"
+                                v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'">
                                 {{ user.porcentaje_registro }}
                             </td>
                             <!-- Aprobar -->
-                            <td v-if="myRol == 'Cliente' || myRol == 'Inversionista'">
+                            <td v-if="myRol == 'Cliente' || myRol == 'Inversionista'" class="text-center align-middle">
                                 <div class="form-check form-switch">
                                     <div class="form-check form-switch ">
                                         <input class="form-check-input" type="checkbox" role="switch" id="aproved"
                                             :checked="user.aprobado === 1"
+                      :disabled="user.porcentaje_registro !== '100%'"
+
                                             @change="handleAproved(user.usuario_id, user.nombre, $event)" />
 
                                     </div>
                                 </div>
                             </td>
-                            <td v-if="user.estado == '1'">
+                            <td v-if="user.estado == '1'" class="text-center align-middle">
                                 <span class="badge text-bg-success cursor" @mouseover="toggleStatus"
                                     @mouseout="toggleStatus">Activo</span>
                             </td>
-                            <td v-if="user.estado == '0'">
+                            <td v-if="user.estado == '0'" class="text-center align-middle">
                                 <span class="badge text-bg-danger cursor">No Activo</span>
                             </td>
-                            <td v-if="user.estado == '1'">
+                            <td v-if="user.estado == '1'" class="text-center align-middle">
                                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                                     <img src="../assets/svg/delete.svg" width="25">
                                 </div>
 
                             </td>
-                            <td v-if="user.estado == '0'">
+                            <td v-if="user.estado == '0'" class="text-center align-middle">
                                 <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
                                     <img src="../assets/svg/user-plus.svg" width="25">
                                 </div>
@@ -247,12 +257,15 @@ const handleAproved =async (id, name, event, porcentaje_registro)=>{
                         </tr>
                     </tbody>
                 </table>
-                <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol"/>
+                <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol" />
                 <ModalCreateUserAdmin />
-                <ModalMedia :image="image" :typeMedia="typeMedia"/>
+                <ModalMedia :image="image" :typeMedia="typeMedia" />
 
 
             </div>
+            <div v-if="isLoading">
+        <Spinner/>
+    </div>
         </div>
         <div class="footer">
             <Pagination :page="page" :prev="prev" :next="next" :isLoading="isLoading" @nextAction="nextAction"

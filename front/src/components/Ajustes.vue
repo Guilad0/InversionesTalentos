@@ -12,24 +12,24 @@
           <table class="table overflow-x-scroll">
             <thead>
               <tr class="table-secondary text-center">
-                <th class="custom-size" data-bs-toggle="tooltip" title="Porcentaje de ganancia obtenido como comisión">
+                <th class="custom-size td-custom" data-bs-toggle="tooltip" title="Porcentaje de ganancia obtenido como comisión">
                   Comisión % de Ganancia
                 </th>
-                <th class="custom-size" data-bs-toggle="tooltip" title="Porcentaje cobrado al realizar un retiro">
+                <th class="custom-size td-custom" data-bs-toggle="tooltip" title="Porcentaje cobrado al realizar un retiro">
                   Comisión % de Retiro
                 </th>
-                <th class="custom-size" data-bs-toggle="tooltip"
+                <th class="custom-size td-custom" data-bs-toggle="tooltip"
                   title="Mínimo tiempo requerido para mantener una inversión (Meses)">
                   Tiempo Mínimo de Inversión
                 </th>
-                <th class="custom-size" data-bs-toggle="tooltip"
+                <th class="custom-size td-custom" data-bs-toggle="tooltip"
                   title="Máximo tiempo permitido para mantener una inversión (Meses)">
                   Tiempo Máximo de Inversión
                 </th>
-                <th class="custom-size" data-bs-toggle="tooltip" title="Valor actual del token en el mercado">
+                <th class="custom-size td-custom" data-bs-toggle="tooltip" title="Valor actual del token en el mercado">
                   Valor Token
                 </th>
-                <th class="custom-size" data-bs-toggle="tooltip" title="Acciones disponibles para este registro">
+                <th class="custom-size td-custom" data-bs-toggle="tooltip" title="Acciones disponibles para este registro">
                   Acciones
                 </th>
               </tr>
@@ -102,7 +102,7 @@
         <div class="d-flex gap-3">
           <div class="col">
             <div class="card  mb-3" style="max-width: 18rem;">
-              <div class="card-header bg-orange text-light fw-bold">Comisión % de Ganancia</div>
+              <div class="card-header bg-gray text-light fw-bold">Comisión % de Ganancia</div>
               <div class="card-body">
                 <p class="card-text">Porcentaje de ganancia obtenido como comisión.</p>
               </div>
@@ -110,7 +110,7 @@
           </div>
           <div class="col">
             <div class="card  mb-3" style="max-width: 18rem;">
-              <div class="card-header bg-orange text-light fw-bold">Comisión % de Retiro</div>
+              <div class="card-header bg-gray text-light fw-bold">Comisión % de Retiro</div>
               <div class="card-body">
                 <p class="card-text">Porcentaje cobrado al realizar un retiro.</p>
               </div>
@@ -118,7 +118,7 @@
           </div>
           <div class="col">
             <div class="card  mb-3" style="max-width: 18rem;">
-              <div class="card-header bg-orange text-light fw-bold">Tiempo Mínimo de Inversión</div>
+              <div class="card-header bg-gray text-light fw-bold">Tiempo Mínimo de Inversión</div>
               <div class="card-body">
                 <p class="card-text">Mínimo tiempo requerido para mantener una inversión (Meses).</p>
               </div>
@@ -126,7 +126,7 @@
           </div>
           <div class="col">
             <div class="card  mb-3" style="max-width: 18rem;">
-              <div class="card-header bg-orange text-light fw-bold">Tiempo Máximo de Inversión</div>
+              <div class="card-header bg-gray text-light fw-bold">Tiempo Máximo de Inversión</div>
               <div class="card-body">
                 <p class="card-text">Máximo tiempo permitido para mantener una inversión (Meses).</p>
               </div>
@@ -134,7 +134,7 @@
           </div>
           <div class="col">
             <div class="card  mb-3" style="max-width: 18rem;">
-              <div class="card-header bg-orange text-light fw-bold">Valor Token</div>
+              <div class="card-header bg-gray text-light fw-bold">Valor Token</div>
               <div class="card-body">
                 <p class="card-text">Valor actual del token en el mercado.</p>
               </div>

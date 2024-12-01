@@ -60,14 +60,14 @@
                     <table class="table overflow-x-scroll">
                         <thead>
                             <tr class="table-secondary">
-                                <th class="custom-size">ID</th>
-                                <th class="custom-size">Cliente</th>
-                                <th class="custom-size">Inversor</th>
-                                <th class="custom-size">Comentario</th>
-                                <th class="custom-size">Calificación</th>
-                                <th class="custom-size">Fecha de Creación</th>
-                                <th class="custom-size">Estado</th>
-                                <th class="custom-size">Acciones</th>
+                                <th class="custom-size td-custom">ID</th>
+                                <th class="custom-size td-custom">Cliente</th>
+                                <th class="custom-size td-custom">Inversor</th>
+                                <th class="custom-size td-custom">Comentario</th>
+                                <th class="custom-size td-custom">Calificación</th>
+                                <th class="custom-size td-custom">Fecha de Creación</th>
+                                <th class="custom-size td-custom">Estado</th>
+                                <th class="custom-size td-custom">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

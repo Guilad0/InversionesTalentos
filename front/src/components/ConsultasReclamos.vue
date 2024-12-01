@@ -31,16 +31,16 @@
           <table class="table overflow-x-scroll fs-9">
             <thead>
               <tr class="table-secondary">
-                <th scope="col" class="custom-size">ID</th>
-                <th scope="col" class="custom-size">Nombre</th>
-                <th scope="col" class="custom-size">Apellido</th>
-                <th scope="col" class="custom-size">Email</th>
-                <th scope="col" class="custom-size">Teléfono</th>
-                <th scope="col" class="custom-size">Mensaje</th>
-                <th scope="col" class="custom-size">Respuesta</th>
-                <th scope="col" class="custom-size">Responder</th>
-                <th scope="col" class="custom-size">Estado</th>
-                <th scope="col" class="custom-size">Acciones</th>
+                <th  scope="col" class="td-custom custom-size">ID</th>
+                <th  scope="col" class="td-custom custom-size">Nombre</th>
+                <th  scope="col" class="td-custom custom-size">Apellido</th>
+                <th  scope="col" class="td-custom custom-size">Email</th>
+                <th  scope="col" class="td-custom custom-size">Teléfono</th>
+                <th  scope="col" class="td-custom custom-size">Mensaje</th>
+                <th  scope="col" class="td-custom custom-size">Respuesta</th>
+                <th  scope="col" class="td-custom custom-size">Responder</th>
+                <th  scope="col" class="td-custom custom-size">Estado</th>
+                <th  scope="col" class="td-custom custom-size">Acciones</th>
               </tr>
             </thead>
             <tbody>

@@ -7,12 +7,12 @@
           <table class="table">
             <thead>
               <tr class="table-secondary">
-                <th class="custom-size">ID</th>
-                <th class="custom-size">Nombre De Guia</th>
-                <th class="custom-size">Fecha de Creación</th>
-                <th class="custom-size">Fecha de Edición</th>
-                <th class="custom-size">Estado</th>
-                <th class="custom-size">Acciones</th>
+                <th class="custom-size td-custom">ID</th>
+                <th class="custom-size td-custom">Nombre De Guia</th>
+                <th class="custom-size td-custom">Fecha de Creación</th>
+                <th class="custom-size td-custom">Fecha de Edición</th>
+                <th class="custom-size td-custom">Estado</th>
+                <th class="custom-size td-custom">Acciones</th>
               </tr>
             </thead>
             <tbody>

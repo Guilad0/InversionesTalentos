@@ -21,7 +21,7 @@
               <p v-if="client.rol == 'Cliente'"> <label class="fw-bold">Categoría: &nbsp;</label>{{ client.categoria }}
               </p>
               <p> <label class="fw-bold">Rol: &nbsp;</label>{{ client.rol }} </p>
-              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client.created_at }} </p>
+              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client.created_at?.slice(0,10) }} </p>
               <p v-if="client.verificado == '0'"> <label class="fw-bold">Verificado: &nbsp;</label>No </p>
               <p v-if="client.verificado == '1'"> <label class="fw-bold">Verificado: &nbsp;</label>Si </p>
               <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>Si </p>
@@ -41,7 +41,7 @@
             </div>
             <div class="col">
               <p> <label class="fw-bold">Rol: &nbsp;</label>{{ client.rol }} </p>
-              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client.created_at }} </p>
+              <p> <label class="fw-bold">Fecha de Registro: &nbsp;</label>{{ client?.created_at?.slice(0,10) }} </p>
               <p v-if="client.verificado == '0'"> <label class="fw-bold">Verificado: &nbsp;</label>No </p>
               <p v-if="client.verificado == '1'"> <label class="fw-bold">Verificado: &nbsp;</label>Si </p>
               <p v-if="client.aprobado == '1'"> <label class="fw-bold">Cuenta Aprobada: &nbsp;</label>Si </p>
@@ -56,14 +56,14 @@
          <div class="px-3 text-center" >
           <table v-if="client.length > 0" class="table ">
             <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Institución</th>
-                <th scope="col">Cargo</th>
-                <th scope="col">Actividades</th>
-                <th scope="col">Fecha Inicio</th>
-                <th scope="col">Fecha Final</th>
-                <th scope="col">Fecha</th>
+              <tr >
+                <th class="td-custom">#</th>
+                <th class="td-custom">Institución</th>
+                <th class="td-custom">Cargo</th>
+                <th class="td-custom">Actividades</th>
+                <th class="td-custom">Fecha Inicio</th>
+                <th class="td-custom">Fecha Final</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -72,8 +72,9 @@
                 <td>{{ exp.institucion}}</td>
                 <td>{{ exp.cargo}}</td>
                 <td>{{ exp.actividades}}</td>
-                <td>{{ exp.fecha_inicio}}</td>
-                <td>{{ exp.fecha_final}}</td>
+                <td>{{ exp.fecha_inicio.slice(0,10)}}</td>
+                <td v-if="exp.fecha_final">{{ exp.fecha_final.slice(0,10)}}</td>
+                <td v-else></td>
                 
               </tr>
 
@@ -90,16 +91,16 @@
           <table v-if="client.length > 0" class="table ">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Fecha</th>
+                <th class="td-custom">#</th>
+                <th class="td-custom">Descripción</th>
+                <th class="td-custom">Fecha</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(log, index) in client" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ log.descripcion }}</td>
-                <td>{{ log.fecha }}</td>
+                <td>{{ log.fecha.slice(0,10) }}</td>
               </tr>
 
             </tbody>
@@ -111,7 +112,7 @@
 
         </div>
         <div class="modal-footer text-center m-auto">
-          <div class="row "><button type="button" class="btn btn-gray rounded-5 px-4"
+          <div class="m-auto"><button type="button" class="btn btn-gray border rounded-5 px-4"
               data-bs-dismiss="modal" @click="$emit('clearId')">Cerrar</button></div>
         </div>
     </div>
@@ -153,7 +154,7 @@ const getUser = async () => {
       // const { data } = await axios.get('https://apitalentos.pruebasdeploy.online/users/getUserById/' + props.id)
       const { data } = await axios.get(import.meta.env.VITE_BASE_URL+'/users/getUserById/' + props.id)
       client.value = data.results[0];
-      console.log(client.value);
+      console.log('fdsfdsafa',client.value);
     } catch (error) {
       console.log(error);
     }
@@ -162,6 +163,8 @@ const getUser = async () => {
       // const { data } = await axios.get(`https://apitalentos.pruebasdeploy.online/clients/getExperienceById/${props.id}?type=${props.typeForm}`)
       const { data } = await axios.get(import.meta.env.VITE_BASE_URL+`/clients/getExperienceById/${props.id}?type=${props.typeForm}`)
       client.value = data.results;
+      console.log('fdsfdsafa',client.value);
+
 
     } catch (error) {
       console.log(error);
@@ -217,4 +220,5 @@ onUnmounted(() => {
   text-transform: uppercase;
 
 }
+
 </style>

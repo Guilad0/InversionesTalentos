@@ -61,28 +61,28 @@
           <table class="table overflow-x-scroll">
             <thead>
               <tr class="table-secondary">
-                <th class="custom-size">ID</th>
-                <th class="custom-size">Nombre Usuario - Rol</th>
-                <th class="custom-size">Monto Solicitud</th>
-                <th class="custom-size">Comision a Aplicar %</th>
-                <th class="custom-size">Monto a Recibir</th>
-                <th class="custom-size">Fecha de Solicitud</th>
-                <th class="custom-size">Fecha de Aprobacion</th>
-                <th class="custom-size">Estado</th>
-                <th class="custom-size">Acciones</th>
+                <th class="td-custom align-middle custom-size">ID</th>
+                <th class="td-custom align-middle custom-size">Nombre Usuario - Rol</th>
+                <th class="td-custom align-middle custom-size">Monto Solicitud</th>
+                <th class="td-custom align-middle custom-size">Comision a Aplicar %</th>
+                <th class="td-custom align-middle custom-size">Monto a Recibir</th>
+                <th class="td-custom align-middle custom-size">Fecha de Solicitud</th>
+                <th class="td-custom align-middle custom-size">Fecha de Aprobacion</th>
+                <th class="td-custom align-middle custom-size">Estado</th>
+                <th v-if="currentNav !== 'Aprobado'" class="td-custom align-middle custom-size">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in solicitudes" :key="item.retiro_id">
                 <td>{{ item.retiro_id }}</td>
                 <td>{{ item.username }}</td>
-                <td>{{ item.monto_solicitud }}</td>
-                <td>{{ item.comision_aplicar }}</td>
-                <td>{{ item.monto_recibir }}</td>
-                <td>{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
-                <td v-if="item.fecha_aprobacion !==null " >{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
-                <td v-else></td>
-                <td>
+                <td class="text-center align-middle">{{ item.monto_solicitud }}</td>
+                <td class="text-center align-middle">{{ item.comision_aplicar }}</td>
+                <td class="text-center align-middle">{{ item.monto_recibir }}</td>
+                <td class="text-center align-middle">{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
+                <td class="text-center align-middle" v-if="item.fecha_aprobacion !==null " >{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
+                <td v-else class="text-center align-middle"></td>
+                <td class="text-center align-middle">
                   <span v-if="item.estado == 'Pendiente'" class="badge text-bg-warning">{{
                     item.estado
                   }}</span>
@@ -97,24 +97,28 @@
                   }}</span>
                 </td>
                 <td v-if="item.estado == 'Pendiente'">
+                <div class="d-flex">
                   <button class="btn btn-success btn-sm mx-1" @click="aprobado(item)">
                     <i class="fa fa-check"></i>
                   </button>
                   <button class="btn btn-danger btn-sm mx-1" @click="rechazado(item.retiro_id)">
                     <i class="fa fa-times"></i>
                   </button>
+                </div>
                 </td>
                 <td v-if="item.estado == 'Aprobado'">
                   <!-- Botones específicos para el estado Aprobado -->
                 </td>
                 <td v-if="item.estado == 'Rechazado'">
-                  <button class="btn btn-warning btn-sm mx-1" @click="pendiente(item.retiro_id)">
+                  <div class="d-flex">
+                    <button class="btn btn-warning btn-sm mx-1" @click="pendiente(item.retiro_id)">
                     <i class="fa fa-clock"></i>
                   </button>
                   <button class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
                     @click="eliminado(item.retiro_id)">
                     <i class="fa fa-trash"></i>
                   </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
