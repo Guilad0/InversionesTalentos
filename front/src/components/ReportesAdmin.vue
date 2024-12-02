@@ -44,7 +44,7 @@
               <p class="card-text">
                 <strong>Usuario:</strong> {{ nombre_inversor }} <br>
                 <strong>Inversiones realizadas:</strong> {{ total_inversiones }} <br>
-                <strong>Tokens:</strong> {{total_tokens}} <br>
+                <strong>Tokens:</strong> {{ total_tokens }} <br>
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@
                 <strong>Compras de token:</strong> {{ movTokens.movimientos_realizados }} <br>
                 <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }} <br>
                 <strong>Devoluciones:</strong> {{ movDeveoluciones.movimientos_realizados }} <br>
-                
+
               </p>
             </div>
           </div>
@@ -92,13 +92,15 @@
           Filtros
         </h2>
         <div class="d-flex justify-content-center">
-          <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" 
-           :class="[
-            'animate__animated', 'animate__fadeInUp bg-gray text-light rounded-3 ', 'animate__slow', 'btn-6', 'm-2 ', ,
+          
+          <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
+
+            'animate__animated', 'animate__fadeInUp', 'animate__slow', 'btn-6', 'm-2',
             { active: activeTabAdmin === index },
-          ]" @click="showReports(reportes_inversiones[index])">
+
+          ]" @click="showReports(reportes_inversiones[index], index)">
             {{ tabAdmin }} <span></span>
-          </button>
+          </button>          
 
         </div>
         <div class="d-flex justify-content-center gap-3 my-3 py-3">
@@ -116,16 +118,16 @@
           </div>
         </div>
       </div>
-      <div class="table-responsive animate__animated  animate__fadeIn w-75 m-auto"  >
-      <h3 class="card-title text-center my-2">Resultados 
-        <button
-                          @click="exportToExcel()"
-                          v-if="reports.length > 0 && typeReport == 'mayorInversionistaCustom' || reports.length > 0 && typeReport == 'mayorClienteCustom' "
-                          class="btn btn-success  text-light btn-sm fw-light "
-                        >
-                          <strong>Exportar</strong>
-                        </button> </h3>
-        <table v-if="typeReport== 'mayorInversionistaCustom' && reports.length > 0 && bandReport == true" class="table overflow-x-scroll table-sm  ">
+      <div class="table-responsive animate__animated  animate__fadeIn w-75 m-auto">
+        <h3 class="card-title text-center my-2">Resultados
+          <button @click="exportToExcel()"
+            v-if="reports.length > 0 && typeReport == 'mayorInversionistaCustom' || reports.length > 0 && typeReport == 'mayorClienteCustom'"
+            class="btn btn-success  text-light btn-sm fw-light ">
+            <strong>Exportar</strong>
+          </button>
+        </h3>
+        <table v-if="typeReport == 'mayorInversionistaCustom' && reports.length > 0 && bandReport == true"
+          class="table overflow-x-scroll table-sm  ">
           <thead class="table table-primary">
             <tr class="table-secondary">
               <td class="td-custom text-center align-middle">#</td>
@@ -135,16 +137,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(report,index) in reports" :key="index">
-              <td class="text-center align-middle">{{ index + 1}}</td>
-              <td class="text-center align-middle">{{report.nombre_inversor}}</td>
-              <td class="text-center align-middle">{{report.total_tokens}}</td>
-              <td class="text-center align-middle">{{report.total_inversiones}}</td>
+            <tr v-for="(report, index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index + 1 }}</td>
+              <td class="text-center align-middle">{{ report.nombre_inversor }}</td>
+              <td class="text-center align-middle">{{ report.total_tokens }}</td>
+              <td class="text-center align-middle">{{ report.total_inversiones }}</td>
             </tr>
           </tbody>
         </table>
-        <div v-if="typeReport== 'mayorInversionistaCustom' && reports.length == 0 && bandReport" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
-        <table v-if="typeReport== 'mayorClienteCustom' && reports.length > 0 && bandReport == true" class="table overflow-x-scroll table-sm  ">
+        <div v-if="typeReport == 'mayorInversionistaCustom' && reports.length == 0 && bandReport"
+          class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para
+          las fechas seleccionadas</div>
+        <table v-if="typeReport == 'mayorClienteCustom' && reports.length > 0 && bandReport == true"
+          class="table overflow-x-scroll table-sm  ">
           <thead class="table table-primary">
             <tr class="table-secondary">
               <td class="td-custom text-center align-middle">#</td>
@@ -154,16 +159,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(report,index) in reports" :key="index">
-              <td class="text-center align-middle">{{ index + 1}}</td>
-              <td class="text-center align-middle">{{report.nombre_cliente}}</td>
-              <td class="text-center align-middle">{{report.total_tokens}}</td>
-              <td class="text-center align-middle">{{report.total_inversiones}}</td>
+            <tr v-for="(report, index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index + 1 }}</td>
+              <td class="text-center align-middle">{{ report.nombre_cliente }}</td>
+              <td class="text-center align-middle">{{ report.total_tokens }}</td>
+              <td class="text-center align-middle">{{ report.total_inversiones }}</td>
             </tr>
           </tbody>
         </table>
-        <div v-if="typeReport== 'mayorClienteCustom' && reports.length == 0 && bandReport == true" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
-        <table v-if="typeReport== 'sumaComisionesCustom' && reports[0]?.estado != null && bandReport == true" class="table overflow-x-scroll table-sm  ">
+        <div v-if="typeReport == 'mayorClienteCustom' && reports.length == 0 && bandReport == true"
+          class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para
+          las fechas seleccionadas</div>
+        <table v-if="typeReport == 'sumaComisionesCustom' && reports[0]?.estado != null && bandReport == true"
+          class="table overflow-x-scroll table-sm  ">
           <thead class="table table-primary">
             <tr class="table-secondary">
               <td class="td-custom text-center align-middle">#</td>
@@ -171,32 +179,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(report,index) in reports" :key="index">
-              <td class="text-center align-middle">{{ index+1 }}</td>
-              <td class="text-center align-middle">{{report.total_comisiones}} USD</td>
-              
-              
+            <tr v-for="(report, index) in reports" :key="index">
+              <td class="text-center align-middle">{{ index + 1 }}</td>
+              <td class="text-center align-middle">{{ report.total_comisiones }} USD</td>
+
+
             </tr>
           </tbody>
         </table>
-        <div  v-if="typeReport== 'sumaComisionesCustom' && reports[0]?.estado == null && bandReport == true" class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para las fechas seleccionadas</div>
+        <div v-if="typeReport == 'sumaComisionesCustom' && reports[0]?.estado == null && bandReport == true"
+          class="text-center alert fw-medium alert-light text-dark  card  rounded-3 fs-5">No se encontraron datos para
+          las fechas seleccionadas</div>
 
       </div>
-      <div
-            class="text-dark my-3"
-            v-if="!bandReport"
-          >
-            <div class="d-flex justify-content-center rounded-3">
-              <div class="alert alert-orange card  rounded-3" role="alert">
-                <div class="card-b">
-                  <h4 class="alert-heading fs-6">Por favor, selecciona una fecha de inicio y una fecha de fin para obtener los resultados esperados <br>
-                  La busqueda tomara los 3 usuarios que cumplan con los filtros. <br>
-                  Si el filtro es de ganancia global, mostrara solo un resultado en caso de existir.
-                   </h4>
-                </div>
-              </div>
+      <div class="text-dark my-3" v-if="!bandReport">
+        <div class="d-flex justify-content-center rounded-3">
+          <div class="alert alert-orange card  rounded-3" role="alert">
+            <div class="card-b">
+              <h4 class="alert-heading fs-6">Por favor, selecciona una fecha de inicio y una fecha de fin para obtener
+                los resultados esperados <br>
+                La busqueda tomara los 3 usuarios que cumplan con los filtros. <br>
+                Si el filtro es de ganancia global, mostrara solo un resultado en caso de existir.
+              </h4>
             </div>
           </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -407,14 +415,14 @@ const obtenerGanancias = async () => {
   }
 };
 //-----REPORTES-----
-const tabsAdmin = ref(["Mayores inversores", "Talento con mas inversiones", "Ganancia global de la aplicacion", ]);
-const reportes_inversiones = ref(['mayorInversionistaCustom', 'mayorClienteCustom', 'sumaComisionesCustom', ]);
+const tabsAdmin = ref(["Mayores inversores", "Talento con mas inversiones", "Ganancia global de la aplicacion",]);
+const reportes_inversiones = ref(['mayorInversionistaCustom', 'mayorClienteCustom', 'sumaComisionesCustom',]);
 
 const reports = ref([])
 const fechaInicio = ref("");
-const  fechaFinal = ref("");
+const fechaFinal = ref("");
 
-const showReportCustom = async() => {
+const showReportCustom = async () => {
   const isValidDate = (date) => {
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     if (!datePattern.test(date)) return false;
@@ -426,22 +434,23 @@ const showReportCustom = async() => {
 
   if (fechaInicio.value && isValidDate(fechaFinal.value)) {
     bandReport.value = true
-      if( fechaInicio.value <= fechaFinal.value ){
-        try {
-            const {data} = await axios.get(import.meta.env.VITE_BASE_URL+`/reportes/${typeReport.value}?fechaInicial=${fechaInicio.value}&fechaFinal=${fechaFinal.value}`)
-            reports.value = data.data;
-            console.log(reports.value);
-        } catch (error) {
-          
-        }
+    if (fechaInicio.value <= fechaFinal.value) {
+      try {
+        const { data } = await axios.get(import.meta.env.VITE_BASE_URL + `/reportes/${typeReport.value}?fechaInicial=${fechaInicio.value}&fechaFinal=${fechaFinal.value}`)
+        reports.value = data.data;
+        console.log(reports.value);
+      } catch (error) {
+
       }
-  } 
+    }
+  }
 };
 const bandReport = ref(false)
 const typeReport = ref('mayorInversionistaCustom')
-const showReports = (report) => {
+const showReports = (report, index) => {
   reports.value = []
   typeReport.value = report
+  activeTabAdmin.value = index
   console.log(typeReport.value);
   fechaInicio.value = ''
   fechaFinal.value = ''
@@ -459,31 +468,31 @@ const total_comisiones = ref(0)
 const movTokens = ref({})
 const movRetiros = ref({})
 const movDeveoluciones = ref({})
-const getReportsTotals = async() =>{
+const getReportsTotals = async () => {
   try {
-        const {data} = await axios.get(baseURL+'/mayorInversionista')
-        nombre_inversor.value =   data.data[0].nombre_inversor
-        total_inversiones.value = data.data[0].total_inversiones
-        total_tokens.value = data.data[0].total_tokens
-        const {data:data2} = await axios.get(baseURL+'/mayorCliente')
-        nombre_cliente.value = data2.data[0].nombre_cliente
-        total_inversiones_cliente.value = data2.data[0].total_inversiones
-        total_tokens_cliente.value = data2.data[0].total_tokens
-        const {data:data3} = await axios.get(baseURL+'/sumaComisiones')
-        total_comisiones.value =data3.data[1].total_comisiones
-        const {data:data4} = await axios.get(baseURL+'/totalMovimientos')
-        movTokens.value = data4.data[0];
-        movRetiros.value = data4.data[3];
-        movDeveoluciones.value = data4.data[5];
+    const { data } = await axios.get(baseURL + '/mayorInversionista')
+    nombre_inversor.value = data.data[0].nombre_inversor
+    total_inversiones.value = data.data[0].total_inversiones
+    total_tokens.value = data.data[0].total_tokens
+    const { data: data2 } = await axios.get(baseURL + '/mayorCliente')
+    nombre_cliente.value = data2.data[0].nombre_cliente
+    total_inversiones_cliente.value = data2.data[0].total_inversiones
+    total_tokens_cliente.value = data2.data[0].total_tokens
+    const { data: data3 } = await axios.get(baseURL + '/sumaComisiones')
+    total_comisiones.value = data3.data[1].total_comisiones
+    const { data: data4 } = await axios.get(baseURL + '/totalMovimientos')
+    movTokens.value = data4.data[0];
+    movRetiros.value = data4.data[3];
+    movDeveoluciones.value = data4.data[5];
   } catch (error) {
-      errorAlert('Error al realizar la peticion','Error')
+    errorAlert('Error al realizar la peticion', 'Error')
   }
 }
 
-const exportToExcel =()=>{
-  if (typeReport.value == "mayorInversionistaCustom" && reports.value.length >0) {
+const exportToExcel = () => {
+  if (typeReport.value == "mayorInversionistaCustom" && reports.value.length > 0) {
     const datos = reports.value.map((report, index) => ({
-      "#": index+1,
+      "#": index + 1,
       "Nombre inversor": report.nombre_inversor,
       "Tokens invertidos": report.total_tokens,
       "Cantidad de inversiones": report.total_inversiones,
@@ -493,9 +502,9 @@ const exportToExcel =()=>{
     XLSX.utils.book_append_sheet(workbook, worksheet, "Top 3 inversores");
     XLSX.writeFile(workbook, "reporte_mayores_inversores.xlsx");
   }
-  if (typeReport.value == "mayorClienteCustom" && reports.value.length >0) {
+  if (typeReport.value == "mayorClienteCustom" && reports.value.length > 0) {
     const datos = reports.value.map((report, index) => ({
-      "#": index+1,
+      "#": index + 1,
       "Nombre talento": report.nombre_cliente,
       "Tokens invertidos": report.total_tokens,
       "Cantidad de inversiones": report.total_inversiones,
@@ -523,10 +532,15 @@ const exportToExcel =()=>{
 }
 
 .active {
-  color: red !important;
+  color: var(--white-anti-flash-color) !important;
+  background-color: var(--gray-color) !important;
   border-radius: 10px !important;
   padding-bottom: 2px !important;
   z-index: 1 !important;
+}
+
+.active span {
+  background-color: var(--gray-color) !important;
 }
 
 .active::after {
@@ -601,7 +615,46 @@ td {
   transition: transform 0.6s, background-color 0.3s ease;
 }
 
+button {
+  color: rgb(128, 159, 245);
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 25px;
+  transition: background-color 0.3s, transform 0.3s;
+}
 
+.animate__slow {
+  animation-duration: 5s;
+}
 
+.btn-6 {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
 
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: var(--gray-color);
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.btn-6:hover {
+  color: var(--white-anti-flash-color);
+}
+
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
+}
 </style>
