@@ -77,8 +77,11 @@
                 <td>{{ item.username }}</td>
                 <td>{{ item.monto }}</td>
                 <td>{{ item.token }}</td> 
-                <td>{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
-                <td>{{ new Date(item.fecha_aprobacion).toLocaleDateString() }}</td>
+                <td class="text-center">{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
+                <td class ="text-center">
+                  <span v-if="item.fecha_desembolso !== null">{{ new Date(item.fecha_desembolso).toLocaleDateString() }}</span>
+                  <span v-else>Sin aprobación</span>
+                </td>
                 <td>
                   <span v-if="item.estado == 0 && item.descripcion =='Compra de tokens'" class="badge text-bg-warning">Pendiente</span>
                   <span v-if="item.estado == 1 && item.descripcion =='Compra de tokens'" class="badge text-bg-success">Aprobada</span>
@@ -187,6 +190,7 @@ const obtenerDatosTokens = async (page = 1, search = "", filtro = "") => {
 
     const { data } = await axios.get(url);
     solicitudes.value = data.data;
+    console.log(solicitudes.value);
     paginacion.value = data.pagination;
 
   } catch (error) {
@@ -211,7 +215,7 @@ const aprobadoTokens = async (movimiento) => {
     await axios.put(BaseURL + "/aprobarTokens/" + movimiento.movimiento_id, movimiento);
     // Al aprobar, se vuelve a cargar la lista de pendientes
     await obtenerDatosTokens(1, "", "Pendiente");
-    await obtenerTotalesTokens();
+    await obtenerTotalesTokens();    
   } catch (error) {
     console.log(error);
   }

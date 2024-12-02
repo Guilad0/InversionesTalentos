@@ -45,39 +45,39 @@
             </thead>
             <tbody>
               <tr class="" v-for="item in contacts" :key="item.id">
-                <td>{{ item.contacto_id }}</td>
+                <td class="text-center">{{ item.contacto_id }}</td>
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.apellido }}</td>
                 <td>{{ item.email }}</td>
                 <td>{{ item.telefono }}</td>
                 <td>{{ item.comentarios }}</td>
                 <td>{{ item.respuesta }}</td>
-                <td v-if="item.respuesta === '' || item.respuesta === null">
+                <td class="text-center" v-if="item.respuesta === '' || item.respuesta === null">
                   <span class="badge badge-responder" @click="openModal(item)">
                     Responder
                   </span>
                 </td>
-                <td v-else>
+                <td class="text-center" v-else>
                   <span class="badge text-bg-dark">Contestado</span>
                 </td>
 
-                <td v-if="item.estado == '1'">
+                <td class="text-center" v-if="item.estado == '1'">
                   <span @click="deleted(item.contacto_id)" class="badge text-bg-success">
                     Activo
                   </span>
                 </td>
-                <td v-else>
+                <td class="text-center" v-else>
                   <span @click="deleted(item.contacto_id)" class="badge text-bg-danger">
                     Inactivo
                   </span>
                 </td>
 
-                <td v-if="item.estado == '1'">
+                <td class="text-center" v-if="item.estado == '1'">
                   <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                 </td>
-                <td v-else>
+                <td class="text-center" v-else>
                   <button class="btn btn-success btn-sm" @click="deleted(item.contacto_id)">
                     <i class="fa fa-check" aria-hidden="true"></i>
                   </button>

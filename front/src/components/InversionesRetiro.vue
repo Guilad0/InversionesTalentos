@@ -61,13 +61,10 @@
                 <h2 class="font-bold mb-4 title-modal" id="exportModalInvLabel">
                   Descargar Reporte
                 </h2>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
               </div>
 
               <div class="modal-body px-5">
-                <div
-                  class="d-flex justify-content-center text-dark gap-5 position-relative"
-                >
+                <div class="d-flex justify-content-center text-dark gap-5 position-relative">
                   <div class="mx-1 m-auto border-custom cursor custom-hover">
                     <img
                       src="../assets//svg/report-svgrepo-com.svg"
@@ -1289,7 +1286,7 @@ if (usuario_rol.value == "Inversionista") {
     await obtenerInversionista_retiro();
     typeClient.value = "reporteInversionesInversor";
     client.value = "inversor_id";
-    getReports("mes");
+    getReports("general");
     await obtenerTotales();
   });
 }
@@ -1302,7 +1299,7 @@ if (usuario_rol.value == "Cliente") {
     await obtenerTokens_Cliente();
     typeClient.value = "reporteInversionesCliente";
     client.value = "cliente_id";
-    getReports("mes");
+    getReports("general");
     await obtenerTotales();
   });
 }
