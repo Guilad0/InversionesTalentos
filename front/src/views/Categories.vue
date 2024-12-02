@@ -69,9 +69,9 @@
             </thead>
             <tbody>
               <tr v-for="categoria in categorias" :key="categoria.categoria_persona_id">
-                <td>{{ categoria.categoria_persona_id }}</td>
+                <td class="text-center">{{ categoria.categoria_persona_id }}</td>
                 <td>{{ categoria.nombre }}</td>
-                <td>
+                <td class="text-center">
                   <img
                     :src="`${BaseURL.replace('/categories', '')}/uploads/categories/${
                       categoria.imagen
@@ -80,13 +80,13 @@
                     width="50"
                   />
                 </td>
-                <td>
+                <td class="text-center">
                   <span v-if="categoria.estado" class="badge text-bg-success"
                     >Activo</span
                   >
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
-                <td>
+                <td class="text-center">
                   <button
                     @click="editarCategoria(categoria.categoria_persona_id)"
                     class="btn btn-warning btn-sm me-2"

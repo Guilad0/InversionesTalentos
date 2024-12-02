@@ -17,11 +17,11 @@
             </thead>
             <tbody>
               <tr v-for="item in posts" :key="item.post_id">
-                <td>{{ item.post_id }}</td>
+                <td class="text-center">{{ item.post_id }}</td>
                 <td>{{ item.titulo }}</td>
-                <td>{{ new Date(item.created_at).toLocaleDateString() }}</td>
-                <td>{{ new Date(item.updated_at).toLocaleDateString() }}</td>
-                <td>
+                <td class="text-center">{{ new Date(item.created_at).toLocaleDateString() }}</td>
+                <td class="text-center">{{ new Date(item.updated_at).toLocaleDateString() }}</td>
+                <td class="text-center">
                   <span v-if="item.estado == 'Activo'" class="badge text-bg-success">{{
                     item.estado
                   }}</span>
@@ -29,12 +29,12 @@
                     item.estado
                   }}</span>
                 </td>
-                <td v-if="item.estado == 'Activo'">
+                <td class="text-center" v-if="item.estado == 'Activo'">
                   <button class="btn btn-danger btn-sm mx-1" @click="cambiarEstado(item.post_id)">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
-                <td v-else>
+                <td class="text-center" v-else>
                   <button class="btn btn-success btn-sm mx-1" @click="cambiarEstado(item.post_id)">
                     <i class="fa fa-check"></i>
                   </button>
