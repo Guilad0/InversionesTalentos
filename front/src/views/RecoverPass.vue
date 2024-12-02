@@ -8,42 +8,27 @@
               <h5 class="fw-bold text-center mb-3 custom-color custom-title">
                 Cambiar Contraseña
               </h5>
-              <!-- Botón para volver al Perfil -->
               <div class="back-button1">
                 <router-link to="/perfil" class="btn-back"> Volver a Perfil </router-link>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-12 custom-subtitle ic1">
-                  <label for="correo" class="form-label"
-                    >Ingresa el correo con el que te registraste</label
-                  >
-                  <input
-                    type="email"
-                    v-model="correo"
-                    id="correo"
-                    class="form-control input"
-                    required
-                  />
+                  <label for="correo" class="form-label">
+                    Ingresa el correo con el que te registraste
+                  </label>
+                  <input type="email" v-model="correo" id="correo" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="old_pass" class="form-label"
-                    >Ingresa tu Contraseña actual</label
-                  >
-                  <input
-                    type="password"
-                    v-model="old_pass"
-                    id="old_pass"
-                    class="form-control input"
-                    required
-                  />
+                  <label for="old_pass" class="form-label">Ingresa tu Contraseña actual</label>
+                  <input type="password" v-model="old_pass" id="old_pass" class="form-control input" required />
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label for="password">Ingresa tu nueva Contraseña <label class="text-danger">*</label></label>
+                  <label>Ingresa tu nueva Contraseña <label class="text-danger">*</label></label>
                   <input
                     :type="typeInput"
                     @input="handlePassword"
@@ -53,9 +38,19 @@
                     class="form-control input"
                     required
                     :class="{ 'is-invalid': new_pass_error, 'is-valid': !new_pass_error && new_pass.length > 0 }"
-                    placeholder="" />
-                    <i v-if="typeInput=='text'" class="fa-solid fa-eye-slash cursor custom-abs-icon-eye" @click="showPass"></i>
-                    <i v-if="typeInput=='password'" class="fa fa-eye custom-abs-icon-eye cursor" @click="showPass"></i>
+                    style="height: 40px;"
+                    placeholder=""
+                  />
+                  <i
+                    v-if="typeInput === 'text'"
+                    class="fa-solid fa-eye-slash cursor custom-abs-icon-eye"
+                    @click="showPass"
+                  ></i>
+                  <i
+                    v-if="typeInput === 'password'"
+                    class="fa fa-eye custom-abs-icon-eye cursor"
+                    @click="showPass"
+                  ></i>
                   <div class="invalid-feedback">
                     <ul class="text-danger">
                       <li v-if="new_pass.length < 8">Debe tener más de 7 caracteres</li>
@@ -69,7 +64,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-md-8 custom-subtitle ic2">
-                  <label >Confirmar Contraseña <label class="text-danger">*</label></label>
+                  <label>Confirmar Contraseña <label class="text-danger">*</label></label>
                   <input
                     :type="typeInput"
                     v-model="repeat_pass"
@@ -79,16 +74,14 @@
                     @invalid="handleInvalid"
                     @input="validatePasswordsMatch"
                     required
-                    placeholder="" />
-                  <p v-if="mensajeErrorRepetir" class="text-danger">
-                    Las Contraseñas No Coinciden
-                  </p>
+                    style="height: 40px;"
+                    placeholder=""
+                  />
+                  <p v-if="mensajeErrorRepetir" class="text-danger">Las Contraseñas No Coinciden</p>
                 </div>
               </div>
 
-              <button type="submit" class="btn custom-button rounded-3">
-                Guardar Cambios
-              </button>
+              <button type="submit" class="btn custom-button rounded-3">Guardar Cambios</button>
             </div>
           </div>
         </form>
@@ -96,7 +89,6 @@
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref } from "vue";
@@ -170,7 +162,6 @@ const guardarCambios = async () => {
 };
 </script>
 
-
 <style scoped>
 .custom-background {
   background-image: url("@/assets/images/otro-fondo3.png");
@@ -232,7 +223,7 @@ const guardarCambios = async () => {
   box-sizing: border-box;
   color: var(--white-color) !important;
   font-size: 18px;
-  height: 80%;
+  height: 40px; /* Altura coherente para todos los campos */
   outline: 0;
   padding: 4px 20px 0;
   width: 100%;
@@ -279,4 +270,5 @@ const guardarCambios = async () => {
   background-color: #f37926;
   color: #fff;
 }
+
 </style>
