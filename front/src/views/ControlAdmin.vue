@@ -11,13 +11,8 @@
             :class="{ 'border-custom': view == 'SolicitudesTokens' }" @click="showView('SolicitudesTokens')">
             <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Compra de Tokens
           </li>
-<<<<<<< HEAD
           <li class="py-3 ps-2 rounded  nav-link  my-3 retiro " :class="{ 'border-custom': view == 'investmentsRequests' }"
             @click="showView('investmentsRequests')">
-=======
-          <li class="py-3 ps-2 rounded  nav-link  my-3 retiro "
-            :class="{ 'border-custom': view == 'SolicitudesInversiones' }" @click="showView('SolicitudesInversiones')">
->>>>>>> a563793 (front solicitud inversion)
             <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Inversiones
           </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
@@ -58,11 +53,7 @@
       <div class="col-10">
         <Solicitudes v-if="view == 'wallRequests'" />
         <SolicitudesTokens v-if="view == 'SolicitudesTokens'" />
-<<<<<<< HEAD
         <SolicitudesInversiones v-if="view == 'investmentsRequests'" />
-=======
-        <SolicitudesInversiones v-if="view == 'SolicitudesInversiones'" />
->>>>>>> a563793 (front solicitud inversion)
         <Users v-if="view == 'users'" />
         <Posts v-if="view == 'posts'" />
         <Ajustes v-if="view == 'ajustes'" />
