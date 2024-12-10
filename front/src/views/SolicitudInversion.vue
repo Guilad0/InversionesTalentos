@@ -1,10 +1,10 @@
 <template>
   <div class="background">
-    <div class="overlay  "></div>
+    <div class="overlay"></div>
     <div class="form animate__animated animate__fadeIn">
       <div class="title">¡Bienvenid@ {{ user?.nombre }}!</div>
       <div class="subtitle">Solicitud de Inversión</div>
-      <br>
+      <br />
       <!-- Botón para volver al Perfil -->
       <!-- <div class="back-button1">
         <router-link to="/perfil" class="btn-back">
@@ -12,13 +12,19 @@
         </router-link>
       </div> -->
 
-
       <form @submit.prevent="registrarExperiencia" novalidate>
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="nombre" class="label">Motivo</label>
-              <input id="nombre" v-model="nombre" ref="refNombre" type="text" class="input form-control" required />
+              <input
+                id="nombre"
+                v-model="nombre"
+                ref="refNombre"
+                type="text"
+                class="input form-control"
+                required
+              />
               <div class="ms-2 invalid-feedback fs-custom">
                 Campo requerido, minimo 5 caracteres
               </div>
@@ -28,8 +34,15 @@
 
         <div class="input-container2">
           <label for="descripcion" class="label">Descripción</label>
-          <textarea id="descripcion" ref="refDescripcion" v-model="descripcion"
-            pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$" class="input form-control" rows="3" required></textarea>
+          <textarea
+            id="descripcion"
+            ref="refDescripcion"
+            v-model="descripcion"
+            pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
+            class="input form-control"
+            rows="3"
+            required
+          ></textarea>
           <div class="ms-2 invalid-feedback fs-custom">
             Campo requerido, minimo 5 caracteres
           </div>
@@ -37,16 +50,32 @@
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_inicio_recaudacion" class="label">Fecha Inicio Recaudación</label>
-              <input ref="refMinDate" id="fecha_inicio_recaudacion" v-model="fecha_inicio_recaudacion" type="date"
-                class="input form-control" required />
+              <label for="fecha_inicio_recaudacion" class="label"
+                >Fecha Inicio Recaudación</label
+              >
+              <input
+                ref="refMinDate"
+                id="fecha_inicio_recaudacion"
+                v-model="fecha_inicio_recaudacion"
+                type="date"
+                class="input form-control"
+                required
+              />
             </div>
           </div>
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_fin_recaudacion" class="label">Fecha Final Recaudación</label>
-              <input ref="refMaxDate" id="fecha_fin_recaudacion" v-model="fecha_fin_recaudacion" type="date"
-                class="input form-control" required />
+              <label for="fecha_fin_recaudacion" class="label"
+                >Fecha Final Recaudación</label
+              >
+              <input
+                ref="refMaxDate"
+                id="fecha_fin_recaudacion"
+                v-model="fecha_fin_recaudacion"
+                type="date"
+                class="input form-control"
+                required
+              />
             </div>
           </div>
         </div>
@@ -54,7 +83,14 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="monto" class="label">Monto</label>
-              <input id="monto" v-model="monto" ref="refMonto" type="number" class="input form-control" required />
+              <input
+                id="monto"
+                v-model="monto"
+                ref="refMonto"
+                type="number"
+                class="input form-control"
+                required
+              />
               <div class="ms-2 invalid-feedback fs-custom">
                 Campo requerido, minimo 5 caracteres
               </div>
@@ -63,8 +99,14 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="cantidad_pagos" class="label">Cantidad Pagos</label>
-              <input id="cantidad_pagos" v-model="cantidad_pagos" ref="refCantidadPagos" type="number"
-                class="input form-control" required />
+              <input
+                id="cantidad_pagos"
+                v-model="cantidad_pagos"
+                ref="refCantidadPagos"
+                type="number"
+                class="input form-control"
+                required
+              />
               <div class="ms-2 invalid-feedback fs-custom">
                 Campo requerido, minimo 5 caracteres
               </div>
@@ -74,16 +116,31 @@
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_inicio_pago" class="label">Fecha Inicio Pago</label>
-              <input ref="refMinDate" id="fecha_inicio_pago" v-model="fecha_inicio_pago" type="date"
-                class="input form-control" required />
+              <label for="fecha_inicio_pago" class="label"
+                >Fecha Inicio Pago</label
+              >
+              <input
+                ref="refMinDate"
+                id="fecha_inicio_pago"
+                v-model="fecha_inicio_pago"
+                type="date"
+                class="input form-control"
+                required
+              />
             </div>
           </div>
           <div class="col mb-6">
             <div class="input-container">
-              <label for="fecha_fin_pago" class="label">Fecha Final Pago</label>
-              <input ref="refMaxDate" id="fecha_fin_pago" v-model="fecha_fin_pago" type="date"
-                class="input form-control" required />
+              <label for="fecha_fin_pago" class="label"
+                >Fecha Fin Inversión</label
+              >
+              <input
+                id="fecha_fin_pago"
+                v-model="fecha_fin_pago"
+                type="date"
+                class="input form-control"
+                readonly
+              />
             </div>
           </div>
         </div>
@@ -96,10 +153,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import axios from "axios";
-import { useRouter } from 'vue-router';
-import iziToast from 'izitoast';
+import { useRouter } from "vue-router";
+import iziToast from "izitoast";
 import { successAlert, errorAlert } from "../helpers/iziToast";
 
 const router = useRouter();
@@ -107,8 +164,11 @@ const cliente_id = ref("");
 const descripcion = ref("");
 const nombre = ref("");
 const monto = ref("");
+const cantidad_pagos = ref("");
+const fecha_inicio_pago = ref("");
 const fecha_inicio_recaudacion = ref("");
 const fecha_fin_recaudacion = ref("");
+const fecha_fin_pago = ref("");
 const refMinDate = ref("");
 const refDescripcion = ref("");
 const refMonto = ref("");
@@ -130,7 +190,6 @@ const validarFormulario = (event) => {
   return true;
 };
 
-
 onMounted(() => {
   console.log(user.value);
   if (user) {
@@ -138,55 +197,66 @@ onMounted(() => {
   } else {
     // Alerta de error si no se encuentra el cliente_id en localStorage
     iziToast.error({
-      title: 'Error',
-      message: 'Usuario no valido para esta seccion',
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#FF3B30', // Color de fondo rojo para el error
+      title: "Error",
+      message: "Usuario no valido para esta seccion",
+      messageColor: "white",
+      position: "topRight",
+      theme: "dark",
+      color: "#FF3B30", // Color de fondo rojo para el error
       closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
+      progressBarColor: "#FFFFFF",
     });
-
   }
 });
 
 // Función para registrar la experiencia
 const registrarExperiencia = async (event) => {
   if (!validarFormulario(event)) return;
-  if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    nombre.value = (nombre.value.trim() == '') ? '' : nombre.value;
+  if (
+    nombre.value &&
+    nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5
+  ) {
+    nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
     refNombre.value.focus();
-    errorAlert('La institución debe contener más de 5 letras.', 'Error');
+    errorAlert("La institución debe contener más de 5 letras.", "Error");
     return;
   }
   if (monto.value && monto.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    monto.value = (monto.value.trim() == '') ? '' : monto.value;
-    refMonto.value.focus()
-    errorAlert('El campo monto  debe contener más de 5 letras.', 'Error');
+    monto.value = monto.value.trim() == "" ? "" : monto.value;
+    refMonto.value.focus();
+    errorAlert("El campo monto  debe contener más de 5 letras.", "Error");
     return;
   }
 
-  if (descripcion.value && descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    descripcion.value = (descripcion.value.trim() == '') ? '' : descripcion.value;
+  if (
+    descripcion.value &&
+    descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5
+  ) {
+    descripcion.value = descripcion.value.trim() == "" ? "" : descripcion.value;
     refDescripcion.value.focus();
-    errorAlert('La descripción no puede estar vacía ni contener solo espacios.', 'Error')
-    return
+    errorAlert(
+      "La descripción no puede estar vacía ni contener solo espacios.",
+      "Error"
+    );
+    return;
   }
   if (fecha_inicio_recaudacion.value <= minDate.value) {
-    errorAlert('Fecha de inicio no valida.', 'Error')
-    refMinDate.value.focus()
-    return
+    errorAlert("Fecha de inicio no valida.", "Error");
+    refMinDate.value.focus();
+    return;
   }
   if (fecha_fin_recaudacion.value > maxDate.value) {
-    errorAlert('Fecha de inicio no valida.', 'Error')
-    refMaxDate.value.focus()
-    return
+    errorAlert("Fecha de inicio no valida.", "Error");
+    refMaxDate.value.focus();
+    return;
   }
   if (fecha_inicio_recaudacion.value >= fecha_fin_recaudacion.value) {
-    errorAlert('La fecha de inicio no puede ser mayor a la fecha final.', 'Error')
-    refMinDate.value.focus()
-    return
+    errorAlert(
+      "La fecha de inicio no puede ser mayor a la fecha final.",
+      "Error"
+    );
+    refMinDate.value.focus();
+    return;
   }
 
   const datos = {
@@ -195,7 +265,7 @@ const registrarExperiencia = async (event) => {
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
     monto: monto.value.trim(),
-    nombre: nombre.value.trim()
+    nombre: nombre.value.trim(),
   };
   console.log(datos);
   try {
@@ -206,16 +276,33 @@ const registrarExperiencia = async (event) => {
     fecha_fin_recaudacion.value = "";
     monto.value = "";
     nombre.value = "";
-    successAlert('Experiencia registrada correctamente', '¡Éxito!')
+    successAlert("Experiencia registrada correctamente", "¡Éxito!");
     // Redirigir al perfil
-    router.push({ name: 'perfil' });
+    router.push({ name: "perfil" });
   } catch (error) {
     console.error(error);
-    errorAlert('Hubo un problema al registrar la experiencia.', 'Error')
+    errorAlert("Hubo un problema al registrar la experiencia.", "Error");
     window.location.reload();
   }
-
 };
+
+const calcularFechaFinInversion = () => {
+  if (fecha_inicio_pago.value) {
+    const fechaInicio = new Date(fecha_inicio_pago.value);
+    if (cantidad_pagos.value > 0) {
+      const cantidadPagos = parseInt(cantidad_pagos.value, 10);
+      const fechaFin = new Date(
+        fechaInicio.setMonth(fechaInicio.getMonth() + cantidadPagos)
+      );
+      fecha_fin_pago.value = fechaFin.toISOString().split("T")[0];
+    } else {
+      fecha_fin_pago.value = fecha_inicio_pago.value;
+    }
+  }
+};
+watchEffect(() => {
+  calcularFechaFinInversion();
+});
 </script>
 
 <style scoped>
@@ -226,7 +313,7 @@ const registrarExperiencia = async (event) => {
   height: 100vh;
   margin: 0;
   position: relative;
-  background-image: url('@/assets/images/otro-fondo3.png');
+  background-image: url("@/assets/images/otro-fondo3.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -239,7 +326,6 @@ const registrarExperiencia = async (event) => {
   width: 100%;
   height: 100%;
   background-color: rgba(4, 4, 4, 0.563);
-  ;
   /* Fondo negro con opacidad del 50% */
   z-index: 1;
   /* Asegura que la capa de opacidad esté encima de la imagen */
@@ -256,7 +342,7 @@ const registrarExperiencia = async (event) => {
 }
 
 .title {
-  color: #17223B;
+  color: #17223b;
   font-family: var(--font-montserrat-bold);
   font-size: 30px;
   font-weight: 700;
@@ -265,7 +351,7 @@ const registrarExperiencia = async (event) => {
 }
 
 .subtitle {
-  color: #17223B;
+  color: #17223b;
   font-family: sans-serif;
   font-size: 26px;
   font-weight: 600;
@@ -281,7 +367,7 @@ const registrarExperiencia = async (event) => {
 }
 
 .label {
-  color: #17223B;
+  color: #17223b;
   font-family: sans-serif;
   font-size: 16px;
   margin-bottom: 5px;
@@ -290,7 +376,7 @@ const registrarExperiencia = async (event) => {
 
 .input {
   background-color: rgba(44, 46, 51, 0.8);
-  color: #F3F3F4;
+  color: #f3f3f4;
   border-radius: 12px;
   border: none;
   font-size: 18px;
@@ -304,14 +390,14 @@ const registrarExperiencia = async (event) => {
 
 .input:focus {
   background-color: var(--white-color);
-  border: 2px solid #F37926 !important;
+  border: 2px solid #f37926 !important;
   outline: none;
   box-shadow: none;
   color: black;
 }
 
 .submit {
-  background-color: #17223B;
+  background-color: #17223b;
   border-radius: 12px;
   border: none;
   color: #eee;
@@ -324,7 +410,7 @@ const registrarExperiencia = async (event) => {
 }
 
 .submit:hover {
-  background-color: #F37926;
+  background-color: #f37926;
   color: #fff;
 }
 
@@ -333,7 +419,7 @@ textarea.input {
 }
 
 .submit:active {
-  background-color: #F37926;
+  background-color: #f37926;
 }
 
 .input:focus {
@@ -355,7 +441,7 @@ textarea.input {
 
 .btn-back {
   padding: 10px 20px;
-  background-color: #17223B;
+  background-color: #17223b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -363,7 +449,7 @@ textarea.input {
 }
 
 .btn-back:hover {
-  background-color: #F37926;
+  background-color: #f37926;
   color: #fff;
 }
 
