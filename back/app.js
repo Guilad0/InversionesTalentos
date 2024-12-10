@@ -15,7 +15,7 @@ var logrosRouter = require('./routes/logros');
 var categoriesRouter = require('./routes/categories')
 var linksRouter = require('./routes/links');
 var faqRouter = require('./routes/faq');
-var authRouter = require('./routes/auth');  
+var authRouter = require('./routes/auth');
 var ajustesRouter = require('./routes/ajustes');
 var movimientosRouter = require('./routes/movimientos');
 var experienciaRoutes = require('./routes/experienciaRoutes');
@@ -31,14 +31,15 @@ var reportRouter = require('./routes/report');
 var perfilRouter = require('./routes/perfil');
 var informacionRoutes = require('./routes/informacionRoutes');
 var previewRouter = require('./routes/preview');
+var solicitudesInversionRouter = require('./routes/solicitudesInversion');
 
 var app = express();
 
 app.use(cors());
 app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : '/tmp/',
-    createParentPath:true
+  useTempFiles: true,
+  tempFileDir: '/tmp/',
+  createParentPath: true
 }));
 
 app.use(logger('dev'));
@@ -52,21 +53,21 @@ app.use('/uploads/categories', express.static(path.join(__dirname, 'uploads/cate
 app.use('/uploads/videos', express.static(path.join(__dirname, 'uploads/videos')));
 
 
-app.use('/', indexRouter); 
-app.use('/users', usersRouter); 
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 app.use('/clients', clientsRouter);
 app.use('/contact', contactRouter);
 app.use('/posts', postsRouter);
 app.use('/categoria_posts', categoria_postsRouter);
 app.use('/logros', logrosRouter);
-app.use('/categories',categoriesRouter)
-app.use('/links', linksRouter); 
+app.use('/categories', categoriesRouter)
+app.use('/links', linksRouter);
 app.use('/faq', faqRouter);
 app.use('/auth', authRouter);
 app.use('/ajustes', ajustesRouter);
 app.use('/movimientos', movimientosRouter);
-app.use('/experiencia', experienciaRoutes); 
-app.use('/solicitudes', solicitudesRoutes); 
+app.use('/experiencia', experienciaRoutes);
+app.use('/solicitudes', solicitudesRoutes);
 app.use('/billetera', billeteraRoutes);
 app.use('/inversionesRetiros', inversionesRetirosRoutes);
 app.use('/ajustesAdmin', ajustesAdminRouter);
@@ -79,5 +80,6 @@ app.use('/report', reportRouter);
 app.use('/perfil', perfilRouter);
 app.use('/informacion', informacionRoutes);
 app.use('/preview', previewRouter);
+app.use('/solicitudesInversion', solicitudesInversionRouter);
 
 module.exports = app;
