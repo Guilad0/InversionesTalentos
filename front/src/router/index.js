@@ -29,6 +29,7 @@ import PoliticaPrivacidadView from '@/views/PoliticaPrivacidadView.vue'
 import NotFound from '@/views/NotFound.vue'
 import { getUser } from '@/helpers/utilities'
 import { ref } from "vue";
+import SolicitudInversion from '@/views/SolicitudInversion.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,9 +42,9 @@ const router = createRouter({
     {
       path: '/registrarse',
       name: 'registrarse',
-      component:RegistrarseView
+      component: RegistrarseView
     },
-  {
+    {
       path: '/posts',
       name: 'posts',
       component: PostsView
@@ -53,103 +54,113 @@ const router = createRouter({
       name: 'post',
       component: PostView
     },
-  {
+    {
       path: '/marketplace',
-      name: 'marketplace',  
-      component: ClientsView, 
+      name: 'marketplace',
+      component: ClientsView,
       // meta: {roles: ["Admin", "Inversionista",]}
     },
-   
+
     {
-      path:'/:name',
-      name:'client',
-      component:ClientView,
+      path: '/:name',
+      name: 'client',
+      component: ClientView,
       // meta: {roles: ["Admin", "Inversionista"]} Se debe Cambiar el nombre de path
     },
     {
-      path:'/login',
-      name:'Login',
-      component:IngresarView
+      path: '/login',
+      name: 'Login',
+      component: IngresarView
     },
     {
-      path:'/admin',
-      name:'admin',
-      component:ControlAdminView,
-      meta: {roles: ["Admin"]}
+      path: '/admin',
+      name: 'admin',
+      component: ControlAdminView,
+      meta: { roles: ["Admin"] }
     },
     {
-      path:'/perfil',
-      name:'perfil',
-      component:PerfilView,
+      path: '/perfil',
+      name: 'perfil',
+      component: PerfilView,
     },
     {
-      path:'/sign-login',
-      name:'sign-login',
-      component:SignUpLoginView
+      path: '/sign-login',
+      name: 'sign-login',
+      component: SignUpLoginView
     },
     {
-      path:'/faq',
-      name:'faq',
-      component:FaqView
+      path: '/faq',
+      name: 'faq',
+      component: FaqView
     },
     {
-      path:'/contact',
-      name:'contact',
-      component:ContactView
+      path: '/contact',
+      name: 'contact',
+      component: ContactView
     },
     {
-      path:'/billetera',
-      name:'billetera',
-      component:BilleteraView,
-      meta: {roles: ["Cliente", "Inversionista",]}
+      path: '/billetera',
+      name: 'billetera',
+      component: BilleteraView,
+      meta: { roles: ["Cliente", "Inversionista",] }
     },
     {
-      path:'/reportes',
-      name:'reportes',
-      component:ReportesView
+      path: '/reportes',
+      name: 'reportes',
+      component: ReportesView
     },
-    { path: '/forgot-password',
-      name: 'forgot-password', 
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
       component: ForgotPassword,
     },
-    { path: '/reset-password/:token',
+    {
+      path: '/reset-password/:token',
       name: 'reset-password',
       component: ResetPassword,
     },
-    { path: '/experiencia',
-      name: 'experiencia', 
+    {
+      path: '/experiencia',
+      name: 'experiencia',
       component: Experiencia,
-      meta: {roles: ["Inversionista", "Cliente"]}
-    }, 
-    { path: '/como-funciona',
+      meta: { roles: ["Inversionista", "Cliente"] }
+    },
+    {
+      path: '/como-funciona',
       name: 'como-funciona',
       component: ComoFunciona
     },
-    { path: '/comentarios',
-      name: 'comentarios', 
+    {
+      path: '/comentarios',
+      name: 'comentarios',
       component: ComentariosView
     },
-    { path: '/proposito',
-      name: 'proposito', 
+    {
+      path: '/proposito',
+      name: 'proposito',
       component: PropositoView
     },
-    { path: '/logros',
-      name: 'logros', 
+    {
+      path: '/logros',
+      name: 'logros',
       component: LogrosView,
-      meta: {roles: ["Inversionista", "Cliente"]}
+      meta: { roles: ["Inversionista", "Cliente"] }
     },
 
-    { path: '/addInfInversionista', 
+    {
+      path: '/addInfInversionista',
       name: 'addInfInversionista',
       component: AddInfInversionista,
-      meta: {roles: ["Inversionista","Null"]}
+      meta: { roles: ["Inversionista", "Null"] }
     },
-    { path: '/addInfCliente', 
+    {
+      path: '/addInfCliente',
       name: 'addInfCliente',
       component: InformacionView,
-      meta: {roles: ["Cliente","Null"]}
+      meta: { roles: ["Cliente", "Null"] }
     },
-    { path: '/RecoverPass', 
+    {
+      path: '/RecoverPass',
       name: 'RecoverPass',
       component: RecoverPass,
       // meta: {roles: ["Cliente", "Inversionista"]}
@@ -158,34 +169,39 @@ const router = createRouter({
       path: '/compra-token',
       name: 'compra-token',
       component: CompraTokenView,
-      
-  },
-  {
-    path: '/terminos-condiciones',
-    name: 'terminos-condiciones',
-    component: TerminosCondicionesView
-  },
-  {
-    path: '/politica-privacidad',
-    name: 'politica-privacidad',
-    component: PoliticaPrivacidadView
-  },
-  {
-    path: '/not-found',
-    name: 'notfound',
-    component: NotFound
-  }
+
+    },
+    {
+      path: '/terminos-condiciones',
+      name: 'terminos-condiciones',
+      component: TerminosCondicionesView
+    },
+    {
+      path: '/politica-privacidad',
+      name: 'politica-privacidad',
+      component: PoliticaPrivacidadView
+    },
+    {
+      path: '/not-found',
+      name: 'notfound',
+      component: NotFound
+    },
+    {
+      path: '/solicitar-inversion',
+      name: 'solicitar-inversion',
+      component: SolicitudInversion
+    }
   ]
 })
 
-router.beforeEach (async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   try {
     const user = await getUser()
     console.log(user);
-    if(to.meta.roles){
+    if (to.meta.roles) {
       if (!user) {
         console.warn("Acceso denegado usuario no autenticado");
-       return next("/not-found")
+        return next("/not-found")
       }
       if (!to.meta.roles.includes(user.rol)) {
         return next("/not-found")
@@ -193,11 +209,11 @@ router.beforeEach (async(to, from, next) => {
     }
     next();
   }
-   catch (error) {
-    console.log("Error en la verificación del usuario:" +error);
+  catch (error) {
+    console.log("Error en la verificación del usuario:" + error);
     next("/not-found");
   }
-  
+
 })
 
 export default router
