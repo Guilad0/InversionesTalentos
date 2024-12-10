@@ -10,6 +10,8 @@ const transporter = require("../helpers/mailer");
 const crypto = require("crypto");
 const middlewareControlAdmin = require("../middlewares/middlewareControlAdmin");
 cloudinary.config(process.env.CLOUDINARY_URL);
+var dotenv = require('dotenv');
+dotenv.config();
 
 /**
  * Solo para rol admin
@@ -534,8 +536,8 @@ const postUser = async (req, res) => {
       if (error) {
         return res.status(500).send(error);
       } else {
-        const verificationLink = `https://apitalentos.pruebasdeploy.online/users/verify/${results.insertId}`;
-        const loginLink = 'https://apitalentos.pruebasdeploy.online/sign-login';
+        const verificationLink = `${process.env.URL_BASE}/users/verify/${results.insertId}`;
+        const loginLink = `${process.env.URL_BASE}/sign-login`;
         const msgHtml =
           verificadoUser == 0
             ? `<!DOCTYPE html>
