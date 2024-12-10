@@ -82,7 +82,7 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_fin_pago" class="label">Fecha Final Pago</label>
-              <input ref="refMaxDate" readonly id="fecha_fin_pago" v-model="fecha_fin_pago" type="date"
+              <input ref="refMaxDate" id="fecha_fin_pago" v-model="fecha_fin_pago" type="date"
                 class="input form-control" required />
             </div>
           </div>
