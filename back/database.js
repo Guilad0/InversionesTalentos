@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var dotenv = require('dotenv');
 dotenv.config();
-
+ 
 var conf = {
   host: process.env.DB_HOST || '127.0.0.1',
   user: process.env.DB_USER || 'root',
