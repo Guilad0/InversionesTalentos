@@ -105,7 +105,7 @@
               Solicitar Inversión
             </div>
             <div class="">
-              <button class="btn btn-orange rounded-5 px-3" @click="goToPage('solicitarInversion')">
+              <button class="btn btn-orange rounded-5 px-3" @click="redirectToSolicitudInversion">
                 Solicitar
               </button>
             </div>
@@ -132,6 +132,7 @@ import Spinner from "@/components/Spinner.vue";
 import { useRouter, useRoute } from "vue-router";
 import { successAlert, errorAlert } from "@/helpers/iziToast";
 import router from '@/router';
+
 const fileInput = ref(null);
 const selectImage = () => {
   fileInput.value.click();
@@ -299,6 +300,9 @@ const verifyRegisterInversor = ref([
   },
 
 ]);
+const redirectToSolicitudInversion = () => {
+  router.push('/solicitudInversion'); 
+};
 
 const aprobado = ref('')
 const usuario = JSON.parse(localStorage.getItem("usuario"));
