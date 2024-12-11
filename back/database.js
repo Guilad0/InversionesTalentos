@@ -7,7 +7,7 @@ var conf = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_DATABASE || 'u488326007_hamilo_persons',
-
+  // database: process.env.DB_DATABASE || 'inversiones',
   connectTimeout: 10000,
   acquireTimeout: 10000,
   keepAlive: true

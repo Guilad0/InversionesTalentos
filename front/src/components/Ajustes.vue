@@ -84,11 +84,11 @@
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+            <div class="modal-footer d-flex justify-content-center">
+              <!-- <button type="button" :disabled="isFormModified" class="btn btn-gray border" data-bs-dismiss="modal">
                 Cerrar
-              </button>
-              <button type="button" class="btn btn-dark" @click="saveEdit()">
+              </button> -->
+              <button type="button" class="btn btn-gray border" @click="saveEdit()">
                 Guardar cambios
               </button>
             </div>

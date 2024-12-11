@@ -1,67 +1,88 @@
 <template>
   <main class="bg-light">
     <div class="content">
-      <h4 class="d-block mb-2 text-center title py-4">Categorías</h4>
-      <div class="d-flex justify-content-between px-5 mt-2 mb-3">
+      <h4 class="d-block mb-2 text-center title py-4">Rubros</h4>
 
-        <div class="row">
-          <div class="col-3">
-            <label for="search" class="form-label">Buscar Categoría</label>
-          <input
-            name="search"
-            type="text"
-            v-model="search"
-            class="form-control"
-            placeholder="Buscar ..."
-            @input="obtenerCategorias(1, search)"
-          />
-          </div>
-          <div class="col-1"></div>
-          <div class="col-8">
-            <div class="row">
-              <div class="col-6">
-                <label for="createNombre" class="form-label">Nombre de la Categoría</label>
+
+          
+      <div class="table-responsive col-md-10 offset-md-1">
+        <div class="d-flex gap-3   justify-content-center align-content-center ">
+              <div class="col">
+                <label for="createNombre" class="form-label fw-bolder">Nombre del Rubro</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control placeHolderCustom rounded-5"
               id="createNombre"
               v-model="formCreate.nombre"
-              placeholder="Nueva categoría"
+              placeholder="Escribe aquí el nombre del rubro"
               required
             />
               </div>
-              <div class="col-6">
-                <label for="createImage" class="form-label">Imagen de la Categoría</label>
+              <div class="col">
+                <label for="createImage" class="form-label fw-bolder">Imagen</label>
             <input
               type="file"
-              class="form-control"
+              class="form-control "
               id="createImage"
               accept="image/*"
               @change="handleFileChangeCreate"
             />
               </div>
-            </div>
-            <div class="row py-3">
+              <div class="col">
+                <label for="montoMin" class="form-label fw-bolder">Inversion Minima</label>
+            <input
+              type="number"
+              class="form-control"
+              id="montoMin"
+              min="0"
+              v-model="montoInvMin"
+              placeholder="Monto maximo de inversion"
+            />
+              </div>
+              <div class="col">
+                <label for="montoMax" class="form-label fw-bolder">Inversion Maxima</label>
+            <input
+              type="number"
+              class="form-control"
+              id="montoMax"
+              min="0"
+              v-model="montoInvMax"
+              placeholder="Monto maximo de inversion"
+            />
+              </div>
+         
+              <div class="text-center col m-auto">
               <button
             type="button"
-            class="btn btn-cat rounded-3"
+            class="btn btn-gray rounded-3 border-1 border"
+
+            :disabled="formCreate.nombre == '' || formCreate.image == null || montoInvMax <= 0 || montoInvMin <= 0"
             @click="createCategory"
           >
-            <i class="fa-solid fa-check"></i> Crear Categoría
+             Registrar Rubro
           </button>
             </div>
-          </div>
+ 
         </div>
-
-        
-      </div>
-      <div class="table-responsive col-md-10 offset-md-1">
+        <div class="col-3 my-3">
+            <!-- <label for="search" class="form-label fw-bolder">Buscar Categoría</label> -->
+          <input
+            name="search"
+            type="text"
+            v-model="search"
+            class="form-control rounded-5 w-75 border-2 placeHolderCustom"
+            placeholder="Buscar rubro por su nombre"
+            @input="obtenerCategorias(1, search)"
+          />
+          </div>
         <div class="table-container">
           <table class="table overflow-x-scroll">
             <thead>
               <tr class="table-secondary">
                 <th class="td-custom">ID</th>
                 <th class="td-custom">Nombre</th>
+                <th class="td-custom">Inversion Minima</th>
+                <th class="td-custom">Inversion Maxima</th>
                 <th class="td-custom">Imagen</th>
                 <th class="td-custom">Estado</th>
                 <th class="td-custom">Acciones</th>
@@ -69,8 +90,10 @@
             </thead>
             <tbody>
               <tr v-for="categoria in categorias" :key="categoria.categoria_persona_id">
-                <td class="text-center">{{ categoria.categoria_persona_id }}</td>
-                <td>{{ categoria.nombre }}</td>
+                <td class="text-center align-middle">{{ categoria.categoria_persona_id }}</td>
+                <td class="align-middle ">{{ categoria.nombre }}</td>
+                <td class="align-middle text-center"> {{ categoria.monto_minimo_inversion }}</td>
+                <td class="align-middle text-center"> {{ categoria.monto_maximo_inversion }}</td>
                 <td class="text-center">
                   <img
                     :src="`${BaseURL.replace('/categories', '')}/uploads/categories/${
@@ -78,35 +101,36 @@
                     }`"
                     alt="Imagen de categoría"
                     width="50"
+                    class=" rounded img-thumbnail "
                   />
                 </td>
-                <td class="text-center">
+                <td class="text-center align-middle">
                   <span v-if="categoria.estado" class="badge text-bg-success"
                     >Activo</span
                   >
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
-                <td class="text-center">
+                <td class="text-center align-middle">
                   <button
-                    @click="editarCategoria(categoria.categoria_persona_id)"
-                    class="btn btn-warning btn-sm me-2"
+                    @click="editarCategoria(categoria.categoria_persona_id, categoria.monto_minimo_inversion, categoria.monto_maximo_inversion)"
+                    class="border-0  me-2 hover-button p-0"
                   >
-                    <i class="fa fa-edit"></i>
+                  <i class="fa-regular fa-pen-to-square"></i>
                   </button>
 
                   <button
                     v-if="categoria.estado"
                     @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="btn btn-danger btn-sm"
+                    class="border-0 ms-2 hover-button fs-6  rounded-5 p-0 m-auto"
                   >
-                    <i class="fa fa-times"></i>
+                  <i class="fa-solid fa-ban text-danger"></i>
                   </button>
                   <button
                     v-else
                     @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="btn btn-success btn-sm"
+                    class="border-0 ms-2 hover-button fs-6  rounded-5 p-0 m-auto "
                   >
-                    <i class="fa fa-check"></i>
+                  <i class="fa-regular fa-circle-check text-success "></i>
                   </button>
                 </td>
               </tr>
@@ -114,7 +138,8 @@
           </table>
         </div>
 
-        <div class="d-flex justify-content-center overflow-auto">
+      </div>
+        <div class="d-flex justify-content-center overflow-auto ">
           <nav v-if="paginacion.total > 0" aria-label="Page navigation example" class="pagination-container">
             <ul class="pagination flex-wrap">
               <li v-if="paginacion.previous == null" class="page-item disabled">
@@ -160,7 +185,6 @@
             </ul>
           </nav>
         </div>
-      </div>
       <div
     class="modal fade"
     id="modalEditCategory"
@@ -182,37 +206,45 @@
         <div class="modal-body" style="background-color: #17223b">
           <form @submit.prevent="editCategory">
             <div class="container">
-              <div class="row mb-3">
-                <div class="col-12">
+              <div class="row ">
+                <div class="col">
                   <label for="editNombre" class="form-label custom-subtitle">
                     Nombre de la Categoría
                   </label>
                   <input
                     type="text"
-                    class="form-control input"
+                    class="form-control input text-dark"
                     id="editNombre"
                     v-model="formEdit.nombre"
                     required
                   />
                 </div>
               </div>
-              <div class="row mb-3">
-                <div class="col-12">
-                  <label for="editImage" class="form-label custom-subtitle">
+              <div class="row my-2 ">
+                <div class="col">
+                  <label for="editImage" class="form-label custom-subtitle ">
                     Imagen de la Categoría
                   </label>
                   <input
                     type="file"
-                    class="form-control input"
+                    class="form-control input text-dark"
                     id="editImage"
                     @change="handleFileChangeEdit"
                   />
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12 text-center modal-footer">
-                  <button type="submit" class="btn custom-button">Guardar Cambios</button>
+              <div class="row ">
+                <div class="col">
+                  <label for="editImage" class="form-label custom-subtitle ">Inversion minima</label>
+                  <input type="number" class="form-control input text-dark" v-model="montoMin">
                 </div>
+                <div class="col">
+                  <label for="editImage" class="form-label custom-subtitle ">Inversion Maxima</label>
+                  <input type="number" class="form-control input text-dark" v-model="montoMax">
+                </div>
+              </div>
+              <div class="d-flex justify-content-center mt-4 mb-2">
+                  <button type="submit"  class="border btn btn-gray">Guardar Cambios</button>
               </div>
             </div>
           </form>
@@ -238,6 +270,10 @@ const formCreate = ref({ nombre: "", image: null });
 const formEdit = ref({ nombre: "", image: null });
 const categoriaEditada = ref(null);
 const search = ref("");
+const montoInvMin = ref(0);
+const montoInvMax = ref(0);
+const montoMax = ref(0);
+const montoMin = ref(0);
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
 const BaseURL = import.meta.env.VITE_BASE_URL + "/categories";
 
@@ -271,6 +307,7 @@ const obtenerCategorias = async (page = 1, search = "") => {
     const url = `${BaseURL}?page=${page}&search=${encodeURIComponent(search)}`;
     const { data } = await axios.get(url);
     categorias.value = data.results;
+    console.log(categorias.value);
     paginacion.value = data.paginacion;
   } catch (error) {
     /* console.error("Error al obtener las categorías:", error);
@@ -292,12 +329,14 @@ const cambiarEstado = async (categoria_persona_id) => {
 };
 
 // Mostrar el modal para editar una categoría existente
-const editarCategoria = async (categoria_persona_id) => {
+const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maximo_inv ) => {
   try {
     const { data } = await axios.get(`${BaseURL}/${categoria_persona_id}`);
     formEdit.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
     categoriaEditada.value = data; // Guardar la categoría seleccionada para editar
     // Forzar actualización del DOM antes de mostrar el modal 
+    montoMax.value = monto_maximo_inv
+    montoMin.value = monto_minimo_inv
     await nextTick();
     const editModal = new bootstrap.Modal(document.getElementById("modalEditCategory"));
     editModal.show();
@@ -314,9 +353,25 @@ const handleFileChangeEdit = (event) => {
   formEdit.value.image = event.target.files[0]; // Guardar la imagen seleccionada
 };
 
+
 const createCategory = async () => {
   const formData = new FormData();
-  formData.append("nombre", formCreate.value.nombre);
+  formData.append("nombre", formCreate.value.nombre.trim());
+  formData.append("montoInvMin", montoInvMin.value);
+  formData.append("montoInvMax", montoInvMax.value);
+  
+  if (!formCreate.value.image) {
+    errorAlert("La iamgen es requerida", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
+  }
+  if (montoInvMin.value >= montoInvMax.value ) {
+    errorAlert("El monto minimo de inversion no puede ser mayor a monto maximo", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
+  }
+  if ( formCreate.value.nombre.length <= 3 ) {
+    errorAlert("El nombre de la categoria debe contener al menos 3 caracteres", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
+  }
   if (formCreate.value.image) {
     formData.append("image", formCreate.value.image);
   }
@@ -335,6 +390,8 @@ const createCategory = async () => {
       formCreate.value.image = null
       document.getElementById("createNombre").value = ""; // Limpiar input de nombre 
       document.getElementById("createImage").value = null
+      montoInvMax.value = 0;
+      montoInvMin.value = 0;
       
     } else {
       errorAlert(data.msg, "Error"); // Mostrar mensaje de error si no fue exitoso
@@ -345,9 +402,22 @@ const createCategory = async () => {
   }
 };
 
+
 const editCategory = async () => {
+
+  if (!montoMin.value  || !montoMax.value || montoMin.value <= 0 || montoMax.value <= 0) {
+    errorAlert("Los montos de inversion son requeridos", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
+  }
+  if (montoMin.value >= montoMax.value ) {
+    errorAlert("La inversion minima no puede ser mayor a inversion maxima", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
+  }
+  
   const formData = new FormData();
-  formData.append("nombre", formEdit.value.nombre);
+  formData.append("nombre", formEdit.value.nombre.trim());
+  formData.append("monto_minimo_inversion", montoMin.value);
+  formData.append("monto_maximo_inversion", montoMax.value);
   if (formEdit.value.image) {
     formData.append("image", formEdit.value.image); // Añadir la imagen al FormData
   }
@@ -361,10 +431,13 @@ const editCategory = async () => {
     const editModalElement = document.getElementById("modalEditCategory");
     const editModalInstance = bootstrap.Modal.getInstance(editModalElement);
     editModalInstance.hide();
-    obtenerCategorias();
+   await obtenerCategorias();
+   montoMin.value = 0;
+   montoMax.value = 0;
   } catch (error) {
     errorAlert("Error al actualizar la categoría", "Error");
   }
+  console.log('enviado');
 };
 const clearSearch = () => {
   search.value = "";
@@ -548,7 +621,7 @@ const clearSearch = () => {
 }
 
 .content {
-  height: 70vh;
+  min-height: 70vh;
   width: 100%;
 }
 
@@ -557,7 +630,7 @@ const clearSearch = () => {
 }
 
 main {
-  height: 90vh;
+  min-height: 90vh;
 }
 
 td {
@@ -607,7 +680,9 @@ td {
 .pagination .page-item:nth-child(n + 4):nth-last-child(n + 4):not(.active) {
   display: none;
 }
-
+.placeHolderCustom::placeholder{
+  font-size: 0.7rem;
+}
 .pagination .page-item.active .page-link {
   background-color: #e0e4ff;
   color: #080808;
@@ -627,5 +702,16 @@ td {
   overflow-x: auto; /* Activa el desplazamiento horizontal si es necesario */
   white-space: nowrap; /* Evita saltos de línea */
 }
+
+.hover-button:hover{
+  font-size: 1.2rem !important;
+  transform: scale(1.2) !important;
+}
+.hover-button{
+  transition: transform 0.8s ease-in;
+
+}
+
+
 
 </style>

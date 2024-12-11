@@ -22,7 +22,7 @@
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('categorias')"
             :class="{ 'border-custom': view === 'categorias' }">
-            <i class="fa-solid fa-layer-group "></i> &nbsp; Categorías
+            <i class="fa-solid fa-layer-group "></i> &nbsp; Rubros
           </li>
           <li class="py-3 ps-2 rounded nav-link my-3 " @click="showView('coment')"
             :class="{ 'border-custom': view === 'coment' }">
