@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {
   getSolicitudesInversion,
+  getSolicitudesInversionAprobados,
+  getSolicitudesInversionPendientes,
+  getSolicitudesInversionRechazados,
   getSolicitudInversionById,
   createSolicitudInversion,
   updateSolicitudInversion,
@@ -10,6 +13,9 @@ const {
 } = require('../controllers/solicitudesInversion');
 
 router.get('/', getSolicitudesInversion);
+router.get('/aprobados', getSolicitudesInversionAprobados);
+router.get('/pendientes', getSolicitudesInversionPendientes);
+router.get('/rechazados', getSolicitudesInversionRechazados);
 router.get('/:id', getSolicitudInversionById);
 router.post('/', createSolicitudInversion);
 router.put('/:id', updateSolicitudInversion);
