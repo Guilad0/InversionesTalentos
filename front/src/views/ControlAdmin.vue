@@ -58,11 +58,6 @@
       <div class="col-10">
         <Solicitudes v-if="view == 'wallRequests'" />
         <SolicitudesTokens v-if="view == 'SolicitudesTokens'" />
-<<<<<<< HEAD
-        <SolicitudesInversiones v-if="view == 'investmentsRequests'" />
-=======
-        <SolicitudesInversiones v-if="view == 'SolicitudesInversiones'" />
->>>>>>> a563793 (front solicitud inversion)
         <Users v-if="view == 'users'" />
         <Posts v-if="view == 'posts'" />
         <Ajustes v-if="view == 'ajustes'" />
