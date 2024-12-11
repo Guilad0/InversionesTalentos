@@ -46,7 +46,7 @@ const getSolicitudesInversion = (req, res) => {
 // get para pendientes de inversion
 const getSolicitudesInversionPendientes = (req, res) => {
   const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || ''; 
+  const busqueda = req.query.search || '';
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
@@ -99,7 +99,7 @@ const getSolicitudesInversionPendientes = (req, res) => {
 // get para aprobados de inversiones
 const getSolicitudesInversionAprobados = (req, res) => {
   const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || ''; 
+  const busqueda = req.query.search || '';
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
@@ -153,7 +153,7 @@ const getSolicitudesInversionAprobados = (req, res) => {
 // get para rechazados de inversiones
 const getSolicitudesInversionRechazados = (req, res) => {
   const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || ''; 
+  const busqueda = req.query.search || '';
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
@@ -258,6 +258,16 @@ const deleteSolicitudInversion = (req, res) => {
     res.status(200).json({ msg: "Estado de la solicitud de inversión cambiado exitosamente", results });
   });
 };
+const getSolicitudesInversionByUserId = (req, res) => {
+  const { userId } = req.params;
+  const query = "SELECT * FROM solicitudes_inversion WHERE client_id = ?";
+  conexion.query(query, [userId], (err, results) => {
+    if (err) {
+      return res.status(500).json({ msg: "Error al obtener las solicitudes de inversión del usuario", err });
+    }
+    res.status(200).json({ results });
+  });
+};
 
 module.exports = {
   getSolicitudesInversion,
@@ -268,5 +278,6 @@ module.exports = {
   createSolicitudInversion,
   updateSolicitudInversion,
   aprobarSolicitudInversion,
-  deleteSolicitudInversion
+  deleteSolicitudInversion,
+  getSolicitudesInversionByUserId
 };
