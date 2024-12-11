@@ -3,7 +3,6 @@ var mysql = require('mysql2');
 var dotenv = require('dotenv');
 dotenv.config();
 
-
 var conf = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
