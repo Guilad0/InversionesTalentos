@@ -16,7 +16,9 @@
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
-              <label for="nombre" class="label">Motivo</label>
+              <label for="nombre" class="label"
+                >Motivo<strong class="text-danger">*</strong></label
+              >
               <input
                 id="nombre"
                 v-model="nombre"
@@ -26,14 +28,16 @@
                 required
               />
               <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, minimo 5 caracteres
+                Debes Completar este Campo
               </div>
             </div>
           </div>
         </div>
 
         <div class="input-container2">
-          <label for="descripcion" class="label">Descripción</label>
+          <label for="descripcion" class="label"
+            >Descripción <strong class="text-danger">*</strong></label
+          >
           <textarea
             id="descripcion"
             ref="refDescripcion"
@@ -43,15 +47,13 @@
             rows="3"
             required
           ></textarea>
-          <div class="ms-2 invalid-feedback fs-custom">
-            Campo requerido, minimo 5 caracteres
-          </div>
+          <div class="ms-2 invalid-feedback fs-custom">Debes Completar este Campo</div>
         </div>
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_inicio_recaudacion" class="label"
-                >Fecha Inicio Recaudación</label
+                >Fecha Inicio Recaudación<strong class="text-danger">*</strong></label
               >
               <input
                 ref="refMinDate"
@@ -66,7 +68,7 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_fin_recaudacion" class="label"
-                >Fecha Final Recaudación</label
+                >Fecha Final Recaudación<strong class="text-danger">*</strong></label
               >
               <input
                 ref="refMaxDate"
@@ -82,33 +84,37 @@
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
-              <label for="monto" class="label">Monto</label>
+              <label for="monto" class="label"
+                >Monto<strong class="text-danger">*</strong></label
+              >
               <input
                 id="monto"
                 v-model="monto"
                 ref="refMonto"
                 type="number"
-                class="input form-control"
+                class="input form-control no-spin"
                 required
               />
               <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, minimo 5 caracteres
+                Campo requerido, ingresar un valor mayor a 0
               </div>
             </div>
           </div>
           <div class="col mb-6">
             <div class="input-container">
-              <label for="cantidad_pagos" class="label">Cantidad Pagos</label>
+              <label for="cantidad_pagos" class="label"
+                >Cantidad Pagos<strong class="text-danger">*</strong></label
+              >
               <input
                 id="cantidad_pagos"
                 v-model="cantidad_pagos"
                 ref="refCantidadPagos"
                 type="number"
-                class="input form-control"
+                class="input form-control no-spin"
                 required
               />
               <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, minimo 5 caracteres
+                Campo requerido, ingresar un valor mayor a 0
               </div>
             </div>
           </div>
@@ -117,7 +123,7 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_inicio_pago" class="label"
-                >Fecha Inicio Pago</label
+                >Fecha Inicio Pago<strong class="text-danger">*</strong></label
               >
               <input
                 ref="refMinDate"
@@ -132,7 +138,7 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_fin_pago" class="label"
-                >Fecha Fin Inversión</label
+                >Fecha Fin Inversión<strong class="text-danger">*</strong></label
               >
               <input
                 id="fecha_fin_pago"
@@ -212,13 +218,10 @@ onMounted(() => {
 // Función para registrar la experiencia
 const registrarExperiencia = async (event) => {
   if (!validarFormulario(event)) return;
-  if (
-    nombre.value &&
-    nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5
-  ) {
+  if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
     nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
     refNombre.value.focus();
-    errorAlert("La institución debe contener más de 5 letras.", "Error");
+    errorAlert("El campo motivo debe contener más de 5 letras.", "Error");
     return;
   }
   if (monto.value && monto.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
@@ -234,10 +237,7 @@ const registrarExperiencia = async (event) => {
   ) {
     descripcion.value = descripcion.value.trim() == "" ? "" : descripcion.value;
     refDescripcion.value.focus();
-    errorAlert(
-      "La descripción no puede estar vacía ni contener solo espacios.",
-      "Error"
-    );
+    errorAlert("La descripción no puede estar vacía ni contener solo espacios.", "Error");
     return;
   }
   if (fecha_inicio_recaudacion.value <= minDate.value) {
@@ -251,10 +251,7 @@ const registrarExperiencia = async (event) => {
     return;
   }
   if (fecha_inicio_recaudacion.value >= fecha_fin_recaudacion.value) {
-    errorAlert(
-      "La fecha de inicio no puede ser mayor a la fecha final.",
-      "Error"
-    );
+    errorAlert("La fecha de inicio no puede ser mayor a la fecha final.", "Error");
     refMinDate.value.focus();
     return;
   }
@@ -276,12 +273,12 @@ const registrarExperiencia = async (event) => {
     fecha_fin_recaudacion.value = "";
     monto.value = "";
     nombre.value = "";
-    successAlert("Experiencia registrada correctamente", "¡Éxito!");
+    successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
     // Redirigir al perfil
     router.push({ name: "perfil" });
   } catch (error) {
     console.error(error);
-    errorAlert("Hubo un problema al registrar la experiencia.", "Error");
+    errorAlert("Hubo un problema al registrar la Solicitud de Inversión.", "Error");
     window.location.reload();
   }
 };
@@ -576,5 +573,10 @@ textarea.input {
   .input-container {
     margin-top: 10px;
   }
+}
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
