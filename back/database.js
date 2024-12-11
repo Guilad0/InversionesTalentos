@@ -21,7 +21,7 @@ var conf = {
   database: process.env.DB_DATABASE,
   port: process.env.DB_PORT || 3306,
   connectTimeout: 10000,
-  acquireTimeout: 10000,
+  //acquireTimeout: 10000,
   ssl: false,
 };
 
