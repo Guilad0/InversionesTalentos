@@ -217,7 +217,7 @@ const obtenerTotales = async () => {
 try {
   const { data } = await axios.get(`${BaseURL}/`);
   console.log(data);
-  totalSolicitudes.value = data.total;
+  totalSolicitudes.value = data.paginacion.total;
   solicitudesPendientes.value = data.pendientes;
   solicitudesAprobados.value = data.aprobados;
   solicitudesRechazados.value = data.rechazados;
@@ -260,7 +260,7 @@ try {
 
 const eliminado = async (id) => {
 try {
-  const { data } = await axios.patch(BaseURL + "/:id" + id);
+  const { data } = await axios.delete(BaseURL + "/:id" + id);
   // Al eliminar, recargar la lista de pendientes
   obtenerDatos(1, "", "Pendiente");
 } catch (error) {
