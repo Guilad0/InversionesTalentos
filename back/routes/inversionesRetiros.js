@@ -2,6 +2,97 @@ var express = require("express");
 var router = express.Router();
 var connection = require("../database");
 
+router.get("/inversiones", function (req, res, next) {
+  // Parámetros de paginación y búsqueda
+  const porPagina = 10; // Número de resultados por página
+  const pagina = parseInt(req.query.page, 10) || 1; // Página actual
+  const salto = (pagina - 1) * porPagina; // Calcular el número de resultados a saltar
+  const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
+  
+  // Consulta para contar el número total de filas
+  const queryFilas = `SELECT COUNT(*) AS numFilas
+                      FROM inversiones
+                      INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id;`;
+  
+  connection.query(queryFilas, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        err,
+        msg: "Error al contar las filas",
+      });
+    }
+    
+    const numFilas = results[0].numFilas;
+    const numPaginas = Math.ceil(numFilas / porPagina);
+    
+    // Consulta para obtener los datos con paginación
+    const query = `SELECT inversiones.*, usuarios.imagen, 
+                  CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
+                  DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_inversion,
+                  DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_retorno
+                  FROM inversiones
+                  INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
+                  ORDER BY inversiones.inversion_id DESC
+                  LIMIT ${limite};`;
+
+    connection.query(query, (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          err,
+          msg: "Error al obtener las inversiones",
+        });
+      }
+
+      const paginas = Array.from({ length: numPaginas }, (_, i) => i + 1);
+
+      const paginacion = {
+        total: numFilas,
+        current: pagina,
+        pages: paginas,
+        perPage: porPagina,
+        previous: pagina > 1 ? pagina - 1 : null,
+        next: pagina < numPaginas ? pagina + 1 : null,
+      };
+
+      res.status(200).json({
+        results,
+        paginacion,
+        message: "Inversiones consultadas correctamente",
+      });
+    });
+  });
+});
+
+// Ruta para actualizar el estado de una inversión
+router.put("/inversion/:id", function (req, res, next) {
+  var query = `UPDATE inversiones SET estado = ? WHERE inversion_id = ?`;
+  var estado = req.body.estado;  // Este valor debe ser 0 o 1
+  var inversionId = req.params.id;
+
+  // Verificación de que el estado sea un valor booleano válido
+  if (estado !== 0 && estado !== 1) {
+    return res.status(400).send({
+      message: "El valor del estado debe ser 0 o 1",
+    });
+  }
+
+  connection.query(query, [estado, inversionId], function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        error: error,
+        message: "Error al actualizar el estado de la inversión",
+      });
+    } else {
+      res.status(200).send({
+        data: results,
+        message: "Estado de la inversión actualizado correctamente",
+      });
+    }
+  });
+});
+
+
 router.get("/inversionista/:id", function (req, res, next) {
 
   var query = ` SELECT inversiones.*, usuarios.imagen, 
