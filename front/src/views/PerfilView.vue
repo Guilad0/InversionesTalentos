@@ -105,7 +105,7 @@
               Solicitar Inversión
             </div>
             <div class="">
-              <button class="btn btn-orange rounded-5 px-3" @click="redirectToSolicitudInversion">
+              <button class="btn btn-orange rounded-5 px-3" @click="goToPage('Solicitar-inversion')">
                 Solicitar
               </button>
             </div>
