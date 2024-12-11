@@ -813,7 +813,7 @@ const addInfClient = async (req, res) => {
     preparacion,
     estudios,
     vision,
-    categoria_persona_id, // Añadimos este campo al cuerpo de la solicitud
+    //categoria_persona_id, // Añadimos este campo al cuerpo de la solicitud
   } = req.body;
 
   let query = "select * from usuarios where usuario_id=?";
@@ -840,7 +840,7 @@ const addInfClient = async (req, res) => {
 
       // Actualizamos la columna categoria_persona_id en la tabla usuarios
       query =
-        "update usuarios set categoria_persona_id = ? where usuario_id = ?";
+        "update usuarios set categoria_persona_id = categoria_persona_id where usuario_id = ?";
       conexion.query(query, [categoria_persona_id, cliente_id], (err) => {
         if (err) {
           return res.status(500).json({ err: err.message });
