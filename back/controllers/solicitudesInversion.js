@@ -42,6 +42,17 @@ const getSolicitudesInversion = (req, res) => {
   });
 };
 
+const getTotals = (req, res) =>{
+  const query = `SELECT aprobado, COUNT(*) AS total
+                FROM solicitudes_inversion
+                GROUP BY aprobado`;
+  conexion.query(query, (err, results) =>{
+    if( err ){
+      return res.status(500).json({ msg: "Error al obtener los totales de inversión", err });
+    }
+    res.status(200).json({ results});
+  })
+}
 
 // get para pendientes de inversion
 const getSolicitudesInversionPendientes = (req, res) => {
@@ -239,7 +250,7 @@ const updateSolicitudInversion = (req, res) => {
 
 const aprobarSolicitudInversion = (req, res) => {
   const { id } = req.params;
-  const query = "UPDATE solicitudes_inversion SET aprobado = 1 WHERE id = ?";
+  const query = `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}' WHERE id = ?`;
   conexion.query(query, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ msg: "Error al aprobar la solicitud de inversión", err });
@@ -279,5 +290,6 @@ module.exports = {
   updateSolicitudInversion,
   aprobarSolicitudInversion,
   deleteSolicitudInversion,
-  getSolicitudesInversionByUserId
+  getSolicitudesInversionByUserId,
+  getTotals
 };

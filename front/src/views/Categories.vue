@@ -703,14 +703,14 @@ td {
   white-space: nowrap; /* Evita saltos de línea */
 }
 
-.hover-button:hover{
+/* .hover-button:hover{
   font-size: 1.2rem !important;
   transform: scale(1.2) !important;
 }
 .hover-button{
   transition: transform 0.8s ease-in;
 
-}
+} */
 
 
 
