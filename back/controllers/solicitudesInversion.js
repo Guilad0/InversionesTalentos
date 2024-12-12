@@ -3,12 +3,14 @@ const conexion = require("../database");
 const getSolicitudesInversion = (req, res) => {
   // Parámetros de paginación
   const porPagina = 10; // Número de resultados por página
+  const filtro = req.query.filtro; 
+  console.log(filtro);
   const pagina = parseInt(req.query.page, 10) || 1; // Página actual
   const salto = (pagina - 1) * porPagina; // Calcular el número de resultados a saltar
   const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
 
   // Consulta para contar el número total de filas
-  const queryFilas = `SELECT COUNT(*) AS numFilas FROM solicitudes_inversion`;
+  const queryFilas = (filtro == 'General')?`SELECT COUNT(*) AS numFilas FROM solicitudes_inversion`:`SELECT COUNT(*) AS numFilas FROM solicitudes_inversion where aprobado = '${filtro}'`;
 
   conexion.query(queryFilas, (err, results) => {
     if (err) {
@@ -19,7 +21,7 @@ const getSolicitudesInversion = (req, res) => {
     const numPaginas = Math.ceil(numFilas / porPagina);
 
     // Consulta para obtener los datos con paginación
-    const query = `SELECT * FROM solicitudes_inversion LIMIT ${limite}`;
+    const query = (filtro == 'General')?`SELECT * FROM solicitudes_inversion LIMIT ${limite}`:`SELECT * FROM solicitudes_inversion where aprobado = '${filtro}' LIMIT ${limite}`;
 
     conexion.query(query, (err, results) => {
       if (err) {
@@ -43,9 +45,13 @@ const getSolicitudesInversion = (req, res) => {
 };
 
 const getTotals = (req, res) =>{
-  const query = `SELECT aprobado, COUNT(*) AS total
-                FROM solicitudes_inversion
-                GROUP BY aprobado`;
+  const query = `SELECT 
+    IFNULL(aprobado, 'todo') AS estado, 
+    COUNT(*) AS total
+    FROM 
+        solicitudes_inversion
+    GROUP BY 
+    aprobado WITH ROLLUP;`;
   conexion.query(query, (err, results) =>{
     if( err ){
       return res.status(500).json({ msg: "Error al obtener los totales de inversión", err });
