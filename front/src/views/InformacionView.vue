@@ -17,7 +17,7 @@
               </div> -->
 
               <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label for="ocupacion" class="form-label">Ocupación <code>*</code>
                   </label>
                   <input type="text" v-model="ocupacion" id="ocupacion" class="form-control input" required
