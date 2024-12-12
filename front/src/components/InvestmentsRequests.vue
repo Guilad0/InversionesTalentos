@@ -23,29 +23,29 @@
       </nav> -->
     </div>
     <div class="content">
-      <h4 class="d-block mb-2 text-center title">Solicitudes de Inversiones</h4>
+      <h4 class="d-block my-2 text-center title">Solicitudes de Inversiones</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
-          <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
-            <div class="card-header">
+          <div class="card text-bg-secondary mb-3 rounded-5 cursor hover-custom " style="max-width: 18rem"  @click="filtrarInv('General')">
+            <div class="card-header" :class="filtro=='General'?'shadow':''">
               <i class="fa-solid fa-list-check"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
             </div>
           </div>
        
-          <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
-            <div class="card-header text-white">
+          <div class="card text-bg-success mb-3 rounded-5 cursor hover-custom" style="max-width: 18rem" @click="filtrarInv('Aprobado')">
+            <div class="card-header text-white" :class="filtro=='Aprobado'?'shadow':''">
               <i class="fa-regular fa-circle-check"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
               &nbsp;
             </div>
           </div>
-          <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
-            <div class="card-header text-white">
+          <div class="card text-bg-orange mb-3 rounded-5 cursor hover-custom" style="max-width: 18rem" @click="filtrarInv('Pendiente')">
+            <div class="card-header text-white" :class="filtro=='Pendiente'?'shadow':''">
               <i class="fa-solid fa-triangle-exclamation"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
               &nbsp;
             </div>
           </div>
-          <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
-            <div class="card-header text-white">
+          <div class="card text-bg-danger mb-3 rounded-5 cursor hover-custom" style="max-width: 18rem" @click="filtrarInv('Rechazado')">
+            <div class="card-header text-white" :class="filtro=='Rechazado'?'shadow':''">
               <i class="fa-solid fa-ban"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
               &nbsp;
             </div>
@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="table-container">
-          <table class="table overflow-x-scroll">
+          <table class="table overflow-x-scroll ">
             <thead>
               <tr class="table-secondary">
                 <th class="td-custom align-middle custom-size">ID</th>
@@ -223,20 +223,30 @@ modalRef.value = document.getElementById('staticBackdrop');
 const closeModal = () =>{
   cleanFields()
 }
+
+const filtrarInv = async( tipoInversion ) =>{
+  filtro.value = tipoInversion;
+  paginacion.value.current = 1;
+  console.log(paginacion.value.current);
+  await obtenerDatos(paginacion.value.current, "", "");
+
+}
+
 const cleanFields = () =>{
   observaciones.value = '';
   idInv.value = '';
   actInv.value = ''
 }
-const obtenerDatos = async (page = 1, search = "", filtro = "") => {
+const filtro = ref('General')
+const obtenerDatos = async (page = 1, search = "") => {
 try {
-  let url = `${BaseURL}?page=${page}`;
-  if (filtro && filtro !== "General") {
-    url += `&estado=${filtro}`;
-  }
+  let url = `${BaseURL}?page=${page}&filtro=${filtro.value}`;
+  // if (filtro && filtro !== "General") {
+  //   url += `&estado=${filtro}`;
+  // }
 
   const { data } = await axios.get(url);
-  totalSolicitudes.value = data.paginacion.total;
+  
   solicitudes.value = data.data;
   console.log(solicitudes.value);
   paginacion.value = data.paginacion;
@@ -249,9 +259,10 @@ const obtenerTotales = async () => {
 try {
   const { data } = await axios.get(`${BaseURL}/getTotals/totals`);
   console.log(data.results);
-  solicitudesPendientes.value = data.results[2].total
-  solicitudesAprobados.value = data.results[0].total
-  solicitudesRechazados.value = data.results[1].total
+  totalSolicitudes.value = data.results[3].total
+  solicitudesPendientes.value = data.results[0].total
+  solicitudesAprobados.value = data.results[1].total
+  solicitudesRechazados.value = data.results[2].total
   
 } catch (error) {
   console.log("Error al obtener totales:", error);
@@ -340,6 +351,15 @@ font-weight: 700;
 font-size: 30px;
 color: var(--gray-color);
 text-transform: uppercase;
+}
+
+.hover-custom:hover{
+  opacity: 0.8;
+  transition: all 0.5s ease !important;
+}
+.hover-custom{
+  opacity: 1;
+
 }
 
 textarea::placeholder{
