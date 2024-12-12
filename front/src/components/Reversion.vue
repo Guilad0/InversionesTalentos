@@ -1,63 +1,8 @@
-<script setup>
-import useFetchData from "../helpers/UseFetchData";
-import Pagination from "../components/Pagination.vue";
-import { ref, onMounted } from "vue";
-import { notyf } from "@/helpers/NotifyAlerts";
-import axios from "axios";
-import ModalInforUser from "../components/ModalInforUser.vue";
-import ModalCreateUserAdmin from "./ModalCreateUserAdmin.vue";
-import ModalMedia from "./ModalMedia.vue";
-import Spinner from '../components/Spinner.vue';
-
-</script>
 <template>
   <main class="bg-light">
     <div  class="content">
       <h4 class="d-block text-start mb-2 text-center title">Reversion</h4>
       <div class="d-flex justify-content-between  mt-2 mb-3">
-      </div>
-      <div class="d-flex justify-content-start gap-3 position-relative my-4"> 
-        <div class="card text-bg-secondary mb-3   rounded-5" style="max-width: 18rem">
-          <div class="card-header ">
-            <i class="fa-solid fa-users"></i> <strong> Total</strong> {{ total }} &nbsp; 
-          </div>
-        </div>
-        <div class="card text-bg-primary mb-3 rounded-5" style="max-width: 18rem">
-          <div class="card-header">
-            <i class="fa-solid fa-check"></i><strong> Aprobados</strong> {{ aprobados }} &nbsp; 
-          </div>
-        </div>
-        <div class="card text-bg-orange mb-3  rounded-5" style="max-width: 18rem">
-          <div class="card-header text-white">
-            <i class="fa-solid fa-triangle-exclamation"></i> <strong class=""> Pendientes</strong> {{pendientes}} &nbsp; 
-          </div>
-        </div>
-        <div class="card text-bg-danger mb-3  rounded-5" style="max-width: 18rem">
-          <div class="card-header text-white">
-            <i class="fa-solid fa-ban"></i> <strong class=""> Rechazados</strong> {{rechazados}} &nbsp; 
-          </div>
-        </div>
-        <div class="custom-abs-search">
-            <div class="position-relative">
-          <input
-            name="search"
-            type="text"
-            v-model="search"
-            class="form-control border-1 border-secondary rounded-5" 
-            placeholder="Buscar ..."
-            @input="handleName"
-          />
-          <div v-if="search !== ''" class="custom-absolute">
-            <img
-              class="cursor"
-              src="../assets/svg/close.svg"
-              alt="Descripción del SVG"
-              width="25"
-              @click="clearSearch"
-            />
-          </div>
-        </div>
-        </div>
       </div>
       <div class="table-responsive animate__animated  animate__fadeIn" v-if="!isLoading">
         <table class="table overflow-x-scroll table-sm  table-light">
@@ -69,7 +14,8 @@ import Spinner from '../components/Spinner.vue';
               <th class="td-custom custom-size">Total de inversionistas</th>
               <th class="td-custom custom-size">Monto</th>
               <th class="td-custom custom-size">Monto recaudado</th>
-              <th class="td-custom custom-size text-center">Porcentaje alcanzado</th>
+              <th class="td-custom custom-size text-center">Fecha Inicio Recaudacion</th>
+              <th class="td-custom custom-size text-center">Fecha Fin Recaudacion</th>
               <th class="td-custom custom-size text-center">Estado</th>
               <th class="td-custom custom-size">Acciones</th>
             </tr>
@@ -232,6 +178,18 @@ import Spinner from '../components/Spinner.vue';
     <ModalCreateUserAdmin  @closeModal="closeModal"/>
   </main>
 </template>
+<script setup>
+import useFetchData from "../helpers/UseFetchData";
+import Pagination from "../components/Pagination.vue";
+import { ref, onMounted } from "vue";
+import { notyf } from "@/helpers/NotifyAlerts";
+import axios from "axios";
+import ModalInforUser from "../components/ModalInforUser.vue";
+import ModalCreateUserAdmin from "./ModalCreateUserAdmin.vue";
+import ModalMedia from "./ModalMedia.vue";
+import Spinner from '../components/Spinner.vue';
+
+</script>
 <style scoped>
 .custom-size {
   font-size: 0.9rem;
