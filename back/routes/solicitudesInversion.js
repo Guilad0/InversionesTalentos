@@ -10,7 +10,8 @@ const {
   updateSolicitudInversion,
   aprobarSolicitudInversion,
   deleteSolicitudInversion,
-  getSolicitudesInversionByUserId
+  getSolicitudesInversionByUserId,
+  getTotals
 } = require('../controllers/solicitudesInversion');
 
 router.get('/', getSolicitudesInversion);
@@ -23,5 +24,6 @@ router.put('/:id', updateSolicitudInversion);
 router.patch('/aprobar/:id', aprobarSolicitudInversion);
 router.delete('/:id', deleteSolicitudInversion);
 router.get('/user/:userId', getSolicitudesInversionByUserId);
+router.get('/getTotals/totals', getTotals)
 
 module.exports = router;

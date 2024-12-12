@@ -13,7 +13,7 @@
           </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3 retiro " :class="{ 'border-custom': view == 'investmentsRequests' }"
             @click="showView('investmentsRequests')">
-            <i class="fa-solid fa-circle-dollar-to-slot"></i> &nbsp; Solicitudes Inversiones
+            <i class="fa-solid fa-dollar-sign"></i> &nbsp; Solicitudes Inversiones
           </li>
           <li class="py-3 ps-2 rounded  nav-link  my-3" :class="{ 'border-custom': view == 'users' }"
             @click="showView('users')">

@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light pt-4 ps-4">
     <div class="d-flex">
-      <nav aria-label="breadcrumb">
+      <!-- <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"
             class="nav-link mx-2">
@@ -20,7 +20,7 @@
             <label>Rechazados</label>
           </li>
         </ol>
-      </nav>
+      </nav> -->
     </div>
     <div class="content">
       <h4 class="d-block mb-2 text-center title">Solicitudes de Inversiones</h4>
@@ -28,32 +28,33 @@
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
           <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header">
-              <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
+              <i class="fa-solid fa-list-check"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
+            </div>
+          </div>
+       
+          <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
+            <div class="card-header text-white">
+              <i class="fa-regular fa-circle-check"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
+              &nbsp;
             </div>
           </div>
           <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
-              &nbsp;
-            </div>
-          </div>
-          <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
-            <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
+              <i class="fa-solid fa-triangle-exclamation"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
               &nbsp;
             </div>
           </div>
           <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
+              <i class="fa-solid fa-ban"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
               &nbsp;
             </div>
           </div>
           <div class="custom-abs-search">
             <div class="position-relative">
-              <input name="search" type="text" v-model="search"
+              <!-- <input name="search" type="text" v-model="search"
                 class="form-control border-1 border-secondary border-primary rounded-5 float" placeholder="Buscar ..."
-                @input="obtenerDatos(1, search)" />
+                @input="obtenerDatos(1, search)" /> -->
             </div>
           </div>
         </div>
@@ -66,7 +67,7 @@
                 <th class="td-custom align-middle custom-size">Descripcion</th>
                 <th class="td-custom align-middle custom-size">Fecha Inicio Recaudacion</th>
                 <th class="td-custom align-middle custom-size">Fecha Fin Recaudacion</th>
-                <th class="td-custom align-middle custom-size">Monto</th>
+                <th class="td-custom align-middle custom-size">Monto USD</th>
                 <th class="td-custom align-middle custom-size">Cantidad Pago</th>
                 <th class="td-custom align-middle custom-size">Fecha Inicio Pago</th>
                 <th class="td-custom align-middle custom-size">Fecha Fin Pago</th>
@@ -86,34 +87,33 @@
                 <td class="text-center align-middle">{{ new Date(item.fecha_inicio_pago).toLocaleDateString() }}</td>
                 <td class="text-center align-middle">{{ new Date(item.fecha_fin_pago).toLocaleDateString() }}</td>
                 <td class="text-center align-middle">
-                  <span v-if="item.estado == 'Pendiente'" class="badge text-bg-warning">{{
-                    item.estado
+                  <span v-if="item.aprobado == 'Pendiente'" class="badge text-bg-warning text-dark ">{{
+                    item.aprobado
                   }}</span>
-                  <span v-if="item.estado == 'Aprobado'" class="badge text-bg-success">{{
-                    item.estado
+                  <span v-if="item.aprobado == 'Aprobado'" class="badge text-bg-success text-light ">{{
+                    item.aprobado
                   }}</span>
-                  <span v-if="item.estado == 'Rechazado'" class="badge text-bg-danger">{{
-                    item.estado
-                  }}</span>
-                  <span v-if="item.estado == 'Eliminado'" class="badge text-bg-danger">{{
-                    item.estado
+                  <span v-if="item.aprobado == 'Rechazado'" class="badge text-bg-danger text-light">{{
+                    item.aprobado
                   }}</span>
                 </td>
-                <td v-if="item.estado == 'Pendiente'">
+                <td v-if="item.aprobado == 'Pendiente'" class="text-center align-middle">
                   <div class="d-flex">
-                    <button class="btn btn-success btn-sm mx-1" @click="aprobado(item)">
-                      <i class="fa fa-check"></i>
+                    <button class="border-0 m-auto hover-button  mx-1" @click="procesarSolicitud(item.id,'Aprobado')">
+                      <i class="fa-regular fa-circle-check text-success "></i>
+
                     </button>
-                    <button class="btn btn-danger btn-sm mx-1" @click="rechazado(item.id)">
-                      <i class="fa fa-times"></i>
+                    <button class="border-0 m-auto hover-button  mx-1" @click="procesarSolicitud(item.id,'Rechazado')">
+                      <i class="fa-solid fa-ban text-danger"></i>
                     </button>
                   </div>
                 </td>
-                <td v-if="item.estado == 'Aprobado'">
+                <td v-if="item.aprobado == 'Aprobado'" class="text-center align-middle font-custom">
                   <!-- Botones específicos para el estado Aprobado -->
+                  Sin acciones
                 </td>
-                <td v-if="item.estado == 'Rechazado'">
-                  <div class="d-flex">
+                <td v-if="item.aprobado == 'Rechazado'" class="text-center align-middle font-custom">
+                  <!-- <div class="d-flex">
                     <button class="btn btn-warning btn-sm mx-1" @click="pendiente(item.id)">
                     <i class="fa fa-clock"></i>
                   </button>
@@ -121,11 +121,31 @@
                     @click="eliminado(item.id)">
                     <i class="fa fa-trash"></i>
                   </button>
-                  </div>
+                  </div> -->
+                  Sin acciones
                 </td>
               </tr>
             </tbody>
           </table>
+          <!-- Modal rechazo solicitud -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5 m-auto" id="staticBackdropLabel"> Rechazar inversion</h1>
+                  </div>
+                  <div class="modal-body">
+                    <label for="obs" class="mb-3">Por favor, indique el motivo del rechazo de la inversion para que sea enviado al solicitante.</label>
+                  <textarea id="obs" v-model="observaciones" class="form-control mb-3" placeholder=""></textarea>
+
+                  <div class="modal-footer d-flex justify-content-center mt-3 pb-0">
+                    <button :disabled="loading" type="button" class="rounded-3 btn-gray border-1 border" data-bs-dismiss="modal" @click="closeModal">Cancelar</button>
+                    <button :disabled="loading" type="button" class="rounded-3 btn-gray border-1 border" @click="rechazar">Enviar</button>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
         <!-- paginacion -->
         <div class="d-flex justify-content-center">
@@ -172,7 +192,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import { errorAlert, successAlert } from "@/helpers/iziToast";
+const modalRef = ref('')
 const solicitudes = ref([]);
 const paginacion = ref({});
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
@@ -182,29 +203,40 @@ const totalSolicitudes = ref(0);
 const solicitudesPendientes = ref(0);
 const solicitudesAprobados = ref(0);
 const solicitudesRechazados = ref(0);
+const observaciones = ref('');
 
-onMounted(() => {
-obtenerDatos();
-obtenerTotales();
+onMounted( async () => {
+await obtenerDatos();
+await obtenerTotales();
+modalRef.value = document.getElementById('staticBackdrop');
 });
 
-const setActive = (estado) => {
-currentNav.value = estado; onMounted(() => {
-  obtenerDatos(); // Carga los datos iniciales de solicitudes
-  obtenerTotales(); // Carga los totales iniciales
-});
+// const setActive = (estado) => {
+// currentNav.value = estado; onMounted(() => {
+//   obtenerDatos(); // Carga los datos iniciales de solicitudes
+//   obtenerTotales(); // Carga los totales iniciales
+// });
 
-obtenerDatos(1, "", estado);
-};
+// obtenerDatos(1, "", estado);
+// };
 
+const closeModal = () =>{
+  cleanFields()
+}
+const cleanFields = () =>{
+  observaciones.value = '';
+  idInv.value = '';
+  actInv.value = ''
+}
 const obtenerDatos = async (page = 1, search = "", filtro = "") => {
 try {
-  let url = `${BaseURL}?page=${page}&search=${search}`;
+  let url = `${BaseURL}?page=${page}`;
   if (filtro && filtro !== "General") {
     url += `&estado=${filtro}`;
   }
 
   const { data } = await axios.get(url);
+  totalSolicitudes.value = data.paginacion.total;
   solicitudes.value = data.data;
   console.log(solicitudes.value);
   paginacion.value = data.paginacion;
@@ -215,37 +247,66 @@ try {
 };
 const obtenerTotales = async () => {
 try {
-  const { data } = await axios.get(`${BaseURL}/`);
-  console.log(data);
-  totalSolicitudes.value = data.paginacion.total;
-  solicitudesPendientes.value = data.pendientes;
-  solicitudesAprobados.value = data.aprobados;
-  solicitudesRechazados.value = data.rechazados;
+  const { data } = await axios.get(`${BaseURL}/getTotals/totals`);
+  console.log(data.results);
+  solicitudesPendientes.value = data.results[2].total
+  solicitudesAprobados.value = data.results[0].total
+  solicitudesRechazados.value = data.results[1].total
+  
 } catch (error) {
   console.log("Error al obtener totales:", error);
 }
 };
-const aprobado = async (solicitud) => {
+const idInv = ref('')
+const actInv = ref('')
+const procesarSolicitud = async (id, action) => {
 
-try {
-  await axios.put(BaseURL + "/aprobados/" + solicitud.id, solicitud);
+  
+  if( action == 'Aprobado' ){
+    observaciones.value = ''
+    const band = confirm('Aprobar la inversion con el identificador '+id+' ?');
+    if( band ){
+      try {
+  await axios.patch(BaseURL + "/aprobar/" +id+'?action='+action+'&observaciones='+observaciones.value);
   // Al aprobar, se vuelve a cargar la lista de pendientes
-  await obtenerDatos(1, "", "Pendiente");
+  await obtenerDatos(paginacion.value.current, "", "");
   await obtenerTotales();
 } catch (error) {
   console.log(error);
+  errorAlert('Error al procesar la solicitud', 'Error')
 }
+    }
+  }else{
+    idInv.value = id;
+    actInv.value = action;
+    const modal = new bootstrap.Modal(modalRef.value);
+    modal.show();
+  }
 };
 
-const rechazado = async (id) => {
-try {
-  const { data } = await axios.patch(BaseURL + "/rechazados/" + id);
-  // Al rechazar, se vuelve a cargar la lista de pendientes
-  await obtenerDatos(1, "", "Pendiente");
-  await obtenerTotales();
-} catch (error) {
-  console.log(error);
-}
+const loading = ref(false)
+const rechazar = async () => {
+  if( observaciones.value.trim() == '' ){
+      errorAlert('El campo es requerido', 'error')
+    return
+  }
+  try {
+      loading.value = true
+      await axios.patch(BaseURL + "/aprobar/" +idInv.value+'?action='+actInv.value+'&observaciones='+observaciones.value);
+      await obtenerDatos(paginacion.value.current, "", "");
+      await obtenerTotales();
+      // const modal = new bootstrap.Modal(modalRef.value);
+      var modal = bootstrap.Modal.getInstance(modalRef.value) || new bootstrap.Modal(modalRef.value);
+      console.log(modal);
+      modal.hide()
+      successAlert('La inversion fue rechazada', 'Solicitud finalizada')
+    
+    } catch (error) {
+        errorAlert('Error al rechazar solicitud', 'Error')
+    }finally{
+      cleanFields()
+      loading.value = false
+    }
 };
 
 const pendiente = async (id) => {
@@ -270,6 +331,9 @@ try {
 </script>
 
 <style scoped>
+.font-custom{
+  font-size: 0.8rem;
+}
 .title {
 font-family: var(--font-montserrat-bold);
 font-weight: 700;
@@ -278,8 +342,12 @@ color: var(--gray-color);
 text-transform: uppercase;
 }
 
+textarea::placeholder{
+  font-size: 0.9rem;
+}
+
 .custom-size {
-font-size: 0.9rem;
+font-size: 0.8rem;
 font-weight: 630;
 }
 

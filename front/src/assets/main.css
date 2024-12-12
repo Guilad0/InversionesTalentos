@@ -252,3 +252,13 @@ textarea {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
+
+
+.hover-button:hover{
+  font-size: 0.8rem !important;
+  transform: scale(1.2) !important;
+}
+.hover-button{
+  transition: transform 0.3s ease-in !important;
+
+}
