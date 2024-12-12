@@ -47,13 +47,17 @@
             rows="3"
             required
           ></textarea>
-          <div class="ms-2 invalid-feedback fs-custom">Debes Completar este Campo</div>
+          <div class="ms-2 invalid-feedback fs-custom">
+            Debes Completar este Campo
+          </div>
         </div>
         <div class="row mb-3">
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_inicio_recaudacion" class="label"
-                >Fecha Inicio Recaudación<strong class="text-danger">*</strong></label
+                >Fecha Inicio Recaudación<strong class="text-danger"
+                  >*</strong
+                ></label
               >
               <input
                 ref="refMinDate"
@@ -68,7 +72,9 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_fin_recaudacion" class="label"
-                >Fecha Final Recaudación<strong class="text-danger">*</strong></label
+                >Fecha Final Recaudación<strong class="text-danger"
+                  >*</strong
+                ></label
               >
               <input
                 ref="refMaxDate"
@@ -138,7 +144,9 @@
           <div class="col mb-6">
             <div class="input-container">
               <label for="fecha_fin_pago" class="label"
-                >Fecha Fin Inversión<strong class="text-danger">*</strong></label
+                >Fecha Fin Inversión<strong class="text-danger"
+                  >*</strong
+                ></label
               >
               <input
                 id="fecha_fin_pago"
@@ -218,7 +226,7 @@ onMounted(() => {
 // Función para registrar la experiencia
 const registrarExperiencia = async (event) => {
   if (!validarFormulario(event)) return;
-  if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
+  /* if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
     nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
     refNombre.value.focus();
     errorAlert("El campo motivo debe contener más de 5 letras.", "Error");
@@ -254,32 +262,44 @@ const registrarExperiencia = async (event) => {
     errorAlert("La fecha de inicio no puede ser mayor a la fecha final.", "Error");
     refMinDate.value.focus();
     return;
-  }
-
+  } */
   const datos = {
     cliente_id: cliente_id.value,
-    descripcion: descripcion.value.trim(),
+    descripcion: descripcion.value,
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
-    monto: monto.value.trim(),
-    nombre: nombre.value.trim(),
+    monto: monto.value,
+    nombre: nombre.value,
+    cantidad_pagos: cantidad_pagos.value,
+    fecha_inicio_pago: fecha_inicio_pago.value,
+    fecha_fin_pago: fecha_fin_pago.value,
+    aprobado: 1,
   };
   console.log(datos);
   try {
-    await axios.post(import.meta.env.VITE_BASE_URL + "/experiencia", datos);
+    await axios.post(
+      import.meta.env.VITE_BASE_URL + "/solicitudesInversion",
+      datos
+    );
     // Limpiar los campos después de registrar
     descripcion.value = "";
     fecha_inicio_recaudacion.value = "";
     fecha_fin_recaudacion.value = "";
     monto.value = "";
     nombre.value = "";
+    cantidad_pagos.value = "";
+    fecha_inicio_pago.value = "";
+    fecha_fin_pago.value = "";
     successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
     // Redirigir al perfil
-    router.push({ name: "perfil" });
+    //router.push({ name: "perfil" });
   } catch (error) {
     console.error(error);
-    errorAlert("Hubo un problema al registrar la Solicitud de Inversión.", "Error");
-    window.location.reload();
+    errorAlert(
+      "Hubo un problema al registrar la Solicitud de Inversión.",
+      "Error"
+    );
+    //window.location.reload();
   }
 };
 
