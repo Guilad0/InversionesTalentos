@@ -376,7 +376,7 @@ const getImages = async () => {
   color: #f3f3f4;  
   font-family: var(--font-montserrat);
   font-size: 16px;  
-  border: 1px solid #F37926 !important; 
+  border: 1px solid #FE8330 !important; 
   border-radius: 5px; 
   margin-top: 2px;
   height: 40px;  
@@ -391,7 +391,7 @@ const getImages = async () => {
 
 /* Efecto hover para el botón */
 .custom-button:hover {
-  background-color: #f37926 !important; 
+  background-color: #FE8330 !important; 
   color: #fff; 
 }
 </style>
