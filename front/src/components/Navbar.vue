@@ -1,106 +1,78 @@
 <template>
-
   <div class="bg-dark">
-
     <nav class="navbar navbar-expand-lg custom-navbar bg-dark-custom z-3 shadow animate__animated animate__fadeIn">
-
       <div class="container-fluid mx-3">
-
         <button class="navbar-toggler" type="button" @click="toggleMenu" aria-controls="navbarNav"
           aria-expanded="isMenuOpen" aria-label="Toggle navigation">
-
           <span class="text-white"> <i class="fa fa-bars"></i> </span>
-
         </button>
-
         <div class="collapse navbar-collapse burger-menu " :class="{ show: isMenuOpen }" id="navbarNav">
-
           <RouterLink class="nav-link" to="/">
             <img :src="logo" alt="" width="40" class="rounded me-2" />
           </RouterLink>
-
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/">Inicio</RouterLink>
             </li>
-
             <li class="nav-item" v-if="rol !== 'Cliente'">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="marketplace">Marketplace
               </RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/proposito">Propósito
               </RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="como-funciona">Cómo
                 Funciona</RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="posts">Guías de Usuario
               </RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="contact">Contactos
               </RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="faq">Preguntas Frecuentes
               </RouterLink>
             </li>
-
-            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="perfil">Ir a Perfil
+            <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="perfil">Ir a Perfil <i class="fa fa-user-circle"></i>
               </RouterLink>
             </li>
-            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/billetera">Ir a Billetera
+            <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/billetera">Ir a Billetera <i class="fa fa-wallet"></i>
               </RouterLink>
             </li>
-            <li class="nav-item" v-if="isMenuOpen & (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
+            <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
               <RouterLink exact-active-class="active" @click="logout" class="nav-link underline-dynamic"
-                to="sign-login">Cerrar Sesión</RouterLink>
+                to="sign-login">Cerrar Sesión <i class="fa-solid fa-right-to-bracket"></i></RouterLink>
             </li>
-
+            <li class="nav-item" v-if="isMenuOpen && !isAuthenticated()"> <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="sign-login">Iniciar Sesión <i class="fa fa-user-circle"></i></RouterLink> </li>
           </ul>
-
           <div class="d-flex align-items-center flex-wrap">
-
             <RouterLink class="nav-link wallet-icon" to="/billetera" :class="{ hidden: isMenuOpen }">
               <i v-if="rol == 'Cliente' || rol == 'Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
-
             <RouterLink class="nav-link user-icon pb-1" to="/admin">
               <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
             </RouterLink>
-
             <RouterLink class="nav-link user-icon pb-1" to="perfil" :class="{ hidden: isMenuOpen }"
               v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'">
               <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
                 class="rounded-circle me-2" width="30" alt="" />
             </RouterLink>
-
             <RouterLink class="nav-link user-icon" to="sign-login" :class="{ hidden: isMenuOpen }">
               <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
               <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
             </RouterLink>
-
           </div>
-
         </div>
-
       </div>
-
     </nav>
-
   </div>
-
 </template>
 
 <script setup>
@@ -119,7 +91,7 @@ const apellido = ref("");
 
 let storedUser = JSON.parse(localStorage.getItem("usuario")) || {};
 const updateRole = async () => {
-  await getLogoSstem()
+  await getLogoSystem()
   storedUser = await getUser();
   rol.value = storedUser?.rol || "";
   nombre.value = storedUser?.nombre || "";
@@ -136,11 +108,10 @@ onMounted(() => {
 
 });
 const logo = ref('')
-const getLogoSstem = async() =>{
+const getLogoSystem = async() =>{
     const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getLogoSystem')
     console.log(data);
-    logo.value = data.logo
-    
+    logo.value = data.logo    
 }
 
 watch(
@@ -174,15 +145,13 @@ const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
 </script>
 
 <style scoped>
-/* hacer query para que se vea bien en mobile
- tewmbnien sacar el icono al centro para inicio de sesion y sacar los iconos */
+
 .burger-menu {
-  background-color: var(--gray-color);
-  text-align: center;
-  border-radius: 10px;
+  background-color: var(--gray-color); text-align: center; border-radius: 10px; width: 100%; /* Asegura que el menú ocupe todo el ancho */ position: absolute; top: 60px; /* Ajusta según la altura de tu navbar */ left: 0; right: 0; z-index: 1; /* Asegura que el menú esté en el frente */
 }
 
 .active {
