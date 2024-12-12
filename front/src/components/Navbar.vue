@@ -10,7 +10,7 @@
           <RouterLink class="nav-link" to="/">
             <img :src="logo" alt="" width="40" class="rounded me-2" />
           </RouterLink>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/">Inicio</RouterLink>
             </li>
@@ -149,9 +149,46 @@ const toggleMenu = () => {
 </script>
 
 <style scoped>
+/* Para íconos de la llave y el usuario en el navbar */
+.navbar-toggler i.fa-lock, 
+.navbar-toggler i.fa-user-circle,
+.navbar-nav i.fa-lock, 
+.navbar-nav i.fa-user-circle {
+  color: #0066CC !important; /* Azul por defecto */
+  transition: color 0.3s ease; /* Transición suave */
+}
 
+/* Para los íconos cuando se hace hover */
+.navbar-toggler i.fa-lock:hover, 
+.navbar-toggler i.fa-user-circle:hover,
+.navbar-nav i.fa-lock:hover, 
+.navbar-nav i.fa-user-circle:hover {
+  color: var(--yellow-orange); 
+}
+.navbar-toggler i.fa-lock, 
+.navbar-toggler i.fa-user-circle {
+  color: var(--gray-color) !important; 
+  transition: color 0.3s ease; 
+}
+
+.navbar-toggler i.fa-lock:hover, 
+.navbar-toggler i.fa-user-circle:hover {
+  color: var(--yellow-orange) !important; 
+}
+
+.navbar-nav {
+  position: relative; 
+  top: -10px; 
+  color: var(--gray-color);
+}
+
+.navbar-nav .nav-link {
+  margin-top: -5px; 
+  top: -1px;
+  padding-top: 8px; 
+}
 .burger-menu {
-  background-color: var(--gray-color); text-align: center; border-radius: 10px; width: 100%; /* Asegura que el menú ocupe todo el ancho */ position: absolute; top: 60px; /* Ajusta según la altura de tu navbar */ left: 0; right: 0; z-index: 1; /* Asegura que el menú esté en el frente */
+  background-color: var(--white-anti-flash-color); text-align: center; border-radius: 10px; width: 100%; /* Asegura que el menú ocupe todo el ancho */ position: absolute; top: 20px; /* Ajusta según la altura de tu navbar */ left: 0; right: 0; z-index: 1; /* Asegura que el menú esté en el frente */
 }
 
 .active {
@@ -175,9 +212,11 @@ nav {
   font-size: 1.1rem;
   color: var(--white-anti-flash-color);
   margin-right: 15px;
+  margin-top: -5px; /* Ajusta el valor para reducir el espacio */
+  margin-bottom: 5px;
+  padding-top: 2px; /* Ajusta el espacio interno superior */
   transition: color 0.3s ease;
 }
-
 .nav-link:hover {
   color: var(--yellow-orange) !important;
 }
@@ -192,17 +231,19 @@ i:hover {
 }
 
 .bg-dark-custom {
-  background-color: var(--gray-color) !important;
+  background-color: var(--white-anti-flash-color) !important;
   border-bottom: 1px solid var(--yellow-orange);
+  height: 5vh;
 }
 
 .underline-dynamic {
   display: inline-block;
   position: relative;
   padding-bottom: 2px;
-  color: var(--white-anti-flash-color);
+  color: var(--gray-color);
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: 600;
 }
 
 .underline-dynamic::after {
@@ -226,6 +267,8 @@ i:hover {
 .user-icon {
   margin-left: auto;
   transition: color 0.3s ease;
+  top: -1px;
+
 }
 
 .wallet-icon {
