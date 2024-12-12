@@ -273,7 +273,6 @@ const registrarExperiencia = async (event) => {
     cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_pago: fecha_inicio_pago.value,
     fecha_fin_pago: fecha_fin_pago.value,
-    aprobado: 1,
   };
   console.log(datos);
   try {
@@ -292,14 +291,14 @@ const registrarExperiencia = async (event) => {
     fecha_fin_pago.value = "";
     successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
     // Redirigir al perfil
-    //router.push({ name: "perfil" });
+    router.push({ name: "perfil" });
   } catch (error) {
     console.error(error);
     errorAlert(
       "Hubo un problema al registrar la Solicitud de Inversión.",
       "Error"
     );
-    //window.location.reload();
+    window.location.reload();
   }
 };
 

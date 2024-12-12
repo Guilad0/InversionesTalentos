@@ -232,13 +232,47 @@ const getSolicitudInversionById = (req, res) => {
 };
 
 const createSolicitudInversion = (req, res) => {
-  const { cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado } = req.body;
-  const query = "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado], (err, results) => {
+  const { cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago } = req.body;
+
+
+  const queryCategoria = `
+    SELECT cp.monto_minimo_inversion, cp.monto_maximo_inversion 
+    FROM usuarios u 
+    JOIN categoria_personas cp ON u.categoria_persona_id = cp.categoria_persona_id 
+    WHERE u.usuario_id = ?`;
+
+  conexion.query(queryCategoria, [cliente_id], (err, categoriaResults) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al crear la solicitud de inversión", err });
+      return res.status(500).json({ msg: "Error al consultar la categoría del usuario", err });
     }
-    res.status(201).json({ msg: "Solicitud de inversión creada exitosamente", results });
+
+    if (!categoriaResults || categoriaResults.length === 0) {
+      return res.status(400).json({ msg: "No se encontró la categoría del usuario" });
+    }
+
+    const { monto_minimo_inversion, monto_maximo_inversion } = categoriaResults[0];
+
+
+    let aprobado = "Aprobado";
+    if (monto > monto_maximo_inversion || monto < monto_minimo_inversion) {
+      aprobado = "Pendiente";
+    }
+
+
+    const query = "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado], (err, results) => {
+      if (err) {
+        return res.status(500).json({ msg: "Error al crear la solicitud de inversión", err });
+      }
+      res.status(201).json({
+        msg: "Solicitud de inversión creada exitosamente",
+        results,
+        aprobado,
+        montoMinimo: monto_minimo_inversion,
+        montoMaximo: monto_maximo_inversion
+      });
+    });
   });
 };
 
