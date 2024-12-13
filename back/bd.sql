@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         10.4.32-MariaDB - Source distribution
+-- Host:                         autorack.proxy.rlwy.net
+-- Versión del servidor:         9.1.0 - MySQL Community Server - GPL
 -- SO del servidor:              Linux
 -- HeidiSQL Versión:             12.8.0.6908
 -- --------------------------------------------------------
@@ -15,74 +15,75 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Volcando estructura de base de datos para u488326007_hamilo_persons
-CREATE DATABASE IF NOT EXISTS `u488326007_hamilo_persons` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `u488326007_hamilo_persons`;
+-- Volcando estructura de base de datos para railway
+CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `railway`;
 
--- Volcando estructura para tabla u488326007_hamilo_persons.ajustes
+-- Volcando estructura para tabla railway.ajustes
 CREATE TABLE IF NOT EXISTS `ajustes` (
-  `ajuste_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ajuste_id` int NOT NULL AUTO_INCREMENT,
   `comision_fija_ganancia` decimal(10,2) DEFAULT NULL,
   `comision_porcentual_ganancia` decimal(5,2) DEFAULT NULL,
   `comision_fija_retiro` decimal(10,2) DEFAULT NULL,
   `comision_porcentual_retiro` decimal(5,2) DEFAULT NULL,
-  `tiempo_minimo_inversion` int(11) DEFAULT NULL,
-  `tiempo_maximo_inversion` int(11) DEFAULT NULL,
+  `tiempo_minimo_inversion` int DEFAULT NULL,
+  `tiempo_maximo_inversion` int DEFAULT NULL,
   `sancion_porcentual_retraso` decimal(5,2) DEFAULT NULL,
-  `estado` tinyint(4) NOT NULL DEFAULT 1,
+  `estado` tinyint NOT NULL DEFAULT '1',
   `valor_token` decimal(10,2) DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `image1` varchar(255) DEFAULT NULL,
-  `image2` varchar(255) DEFAULT NULL,
-  `image3` varchar(255) DEFAULT NULL,
-  `textHome` varchar(255) DEFAULT NULL,
-  `partners` varchar(255) DEFAULT NULL,
-  `propositoText` varchar(300) DEFAULT NULL,
-  `proposito_imagen` varchar(255) DEFAULT NULL,
-  `video` varchar(255) DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
+  `admin_id` int DEFAULT NULL,
+  `image1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `textHome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `partners` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `propositoText` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `proposito_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ajuste_id`),
   KEY `admin_id` (`admin_id`),
   CONSTRAINT `admin_id` FOREIGN KEY (`admin_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.ajustes: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.ajustes: ~1 rows (aproximadamente)
 INSERT INTO `ajustes` (`ajuste_id`, `comision_fija_ganancia`, `comision_porcentual_ganancia`, `comision_fija_retiro`, `comision_porcentual_retiro`, `tiempo_minimo_inversion`, `tiempo_maximo_inversion`, `sancion_porcentual_retraso`, `estado`, `valor_token`, `admin_id`, `image1`, `image2`, `image3`, `textHome`, `partners`, `propositoText`, `proposito_imagen`, `video`, `logo`, `nombre`) VALUES
-	(6, NULL, 5.00, NULL, 3.00, 3, 3, NULL, 1, 300.00, 23, 'https://res.cloudinary.com/dbvzafbum/image/upload/v1731542048/home/image1.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1731518709/home/image2.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1731597240/home/image3.png', 'Queremos ayudar a todos los talentos profesionales en áreas como la ingeniería, tecnología y más, a desarrollar sus carreras, aprovechando el apoyo financiero de todos sus seguidores y entusiastas.', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1731598158/home/partners.png', 'Ser el aliado líder en el crecimiento financiero de nuestros clientes, ofreciendo soluciones de inversión innovadoras, seguras y responsables, que generen valor sostenible en el tiempo. Aspiramos a transformar la industria de inversiones mediante el uso de tecnología avanzada, transparencia y compra', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732722280/home/proposito_imagen.png', 'https://www.youtube.com/watch?v=aO5GKcWe-FA', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732894553/home/logo.png', 'Investors');
+	(6, NULL, 5.00, NULL, 4.00, 3, 3, NULL, 1, 300.00, 23, 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023774/home/image1.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023791/home/image2.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734024034/home/image3.png', 'Queremos ayudar a todos los talentos profesionales en áreas como la ingeniería, tecnología y más, a desarrollar sus carreras, aprovechando el apoyo financiero de todos sus seguidores y entusiastas.', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734019144/home/partners.png', 'Ser el aliado líder en el crecimiento financiero de nuestros clientes, ofreciendo soluciones de inversión innovadoras, seguras y responsables, que generen valor sostenible en el tiempo. Aspiramos a transformar la industria de inversiones mediante el uso de tecnología avanzada, transparencia y compra', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732722280/home/proposito_imagen.png', 'https://www.youtube.com/watch?v=aO5GKcWe-FA', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732894553/home/logo.png', 'Slice2.0');
 
--- Volcando estructura para tabla u488326007_hamilo_persons.categoria_personas
+-- Volcando estructura para tabla railway.categoria_personas
 CREATE TABLE IF NOT EXISTS `categoria_personas` (
-  `categoria_persona_id` int(11) NOT NULL AUTO_INCREMENT,
-  `imagen` varchar(255) DEFAULT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `monto_minimo_inversion` int(11) NOT NULL DEFAULT 0,
-  `monto_maximo_inversion` int(11) NOT NULL DEFAULT 0,
+  `categoria_persona_id` int NOT NULL AUTO_INCREMENT,
+  `imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `monto_minimo_inversion` int DEFAULT '0',
+  `monto_maximo_inversion` int DEFAULT '0',
   PRIMARY KEY (`categoria_persona_id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.categoria_personas: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla railway.categoria_personas: ~7 rows (aproximadamente)
 INSERT INTO `categoria_personas` (`categoria_persona_id`, `imagen`, `nombre`, `estado`, `monto_minimo_inversion`, `monto_maximo_inversion`) VALUES
 	(16, '983e1d00-0170-4039-80a7-d70a8ed525da.png', 'Sin categoria ', 1, 0, 0),
 	(18, 'c09ad69e-3191-4065-b46b-3b36099bd487.jpg', 'Desarrollo de software Backend', 1, 0, 0),
-	(19, '33dfdf61-c8ef-43af-aa34-8a11e5a89e11.png', 'Diseño Gráfico', 1, 0, 0),
+	(19, '33dfdf61-c8ef-43af-aa34-8a11e5a89e11.png', 'Diseño Gráfico', 1, 1000, 5000),
 	(20, '2a01efb4-5ed5-43af-9a14-c83a935a56e3.png', 'Desarrollo de software Frontend', 1, 0, 0),
 	(26, '7a4a1fe7-366e-42f3-a748-62fc7a23a0d0.png', 'Arquitectura ', 0, 0, 0),
-	(47, 'fbe6564d-09ca-498a-8bb1-afca1bdbe4f5.png', 'Ingeniería ', 1, 0, 0);
+	(47, '4d02bfa3-e79c-44e4-af8b-9f4207751ca0.jpg', 'Ingeniería', 1, 5000, 20000),
+	(54, '586b55a9-02e2-4429-9992-4c03ca1a4390.jpg', 'Diseño Gráfico 2', 1, 100, 10000);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.comentarios
+-- Volcando estructura para tabla railway.comentarios
 CREATE TABLE IF NOT EXISTS `comentarios` (
-  `id_comentarios` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `inversor_id` int(11) DEFAULT NULL,
-  `comentario` text DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
-  `respuesta` varchar(200) DEFAULT NULL,
-  `calificacion` int(11) DEFAULT 0,
-  `estado` enum('Aprobado','Rechazado') DEFAULT 'Aprobado',
+  `id_comentarios` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `inversor_id` int DEFAULT NULL,
+  `comentario` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `respuesta` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `calificacion` int DEFAULT '0',
+  `estado` enum('Aprobado','Rechazado') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Aprobado',
   PRIMARY KEY (`id_comentarios`),
   KEY `fk_cliente_id_idx` (`cliente_id`),
   KEY `fk_inversor_id_idx` (`inversor_id`),
@@ -90,24 +91,24 @@ CREATE TABLE IF NOT EXISTS `comentarios` (
   CONSTRAINT `fk_inversor_id` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.comentarios: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.comentarios: ~0 rows (aproximadamente)
 
--- Volcando estructura para tabla u488326007_hamilo_persons.contacto
+-- Volcando estructura para tabla railway.contacto
 CREATE TABLE IF NOT EXISTS `contacto` (
-  `contacto_id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) DEFAULT NULL,
-  `apellido` varchar(100) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `comentarios` text DEFAULT NULL,
-  `respuesta` text DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
+  `contacto_id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comentarios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `respuesta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`contacto_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.contacto: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla railway.contacto: ~7 rows (aproximadamente)
 INSERT INTO `contacto` (`contacto_id`, `nombre`, `apellido`, `email`, `telefono`, `comentarios`, `respuesta`, `estado`, `created_at`, `updated_at`) VALUES
 	(39, 'Victor Hugo', 'Sejas Burgoa', 'victorhugo31103@gmail.com', '31231', '33', '', 0, '2024-11-25 16:29:39', '2024-11-25 16:29:39'),
 	(40, 'Victor Hugo', 'Sejas Burgoa', 'victorhugo31103@gmail.com', '1q21', '13', NULL, 0, '2024-11-26 13:52:17', '2024-11-26 13:52:17'),
@@ -117,22 +118,22 @@ INSERT INTO `contacto` (`contacto_id`, `nombre`, `apellido`, `email`, `telefono`
 	(44, 'Victor Hugo', 'Sejas Burgoa', 'victorhugo31103@gmail.com', '14', 'p', NULL, 0, '2024-11-27 13:52:15', '2024-11-27 13:52:15'),
 	(45, 'Aute doloribus non l', 'Facilis eos quod aut', 'pygo@mailinator.com', '+1 (181) 745-3211', 'Duis placeat volupt', 'respondido', 0, '2024-11-27 21:18:01', '2024-11-27 21:18:01');
 
--- Volcando estructura para tabla u488326007_hamilo_persons.experiencia
+-- Volcando estructura para tabla railway.experiencia
 CREATE TABLE IF NOT EXISTS `experiencia` (
-  `experiencia_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `institucion` varchar(150) DEFAULT NULL,
-  `cargo` varchar(100) DEFAULT NULL,
-  `actividades` text DEFAULT NULL,
+  `experiencia_id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `institucion` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cargo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `actividades` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_inicio` date DEFAULT NULL,
   `fecha_final` date DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`experiencia_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.experiencia: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla railway.experiencia: ~9 rows (aproximadamente)
 INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo`, `actividades`, `fecha_inicio`, `fecha_final`, `estado`) VALUES
 	(33, 145, NULL, NULL, NULL, '2023-02-25', NULL, 1),
 	(34, 144, 'Unibienes', 'Analista de Desarrollo', 'Desarrollo full Stack', '2024-11-01', '2024-11-22', 1),
@@ -144,18 +145,18 @@ INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo
 	(41, 139, 'Numquam quis optio', 'Tempore autem ut qu', 'Laborum Sed tempora', '1987-01-25', '1991-10-06', 1),
 	(42, 166, 'Quas fugit do ipsum', 'Natus voluptatibus e', 'Autem eligendi sint', '2002-10-16', '2005-12-15', 1);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.faq
+-- Volcando estructura para tabla railway.faq
 CREATE TABLE IF NOT EXISTS `faq` (
-  `faq_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pregunta` text DEFAULT NULL,
-  `respuesta` text DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
+  `faq_id` int NOT NULL AUTO_INCREMENT,
+  `pregunta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `respuesta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`faq_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.faq: ~13 rows (aproximadamente)
+-- Volcando datos para la tabla railway.faq: ~13 rows (aproximadamente)
 INSERT INTO `faq` (`faq_id`, `pregunta`, `respuesta`, `estado`, `created_at`, `updated_at`) VALUES
 	(2, ' ¿Qué es “Hamilo Inversiones”?', ' <p> <b>Hamilo Inversiones</b> es una plataforma en la que inversionistas pueden apoyar a talentos y profesionales en diversos sectores, invirtiendo en sus carreras y proyectos a cambio de una parte de sus futuras ganancias (dividendos), además de formar parte de una comunidad exclusiva junto a estos talentos. </p>', 1, '2024-10-22 20:03:48', '2024-11-28 20:35:45'),
 	(3, '¿Qué significa forma parte de los inversionistas?', '<p>Esto significa que los inversionistas que compren tokens de un deportista o profesional podrán acceder a beneficios, contenido exclusivo y experiencias especiales que estos elijan ofrecer a su comunidad. Sin embargo, esto depende completamente de cada deportista o profesional, ya que la compra de un token o suscripción no los obliga a ofrecer beneficios adicionales.</p>', 1, '2024-10-22 20:05:23', '2024-11-25 05:16:13'),
@@ -171,57 +172,57 @@ INSERT INTO `faq` (`faq_id`, `pregunta`, `respuesta`, `estado`, `created_at`, `u
 	(15, 'Desde el punto de vista de un inversor, ¿Por qué comprar un token a un talento o profesional experimentado?', '<p>Adquirir un token de un talento o profesional experimentado representa una atractiva oportunidad de inversión debido a su historial comprobado de éxito. Estos talentos y profesionales suelen contar con una carrera establecida, lo que incrementa la probabilidad de generar ganancias futuras sostenibles a través de premios, patrocinios o proyectos relacionados con su trayectoria.</p>', 1, '2024-10-22 20:11:42', '2024-11-25 05:25:32'),
 	(27, ' ', ' ', 1, '2024-11-26 14:34:48', '2024-11-26 14:34:48');
 
--- Volcando estructura para tabla u488326007_hamilo_persons.informacion
+-- Volcando estructura para tabla railway.informacion
 CREATE TABLE IF NOT EXISTS `informacion` (
-  `info_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `ocupacion` varchar(100) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
+  `info_id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `ocupacion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `monto_inversion` decimal(10,2) DEFAULT NULL,
-  `cantidad_maxima_inversiones` int(11) DEFAULT NULL,
-  `preparacion` text DEFAULT NULL,
-  `estudios` text DEFAULT NULL,
-  `vision` text DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `video` varchar(200) DEFAULT NULL,
-  `imagen` varchar(200) DEFAULT NULL,
-  `inversion_control` int(11) DEFAULT 0,
+  `cantidad_maxima_inversiones` int DEFAULT NULL,
+  `preparacion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estudios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `vision` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `video` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagen` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `inversion_control` int DEFAULT '0',
   PRIMARY KEY (`info_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `informacion_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.informacion: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla railway.informacion: ~8 rows (aproximadamente)
 INSERT INTO `informacion` (`info_id`, `cliente_id`, `ocupacion`, `descripcion`, `monto_inversion`, `cantidad_maxima_inversiones`, `preparacion`, `estudios`, `vision`, `estado`, `video`, `imagen`, `inversion_control`) VALUES
 	(13, 149, 'Ingeniero de software', 'Soy un ingeniero de software con [número de años] años de experiencia en el diseño y desarrollo de aplicaciones web y móviles. Mi enfoque principal es crear soluciones tecnológicas eficientes, escalables y centradas en el usuario', 200.00, 1000, 'Título Universitario: Ingeniero en Sistemas de Información Universidad [Nombre de la Universidad] | [Año de finalización] Formación sólida en fundamentos de programación, estructuras de datos, bases de datos, ingeniería de software y redes informáticas.', 'Ingeniería en Sistemas de Información Universidad [Nombre de la Universidad] [Años de estudio, ej. 2018 - 2023]', 'Mi visión es ser un líder en el desarrollo de soluciones tecnológicas innovadoras que impacten positivamente en la vida de las personas y las operaciones de las empresas. Aspiro a crear software eficiente, escalable y accesible, mientras contribuyo al avance de la industria tecnológica mediante el aprendizaje continuo y la colaboración en proyectos de alto impacto.\n\nCreo en el poder de la tecnología para transformar realidades, y mi objetivo es formar parte de equipos que valoren la creatividad, la calidad y el enfoque en el usuario. Mi meta a largo plazo es combinar habilidades técnicas con liderazgo para guiar iniciativas que impulsen el cambio y el crecimiento sostenible.', 1, '4fc1bddb-5837-40cc-8dd5-ce2a1ade7140.mp4', NULL, 0),
 	(14, 144, 'Ingeniero de Sistemas', 'Dedicado al Desarrollo Web con experiencia de 1 año', 20.00, 1000, 'Ingeniero ', 'Universidad', 'Aperturar empresa de desarrollo', 1, 'a1bc6f7b-7513-4eff-a932-a33d83b90d88.mp4', NULL, 0),
 	(15, 151, 'estudiante', 'asd', 500.00, 90000, 'asd', 'tec', 'futuro', 1, 'e5b43861-202c-492b-83bc-c2560071fdff.mp4', NULL, 0),
-	(16, 145, 'Estudiante', 'Desarrollador web con vue - Github - Gitlab', 500.00, 2500, 'Ing.Informática', 'Ing.Informática', 'Persona Pro activa dispuesta a ayudar a los demas, entusiasta por aprender y enseñar a los demás.', 1, '3ae28639-9fcb-4fa1-a068-062acd73dadf.mp4', NULL, 0),
 	(17, 153, 'Hacker', 'Ciberseguridad', 200.00, 1000, 'Berlin College', 'Ciberseguridad', 'Controlar y/o erradicar la pirateria', 1, NULL, NULL, 0),
 	(21, 159, ' ', '  ', 0.00, 0, ' ', ' ', ' ', 1, NULL, NULL, 0),
 	(22, 139, 'Nobis sunt qui deser', 'Sed enim amet ad au', 10.00, 100, 'Consectetur temporib', 'Labore consectetur s', 'Reprehenderit velit', 1, NULL, NULL, 0),
-	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 50.00, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0);
+	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 50.00, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0),
+	(27, 168, 'Desarrollador', 'Desarrollador de software', 10000.00, 5, 'Licenciatura en Ciencias de la Computación', 'Universidad XYZ', 'Crear soluciones innovadoras', 1, NULL, NULL, 0);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.informacion_inversionista
+-- Volcando estructura para tabla railway.informacion_inversionista
 CREATE TABLE IF NOT EXISTS `informacion_inversionista` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_inversionista` int(11) DEFAULT NULL,
-  `nombre_completo` varchar(250) DEFAULT NULL,
-  `dni` varchar(250) DEFAULT NULL,
-  `tipo_dni` varchar(250) DEFAULT NULL,
-  `domicilio` varchar(250) DEFAULT NULL,
-  `ciudad` varchar(250) DEFAULT NULL,
-  `situacion_laboral` varchar(250) DEFAULT NULL,
-  `fuente_de_ingresos` varchar(250) DEFAULT NULL,
-  `imagen_selfie` text DEFAULT NULL,
-  `imagen_pasaporte_anv` text DEFAULT NULL,
-  `imagen_pasaporte_rev` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_inversionista` int DEFAULT NULL,
+  `nombre_completo` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dni` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_dni` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `domicilio` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ciudad` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `situacion_laboral` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fuente_de_ingresos` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagen_selfie` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `imagen_pasaporte_anv` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `imagen_pasaporte_rev` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `FK_idinversionista` (`id_inversionista`),
   CONSTRAINT `FK_idinversionista` FOREIGN KEY (`id_inversionista`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.informacion_inversionista: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla railway.informacion_inversionista: ~5 rows (aproximadamente)
 INSERT INTO `informacion_inversionista` (`id`, `id_inversionista`, `nombre_completo`, `dni`, `tipo_dni`, `domicilio`, `ciudad`, `situacion_laboral`, `fuente_de_ingresos`, `imagen_selfie`, `imagen_pasaporte_anv`, `imagen_pasaporte_rev`) VALUES
 	(13, 148, 'Alex', '6666666', 'ci', 'Tangamandapio', 'La Paz', 'Independiente', 'Comercio', NULL, NULL, NULL),
 	(14, 140, 'Brian', '123456', 'ci', 'One Piece', 'Grand Blue', 'Independiente', 'Pirata', NULL, NULL, NULL),
@@ -229,67 +230,72 @@ INSERT INTO `informacion_inversionista` (`id`, `id_inversionista`, `nombre_compl
 	(16, 161, 'leo', 'fdsfd1212', 'pasaporte', '  ', '  ', '', '  ', NULL, NULL, NULL),
 	(17, 143, 'juan', '789789789', 'ci', 'calle aroma', 'Cercado', 'Independiente', 'Autonomo', NULL, NULL, NULL);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.inversiones
+-- Volcando estructura para tabla railway.inversiones
 CREATE TABLE IF NOT EXISTS `inversiones` (
-  `inversion_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `inversor_id` int(11) DEFAULT NULL,
-  `monto` decimal(10,2) DEFAULT 0.00,
-  `tipo_ganancia` enum('Monto fijo','Porcentual') DEFAULT NULL,
+  `inversion_id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `inversor_id` int DEFAULT NULL,
+  `monto` decimal(10,2) DEFAULT '0.00',
+  `tipo_ganancia` enum('Monto fijo','Porcentual') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ganancia_estimada` decimal(10,2) DEFAULT NULL,
   `fecha_deposito` date DEFAULT NULL,
   `fecha_devolucion` date DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `solicitud_inv_id` int DEFAULT NULL,
   PRIMARY KEY (`inversion_id`),
   KEY `cliente_id` (`cliente_id`),
   KEY `inversor_id` (`inversor_id`),
+  KEY `fk_sol_inv_idx` (`solicitud_inv_id`),
+  CONSTRAINT `fk_sol_inv` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `inversiones_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.inversiones: ~12 rows (aproximadamente)
-INSERT INTO `inversiones` (`inversion_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`) VALUES
-	(122, 149, 140, 200.00, NULL, 210.00, '2024-11-24', '2025-02-25', 1),
-	(123, 149, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1),
-	(124, 145, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1),
-	(125, 151, 148, 50000.00, NULL, 52500.00, '2024-11-25', '2025-02-25', 1),
-	(126, 145, 148, 2000.00, NULL, 2100.00, '2024-11-25', '2025-02-25', 1),
-	(127, 149, 161, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1),
-	(128, 149, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1),
-	(129, 149, 140, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1),
-	(130, 149, 143, 300.00, NULL, 315.00, '2024-11-26', '2025-02-26', 1),
-	(131, 145, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1),
-	(132, 145, 143, 600.00, NULL, 630.00, '2024-11-27', '2025-02-27', 1),
-	(133, 144, 143, 500.00, NULL, 525.00, '2024-11-27', '2025-02-27', 1);
+-- Volcando datos para la tabla railway.inversiones: ~12 rows (aproximadamente)
+INSERT INTO `inversiones` (`inversion_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`, `solicitud_inv_id`) VALUES
+	(122, 149, 140, 200.00, NULL, 210.00, '2024-11-24', '2025-02-25', 1, NULL),
+	(123, 149, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1, NULL),
+	(124, 145, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1, NULL),
+	(125, 151, 148, 50000.00, NULL, 52500.00, '2024-11-25', '2025-02-25', 1, NULL),
+	(126, 145, 148, 2000.00, NULL, 2100.00, '2024-11-25', '2025-02-25', 1, NULL),
+	(127, 149, 161, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1, NULL),
+	(128, 149, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1, NULL),
+	(129, 149, 140, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1, NULL),
+	(130, 149, 143, 300.00, NULL, 315.00, '2024-11-26', '2025-02-26', 1, NULL),
+	(131, 145, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1, NULL),
+	(132, 145, 143, 600.00, NULL, 630.00, '2024-11-27', '2025-02-27', 1, NULL),
+	(133, 144, 143, 500.00, NULL, 525.00, '2024-11-27', '2025-02-27', 1, NULL),
+	(134, 149, 143, 200.00, NULL, 210.00, '2024-12-13', '2025-03-13', 1, NULL),
+	(135, 149, 143, 800.00, NULL, 840.00, '2024-12-13', '2025-03-13', 1, 1);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.links
+-- Volcando estructura para tabla railway.links
 CREATE TABLE IF NOT EXISTS `links` (
-  `link_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
-  `link` varchar(255) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `link_id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`link_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `links_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.links: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.links: ~0 rows (aproximadamente)
 
--- Volcando estructura para tabla u488326007_hamilo_persons.logros
+-- Volcando estructura para tabla railway.logros
 CREATE TABLE IF NOT EXISTS `logros` (
-  `logro_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cliente_id` int(11) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `logro_id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int DEFAULT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
   `fecha` datetime DEFAULT NULL,
   PRIMARY KEY (`logro_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `logros_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.logros: ~13 rows (aproximadamente)
+-- Volcando datos para la tabla railway.logros: ~13 rows (aproximadamente)
 INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`) VALUES
 	(29, 145, 'Concurso de Traviesos', 1, '2024-11-14 00:00:00'),
 	(30, 149, 'Desarrollé y optimicé una aplicación web en Vue.js que mejoró la experiencia del usuario, logrando un aumento del 30% en la retención de usuarios durante los primeros tres meses de implementación.', 1, '2024-10-10 00:00:00'),
@@ -305,20 +311,20 @@ INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`
 	(40, 139, 'Aut reprehenderit m', 1, '2024-11-01 00:00:00'),
 	(41, 166, 'Asperiores amet qui', 1, '2015-04-06 00:00:00');
 
--- Volcando estructura para tabla u488326007_hamilo_persons.movimientos
+-- Volcando estructura para tabla railway.movimientos
 CREATE TABLE IF NOT EXISTS `movimientos` (
-  `movimiento_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` enum('Ingreso','Egreso') DEFAULT NULL,
-  `monto` decimal(10,2) DEFAULT 0.00,
-  `descripcion` text DEFAULT NULL,
-  `fecha_solicitud` datetime DEFAULT current_timestamp(),
+  `movimiento_id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('Ingreso','Egreso') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `monto` decimal(10,2) DEFAULT '0.00',
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `fecha_solicitud` datetime DEFAULT CURRENT_TIMESTAMP,
   `fecha_desembolso` date DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `inversiones_id` int(11) DEFAULT NULL,
-  `solicitudes_retiro_id` int(11) DEFAULT NULL,
-  `usuario_id` int(11) DEFAULT NULL,
-  `token` decimal(10,2) DEFAULT 0.00,
-  `movimientoscol` varchar(45) DEFAULT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `inversiones_id` int DEFAULT NULL,
+  `solicitudes_retiro_id` int DEFAULT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `token` decimal(10,2) DEFAULT '0.00',
+  `movimientoscol` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`movimiento_id`),
   KEY `inversiones_id` (`inversiones_id`),
   KEY `solicitudes_retiro_id` (`solicitudes_retiro_id`),
@@ -326,9 +332,9 @@ CREATE TABLE IF NOT EXISTS `movimientos` (
   CONSTRAINT `inversiones_id` FOREIGN KEY (`inversiones_id`) REFERENCES `inversiones` (`inversion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `solicitudes_retiro_id` FOREIGN KEY (`solicitudes_retiro_id`) REFERENCES `solicitudes_retiro` (`retiro_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=482 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.movimientos: ~225 rows (aproximadamente)
+-- Volcando datos para la tabla railway.movimientos: ~225 rows (aproximadamente)
 INSERT INTO `movimientos` (`movimiento_id`, `tipo`, `monto`, `descripcion`, `fecha_solicitud`, `fecha_desembolso`, `estado`, `inversiones_id`, `solicitudes_retiro_id`, `usuario_id`, `token`, `movimientoscol`) VALUES
 	(214, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-18 19:58:07', NULL, 1, NULL, NULL, 88, 2000000.00, NULL),
 	(215, 'Egreso', NULL, 'Tokens invertidos', '2024-11-18 19:58:17', NULL, 1, 77, NULL, 88, 2000.00, NULL),
@@ -554,80 +560,102 @@ INSERT INTO `movimientos` (`movimiento_id`, `tipo`, `monto`, `descripcion`, `fec
 	(478, 'Ingreso', 1100.00, 'Compra de tokens rechazada', '2024-11-30 05:37:25', NULL, 0, NULL, NULL, 143, 330000.00, NULL),
 	(479, 'Ingreso', 100.00, 'Compra de tokens rechazada', '2024-11-30 05:37:42', NULL, 0, NULL, NULL, 143, 30000.00, NULL),
 	(480, 'Ingreso', 2000.00, 'Compra de tokens', '2024-11-30 05:37:53', '2024-12-01', 1, NULL, NULL, 143, 600000.00, NULL),
-	(481, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-30 05:38:43', '2024-12-01', 1, NULL, NULL, 143, 30000.00, NULL);
+	(481, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-30 05:38:43', '2024-12-01', 1, NULL, NULL, 143, 30000.00, NULL),
+	(482, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-13 01:19:02', NULL, 1, 134, NULL, 143, 200.00, NULL),
+	(483, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-13 01:19:02', NULL, 1, 134, NULL, 149, 200.00, NULL),
+	(484, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-13 01:25:40', NULL, 1, 135, NULL, 143, 800.00, NULL),
+	(485, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-13 01:25:40', NULL, 1, 135, NULL, 149, 800.00, NULL);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.posts
+-- Volcando estructura para tabla railway.posts
 CREATE TABLE IF NOT EXISTS `posts` (
-  `post_id` int(11) NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(150) DEFAULT NULL,
-  `imagen_portada` varchar(150) DEFAULT NULL,
-  `contenido` text DEFAULT NULL,
-  `estado` enum('Activo','Inactivo') NOT NULL DEFAULT 'Inactivo',
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
+  `post_id` int NOT NULL AUTO_INCREMENT,
+  `titulo` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagen_portada` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contenido` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Inactivo',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`post_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.posts: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla railway.posts: ~3 rows (aproximadamente)
 INSERT INTO `posts` (`post_id`, `titulo`, `imagen_portada`, `contenido`, `estado`, `created_at`, `updated_at`) VALUES
 	(1, 'Guia Inversor', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732721112/posts/posts/1732721109722.png', '<h1><span style="background-color: var(--bs-modal-bg); color: var(--bs-heading-color); font-size: 2.5rem; text-align: var(--bs-body-text-align);">Guía para el usuario con rol Inversores</span></h1><h2>Introducción</h2><p>La plataforma conecta inversores con talentos en diversos campos. Esta guía te ayudará a realizar inversiones y manejar tus tokens.</p><p>Desde "Soporte", elige:</p><ul><li><b>Chat en Vivo:</b> Para atención inmediata.</li><li><b>Formulario:</b> Reporta problemas con capturas de pantalla.</li></ul>', 'Inactivo', '2024-10-22 20:07:49', '2024-10-22 20:07:49'),
 	(2, 'Requisitos Previos', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732720897/posts/posts/1732720894376.png', '<br>\r\n<h2>Guía para el usuario con rol Talento</h2>\r\n<ol>\r\n	<li>\r\n	Como talento, puedes recibir inversiones y gestionar proyectos. Esta guía te ayudará a aprovechar al máximo tus herramientas.</li>\r\n	<hr>\r\n	<li>\r\n	<ul>\r\n		<li>Cuenta Registrada: Completa el proceso de registro.</li>		\r\n		<li>Perfil Completo: Verifica y actualiza tu información.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Acceso al Sistema</h3>\r\n	<ul>\r\n		<li>Iniciar Sesión: Ingresa tu correo y contraseña.</li>		\r\n		<li>Actualizar Perfil: Revisa datos personales en "Mi Perfil".</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Seguimiento de Inversiones</h3>\r\n		<ul>\r\n		<li>Consultar Inversiones: Accede a "Mi Billetera" para ver el estado de los proyectos.</li>\r\n		<li>Notificaciones: Recibe alertas sobre devoluciones pendientes.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Retiro de Beneficios</h3>\r\n		<ul>\r\n		<li>Verificar Saldo: Revisa tus ganancias disponibles.</li>		\r\n		<li>Seleccionar Método de Retiro: Transferencia bancaria o conversión de tokens.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Soporte Técnico</h3>\r\n	Desde "Soporte", accede al:\r\n		<ul>\r\n		<li>Chat en Vivo: Atención rápida.</li>\r\n		<li>Formulario: Detalla problemas con capturas de pantalla.</li></ul>\r\n	</li>\r\n	<hr></ol>', 'Activo', '2024-10-22 22:52:23', '2024-10-22 22:52:23'),
 	(3, 'Guia Admin', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732720919/posts/posts/1732720916205.png', '<br>\r\n<h2>Guía para el usuario con rol Administrador</h2>\r\n<ol>\r\n	<li>\r\n	La guía detalla las funcionalidades básicas disponibles para un Administrador en la plataforma Hamilo Inversiones. Aquí encontrarás todo lo necesario para gestionar usuarios, guías, solicitudes, y más.</li>\r\n	<hr>\r\n	<li><h3>Cambiar Imagen</h3>\r\n	El administrador puede subir una nueva imagen en cualquier sección donde aparezca el ícono de editar imágen.<br>\r\n	Al seleccionarlo, se abrirá una ventana para elegir y cargar una nueva imagen.</li>\r\n	<hr>\r\n	<li><h3>Editar Texto</h3>\r\n	Donde aparezca el ícono de editar texto, el administrador puede modificar textos y actualizar la información mostrada en la plataforma.</li>\r\n	<hr>\r\n	<li><h3>Solicitudes de Retiro</h3>\r\n	El administrador puede aprobar o rechazar retiros desde la sección Solicitudes de Retiro, disponible en el menú lateral izquierdo tras hacer clic en el botón del administrador, que se encuentra en la parte derecha del menú superior.<br>\r\n\r\n	En esta sección:\r\n		<ul>\r\n		<li>✅ Aprobar solicitud\r\n		</li><li>❌ Rechazar solicitud</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Gestión de Usuarios</h3>\r\n	Desde la sección Usuarios, el administrador puede:\r\n		<ul>\r\n		<li>Asignar Roles: Cambiar el rol de los usuarios.</li>\r\n		<li>Aprobar Registro: Cambiar el estado de admisión entre aprobado/no aprobado.</li>\r\n		<li>Activar/Inactivar Usuarios: Alternar el estado con los íconos ➕ y ➖.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Gestión de Guías</h3>\r\n	En la sección Guías, el administrador puede:\r\n		<ul>\r\n		<li>Editar el contenido.</li>\r\n		<li>Aceptar correcciones realizadas.</li>\r\n		<li>Eliminar guías con el botón ❌.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Categorías</h3>\r\n	Desde la sección Categorías, se pueden crear nuevas categorías. El formulario incluye:\r\n		<ul>\r\n		<li>Nombre: Título de la categoría (una palabra sugerida).</li>\r\n		<li>Imagen: Ícono representativo.</li>\r\n		<li>Botón Crear: Guarda la categoría y la lista en la tabla.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Consultas y Reclamos</h3>\r\n	En la sección Consultas y Reclamos, el administrador puede:\r\n		<ul>\r\n		<li>Responder: Completar un formulario para contestar consultas pendientes.</li>\r\n		<li>Actualizar Estados: Cambiar el estado de las consultas.</li></ul>\r\n	</li>\r\n	<hr>\r\n	<li><h3>Reportes</h3>\r\n	Muestra gráficos con resúmenes de operaciones realizadas en la plataforma. Incluye opciones para descargar reportes.</li>\r\n	<hr>\r\n	<li><h3>Ajustes</h3>\r\n	Se accede desde el menú lateral y permite modificar datos de la plataforma a través de formularios editables.</li>\r\n	<hr>\r\n	<li><h3>Preguntas Frecuentes (FAQs)</h3>\r\n	El administrador puede:\r\n	<ul>\r\n	<li>Agregar FAQs: Completar un formulario con una pregunta y respuesta.</li>\r\n	<li>Editar FAQs: Modificar preguntas o respuestas existentes.</li>\r\n	<li>Eliminar FAQs: Quitar entradas seleccionadas.</li></ul>\r\n	</li>\r\n	<hr></ol>', 'Activo', '2024-10-23 02:23:56', '2024-10-23 02:23:56');
 
--- Volcando estructura para tabla u488326007_hamilo_persons.respuesta
+-- Volcando estructura para tabla railway.respuesta
 CREATE TABLE IF NOT EXISTS `respuesta` (
-  `respuesta_id` int(11) NOT NULL,
-  `comentario_id` int(11) DEFAULT NULL,
-  `inversor_id` int(11) DEFAULT NULL,
-  `respuesta` text DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
+  `respuesta_id` int NOT NULL,
+  `comentario_id` int DEFAULT NULL,
+  `inversor_id` int DEFAULT NULL,
+  `respuesta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`respuesta_id`),
   KEY `fk_comentario_idx` (`comentario_id`),
-  CONSTRAINT `fk_comentario` FOREIGN KEY (`comentario_id`) REFERENCES `comentarios` (`cliente_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_comentario_idx` FOREIGN KEY (`comentario_id`) REFERENCES `comentarios` (`id_comentarios`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.respuesta: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.respuesta: ~0 rows (aproximadamente)
 
--- Volcando estructura para tabla u488326007_hamilo_persons.solicitudes_inversion
+-- Volcando estructura para tabla railway.solicitudes_inversion
 CREATE TABLE IF NOT EXISTS `solicitudes_inversion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `client_id` int(11) NOT NULL DEFAULT 0,
-  `nombre` varchar(255) NOT NULL DEFAULT '0',
-  `descripcion` text NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int NOT NULL DEFAULT '0',
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `fecha_inicio_recaudacion` date NOT NULL,
   `fecha_fin_recaudacion` date NOT NULL,
-  `monto` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `cantidad_pagos` int(11) NOT NULL DEFAULT 0,
+  `monto` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `cantidad_pagos` int NOT NULL DEFAULT '0',
   `fecha_inicio_pago` date NOT NULL,
   `fecha_fin_pago` date NOT NULL,
-  `aprobado` tinyint(4) NOT NULL DEFAULT 1,
-  `estado` tinyint(4) NOT NULL DEFAULT 1,
+  `aprobado` enum('Pendiente','Aprobado','Rechazado') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pendiente',
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `observaciones` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado_inversion` enum('Pendiente','Proceso','Finalizado','Reversion') COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `si_cliente_id` (`client_id`),
-  CONSTRAINT `si_cliente_id` FOREIGN KEY (`client_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `si_cliente_id` (`cliente_id`) USING BTREE,
+  CONSTRAINT `si_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.solicitudes_inversion: ~2 rows (aproximadamente)
-INSERT INTO `solicitudes_inversion` (`id`, `client_id`, `nombre`, `descripcion`, `fecha_inicio_recaudacion`, `fecha_fin_recaudacion`, `monto`, `cantidad_pagos`, `fecha_inicio_pago`, `fecha_fin_pago`, `aprobado`, `estado`) VALUES
-	(2, 169, 'Inversión Actualizada', 'Descripción actualizada de la inversión', '2023-10-01', '2023-12-01', 15000.00, 12, '2024-01-01', '2024-12-01', 1, 0),
-	(3, 169, 'Nueva Inversión', 'Descripción de la inversión', '2023-10-01', '2023-12-01', 10000.00, 10, '2024-01-01', '2024-10-01', 0, 1);
+-- Volcando datos para la tabla railway.solicitudes_inversion: ~12 rows (aproximadamente)
+INSERT INTO `solicitudes_inversion` (`id`, `cliente_id`, `nombre`, `descripcion`, `fecha_inicio_recaudacion`, `fecha_fin_recaudacion`, `monto`, `cantidad_pagos`, `fecha_inicio_pago`, `fecha_fin_pago`, `aprobado`, `estado`, `observaciones`, `estado_inversion`) VALUES
+	(1, 149, 'Cliente', 'Desarrollo de software Backend', '2024-01-12', '2024-02-12', 3000.00, 6, '2024-04-22', '2024-10-23', 'Aprobado', 1, '', 'Reversion'),
+	(2, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'rerearea', NULL),
+	(3, 145, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'fdsfdsa', 'Reversion'),
+	(4, 145, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'fsdafsda', 'Reversion'),
+	(5, 144, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 3, 'reacahzado', 'Reversion'),
+	(6, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'ffdsfdsfdsfdsafdsafadfdsafdsfdsfdsa', NULL),
+	(7, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 2, 'fdsafdsafds', NULL),
+	(8, 151, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, 'fdsfdsfdsa', 'Reversion'),
+	(9, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, 'fdsafdsafdsa', NULL),
+	(10, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, NULL),
+	(11, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, 'Reversion'),
+	(12, 149, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, 'Reversion'),
+	(13, 149, 'Inversión Actualizada', 'Descripción actualizada de la inversión', '2023-10-01', '2023-12-01', 15000.00, 12, '2024-01-01', '2024-12-01', 'Pendiente', 1, NULL, 'Reversion'),
+	(14, 169, 'Inversión Actualizada', 'Descripción actualizada de la inversión', '2023-10-01', '2023-12-01', 15000.00, 12, '2024-01-01', '2024-12-01', 'Pendiente', 1, NULL, NULL),
+	(17, 168, 'Dolore officiis volu', 'Similique dolore mol', '1995-10-17', '2001-05-13', 2000.00, 25, '1993-02-24', '1995-03-24', 'Aprobado', 1, NULL, NULL),
+	(18, 168, 'Quo nesciunt quis a', 'Sed praesentium libe', '2016-07-21', '1996-07-01', 6000.00, 62, '2003-10-10', '2008-12-10', 'Pendiente', 1, NULL, NULL),
+	(19, 168, 'Laboris iusto aut fu', 'Eum quasi aut magna ', '1982-07-27', '2001-07-20', 94000.00, 43, '1994-03-07', '1997-10-07', 'Pendiente', 1, NULL, NULL),
+	(20, 145, '     ', '     ', '2000-10-10', '2000-10-10', -10.00, -10, '1999-10-10', '1999-10-10', 'Pendiente', 1, NULL, NULL);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.solicitudes_retiro
+-- Volcando estructura para tabla railway.solicitudes_retiro
 CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
-  `retiro_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` enum('cliente','inversor') DEFAULT NULL,
-  `usuario_id` int(11) DEFAULT NULL,
-  `monto_solicitud` decimal(10,2) DEFAULT 0.00,
-  `tokens_cambio` decimal(10,2) DEFAULT 0.00,
-  `comision_aplicar` decimal(5,2) DEFAULT 0.00,
-  `monto_recibir` decimal(10,2) DEFAULT 0.00,
-  `fecha_solicitud` datetime DEFAULT current_timestamp(),
+  `retiro_id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('cliente','inversor') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `monto_solicitud` decimal(10,2) DEFAULT '0.00',
+  `tokens_cambio` decimal(10,2) DEFAULT '0.00',
+  `comision_aplicar` decimal(5,2) DEFAULT '0.00',
+  `monto_recibir` decimal(10,2) DEFAULT '0.00',
+  `fecha_solicitud` datetime DEFAULT CURRENT_TIMESTAMP,
   `fecha_aprobacion` date DEFAULT NULL,
-  `foto_identificacion` varchar(255) DEFAULT NULL,
-  `selfie_identificacion` varchar(255) DEFAULT NULL,
-  `estado` enum('Pagado','Pendiente','Aprobado','Rechazado','Eliminado') NOT NULL DEFAULT 'Pendiente',
-  `inversion_id` int(11) DEFAULT NULL,
+  `foto_identificacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `selfie_identificacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` enum('Pagado','Pendiente','Aprobado','Rechazado','Eliminado') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pendiente',
+  `inversion_id` int DEFAULT NULL,
   PRIMARY KEY (`retiro_id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `inversion_id` (`inversion_id`),
@@ -635,11 +663,11 @@ CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
   CONSTRAINT `solicitudes_retiro_ibfk_2` FOREIGN KEY (`inversion_id`) REFERENCES `inversiones` (`inversion_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.solicitudes_retiro: ~26 rows (aproximadamente)
+-- Volcando datos para la tabla railway.solicitudes_retiro: ~26 rows (aproximadamente)
 INSERT INTO `solicitudes_retiro` (`retiro_id`, `tipo`, `usuario_id`, `monto_solicitud`, `tokens_cambio`, `comision_aplicar`, `monto_recibir`, `fecha_solicitud`, `fecha_aprobacion`, `foto_identificacion`, `selfie_identificacion`, `estado`, `inversion_id`) VALUES
 	(87, 'inversor', 140, 5.00, 1000.00, 0.15, 4.85, '2024-11-24 00:00:00', '2024-11-28', NULL, NULL, 'Aprobado', NULL),
-	(88, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:52:44', NULL, NULL, NULL, 'Rechazado', NULL),
-	(89, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:53:26', NULL, NULL, NULL, 'Rechazado', NULL),
+	(88, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:52:44', NULL, NULL, NULL, 'Pendiente', NULL),
+	(89, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:53:26', NULL, NULL, NULL, 'Pendiente', NULL),
 	(90, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:55:36', NULL, NULL, NULL, 'Pendiente', NULL),
 	(91, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:57:10', NULL, NULL, NULL, 'Pendiente', NULL),
 	(92, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:57:29', NULL, NULL, NULL, 'Pendiente', NULL),
@@ -664,35 +692,35 @@ INSERT INTO `solicitudes_retiro` (`retiro_id`, `tipo`, `usuario_id`, `monto_soli
 	(111, 'cliente', 166, 2.50, 500.00, 0.08, 2.43, '2024-11-27 21:09:47', NULL, NULL, NULL, 'Pendiente', NULL),
 	(112, 'inversor', 143, 190.00, 38000.00, 5.70, 184.30, '2024-11-27 21:13:36', '2024-11-28', NULL, NULL, 'Aprobado', NULL);
 
--- Volcando estructura para tabla u488326007_hamilo_persons.usuarios
+-- Volcando estructura para tabla railway.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
-  `usuario_id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) DEFAULT NULL,
-  `apellido` varchar(100) DEFAULT NULL,
-  `correo` varchar(150) DEFAULT NULL,
-  `codigo_pais` varchar(10) DEFAULT NULL,
-  `numero_telefono` varchar(20) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `pais_residencia` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `edad` int(11) DEFAULT NULL,
+  `usuario_id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `correo` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `codigo_pais` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `numero_telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pais_residencia` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `edad` int DEFAULT NULL,
   `acepta_terminos` tinyint(1) DEFAULT NULL,
-  `categoria_persona_id` int(11) DEFAULT NULL,
-  `rol` enum('Inversionista','Cliente','Admin','Null') DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp(),
-  `estado` tinyint(1) NOT NULL DEFAULT 1,
-  `cod_verificacion` varchar(255) DEFAULT NULL,
-  `verificado` tinyint(1) NOT NULL DEFAULT 0,
-  `saldo_total` decimal(10,2) DEFAULT 0.00,
-  `registrado_por` varchar(200) DEFAULT NULL,
-  `aprobado` tinyint(1) DEFAULT 0,
-  `resetPasswordToken` varchar(255) DEFAULT NULL,
-  `resetPasswordExpires` bigint(20) DEFAULT NULL,
-  `genero` varchar(25) DEFAULT NULL,
-  `imagen` varchar(255) DEFAULT NULL,
-  `video` varchar(255) DEFAULT NULL,
-  `porcentaje_registro` char(50) DEFAULT '0%',
+  `categoria_persona_id` int DEFAULT NULL,
+  `rol` enum('Inversionista','Cliente','Admin','Null') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `cod_verificacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `verificado` tinyint(1) NOT NULL DEFAULT '0',
+  `saldo_total` decimal(10,2) DEFAULT '0.00',
+  `registrado_por` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aprobado` tinyint(1) DEFAULT '0',
+  `resetPasswordToken` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `resetPasswordExpires` bigint DEFAULT NULL,
+  `genero` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `porcentaje_registro` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0%',
   PRIMARY KEY (`usuario_id`),
   UNIQUE KEY `correo` (`correo`),
   UNIQUE KEY `numero_telefono` (`numero_telefono`),
@@ -700,15 +728,15 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`categoria_persona_id`) REFERENCES `categoria_personas` (`categoria_persona_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla u488326007_hamilo_persons.usuarios: ~23 rows (aproximadamente)
+-- Volcando datos para la tabla railway.usuarios: ~25 rows (aproximadamente)
 INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pais`, `numero_telefono`, `username`, `pais_residencia`, `password`, `edad`, `acepta_terminos`, `categoria_persona_id`, `rol`, `created_at`, `updated_at`, `estado`, `cod_verificacion`, `verificado`, `saldo_total`, `registrado_por`, `aprobado`, `resetPasswordToken`, `resetPasswordExpires`, `genero`, `imagen`, `video`, `porcentaje_registro`) VALUES
 	(140, 'Brian', 'Villarroel', 'braal.vf@gmail.com', '+591', '76543210', 'Brian - Villarroel', 'Bolivia', '$2b$10$QfURX5A.flFB9CYg/vo7uO4lIpN.DJBmW9oruYpKVruyIatgMZcU6', 32, 1, 16, 'Inversionista', '2024-11-25 13:37:00', '2024-11-25 13:37:00', 1, '1e80ab3a68c8ecb03cbd77dc5042bda28e357038', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544180/clients/140.jpg', NULL, '100%'),
 	(142, 'cecilia ', 'Velarde', 'airamposoruco@gmail.com', '+591', '60397621', 'cecilia  - Velarde', 'Bolivia', '$2b$10$rGg18E/rfqdJvtbU78lhJ.BLTcK6ejLllptG/LRaWENrr/oJVM6kW', 33, 1, NULL, 'Admin', '2024-11-25 13:38:28', '2024-11-25 13:38:28', 1, 'c6ada34e5f6096d23d45d2ec9799217a1c549ff1', 1, 0.00, '', 1, NULL, NULL, 'mujer', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732549700/clients/142.jpg', NULL, '20%'),
 	(143, 'inversionista', 'inver', 'inver@gmail.com', '+591', '45645645', 'inversionista - inver', 'Bolivia', '$2b$10$cbaTGqNRwxjE2UezjKWD0es/lOHX1Adk4pjfNSadsT7yy3TNetB.W', 24, 1, 16, 'Inversionista', '2024-11-25 13:41:25', '2024-11-25 13:41:25', 1, '7658ef742c85cad0aa890703ba8f3b691666f002', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732652362/clients/143.png', NULL, '100%'),
 	(144, 'Victor Hugo', 'Bolivia', 'victorhugo31103@gmail.com', '+591', '62554738', 'Victor Hugo - Bolivia', 'Argentina', '$2b$10$UERZZYj0IoPYkNQKQJZhd.tL2AHUsikYU/5fp8e/hsVQyQGinjMxy', 32, 1, NULL, 'Cliente', '2024-11-25 13:42:16', '2024-11-25 13:42:16', 1, '20d6894bfa066b5e380b563d04955b288cd2b85a', 1, 0.00, '', 1, NULL, NULL, '', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732545074/clients/144.png', NULL, '100%'),
-	(145, 'Jonathan', 'Villarroel', 'guilad1233@gmail.com', '+591', '75946778', 'Jonathan - Villarroel', 'Bolivia', '$2b$10$Z3bIYqaitNdcoaQ0mrYBmOHtowmKwEXAehxsUK3YeVrFrap6JT07y', 20, 1, NULL, 'Cliente', '2024-11-25 13:46:35', '2024-11-25 13:46:35', 1, '0d0bf76cec374dd70d10793b1b72e22cf21a58e3', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732543762/clients/145.jpg', NULL, '100%'),
+	(145, 'Jonathan', 'Villarroel', 'guilad1233@gmail.com', '+591', '75946778', 'Jonathan - Villarroel', 'Bolivia', '$2b$10$Z3bIYqaitNdcoaQ0mrYBmOHtowmKwEXAehxsUK3YeVrFrap6JT07y', 20, 1, 19, 'Cliente', '2024-11-25 13:46:35', '2024-11-25 13:46:35', 1, '0d0bf76cec374dd70d10793b1b72e22cf21a58e3', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732543762/clients/145.jpg', NULL, '60%'),
 	(148, 'Alex', 'Bolivia', 'alexandercortezorias@gmail.com', '+591', '77563943', 'Alex - Bolivia', 'Bolivia', '$2b$10$PFIqFwS0FJRk9WXBhd3/nubei3r6toWNMbeKvILymDsQ0LcpU.3Nu', 32, 1, 16, 'Inversionista', '2024-11-25 13:56:40', '2024-11-25 13:56:40', 1, 'a424eccc2aa5ae8b7db969fc62509179a60d5da7', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732543840/clients/148.jpg', NULL, '100%'),
-	(149, 'cliente', 'talento', 'cliente@gmail.com', '+591', '12121212', 'cliente - talento', 'Bolivia', '$2b$10$US35l7jTZVpP5vhw7PNbSuOBIof.L.g3UUUbekn4Jv6evpzAnlbqO', 24, 1, NULL, 'Cliente', '2024-11-25 14:01:49', '2024-11-25 14:01:49', 1, 'a704ac94bc2049d06e79d25ee1f28307103b5026', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544817/clients/149.png', NULL, '100%'),
+	(149, 'cliente', 'talento', 'cliente@gmail.com', '+591', '12121212', 'cliente - talento', 'Bolivia', '$2b$10$US35l7jTZVpP5vhw7PNbSuOBIof.L.g3UUUbekn4Jv6evpzAnlbqO', 24, 1, 19, 'Cliente', '2024-11-25 14:01:49', '2024-11-25 14:01:49', 1, 'a704ac94bc2049d06e79d25ee1f28307103b5026', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544817/clients/149.png', NULL, '100%'),
 	(150, 'admin', 'admin', 'admin@gmail.com', '+54', '78787878', 'admin - admin', 'Argentina', '$2b$10$x4CZx8LXdpr/l66DOfj/5.9aJ.ce/ELXoF6M098x0xbd0D3sFsy4e', 24, 1, 16, 'Admin', '2024-11-25 14:05:15', '2024-11-25 14:05:15', 1, 'bd0c7fa5f936eafedd68ffee0fa0f98d3875d647', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(151, 'leandro', 'ledezma', 'lleandroledezma@gmail.com', '+591', '61814110', 'leandro - ledezma', 'Bolivia', '$2b$10$a5hn6r08RjbTR7XTuFTJYOGszBj0Pqk1JBVXCfK/DWo9OxxwKSkqu', 25, 1, NULL, 'Cliente', '2024-11-25 14:07:32', '2024-11-25 14:07:32', 1, 'f014ca117ed281b09269c6b33e276ba2a41ae9ac', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732545500/clients/151.jpg', NULL, '100%'),
 	(152, 'Pedro', 'Olmos', 'pedro@gmail.com', '+54', '+1 (224) 414-8779', 'Pedro - Olmos', 'Peru', '$2b$10$tpGUZXl5Eao1C6TQeXSmz.1ZFzUEtladFjiXiY6vTkY0nJOlkKsDq', 29, 1, 16, 'Null', '2024-11-25 14:07:53', '2024-11-25 14:07:53', 1, '593d70c7856ec23f12b26f54ccc5f41a0ef07cfb', 1, 0.00, '', 0, NULL, NULL, '', NULL, NULL, '0%'),
@@ -725,7 +753,8 @@ INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pa
 	(165, 'Marvin Ramirez', 'Wiley', 'vujime@mailinator.com', '+591', '+1 (631) 169-7471', 'Marvin Ramirez - Wiley', 'Cuba', '$2b$10$u8kd/4vid7xyM/D8W/KCdOAxGyt.61QLxc36M9Ow.o3NkW4bCqRBy', 20, 1, 16, 'Null', '2024-11-27 20:46:53', '2024-11-27 20:46:53', 1, '5f13150d959ecd5665c3a122c6f4de1e5bca8d17', 1, 0.00, '', 0, NULL, NULL, 'mujer', NULL, NULL, '0%'),
 	(166, 'luis', 'luis', 'joryorch5000@gmail.com', '+54', '12345678', 'luis - luis', 'Argentina', '$2b$10$x0tYSekcYuTPPYaApbRW4OK3s9DfHmNWcOaKIotm2NktVAWdTj8ae', 24, 1, 18, 'Cliente', '2024-11-27 20:58:18', '2024-11-27 20:58:18', 1, '9a2e7a85a5dbf1c2c992e3a302f3d1aa78a7d8d1', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732741507/clients/166.png', NULL, '100%'),
 	(167, 'Cristian Andres', 'Carvajal Garcia', 'andres-carvajal-garcia64@outlook.com', '+591', '68757882', 'Cristian Andres - Carvajal Garcia', 'Bolivia', '$2b$10$olLLW68MACyzhaQ95CsZh.iffKjggMRDKl2oGLTf6a4qly6osHiYi', 26, 1, 20, 'Cliente', '2024-11-28 21:33:55', '2024-11-28 21:33:55', 1, '6d45e9730a178d6aacc587c4f77293899c11d9c7', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
-	(169, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.heredia@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$KqdQ1twBASPgU990atx2WupeA3O3xlkteNY0MtxaNjG5FioVoL022', 72, 1, 16, 'Cliente', '2024-12-10 15:52:04', '2024-12-10 15:52:04', 1, '729749e705243308c5135aacbf764a66f1096a0c', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%');
+	(168, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.heredia@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$6R.Caj3zru1NW7.uuOBpTOLLllSGYn5xcqQjk7RHp9uqu0UAR1r7a', 28, 1, 19, 'Cliente', '2024-12-11 20:34:54', '2024-12-11 20:34:54', 1, '5db5c3fab427d9f3f15696c048098fda9ef4cc17', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '20%'),
+	(169, 'Danny', 'Gonzales Medina', 'd1303gm@gmail.com', '+591', '60746303', 'Danny - Gonzales Medina', 'Bolivia', '$2b$10$Ufm/tnQWNW39E/XS9nJqpuCArGOBbCFpUPkrOeew70zcz4MhGOVae', 26, 1, 16, 'Cliente', '2024-12-11 21:24:07', '2024-12-11 21:24:07', 1, '9076104c1597fe4b39fb8efc060db1282ffd81de', 0, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
