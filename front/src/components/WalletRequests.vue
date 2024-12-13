@@ -1,6 +1,6 @@
 <template>
   <main class="bg-light pt-4 ps-4">
-    <div class="d-flex">
+    <div class="d-flex pt-4">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"
@@ -28,24 +28,24 @@
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
           <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header">
-              <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
+              <i class="fa-solid fa-list-check"></i> <strong>Total</strong> {{ totalSolicitudes }} &nbsp;
             </div>
           </div>
           <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
+              <i class="fa-solid fa-triangle-exclamation"></i><strong> Pendientes</strong> {{ solicitudesPendientes }}
               &nbsp;
             </div>
           </div>
           <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
+              <i class="fa-regular fa-circle-check"></i><strong> Aprobados</strong> {{ solicitudesAprobados }}
               &nbsp;
             </div>
           </div>
           <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
+              <i class="fa-solid fa-ban"></i> <strong> Rechazados</strong> {{ solicitudesRechazados }}
               &nbsp;
             </div>
           </div>
@@ -98,11 +98,11 @@
                 </td>
                 <td v-if="item.estado == 'Pendiente'">
                 <div class="d-flex">
-                  <button class="btn btn-success btn-sm mx-1" @click="aprobado(item)">
-                    <i class="fa fa-check"></i>
+                  <button class="border-0  hover-button mx-1" @click="aprobado(item)">
+                    <i class="fa-regular fa-circle-check text-success "></i>
                   </button>
-                  <button class="btn btn-danger btn-sm mx-1" @click="rechazado(item.retiro_id)">
-                    <i class="fa fa-times"></i>
+                  <button class="border-0  hover-button mx-1" @click="rechazado(item.retiro_id)">
+                    <i class="fa-solid fa-ban text-danger"></i>
                   </button>
                 </div>
                 </td>
@@ -111,10 +111,10 @@
                 </td>
                 <td v-if="item.estado == 'Rechazado'">
                   <div class="d-flex">
-                    <button class="btn btn-warning btn-sm mx-1" @click="pendiente(item.retiro_id)">
-                    <i class="fa fa-clock"></i>
+                    <button class="hover-button border-0 mx-1" @click="pendiente(item.retiro_id)">
+                    <i class="fa-solid fa-list-check"></i>
                   </button>
-                  <button class="btn bg-white text-danger color-danger border-danger btn-sm mx-1"
+                  <button class=" bg-white text-danger border-0 hover-button color-danger border-danger btn-sm mx-1"
                     @click="eliminado(item.retiro_id)">
                     <i class="fa fa-trash"></i>
                   </button>

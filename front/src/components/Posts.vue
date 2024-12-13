@@ -1,7 +1,7 @@
 <template>
   <main class="bg-light pt-4 ps-4">
     <div class="content">
-      <h4 class="d-block mb-2 py-3 text-center title">Guías de Usuarios</h4>
+      <h4 class="d-block mb-2 pt-4 text-center title">Guías de Usuarios</h4>
       <div class="table-center py-3">
         <div class="table-container">
           <table class="table">
@@ -29,18 +29,18 @@
                     item.estado
                   }}</span>
                 </td>
-                <td class="text-center" v-if="item.estado == 'Activo'">
-                  <button class="btn btn-danger btn-sm mx-1" @click="cambiarEstado(item.post_id)">
-                    <i class="fa fa-times"></i>
+                <td class="text-center align-middle" v-if="item.estado == 'Activo'" >
+                  <button class="border-0 hover-button " @click="cambiarEstado(item.post_id)">
+                    <i class="fa-solid fa-ban text-danger"></i>
                   </button>
                 </td>
-                <td class="text-center" v-else>
-                  <button class="btn btn-success btn-sm mx-1" @click="cambiarEstado(item.post_id)">
-                    <i class="fa fa-check"></i>
+                <td class="text-center align-middle" v-else>
+                  <button class="border-0 hover-button mx-1" @click="cambiarEstado(item.post_id)">
+                    <i class="fa-regular fa-circle-check text-success "></i>
                   </button>
-                  <button class="btn btn-warning btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                  <button class=" border-0 hover-button mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                     @click="editar(item)">
-                    <i class="fa fa-edit"></i>
+                    <i class="fa fa-edit text-secondary"></i>
                   </button>
                 </td>
               </tr>

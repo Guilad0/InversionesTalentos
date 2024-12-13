@@ -14,7 +14,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-6 text-center m-auto" id="updatePartnersLabel">Selecciona una imagen para la
-                pantalla de inicio</h1>
+                seccion de sponsors </h1>
             </div>
             <div class="modal-body">
               <div class="custom-file-upload text-center m-auto d-flex justify-content-center position-relative">

@@ -1,6 +1,6 @@
 <template>
     <main class="bg-light pt-4 ps-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex justify-content-between align-items-center mb-2 mt-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"

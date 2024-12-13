@@ -23,7 +23,7 @@
       </nav> -->
     </div>
     <div class="content">
-      <h4 class="d-block my-2 text-center title">Solicitudes de Inversiones</h4>
+      <h4 class="d-block my-2 text-center title pt-4">Solicitudes de Inversiones</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
           <div class="card text-bg-secondary mb-3 rounded-5 cursor hover-custom " style="max-width: 18rem"  @click="filtrarInv('General')">

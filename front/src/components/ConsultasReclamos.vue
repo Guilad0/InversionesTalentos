@@ -8,8 +8,8 @@
     <div class="content">
       <h4 class="d-block mb-2 text-center py-2 title">Consultas Y Reclamos</h4>
       <div class="table-responsive col-md-10 offset-md-1">
-        <div class="col-3 px-5 mb-3 d-flex">
-          <input name="search" type="text" v-model="search" class="form-control" placeholder="Buscar ..."
+        <div class="col-3  mb-3 d-flex">
+          <input name="search" type="text" v-model="search" class="form-control rounded-5" placeholder="Buscar ..."
             @input="fetchContacts(1)" />
 
         </div>
@@ -28,23 +28,23 @@
           ></iframe>
         </div> -->
         <div class="table-responsive table-container-contact">
-          <table class="table overflow-x-scroll fs-9">
+          <table class="table overflow-x-scroll ">
             <thead>
               <tr class="table-secondary">
-                <th  scope="col" class="td-custom custom-size">ID</th>
-                <th  scope="col" class="td-custom custom-size">Nombre</th>
-                <th  scope="col" class="td-custom custom-size">Apellido</th>
-                <th  scope="col" class="td-custom custom-size">Email</th>
-                <th  scope="col" class="td-custom custom-size">Teléfono</th>
-                <th  scope="col" class="td-custom custom-size">Mensaje</th>
-                <th  scope="col" class="td-custom custom-size">Respuesta</th>
-                <th  scope="col" class="td-custom custom-size">Responder</th>
-                <th  scope="col" class="td-custom custom-size">Estado</th>
-                <th  scope="col" class="td-custom custom-size">Acciones</th>
+                <th  class="td-custom custom-size">ID</th>
+                <th  class="td-custom custom-size">Nombre</th>
+                <th  class="td-custom custom-size">Apellido</th>
+                <th  class="td-custom custom-size">Email</th>
+                <th  class="td-custom custom-size">Teléfono</th>
+                <th  class="td-custom custom-size">Mensaje</th>
+                <th  class="td-custom custom-size">Respuesta</th>
+                <th  class="td-custom custom-size">Responder</th>
+                <th  class="td-custom custom-size">Estado</th>
+                <th  class="td-custom custom-size">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="" v-for="item in contacts" :key="item.id">
+              <tr class=" align-middle" v-for="item in contacts" :key="item.id">
                 <td class="text-center">{{ item.contacto_id }}</td>
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.apellido }}</td>
@@ -57,29 +57,29 @@
                     Responder
                   </span>
                 </td>
-                <td class="text-center" v-else>
+                <td class="text-center align-middle" v-else>
                   <span class="badge text-bg-dark">Contestado</span>
                 </td>
 
-                <td class="text-center" v-if="item.estado == '1'">
+                <td class="text-center align-middle" v-if="item.estado == '1'">
                   <span @click="deleted(item.contacto_id)" class="badge text-bg-success">
                     Activo
                   </span>
                 </td>
-                <td class="text-center" v-else>
+                <td class="text-center align-middle" v-else>
                   <span @click="deleted(item.contacto_id)" class="badge text-bg-danger">
                     Inactivo
                   </span>
                 </td>
 
-                <td class="text-center" v-if="item.estado == '1'">
-                  <button class="btn btn-danger btn-sm" @click="deleted(item.contacto_id)">
-                    <i class="fa fa-times" aria-hidden="true"></i>
+                <td class="text-center align-middle" v-if="item.estado == '1'">
+                  <button class="border-0 hover-button mx-1 fs-6" @click="deleted(item.contacto_id)">
+                    <i class="fa-solid fa-ban text-danger"></i>
                   </button>
                 </td>
-                <td class="text-center" v-else>
-                  <button class="btn btn-success btn-sm" @click="deleted(item.contacto_id)">
-                    <i class="fa fa-check" aria-hidden="true"></i>
+                <td class="text-center align-middle" v-else>
+                  <button class="border-0 hover-button mx-1 fs-6" @click="deleted(item.contacto_id)">
+                    <i class="fa-regular fa-circle-check text-success "></i>
                   </button>
                 </td>
               </tr>
