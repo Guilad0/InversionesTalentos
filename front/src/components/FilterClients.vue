@@ -1,12 +1,11 @@
 <template>
     <main>
-        <small class="ms-3 ">Filtrar por</small>
         <button 
             @click="$emit('getAll')" 
             type="button" 
             class="btn btn-sm mx-1 badge"
             :class="{ 'btn-orange': props.activeCategory === null, 'btn-ligth active': props.activeCategory !== null }">
-            All
+            Todos
         </button>
         <div
             class="btn-group"
