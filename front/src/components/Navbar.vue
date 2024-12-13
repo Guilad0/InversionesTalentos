@@ -10,7 +10,7 @@
           <RouterLink class="nav-link" to="/">
             <img :src="logo" alt="" width="35" class=" rounded me-2" />
           </RouterLink>
-          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0 ">
             <li class="nav-item">
               <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/">Inicio</RouterLink>
             </li>
@@ -52,14 +52,14 @@
             </li>
             <li class="nav-item" v-if="isMenuOpen && !isAuthenticated()"> <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="sign-login">Iniciar Sesión <i class="fa fa-user-circle" style="color: #17223B;"></i></RouterLink> </li>
           </ul>
-          <div class="d-flex align-items-center flex-wrap">
+          <div class="d-flex align-content-center flex-wrap ">
             <RouterLink class="nav-link wallet-icon" to="/billetera" :class="{ hidden: isMenuOpen }">
               <i v-if="rol == 'Cliente' || rol == 'Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
             <RouterLink class="nav-link keyIcon user-icon pb-1" to="/admin">
               <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
             </RouterLink>
-            <RouterLink class="nav-link user-icon pb-1" to="perfil" :class="{ hidden: isMenuOpen }"
+            <RouterLink class="nav-link user-icon pb-1 " to="perfil" :class="{ hidden: isMenuOpen }"
               v-if="rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null'">
               <img :src="`https://ui-avatars.com/api/?name=${nombre}+${apellido}&background=random`"
                 class="rounded-circle me-2" width="30" alt="" />
