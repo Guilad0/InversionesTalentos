@@ -298,7 +298,7 @@ const registrarExperiencia = async (event) => {
       "Hubo un problema al registrar la Solicitud de Inversión.",
       "Error"
     );
-    window.location.reload();
+    // window.location.reload();
   }
 };
 

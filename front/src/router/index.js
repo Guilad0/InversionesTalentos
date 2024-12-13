@@ -30,7 +30,11 @@ import NotFound from '@/views/NotFound.vue'
 import { getUser } from '@/helpers/utilities'
 import { ref } from "vue";
 import SolicitudInversion from '@/views/SolicitudInversion.vue'
+
+import axios from 'axios'
+
 import InversionesRealizadas from '@/views/InversionesRealizadas.vue';
+
 
 
 const router = createRouter({
@@ -191,14 +195,39 @@ const router = createRouter({
     {
       path: '/solicitar-inversion',
       name: 'solicitar-inversion',
-      component: SolicitudInversion
+
+      component: SolicitudInversion,
+      beforeEnter: async (to, from, next) => {
+        try {
+          const user = JSON.parse(localStorage.getItem('usuario'));
+          if (!user) {
+            next('/not-found');
+            return;
+          }
+
+          const response = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/solicitudesInversion/showButton/${user.usuario_id}`
+          );
+
+          if (response.data.showButton === 0) {
+            next('/not-found');
+          } else {
+            next();
+          }
+        } catch (error) {
+          console.error('Error verificando acceso:', error);
+          next('/not-found');
+        }
+      }
     },
+
 
     {
       path: '/inversionesRealizadas',
       name: 'inversionesRealizadas',
       component: InversionesRealizadas,
     },
+
   ]
 })
 
