@@ -234,43 +234,54 @@ const getSolicitudInversionById = (req, res) => {
 const createSolicitudInversion = (req, res) => {
   const { cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago } = req.body;
 
+  // Primero actualizar solicitudes rechazadas
+  const updateQuery = `
+    UPDATE solicitudes_inversion 
+    SET estado_inversion = NULL 
+    WHERE cliente_id = ? 
+    AND aprobado = 'Rechazado'`;
 
-  const queryCategoria = `
-    SELECT cp.monto_minimo_inversion, cp.monto_maximo_inversion 
-    FROM usuarios u 
-    JOIN categoria_personas cp ON u.categoria_persona_id = cp.categoria_persona_id 
-    WHERE u.usuario_id = ?`;
-
-  conexion.query(queryCategoria, [cliente_id], (err, categoriaResults) => {
-    if (err) {
-      return res.status(500).json({ msg: "Error al consultar la categoría del usuario", err });
+  conexion.query(updateQuery, [cliente_id], (updateErr) => {
+    if (updateErr) {
+      return res.status(500).json({ msg: "Error al actualizar solicitudes rechazadas", updateErr });
     }
 
-    if (!categoriaResults || categoriaResults.length === 0) {
-      return res.status(400).json({ msg: "No se encontró la categoría del usuario" });
-    }
+    // Consultar categoría y continuar con el flujo normal
+    const queryCategoria = `
+      SELECT cp.monto_minimo_inversion, cp.monto_maximo_inversion 
+      FROM usuarios u 
+      JOIN categoria_personas cp ON u.categoria_persona_id = cp.categoria_persona_id 
+      WHERE u.usuario_id = ?`;
 
-    const { monto_minimo_inversion, monto_maximo_inversion } = categoriaResults[0];
-
-
-    let aprobado = "Aprobado";
-    if (monto > monto_maximo_inversion || monto < monto_minimo_inversion) {
-      aprobado = "Pendiente";
-    }
-
-
-    const query = "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado], (err, results) => {
+    conexion.query(queryCategoria, [cliente_id], (err, categoriaResults) => {
       if (err) {
-        return res.status(500).json({ msg: "Error al crear la solicitud de inversión", err });
+        return res.status(500).json({ msg: "Error al consultar la categoría del usuario", err });
       }
-      res.status(201).json({
-        msg: "Solicitud de inversión creada exitosamente",
-        results,
-        aprobado,
-        montoMinimo: monto_minimo_inversion,
-        montoMaximo: monto_maximo_inversion
+
+      if (!categoriaResults || categoriaResults.length === 0) {
+        return res.status(400).json({ msg: "No se encontró la categoría del usuario" });
+      }
+
+      const { monto_minimo_inversion, monto_maximo_inversion } = categoriaResults[0];
+
+      let aprobado = "Aprobado";
+      if (monto > monto_maximo_inversion || monto < monto_minimo_inversion) {
+        aprobado = "Pendiente";
+      }
+
+      const query = "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+      conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado], (err, results) => {
+        if (err) {
+          return res.status(500).json({ msg: "Error al crear la solicitud de inversión", err });
+        }
+        res.status(201).json({
+          msg: "Solicitud de inversión creada exitosamente",
+          results,
+          aprobado,
+          montoMinimo: monto_minimo_inversion,
+          montoMaximo: monto_maximo_inversion
+        });
       });
     });
   });
@@ -320,6 +331,51 @@ const getSolicitudesInversionByUserId = (req, res) => {
   });
 };
 
+const showButton = (req, res) => {
+  const id = req.params.id;
+  const query = `
+    WITH ultima_solicitud AS (
+      SELECT 
+        id,
+        aprobado,
+        estado_inversion
+      FROM solicitudes_inversion 
+      WHERE cliente_id = ? 
+      AND estado = 1
+      ORDER BY id DESC 
+      LIMIT 1
+    )
+    SELECT 
+      CASE 
+        WHEN (
+          SELECT 
+            CASE 
+              WHEN aprobado = 'Rechazado' THEN 1
+              WHEN aprobado = 'Aprobado' AND estado_inversion = 'Finalizado' THEN 1
+              WHEN aprobado = 'Aprobado' AND estado_inversion = 'Reversion' THEN 1
+              ELSE 0
+            END
+          FROM ultima_solicitud
+        ) = 1 THEN 1
+        ELSE 0
+      END as show_button
+    FROM ultima_solicitud;
+  `;
+
+  conexion.query(query, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        message: "Error al consultar el estado de las solicitudes"
+      });
+    }
+    res.status(200).json({
+      showButton: results[0]?.show_button || 0,
+      clienteId: id
+    });
+  });
+};
+
 module.exports = {
   getSolicitudesInversion,
   getSolicitudesInversionAprobados,
@@ -331,5 +387,6 @@ module.exports = {
   aprobarSolicitudInversion,
   deleteSolicitudInversion,
   getSolicitudesInversionByUserId,
-  getTotals
+  getTotals,
+  showButton
 };
