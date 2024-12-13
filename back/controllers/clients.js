@@ -37,10 +37,11 @@ const getAllClientesWithInfo = (req, res) => {
         usuarios AS u
     LEFT JOIN 
         informacion AS i ON u.usuario_id = i.cliente_id
-         LEFT JOIN 
+     LEFT JOIN 
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+    LEFT JOIN solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and u.aprobado = 1;
+        u.rol = "cliente" and s.aprobado = 'Aprobado';
     `;
     
     conexion.query(query, (err, results) => {
