@@ -18,12 +18,12 @@
                   {{ clienteIndex + 1 }}. {{ cliente }}
                 </td>
                 <td class="text-center align-middle fw-bold">
-                  {{ calcularMontoRecaudado(inversionesPorCliente[cliente].inversiones).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+                  {{ calcularMontoRecaudado(inversionesPorCliente[cliente]).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
                 </td>
                 <td class="text-center align-middle">
                   <button 
                     class="btn btn-primary btn-sm" 
-                    @click="abrirModal(cliente, inversionesPorCliente[cliente].inversiones)">
+                    @click="abrirModal(cliente, inversionesPorCliente[cliente])">
                     Ver Inversores
                   </button>
                 </td>
@@ -44,30 +44,30 @@
         <div class="d-flex justify-content-center">
           <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
             <ul class="pagination">
-              <li v-if="paginacion.previous == null" class="page-item disabled">
+              <li v-if="!paginacion.previous" class="page-item disabled">
                 <button class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
               <li v-else class="page-item">
-                <button @click="obtenerDatos(paginacion.previous, search, currentNav)"
+                <button @click="obtenerDatos(paginacion.previous)"
                   class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
               <li v-for="page in paginacion.pages" :key="page" class="page-item" :class="paginacion.current === page ? 'active' : ''">
-                <button @click="obtenerDatos(page, search, currentNav)"
+                <button @click="obtenerDatos(page)"
                   class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
                   {{ page }}
                 </button>
               </li>
-              <li v-if="paginacion.next == null" class="page-item disabled">
+              <li v-if="!paginacion.next" class="page-item disabled">
                 <button class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </li>
               <li v-else class="page-item">
-                <button @click="obtenerDatos(paginacion.next, search, currentNav)"
+                <button @click="obtenerDatos(paginacion.next)"
                   class="page-link color-gray fw-bolder rounded-5 border border-3">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
@@ -85,7 +85,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import InversoresModal from "./InversoresModal.vue";
 
-const inversionesPorCliente = ref([]);
+const inversionesPorCliente = ref({});
 const inversionesModal = ref([]);
 const clienteActual = ref("");
 const mostrarModal = ref(false);
@@ -96,11 +96,16 @@ onMounted(async () => {
   await obtenerDatos();
 });
 
-const obtenerDatos = async (page = 1, search = "") => {
+const obtenerDatos = async (page = 1) => {
   try {
-    let url = `${BaseURL}?page=${page}&search=${search}`;
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(`${BaseURL}?page=${page}`);
     console.log(data);
+    // Asegúrate de que cada cliente tiene una clave 'inversiones'
+    Object.keys(data.inversionesPorCliente).forEach(cliente => {
+      if (!Array.isArray(data.inversionesPorCliente[cliente])) {
+        data.inversionesPorCliente[cliente] = [];
+      }
+    });
     inversionesPorCliente.value = data.inversionesPorCliente;
     paginacion.value = data.paginacion;
   } catch (error) {
@@ -109,7 +114,13 @@ const obtenerDatos = async (page = 1, search = "") => {
 };
 
 const calcularMontoRecaudado = (inversiones) => {
-  return inversiones.reduce((total, inversion) => total + parseFloat(inversion.monto || 0), 0);
+  if (!Array.isArray(inversiones)) {
+    return 0; // Si no es un array, retorna 0
+  }
+  return inversiones.reduce((total, inversion) => {
+    const monto = parseFloat(inversion.monto);
+    return total + (isNaN(monto) ? 0 : monto); // Sumar solo si el monto es un número válido
+  }, 0);
 };
 
 const abrirModal = (cliente, inversiones) => {
