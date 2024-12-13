@@ -32,6 +32,7 @@ var perfilRouter = require('./routes/perfil');
 var informacionRoutes = require('./routes/informacionRoutes');
 var previewRouter = require('./routes/preview');
 var solicitudesInversionRouter = require('./routes/solicitudesInversion');
+var reporteReversionRouter = require('./routes/reporteReversion');
 
 var app = express();
 
@@ -81,5 +82,6 @@ app.use('/perfil', perfilRouter);
 app.use('/informacion', informacionRoutes);
 app.use('/preview', previewRouter);
 app.use('/solicitudesInversion', solicitudesInversionRouter);
+app.use('/reporteReversion', reporteReversionRouter);
 
 module.exports = app;
