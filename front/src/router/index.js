@@ -30,7 +30,12 @@ import NotFound from '@/views/NotFound.vue'
 import { getUser } from '@/helpers/utilities'
 import { ref } from "vue";
 import SolicitudInversion from '@/views/SolicitudInversion.vue'
+
 import axios from 'axios'
+
+import InversionesRealizadas from '@/views/InversionesRealizadas.vue';
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -190,6 +195,7 @@ const router = createRouter({
     {
       path: '/solicitar-inversion',
       name: 'solicitar-inversion',
+
       component: SolicitudInversion,
       beforeEnter: async (to, from, next) => {
         try {
@@ -213,7 +219,15 @@ const router = createRouter({
           next('/not-found');
         }
       }
-    }
+    },
+
+
+    {
+      path: '/inversionesRealizadas',
+      name: 'inversionesRealizadas',
+      component: InversionesRealizadas,
+    },
+
   ]
 })
 

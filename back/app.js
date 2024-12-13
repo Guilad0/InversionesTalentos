@@ -27,11 +27,13 @@ var rolesRouter = require('./routes/roles');
 var comentariosRouter = require('./routes/comentarios');
 var utilitiesRouter = require('./routes/utilities');
 var reportesRouter = require('./routes/reportes');
+var reporteReversionRouter = require('./routes/reporteReversion');
 var reportRouter = require('./routes/report');
 var perfilRouter = require('./routes/perfil');
 var informacionRoutes = require('./routes/informacionRoutes');
 var previewRouter = require('./routes/preview');
 var solicitudesInversionRouter = require('./routes/solicitudesInversion');
+var reporteReversionRouter = require('./routes/reporteReversion');
 
 var app = express();
 
@@ -76,10 +78,12 @@ app.use('/roles', rolesRouter);
 app.use('/comentarios', comentariosRouter);
 app.use('/utilities', utilitiesRouter);
 app.use('/reportes', reportesRouter);
+app.use('/reporteReversion', reporteReversionRouter);
 app.use('/report', reportRouter);
 app.use('/perfil', perfilRouter);
 app.use('/informacion', informacionRoutes);
 app.use('/preview', previewRouter);
 app.use('/solicitudesInversion', solicitudesInversionRouter);
+app.use('/reporteReversion', reporteReversionRouter);
 
 module.exports = app;
