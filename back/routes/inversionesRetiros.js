@@ -8,12 +8,12 @@ router.get("/inversiones", function (req, res, next) {
   const pagina = parseInt(req.query.page, 10) || 1; // Página actual
   const salto = (pagina - 1) * porPagina; // Calcular el número de resultados a saltar
   const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
-  
+
   // Consulta para contar el número total de filas
   const queryFilas = `SELECT COUNT(*) AS numFilas
                       FROM inversiones
                       INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id;`;
-  
+
   connection.query(queryFilas, (err, results) => {
     if (err) {
       return res.status(500).json({
@@ -21,10 +21,10 @@ router.get("/inversiones", function (req, res, next) {
         msg: "Error al contar las filas",
       });
     }
-    
+
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
-    
+
     // Consulta para obtener los datos con paginación
     const query = `SELECT inversiones.*, usuarios.imagen, 
                   CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
@@ -94,27 +94,73 @@ router.put("/inversion/:id", function (req, res, next) {
 
 
 router.get("/inversionista/:id", function (req, res, next) {
+  var query = `
+    SELECT
+      inversiones.*,
+      usuarios.imagen,
+      CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
+      DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_inversion,
+      DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_retorno,
+      solicitudes_inversion.nombre AS solicitud_nombre,
+      solicitudes_inversion.descripcion AS solicitud_descripcion,
+      solicitudes_inversion.monto AS solicitud_monto,
+      solicitudes_inversion.cantidad_pagos,
+      DATE_FORMAT(solicitudes_inversion.fecha_inicio_recaudacion, '%Y-%m-%d') AS fecha_inicio_recaudacion,
+      DATE_FORMAT(solicitudes_inversion.fecha_fin_recaudacion, '%Y-%m-%d') AS fecha_fin_recaudacion,
+      solicitudes_inversion.estado_inversion,
+      (
+        SELECT COALESCE(SUM(inv2.monto), 0)
+        FROM inversiones inv2
+        WHERE inv2.solicitud_inv_id = solicitudes_inversion.id
+      ) as total_recaudado,
+      (
+        SELECT COUNT(DISTINCT inv3.inversor_id)
+        FROM inversiones inv3
+        WHERE inv3.solicitud_inv_id = solicitudes_inversion.id
+      ) as total_inversores
+    FROM inversiones
+    INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
+    LEFT JOIN solicitudes_inversion ON inversiones.solicitud_inv_id = solicitudes_inversion.id
+    WHERE inversiones.inversor_id = ${req.params.id}
+      AND solicitudes_inversion.aprobado = 'Aprobado'
+    ORDER BY inversiones.inversion_id DESC`;
 
-  var query = ` SELECT inversiones.*, usuarios.imagen, 
-CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
-DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_inversion,
-DATE_FORMAT(inversiones.fecha_devolucion, '%Y-%m-%d') AS fecha_retorno
-FROM inversiones
-INNER JOIN usuarios
-ON inversiones.cliente_id = usuarios.usuario_id
-WHERE inversiones.inversor_id = ${req.params.id}
-ORDER BY inversiones.inversion_id DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
         error: error,
-        message: "Error al realizar la petición",
+        message: "Error al realizar la petición"
       });
     } else {
+      const inversiones = results.map(result => ({
+        inversion_id: result.inversion_id,
+        cliente_id: result.cliente_id,
+        inversor_id: result.inversor_id,
+        monto: result.monto,
+        fecha_inversion: result.fecha_inversion,
+        fecha_retorno: result.fecha_retorno,
+        estado: result.estado,
+        imagen: result.imagen,
+        nombre_cliente: result.nombre_cliente,
+        talento_inversion: {
+          nombre: result.solicitud_nombre,
+          descripcion: result.solicitud_descripcion,
+          monto: result.solicitud_monto,
+          cantidad_pagos: result.cantidad_pagos,
+          fecha_inicio_recaudacion: result.fecha_inicio_recaudacion,
+          fecha_fin_recaudacion: result.fecha_fin_recaudacion,
+          estado_inversion: result.estado_inversion,
+          total_recaudado: result.total_recaudado,
+          total_inversores: result.total_inversores,
+          restante_recaudar: result.solicitud_monto - result.total_recaudado
+
+        }
+      }));
+
       res.status(200).send({
-        data: results,
-        message: "Inversiones consultadas correctamente",
+        data: inversiones,
+        message: "Inversiones consultadas correctamente"
       });
     }
   });
@@ -175,7 +221,7 @@ ORDER BY retiro_id DESC;`;
   });
 });
 
-router.get("/cliente_retiros/:id", function(req, res, next){
+router.get("/cliente_retiros/:id", function (req, res, next) {
   var query = ` 
   SELECT retiro_id, tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado,
 DATE_FORMAT(fecha_solicitud, '%Y-%m-%d') AS fecha_solicitud,
@@ -195,13 +241,13 @@ ORDER BY retiro_id DESC;`;
       res.status(200).send({
         data: results,
         message: "Retiros consultadas correctamente",
-        
+
       });
     }
   });
 });
 
-router.get("/inversiones_vencidas/:id", function(req, res, next){
+router.get("/inversiones_vencidas/:id", function (req, res, next) {
   var query = ` 
   SELECT inversion_id, cliente_id, inversor_id, monto, tipo_ganancia, ganancia_estimada, estado,
   DATE_FORMAT(fecha_deposito, '%Y-%m-%d') AS fecha_deposito,
@@ -223,7 +269,7 @@ router.get("/inversiones_vencidas/:id", function(req, res, next){
       res.status(200).send({
         data: results,
         message: "Inversiones pendientes consultadas correctamente",
-        
+
       });
     }
   });
@@ -260,7 +306,7 @@ router.get("/tokensClienteRecibido/:id", function (req, res, next) {
 });
 
 router.post("/devolverTokens", function (req, res, next) {
-  const {inversion_id,usuario_id, cliente_id, inversor_id,  token,  tipo, descripcion } = req.body;
+  const { inversion_id, usuario_id, cliente_id, inversor_id, token, tipo, descripcion } = req.body;
 
   var query = ` UPDATE inversiones 
                 SET estado=!estado 
@@ -285,19 +331,19 @@ router.post("/devolverTokens", function (req, res, next) {
             message: "Error al realizar la petición",
           });
         }
-        else{
+        else {
           var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
           VALUES ('Ingreso', 'Ganancia de tokens invertidos', CURRENT_TIMESTAMP(), NULL, '${token}', '${inversor_id}', '${inversion_id}', NULL);`;
 
-            connection.query(queryTokenInversionista, function (error, results, fields) {
-              if (error) {
-                console.log(error);
-                res.status(500).send({
-                  error: error,
-                  message: "Error al realizar la petición",
-                });
-              }
-            })
+          connection.query(queryTokenInversionista, function (error, results, fields) {
+            if (error) {
+              console.log(error);
+              res.status(500).send({
+                error: error,
+                message: "Error al realizar la petición",
+              });
+            }
+          })
         }
       })
       res.status(200).send({
