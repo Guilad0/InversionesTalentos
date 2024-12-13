@@ -2,19 +2,18 @@ const conexion = require("../database");
 
 const getInversionesReversion = (req, res) => {
     // Parámetros de paginación
-    const porPagina = parseInt(req.query.porPagina, 10) || 10; // Número de resultados por página
-    const pagina = parseInt(req.query.pagina, 10) || 1; // Página actual
+    const porPagina = 10; // Número de resultados por página
+    const filtro = req.query.filtro;
+    const pagina = parseInt(req.query.page, 10) || 1; // Página actual
     const salto = (pagina - 1) * porPagina; // Calcular el número de resultados a saltar
+    const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
 
-    // Primero obtenemos el número total de filas que cumplen la condición
+    // Consulta para contar el número total de filas
     const queryFilas = `
         SELECT COUNT(*) AS numFilas
-        FROM (
-            SELECT DISTINCT i.cliente_id
-            FROM inversiones i
-            JOIN solicitudes_inversion si ON i.cliente_id = si.cliente_id
-            WHERE si.estado_inversion = 'Reversion'
-        ) AS total;
+        FROM inversiones i
+        JOIN solicitudes_inversion si ON i.cliente_id = si.cliente_id
+        WHERE si.estado_inversion = 'Reversion'
     `;
 
     conexion.query(queryFilas, (err, results) => {
@@ -25,10 +24,10 @@ const getInversionesReversion = (req, res) => {
         const numFilas = results[0].numFilas;
         const numPaginas = Math.ceil(numFilas / porPagina);
 
-        // Luego obtenemos los datos con los límites de paginación
+        // Consulta principal con límites de paginación
         const query = `
-            SELECT i.inversion_id, i.monto, i.fecha_deposito,
-                   u_cliente.nombre AS cliente_nombre, u_cliente.apellido AS cliente_apellido,
+            SELECT i.inversion_id, i.monto, i.fecha_deposito, 
+                   u_cliente.nombre AS cliente_nombre, u_cliente.apellido AS cliente_apellido, 
                    u_inversor.nombre AS inversor_nombre, u_inversor.apellido AS inversor_apellido
             FROM inversiones i
             JOIN solicitudes_inversion si ON i.cliente_id = si.cliente_id
@@ -36,7 +35,7 @@ const getInversionesReversion = (req, res) => {
             JOIN usuarios u_inversor ON i.inversor_id = u_inversor.usuario_id
             WHERE si.estado_inversion = 'Reversion'
             ORDER BY i.cliente_id
-            LIMIT ${salto}, ${porPagina};
+            LIMIT ${limite};
         `;
 
         conexion.query(query, (err, results) => {
@@ -75,4 +74,3 @@ const getInversionesReversion = (req, res) => {
 module.exports = {
     getInversionesReversion,
 };
-
