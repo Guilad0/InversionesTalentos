@@ -1,7 +1,7 @@
 <template>
   <div class="container animate__animated animate__fadeInLeftBig container-mobile" >
-    <div class="col">
-      <div class="card">
+    <div class="col-3">
+      <div class="card custom-card">
         <div class="card-body">
           <ul>
             <div class="text-center my-4">
@@ -52,32 +52,28 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { getUser } from "@/helpers/utilities";
 import { ref, onMounted } from "vue";
 import { useRoute } from 'vue-router';
 
-
 const route = useRoute();
-const currentPath = ref(route.name); // Usamos ref para que se pueda actualizar si la ruta cambia
-onMounted(() => {
-  currentPath.value = route.name;  
-});
-
+const currentPath = route.name;
 const user = ref(null);
+
 onMounted(async () => {
   user.value = await getUser();
   console.log(user.value);
 });
-
 </script>
 
 <style scoped>
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.custom-card {
+
+  background-color: #f9f7f4; /* Color de fondo */
+  border: 1px solid #17223b; /* Borde */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  border-radius: 10px;
 }
 
 .nav-link {
@@ -97,23 +93,9 @@ ul {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.nav-link li img {
-  filter: grayscale(50%);
-  transition: filter 0.3s ease;
-}
-
 .nav-link:hover li {
-  background-color: var(--gray-color);
-
-  color:white
-}
-
-.nav-link:hover img {
-  filter: grayscale(0%);
-}
-
-.nav-link:active li {
-  transform: translateY(1px);
+  background-color: #17223b;
+  color: white;
 }
 
 .nav-link li:hover {
@@ -121,9 +103,7 @@ ul {
 }
 
 .active {
-  /* border-bottom: 3px solid #d95c00; */
-  background-color: var(--yellow-orange);
-
+  background-color: #17223b;
   color: white !important;
 }
 
@@ -132,19 +112,11 @@ ul {
   margin-bottom: 12px;
 }
 
-@media screen and (max-width: 300px) {
-  .container-mobile {
-    display: flex;
-    justify-content: center;
-    width: 100vw !important;
-    padding: 0px;
-    margin: 0px;
-    /* position: absolute; */
-    /* margin-left: 1! important; */
-
-
-    
-  }
-  
+.container-mobile {
+  display: flex;
+  justify-content: center;
+  width: 100vw !important;
+  padding: 0px;
+  margin: 0px;
 }
 </style>
