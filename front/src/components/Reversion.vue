@@ -44,24 +44,48 @@
       </div>
     </div>
     <div class="footer">
-      <!-- <Pagination
-        :page="page"
-        :prev="prev"
-        :next="next"
-        myRol="usuario"
-        :isLoading="isLoading"
-        @nextAction="nextAction"
-        @prevAction="prevAction"
-        :total="total"
-      /> -->
+      <div class="d-flex justify-content-center">
+          <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
+            <!-- Los botones de paginación se mantienen, pero se asegura que pase el filtro -->
+            <ul class="pagination">
+              <li v-if="paginacion.previous == null" class="page-item disabled">
+                <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+              </li>
+              <li v-else class="page-item">
+                <button @click="obtenerDatos(paginacion.previous, search, currentNav)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+              </li>
+              <li v-for="page in paginacion.pages" :key="page" class="page-item"
+                :class="paginacion.current === page ? 'active' : ''">
+                <button @click="obtenerDatos(page, search, currentNav)"
+                  class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
+                  {{ page }}
+                </button>
+              </li>
+              <li v-if="paginacion.next == null" class="page-item disabled">
+                <button class="page-link color-gray fw-bolder rounded-5 border border-3">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </li>
+              <li v-else class="page-item">
+                <button @click="obtenerDatos(paginacion.next, search, currentNav)"
+                  class="page-link color-gray fw-bolder rounded-5 border border-3">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
     </div>
   </main>
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { errorAlert, successAlert } from "@/helpers/iziToast";
-const modalRef = ref('')
 const inversionesPorCliente = ref([]);
 const paginacion = ref({});
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/reporteReversion";
@@ -69,18 +93,15 @@ let BaseURL = import.meta.env.VITE_BASE_URL + "/reporteReversion";
 
 onMounted( async () => {
 await obtenerDatos();
-modalRef.value = document.getElementById('staticBackdrop');
 });
 
-const closeModal = () =>{
-  cleanFields()
-}
-
-const obtenerDatos = async () => {
+const obtenerDatos = async (page = 1, search = "") => {
   try {
-    const { data } = await axios.get(`${BaseURL}/`);
+    let url = `${BaseURL}?page=${page}&search=${search}`;
+    const { data } = await axios.get(url);
     console.log(data);
     inversionesPorCliente.value = data.inversionesPorCliente;
+    paginacion.value = data.paginacion;
   } catch (error) {
     console.log(error);
   }
@@ -132,4 +153,24 @@ margin-bottom: 1rem;
 width: 100%;
 }
 
+.pagination {
+margin-top: 1rem;
+}
+
+.pagination .page-item {
+display: inline-block;
+}
+
+.pagination .page-item:nth-child(n + 4):nth-last-child(n + 4):not(.active) {
+display: none;
+}
+
+.pagination .page-item.active .page-link {
+background-color: #e0e4ff;
+color: #080808;
+font-weight: bold;
+border: 1.5px solid #b0b8ff;
+box-shadow: 0px 0px 6px rgb(3, 3, 3);
+transform: scale(1.05);
+}
 </style>
