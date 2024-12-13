@@ -139,35 +139,4 @@ const cerrarModal = () => {
   width: 100%;
 }
 
-.footer {
-  margin-top: 1rem;
-}
-
-.pagination {
-  margin-top: 1rem;
-  z-index: 1;
-}
-
-.pagination .page-item {
-  display: inline-block;
-}
-
-.pagination .page-item:nth-child(n + 4):nth-last-child(n + 4):not(.active) {
-  display: none;
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #e0e4ff;
-  color: #080808;
-  font-weight: bold;
-  border: 1.5px solid #b0b8ff;
-  box-shadow: 0px 0px 6px rgb(3, 3, 3);
-  transform: scale(1.05);
-}
-
-.active-button {
-  font-weight: 500;
-  border-bottom: 1px solid var(--gray-color);
-  text-decoration: underline !important;
-}
 </style>
