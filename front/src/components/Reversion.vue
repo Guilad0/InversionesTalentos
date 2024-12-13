@@ -10,7 +10,6 @@
             <tr class="table-secondary">
               <th class="td-custom align-middle custom-size">Cliente</th>
               <th class="td-custom custom-size">Monto Recaudado</th>  
-              <th class="td-custom align-middle custom-size">Inversion Id</th>
               <th class="td-custom align-middle custom-size">Monto</th>
               <th class="td-custom align-middle custom-size">Fecha Deposito</th>
               <th class="td-custom align-middle custom-size">Inversor</th>
@@ -35,7 +34,6 @@
               >
                 <td class="text-center align-middle">{{ cliente }}</td>
                 <td class="text-center align-middle"></td>
-                <td class="text-center align-middle">{{ inversion.inversion_id }}</td>
                 <td class="text-center align-middle">${{ inversion.monto }}</td>
                 <td class="text-center align-middle">{{ new Date(inversion.fecha_deposito).toLocaleDateString()  }}</td>
                 <td class="text-center align-middle">{{ inversion.inversor_nombre }} {{ inversion.inversor_apellido }}</td>
