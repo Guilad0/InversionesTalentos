@@ -74,10 +74,10 @@ SELECT
     COALESCE(SUM(m.token), 0) AS token
 FROM 
     (SELECT 'Egreso' AS tipo
-     UNION ALL
+     UNION ALL 
      SELECT 'Ingreso' AS tipo) t
 LEFT JOIN movimientos m
-ON t.tipo = m.tipo AND m.usuario_id = 140 AND m.estado = 1
+ON t.tipo = m.tipo AND m.usuario_id = ${req.params.id} AND m.estado = 1
 GROUP BY t.tipo
 ORDER BY t.tipo DESC;`;
   connection.query(query, function (error, results, fields) {
@@ -149,10 +149,11 @@ router.post("/invertirTokens", function (req, res, next) {
     descripcion,
     ganancia_estimada,
     fecha_devolucion,
+    id_inv
   } = req.body;
 
-  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion)
-                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}');`;
+  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
+                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');`;
 
   connection.query(query, function (error, results, fields) {
     if (error) {

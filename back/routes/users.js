@@ -18,7 +18,8 @@ const {
         handleEmail, 
         approvedUser,
         getInfoInvestor,
-        getUsersBynameAndRol
+        getUsersBynameAndRol,
+        getSolInvById
         } = require("../controllers/users");
 
 
@@ -40,6 +41,7 @@ router.get("/getUserById/:id", getUserById);
 router.get("/handleEmail/correo", handleEmail);
 router.get("/handleTelefono/telefono", handleTelefono);
 router.patch("/approved/:id", approvedUser);
+router.get("/getSolInvById/:id", getSolInvById);
  
 
 module.exports = router;

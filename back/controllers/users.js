@@ -1096,6 +1096,8 @@ const getUserById = (req, res) => {
         i.preparacion, 
         i.estudios, 
         i.vision,
+        i.monto_inversion,
+        i.cantidad_maxima_inversiones,
         c.nombre as categoria
     FROM 
         usuarios AS u
@@ -1118,6 +1120,30 @@ const getUserById = (req, res) => {
     });
   });
 };
+
+const getSolInvById = (req,res)=>{
+  let query = `
+  select 
+    id,
+    descripcion,
+    fecha_inicio_recaudacion,
+    fecha_fin_recaudacion,
+    monto,
+    aprobado
+    from solicitudes_inversion
+    where cliente_id = ${req.params.id} AND aprobado = 'Aprobado'
+  `;
+  conexion.query(query,(err,results)=>{
+    if (err) {
+      return res.status(500).send({ message: "Error en la consulta" });
+    }
+    results[0].fecha_fin_recaudacion = new Date(results[0].fecha_fin_recaudacion)
+    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    results[0].fecha_inicio_recaudacion = new Date(results[0].fecha_inicio_recaudacion)
+    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    res.status(200).json({ results:results[0] })
+  })
+}
 
 const handleEmail = (req, res) => {
   const correo = req.query.correo;
@@ -1170,4 +1196,5 @@ module.exports = {
   getUsersBynameAndRol,
   approvedUser,
   getInfoInvestor,
+  getSolInvById
 };
