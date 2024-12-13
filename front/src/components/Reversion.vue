@@ -4,162 +4,46 @@
       <h4 class="d-block text-start mb-2 text-center title">Reversion</h4>
       <div class="d-flex justify-content-between  mt-2 mb-3">
       </div>
-      <div class="table-responsive animate__animated  animate__fadeIn" v-if="!isLoading">
-        <table class="table overflow-x-scroll table-sm  table-light">
-          <thead class="table-dark">
+      <div class="table-container" >
+        <table class="table overflow-x-scroll">
+          <thead>
             <tr class="table-secondary">
-              <th class=" td-custom custom-size">#</th>
-              <th class=" td-custom custom-size">Usuario</th>
-              <th class=" td-custom custom-size">Rubro</th>
-              <th class="td-custom custom-size">Total de inversionistas</th>
-              <th class="td-custom custom-size">Monto</th>
-              <th class="td-custom custom-size">Monto recaudado</th>
-              <th class="td-custom custom-size text-center">Fecha Inicio Recaudacion</th>
-              <th class="td-custom custom-size text-center">Fecha Fin Recaudacion</th>
-              <th class="td-custom custom-size text-center">Estado</th>
-              <th class="td-custom custom-size">Acciones</th>
+              <th class="td-custom align-middle custom-size">Cliente</th>
+              <th class="td-custom custom-size">Monto Recaudado</th>  
+              <th class="td-custom align-middle custom-size">Inversion Id</th>
+              <th class="td-custom align-middle custom-size">Monto</th>
+              <th class="td-custom align-middle custom-size">Fecha Deposito</th>
+              <th class="td-custom align-middle custom-size">Inversor</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, i) in results" :key="i">
-              <td>{{ i+1 }}</td>
-              <td>{{ user.nombre }}</td>
-              <td>{{ user.apellido }}</td>
-              <!-- <td>
-                                <div class="d-flex">
-                                    <div class="col-1">
-                                        <img v-if="user.verificado == 0" src="../assets/svg/cancel.svg" width="20"> 
-                                        <img v-if="user.verificado == 1" src="../assets/svg/confirm.svg" width="20"> 
-                                    </div>
-
-                                <div class="col-10 ms-1">
-                                    {{ user.correo }}
-                                </div>
-                                </div>
-                            </td> -->
-              <td class="text-secondary text-center align-middle">
-                <i
-                  v-if="user.rol !== 'Admin' || user.rol == 'Inversionista'"
-                  class="fas fa-image"
-                  data-bs-toggle="modal"
-                  data-bs-target="#media"
-                  @click="selectImage(user.imagen, user)"
-                ></i>
-                <i v-else class="fa-solid fa-xmark text-danger"></i>
-              </td>
-              <td class="text-center align-middle">
-                <i
-                  v-if="user.rol == 'Cliente'"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalUser"
-                  class="fa fa-eye text-secondary cursor"
-                  aria-hidden="true"
-                  @click="selecionatedUser(user.usuario_id, 'logros', user.rol)"
-                ></i>
-                <i v-else class="fa-solid fa-xmark text-danger"></i>
-              </td>
-              <td class="text-center align-middle">
-                <i
-                  v-if="user.rol == 'Cliente'"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalUser"
-                  @click="selecionatedUser(user.usuario_id, 'experiencia', user.rol)"
-                  class="fa fa-eye text-secondary cursor"
-                  aria-hidden="true"
-                ></i>
-                <i v-else class="fa-solid fa-xmark text-danger"></i>
-              </td>
-              <td class="text-center align-middle">
-                <i
-                  v-if="user.rol == 'Cliente' || user.rol == 'Inversionista'"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalUser"
-                  @click="selecionatedUser(user.usuario_id, 'informacion', user.rol)"
-                  class="fa fa-eye text-secondary cursor"
-                  aria-hidden="true"
-                ></i>
-                <i v-else class="fa-solid fa-xmark text-danger"></i>
-              </td>
-
-              <td v-if="user.rol == 'Cliente'" class="text-center eye text-secondary align-middle">
-                <i v-if="user.video == null" class="fa-solid fa-video-slash"></i>
-                <i
-                  v-else
-                  class="fa-solid fa-video"
-                  data-bs-toggle="modal"
-                  data-bs-target="#media"
-                  @click="selecionatedMedia(user)"
-                ></i>
-              </td>
-
-              <td
-                v-if="
-                  user.rol == 'Inversionista' || user.rol == 'Admin' || user.rol == 'Null'
-                "
-                class="text-center text-danger align-middle"
+            <template v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
+              <!-- Fila principal para el cliente -->
+              <tr class="bg-secondary text-white">
+                <td class="text-start fw-bold">
+                  {{ clienteIndex + 1 }}. {{ cliente }}
+                </td>
+                <td class="text-center align-middle fw-bold">
+                  ${{ calcularMontoRecaudado(inversionesPorCliente[cliente].inversiones).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+                </td>
+                <td colspan="6"></td>
+              </tr>
+              <!-- Filas para las inversiones del cliente -->
+              <tr
+                v-for="(inversion, inversionIndex) in inversionesPorCliente[cliente].inversiones"
+                :key="inversionIndex"
               >
-                <i class="fa-solid fa-xmark"></i>
-              </td>
-
-              <td class="align-middle text-center">
-                <select
-                  v-model="user.rol"
-                  @change="updateRol(user.usuario_id, user.rol)"
-                  class="form-select"
-                >
-                  <option value="Inversionista">Inversionista</option>
-                  <option value="Cliente">Cliente</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Null">Null</option>
-                </select>
-              </td>
-              <td class="text-center align-middle">
-                <label v-if="user.rol !== 'Admin'">{{ user.porcentaje_registro }}</label>
-                <label v-else>Null</label>
-              </td>
-              <td class="text-center align-middle">
-                <div class="form-check form-switch">
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      :disabled="user.porcentaje_registro !== '100%'"
-                      id="aproved"
-                      :checked="user.aprobado === 1"
-                      @change="handleAproved(user.usuario_id, user.nombre, $event)"
-                    />
-                  </div>
-                </div>
-              </td>
-              <td v-if="user.estado == '1'" class="text-center align-middle">
-                <span
-                  class="badge text-bg-success cursor"
-                  @mouseover="toggleStatus"
-                  @mouseout="toggleStatus"
-                  >Activo</span
-                >
-              </td>
-              <td v-if="user.estado == '0'" class="text-center align-middle">
-                <span class="badge text-bg-danger cursor">No activo</span>
-              </td>
-              <td v-if="user.estado == '1'" class="text-center">
-                <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
-                  <img src="../assets/svg/delete.svg" width="25" />
-                </div>
-              </td>
-              <td v-if="user.estado == '0'" class="text-center align-middle">
-                <div class="cursor" @click="deleteUSer(user.usuario_id, user.estado)">
-                  <img src="../assets/svg/user-plus.svg" width="25" />
-                </div>
-              </td>
-            </tr>
+                <td class="text-center align-middle">{{ cliente }}</td>
+                <td class="text-center align-middle"></td>
+                <td class="text-center align-middle">{{ inversion.inversion_id }}</td>
+                <td class="text-center align-middle">${{ inversion.monto }}</td>
+                <td class="text-center align-middle">{{ new Date(inversion.fecha_deposito).toLocaleDateString()  }}</td>
+                <td class="text-center align-middle">{{ inversion.inversor_nombre }} {{ inversion.inversor_apellido }}</td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
-    </div>
-    <div v-if="isLoading">
-        <Spinner/>
     </div>
     <div class="footer">
       <!-- <Pagination
@@ -173,27 +57,46 @@
         :total="total"
       /> -->
     </div>
-    <ModalInforUser :id="id" :typeForm="typeForm" @clearId="clearId" :myRol="myRol" />
-    <ModalMedia :image="image" :typeMedia="typeMedia" />
-    <ModalCreateUserAdmin  @closeModal="closeModal"/>
   </main>
 </template>
 <script setup>
-import useFetchData from "../helpers/UseFetchData";
-import Pagination from "../components/Pagination.vue";
 import { ref, onMounted } from "vue";
-import { notyf } from "@/helpers/NotifyAlerts";
 import axios from "axios";
-import ModalInforUser from "../components/ModalInforUser.vue";
-import ModalCreateUserAdmin from "./ModalCreateUserAdmin.vue";
-import ModalMedia from "./ModalMedia.vue";
-import Spinner from '../components/Spinner.vue';
+import { errorAlert, successAlert } from "@/helpers/iziToast";
+const modalRef = ref('')
+const inversionesPorCliente = ref([]);
+const paginacion = ref({});
+// let BaseURL = "https://apitalentos.pruebasdeploy.online/reporteReversion";
+let BaseURL = import.meta.env.VITE_BASE_URL + "/reporteReversion";
+
+onMounted( async () => {
+await obtenerDatos();
+modalRef.value = document.getElementById('staticBackdrop');
+});
+
+const closeModal = () =>{
+  cleanFields()
+}
+
+const obtenerDatos = async () => {
+  try {
+    const { data } = await axios.get(`${BaseURL}/`);
+    console.log(data);
+    inversionesPorCliente.value = data.inversionesPorCliente;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const calcularMontoRecaudado = (inversiones) => {
+  return inversiones.reduce((total, inversion) => total + parseFloat(inversion.monto || 0), 0);
+};
 
 </script>
 <style scoped>
 .custom-size {
-  font-size: 0.9rem;
-  font-weight: 630;
+font-size: 0.8rem;
+font-weight: 630;
 }
 
 .footer {
@@ -219,6 +122,16 @@ td {
 .custom-abs-search{
     position: absolute;
     right: 0;
+}
+
+.table-container {
+max-height: 60vh;
+overflow-y: auto;
+margin-bottom: 1rem;
+}
+
+.table {
+width: 100%;
 }
 
 </style>
