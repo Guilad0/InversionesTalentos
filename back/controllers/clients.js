@@ -86,8 +86,10 @@ const getAllClientesByCategory = async (req, res) => {
         informacion AS i ON u.usuario_id = i.cliente_id
         LEFT JOIN 
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+        LEFT JOIN 
+        solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and u.categoria_persona_id = ?;
+        u.rol = "cliente" and u.categoria_persona_id = ? and s.aprobado = 'Aprobado' ;
     ;
     `;
     
@@ -136,8 +138,10 @@ const getAllClientesByFilterName =  (req, res) => {
         usuarios AS u
     LEFT JOIN 
         informacion AS i ON u.usuario_id = i.cliente_id
+    LEFT JOIN 
+        solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and u.nombre like  ?;
+        u.rol = "cliente" and s.aprobado = 'Aprobado' and u.nombre like ?;
     ;
     `;
     

@@ -258,9 +258,10 @@ i:hover {
 .underline-dynamic::after {
   content: "";
   position: absolute;
-  width: 100%;
+  width: 50%;
   height: 2px;
   bottom: 0;
+  margin: -3px 25%;
   left: 0;
   background-color: var(--yellow-orange);
   transform: scaleX(0);

@@ -198,11 +198,11 @@ const copiarEnlace = () => {
           </div>
         </div>
         <div class="text-center">
-          <label class="card-text token py-3 m-auto">Monto mínimo de inversión: ${{
+          <label class="card-text token py-3 m-auto">Inversiones desde: {{
             props.client.monto_inversion == null
               ? "00.00"
               : props.client.monto_inversion
-          }}</label>
+          }} Tokens</label>
         </div>
         <div class="row mt-2">
           <button :disabled="loadingCard" class="btn btn-gray" @click="showClient(props.client)">

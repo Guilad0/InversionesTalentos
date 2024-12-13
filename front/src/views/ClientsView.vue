@@ -97,39 +97,38 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <main class="min-vh-100">
+  <main class="">
     <div class="container">
       <h1 class="text-center titleM pt-5">Marketplace</h1>
-      <p class="mt-5 fw-bold fs-5">Profesionales</p>
+      <p class="mt-2 fw-light fs-5">Filtro por Rubros</p>
+      <div class="d-none d-xl-block filter-large p-0 mb-2">
+        <FilterClients :categories="categories" @getAll="getAll" @findByname="findByname"
+          :activeCategory="activeCategory" />
+      </div>
+      <div class="d-block d-xl-none filter-large">
+        <FilterClientsSm :categories="categories" @getAll="getAll" @findByname="findByname"
+          :activeCategory="activeCategory" />
+      </div>
       <div class="d-flex justify-content-between flex-column flex-md-row">
-        <div class="d-flex">
-          <div class="position-relative w-75">
-            <input type="text" v-model="name" @input="handleName" class=" search_input form-control focus-ring focus-ring-secondary"
-              placeholder="Buscar por nombre" />
-            
-          </div>
-          <div class="d-none d-xl-block filter-large">
-            <FilterClients :categories="categories" @getAll="getAll" @findByname="findByname"
-              :activeCategory="activeCategory" />
-          </div>
-          <div class="d-block d-xl-none filter-large">
-            <FilterClientsSm :categories="categories" @getAll="getAll" @findByname="findByname"
-              :activeCategory="activeCategory" />
-          </div>
+        <div class="position-relative ">
+      <p class="mt-2 fw-light fs-5">Filtro por Nombre</p>
+          <input type="text" v-model="name" @input="handleName"
+            class=" search_input rounded-3 form-control  focus-ring focus-ring-secondary"
+            placeholder="Buscar..." />
         </div>
         <div class="dropdown mt-md-0">
           <div class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <small>Orden por
+            <small class="mt-2 fw-light fs-5"> Orden por
               <img src="../assets/svg/menu-order-svgrepo-com.svg" width="15" />
               <ul class="dropdown-menu bg-custom m-0 p-0">
                 <li @click="orderBy('edad')">
-                  <a class="dropdown-item"><small>Edad</small></a>
+                  <a class="dropdown-item"><small class="fw-light fs-6">Edad</small></a>
                 </li>
                 <li @click="orderBy('nombre')">
-                  <a class="dropdown-item"><small>Nombre</small></a>
+                  <a class="dropdown-item"><small class="fw-light fs-6">Nombre</small></a>
                 </li>
                 <li @click="orderBy('precio')">
-                  <a class="dropdown-item"><small>Precio</small> </a>
+                  <a class="dropdown-item"><small class="fw-light fs-6">Precio</small> </a>
                 </li>
               </ul>
             </small>
@@ -137,7 +136,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="container mt-3">
+    <div class="container ">
       <div class="content" v-if="clients.length > 0">
         <div class="">
           <div v-if="!isLoading" class="d-flex flex-wrap justify-content-start">
@@ -149,14 +148,24 @@ onMounted(async () => {
           </div>
         </div>
 
-        <div class="pagination mt-4" v-if="!isLoading">
-          <button @click="prevPage" :disabled="currentPage === 1" class="page-link color-gray fw-bolder rounded-5 border border-3">
-                  <i class="fa-solid fa-arrow-left"></i></button>
-          <button v-for="page in totalPages" :key="page" @click="goToPage(page)" class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
+        <div class="pagination m-5" v-if="!isLoading">
+          <button @click="prevPage" :disabled="currentPage === 1"
+            class="page-link color-gray fw-bolder rounded-5 border border-3">
+            <i class="fa-solid fa-arrow-left"></i></button>
+          <button v-for="page in totalPages" :key="page" @click="goToPage(page)"
+            class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="page-link color-gray fw-bolder rounded-5 border border-3">
+          <button @click="nextPage" :disabled="currentPage === totalPages"
+            class="page-link color-gray fw-bolder rounded-5 border border-3">
             <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+      <div v-else class="animate__animated animate__fadeIn mt-2 ">
+        <div class="alert alert-orange-custom text-center rounded-3" role="alert">
+          <h4 class="alert-heading ">No se encontraron resultados</h4>
+          <p> Intenta ajustar los filtros o realiza una búsqueda diferente.</p>
+
         </div>
       </div>
     </div>
@@ -170,9 +179,9 @@ onMounted(async () => {
 .search_input {
   padding-left: 10px;
   margin-bottom: 20px;
-  margin-top: 25px;
   gap: 10px;
 }
+
 .filter-large {
   font-size: 20px;
   padding: 15px;
@@ -182,24 +191,30 @@ onMounted(async () => {
   font-family: var(--font-montserrat-bold);
   font-weight: 700;
   font-size: 30px;
-  color: var( --gray-color); 
+  color: var(--gray-color);
   text-transform: uppercase;
 }
+
 .dropdown-toggle {
-  font-size: 18px; 
-  padding: 10px 15px; 
-  height: auto; 
-  border-radius: 8px; 
+  font-size: 18px;
+  padding: 10px 15px;
+  height: auto;
+  border-radius: 8px;
 }
 
 .dropdown-menu {
-  font-size: 16px; 
-  padding: 10px; 
+  font-size: 16px;
+  padding: 10px;
+}
+
+.alert-orange-custom {
+  background-color: var(--gray-color);
+  color: white;
 }
 
 .dropdown-item {
-  font-size: 16px; 
-  padding: 10px 15px; 
+  font-size: 16px;
+  padding: 10px 15px;
 }
 
 main {
@@ -216,7 +231,7 @@ main {
 }
 
 .dropdown-item:hover {
-  background-color: var(--gray-color);
+  background-color: var(--yellow-orange);
   color: var(--white-anti-flash-color);
 }
 
@@ -248,9 +263,8 @@ button:disabled {
   opacity: 0.5;
   cursor: pointer !important;
 }
-.pagination {
-  margin-top: 1rem;
-}
+
+
 
 .pagination .page-item {
   display: inline-block;
@@ -274,13 +288,13 @@ button:disabled {
   border-bottom: 1px solid var(--gray-color);
   text-decoration: underline !important;
 }
+
 .custom-absolute {
   position: absolute;
-  top: 50%; 
-  transform: translateY(-50%); 
-  
-  right: 10px; 
+  top: 50%;
+  transform: translateY(-50%);
+
+  right: 10px;
   pointer-events: none;
 }
-
 </style>
