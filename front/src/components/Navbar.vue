@@ -6,9 +6,9 @@
           aria-expanded="isMenuOpen" aria-label="Toggle navigation">
           <span class="text-white"> <i class="fa fa-bars"></i> </span>
         </button>
-        <div class="collapse navbar-collapse burger-menu " :class="{ show: isMenuOpen }" id="navbarNav">
+        <div class="collapse navbar-collapse burger-menu shadow " :class="{ show: isMenuOpen }" id="navbarNav">
           <RouterLink class="nav-link" to="/">
-            <img :src="logo" alt="" width="40" class="rounded me-2" />
+            <img :src="logo" alt="" width="35" class=" rounded me-2" />
           </RouterLink>
           <ul class="navbar-nav me-auto mb-2 mb-sm-0">
             <li class="nav-item">
@@ -39,24 +39,24 @@
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="perfil">Ir a Perfil <i class="fa fa-user-circle"></i>
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="perfil">Ir a Perfil <i class="fa fa-user-circle user-icon" style="color: #17223B;"></i>
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
-              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/billetera">Ir a Billetera <i class="fa fa-wallet"></i>
+              <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="/billetera">Ir a Billetera <i class="fa fa-wallet" style="color: #17223B;"></i>
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isMenuOpen && (rol == 'Cliente' || rol == 'Inversionista' || rol == 'Null')">
               <RouterLink exact-active-class="active" @click="logout" class="nav-link underline-dynamic"
                 to="sign-login">Cerrar Sesión <i class="fa-solid fa-right-to-bracket"></i></RouterLink>
             </li>
-            <li class="nav-item" v-if="isMenuOpen && !isAuthenticated()"> <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="sign-login">Iniciar Sesión <i class="fa fa-user-circle"></i></RouterLink> </li>
+            <li class="nav-item" v-if="isMenuOpen && !isAuthenticated()"> <RouterLink exact-active-class="active" class="nav-link underline-dynamic" to="sign-login">Iniciar Sesión <i class="fa fa-user-circle" style="color: #17223B;"></i></RouterLink> </li>
           </ul>
           <div class="d-flex align-items-center flex-wrap">
             <RouterLink class="nav-link wallet-icon" to="/billetera" :class="{ hidden: isMenuOpen }">
               <i v-if="rol == 'Cliente' || rol == 'Inversionista'" class="fa fa-wallet fs-3"></i>
             </RouterLink>
-            <RouterLink class="nav-link user-icon pb-1" to="/admin">
+            <RouterLink class="nav-link keyIcon user-icon pb-1" to="/admin">
               <img v-if="rol == 'Admin'" src="../assets/svg/admin-svgrepo-com.svg" width="25" />
             </RouterLink>
             <RouterLink class="nav-link user-icon pb-1" to="perfil" :class="{ hidden: isMenuOpen }"
@@ -66,7 +66,7 @@
             </RouterLink>
             <RouterLink class="nav-link user-icon" to="sign-login" :class="{ hidden: isMenuOpen }">
               <i v-if="!isAuthenticated()" class="fa fa-user-circle fs-3"></i>
-              <i v-else class="fa-solid fa-right-to-bracket fs-3" @click="logout"></i>
+              <i v-else class="fa-solid fa-right-to-bracket fs-3" style="color: #17223B;" @click="logout"></i>
             </RouterLink>
           </div>
         </div>
@@ -149,33 +149,19 @@ const toggleMenu = () => {
 </script>
 
 <style scoped>
-/* Para íconos de la llave y el usuario en el navbar */
-.navbar-toggler i.fa-lock, 
-.navbar-toggler i.fa-user-circle,
-.navbar-nav i.fa-lock, 
-.navbar-nav i.fa-user-circle {
-  color: #0066CC !important; /* Azul por defecto */
-  transition: color 0.3s ease; /* Transición suave */
-}
 
-/* Para los íconos cuando se hace hover */
-.navbar-toggler i.fa-lock:hover, 
-.navbar-toggler i.fa-user-circle:hover,
-.navbar-nav i.fa-lock:hover, 
-.navbar-nav i.fa-user-circle:hover {
-  color: var(--yellow-orange); 
-}
-.navbar-toggler i.fa-lock, 
-.navbar-toggler i.fa-user-circle {
-  color: var(--gray-color) !important; 
-  transition: color 0.3s ease; 
-}
 
-.navbar-toggler i.fa-lock:hover, 
-.navbar-toggler i.fa-user-circle:hover {
-  color: var(--yellow-orange) !important; 
+i.fa-user-icon {
+  color: var(--gray-color) !important;
 }
-
+.user-icon:hover {
+  color: var(--yellow-orange) !important;
+}
+.rounded {
+  margin-left: 20px; 
+  margin-top: -9px; 
+  position: 0; 
+}
 .navbar-nav {
   position: relative; 
   top: -10px; 
@@ -188,7 +174,15 @@ const toggleMenu = () => {
   padding-top: 8px; 
 }
 .burger-menu {
-  background-color: var(--white-anti-flash-color); text-align: center; border-radius: 10px; width: 100%; /* Asegura que el menú ocupe todo el ancho */ position: absolute; top: 20px; /* Ajusta según la altura de tu navbar */ left: 0; right: 0; z-index: 1; /* Asegura que el menú esté en el frente */
+  background-color: #faf7f1; 
+  text-align: center; 
+  border-radius: 10px; 
+  width: 100%; 
+  position: absolute; top: 20px; 
+  left: 0; right: 0; z-index: 1; 
+  top: 0; 
+  padding-top: 20px;
+  
 }
 
 .active {
@@ -204,6 +198,7 @@ const toggleMenu = () => {
 }
 
 nav {
+  height: 60px;
   height: 8.5vh;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -217,13 +212,27 @@ nav {
   padding-top: 2px; /* Ajusta el espacio interno superior */
   transition: color 0.3s ease;
 }
+.keyIcon {
+  transition: all 0.3s ease; /* Transición suave */
+  margin-bottom: 15px;
+  
+}
+
+.keyIcon:hover {
+  stroke: var(--yellow-orange);
+  color: var(--yellow-orange); /* Cambia solo el color del trazado */
+  filter: brightness(1.2); /* Opcional: aumenta el brillo */
+  transition: color 0.3s ease, filter 0.3s ease; /* Suaviza la transición */
+  
+}
 .nav-link:hover {
   color: var(--yellow-orange) !important;
 }
 
 i {
-  color: var(--white-anti-flash-color);
+  color: var(--gray-color);
   transition: color 0.3s ease;
+  margin-bottom: 15px;
 }
 
 i:hover {
