@@ -107,6 +107,9 @@ router.get("/inversionista/:id", function (req, res, next) {
       solicitudes_inversion.cantidad_pagos,
       DATE_FORMAT(solicitudes_inversion.fecha_inicio_recaudacion, '%Y-%m-%d') AS fecha_inicio_recaudacion,
       DATE_FORMAT(solicitudes_inversion.fecha_fin_recaudacion, '%Y-%m-%d') AS fecha_fin_recaudacion,
+      DATE_FORMAT(solicitudes_inversion.fecha_inicio_pago, '%Y-%m-%d') AS fecha_inicio_pago,
+      DATE_FORMAT(solicitudes_inversion.fecha_fin_pago, '%Y-%m-%d') AS fecha_fin_pago,
+ 
       solicitudes_inversion.estado_inversion,
       (
         SELECT COALESCE(SUM(inv2.monto), 0)
@@ -150,6 +153,8 @@ router.get("/inversionista/:id", function (req, res, next) {
           cantidad_pagos: result.cantidad_pagos,
           fecha_inicio_recaudacion: result.fecha_inicio_recaudacion,
           fecha_fin_recaudacion: result.fecha_fin_recaudacion,
+          fecha_inicio_pago: result.fecha_inicio_pago,
+          fecha_fin_pago: result.fecha_fin_pago,
           estado_inversion: result.estado_inversion,
           total_recaudado: result.total_recaudado,
           total_inversores: result.total_inversores,
