@@ -1,6 +1,6 @@
 <template>
     <main class="bg-light pt-4 ps-4">
-        <div class="d-flex">
+        <div class="d-flex pt-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li 

@@ -1,6 +1,6 @@
 <template>
   <main class="bg-light pt-4 ps-4">
-    <div class="d-flex">
+    <div class="d-flex pt-4">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li :class="{ 'active-button': currentNav === 'General' }" @click="setActive('General')"
@@ -28,24 +28,24 @@
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
           <div class="card text-bg-secondary mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header">
-              <i class="fa-solid fa-comments"></i> <strong>Total</strong> {{ totalSolicitudesTokens }} &nbsp;
+              <i class="fa-solid fa-list-check"></i>  <strong>Total</strong> {{ totalSolicitudesTokens }} &nbsp;
             </div>
           </div>
           <div class="card text-bg-orange mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Pendientes</strong> {{ solicitudesPendientesTokens }}
+              <i class="fa-solid fa-triangle-exclamation"></i><strong> Pendientes</strong> {{ solicitudesPendientesTokens }}
               &nbsp;
             </div>
           </div>
           <div class="card text-bg-success mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i><strong> Aprobados</strong> {{ solicitudesAprobadosTokens }}
+              <i class="fa-regular fa-circle-check"></i><strong> Aprobados</strong> {{ solicitudesAprobadosTokens }}
               &nbsp;
             </div>
           </div>
           <div class="card text-bg-danger mb-3 rounded-5" style="max-width: 18rem">
             <div class="card-header text-white">
-              <i class="fa-solid fa-comments"></i> <strong> Rechazados</strong> {{ solicitudesRechazadosTokens }}
+              <i class="fa-solid fa-ban"></i> <strong> Rechazados</strong> {{ solicitudesRechazadosTokens }}
               &nbsp;
             </div>
           </div>
@@ -61,44 +61,44 @@
           <table class="table overflow-x-scroll">
             <thead>
               <tr class="table-secondary">
-                <th class="custom-size">ID</th>
-                <th class="custom-size">Nombre Usuario - Rol</th>
-                <th class="custom-size">Monto en Dólares</th>
-                <th class="custom-size">Monto de Tokens</th>
-                <th class="custom-size">Fecha de Solicitud</th>
-                <th class="custom-size">Fecha de Aprobacion</th>
-                <th class="custom-size">Estado</th>
-                <th class="custom-size">Acciones</th>
+                <th class="td-custom align-middle custom-size">ID</th>
+                <th class="td-custom align-middle custom-size">Nombre Usuario - Rol</th>
+                <th class="td-custom align-middle custom-size">Monto en Dólares</th>
+                <th class="td-custom align-middle custom-size">Monto de Tokens</th>
+                <th class="td-custom align-middle custom-size">Fecha de Solicitud</th>
+                <th class="td-custom align-middle custom-size">Fecha de Aprobacion</th>
+                <th class="td-custom align-middle custom-size">Estado</th>
+                <th class="td-custom align-middle custom-size">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in solicitudes" :key="item.retiro_id">
-                <td>{{ item.movimiento_id }}</td>
-                <td>{{ item.username }}</td>
-                <td>{{ item.monto }}</td>
-                <td>{{ item.token }}</td> 
-                <td class="text-center">{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
-                <td class ="text-center">
+                <td class="text-center align-middle">{{ item.movimiento_id }}</td>
+                <td class=" align-middle">{{ item.username }}</td>
+                <td class="text-center align-middle">{{ item.monto }}</td>
+                <td class="text-center align-middle">{{ item.token }}</td> 
+                <td class="text-center  text-center align-middle">{{ new Date(item.fecha_solicitud).toLocaleDateString() }}</td>
+                <td class ="text-center text-center align-middle">
                   <span v-if="item.fecha_desembolso !== null">{{ new Date(item.fecha_desembolso).toLocaleDateString() }}</span>
                   <span v-else>Sin aprobación</span>
                 </td>
-                <td>
+                <td class="text-center align-middle">
                   <span v-if="item.estado == 0 && item.descripcion =='Compra de tokens'" class="badge text-bg-warning">Pendiente</span>
                   <span v-if="item.estado == 1 && item.descripcion =='Compra de tokens'" class="badge text-bg-success">Aprobada</span>
                   <span v-if="item.estado == 0 && item.descripcion == 'Compra de tokens rechazada'" class="badge text-bg-danger">Rechazada</span>                  
                 </td>
-                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens'">
-                  <button class="btn btn-success btn-sm mx-1" @click="aprobadoTokens(item)">
-                    <i class="fa fa-check"></i>
+                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens'" class="text-center align-middle">
+                  <button class="hover-button border-0 mx-1" @click="aprobadoTokens(item)">
+                    <i class="fa-regular fa-circle-check text-success "></i>
                   </button>
-                  <button class="btn btn-danger btn-sm mx-1" @click="rechazadoTokens(item.movimiento_id)">
-                    <i class="fa fa-times"></i>
+                  <button class="border-0  hover-button mx-1" @click="rechazadoTokens(item.movimiento_id)">
+                    <i class="fa-solid fa-ban text-danger"></i>
                   </button>
                 </td>
-                <td v-if="item.estado == 1 && item.descripcion == 'Compra de tokens'">
-                  <!-- Botones específicos para el estado Aprobado -->
+                <td v-if="item.estado == 1 && item.descripcion == 'Compra de tokens'" class="text-center align-middle font-custom">
+                  <!-- Botones específicos para el estado Aprobado -->Sin accioones
                 </td>
-                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens rechazada'">
+                <td v-if="item.estado == 0 && item.descripcion == 'Compra de tokens rechazada'" class="text-center align-middle">
                   <button class="btn btn-warning btn-sm mx-1" @click="pendienteTokens(item.movimiento_id)">
                     <i class="fa fa-clock"></i>
                   </button>
@@ -330,5 +330,8 @@ label:hover {
 .custom-abs-search {
   position: absolute;
   right: 0;
+}
+.font-custom{
+  font-size: 0.8rem;
 }
 </style>

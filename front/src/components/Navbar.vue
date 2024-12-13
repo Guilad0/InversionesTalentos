@@ -6,7 +6,7 @@
           aria-expanded="isMenuOpen" aria-label="Toggle navigation">
           <span class="text-white"> <i class="fa fa-bars"></i> </span>
         </button>
-        <div class="collapse navbar-collapse burger-menu shadow " :class="{ show: isMenuOpen }" id="navbarNav">
+        <div class="collapse rounded-0 navbar-collapse burger-menu shadow " :class="{ show: isMenuOpen }" id="navbarNav">
           <RouterLink class="nav-link" to="/">
             <img :src="logo" alt="" width="35" class=" rounded me-2" />
           </RouterLink>

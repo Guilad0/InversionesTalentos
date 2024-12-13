@@ -1,6 +1,6 @@
 <template>
   <main class="bg-light">
-    <div class="content">
+    <div class="content pt-4">
       <h4 class="d-block mb-2 text-center title py-4">Rubros</h4>
 
 
