@@ -12,23 +12,21 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
-              <tr>
-                <td class="text-start fw-bold">
-                  {{ clienteIndex + 1 }}. {{ cliente }}
-                </td>
-                <td class="text-center align-middle fw-bold">
-                  {{ calcularMontoRecaudado(inversionesPorCliente[cliente]).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
-                </td>
-                <td class="text-center align-middle">
-                  <button 
-                    class="btn btn-primary btn-sm" 
-                    @click="abrirModal(cliente, inversionesPorCliente[cliente])">
-                    Ver Inversores
-                  </button>
-                </td>
-              </tr>
-            </template>
+            <tr v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
+              <td class="text-start fw-bold">
+                {{ clienteIndex + 1 }}. {{ cliente }}
+              </td>
+              <td class="text-center align-middle fw-bold">
+                {{ calcularMontoRecaudado(inversionesPorCliente[cliente]).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+              </td>
+              <td class="text-center align-middle">
+                <button 
+                  class="btn btn-primary btn-sm" 
+                  @click="abrirModal(cliente, inversionesPorCliente[cliente])">
+                  Ver Inversores
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
