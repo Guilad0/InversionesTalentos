@@ -17,7 +17,7 @@
             <tbody>
               <tr v-for="(inversion, index) in inversiones" :key="index">
                 <td>{{ inversion.inversor_nombre }} {{ inversion.inversor_apellido }}</td>
-                <td>${{ inversion.monto }}</td>
+                <td>{{ inversion.monto }}</td>
                 <td>{{ new Date(inversion.fecha_deposito).toLocaleDateString() }}</td>
               </tr>
             </tbody>
