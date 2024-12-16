@@ -227,6 +227,12 @@ textarea {
 .modal-header {
   background-color: var(--dun2-color);
   border-bottom: none;
+  padding: 1rem !important;
+}
+.modal-footer {
+  background-color: var(--gray-color) !important;
+  border-bottom: none;
+  padding: 1rem !important;
 }
 
 .modal-content {

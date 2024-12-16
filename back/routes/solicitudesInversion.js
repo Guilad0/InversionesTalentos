@@ -8,11 +8,14 @@ const {
   getSolicitudInversionById,
   createSolicitudInversion,
   updateSolicitudInversion,
-  aprobarSolicitudInversion,
+  procesarSolicitudInversion,
   deleteSolicitudInversion,
   getSolicitudesInversionByUserId,
   getTotals,
-  showButton
+  showButton,
+  getInversoresDeSolicitud,
+  finalizarInversion,
+  revertirInversion
 } = require('../controllers/solicitudesInversion');
 
 router.get('/', getSolicitudesInversion);
@@ -22,11 +25,14 @@ router.get('/rechazados', getSolicitudesInversionRechazados);
 router.get('/:id', getSolicitudInversionById);
 router.post('/', createSolicitudInversion);
 router.put('/:id', updateSolicitudInversion);
-router.patch('/aprobar/:id', aprobarSolicitudInversion);
+router.put('/aprobar/:id', procesarSolicitudInversion);
 router.delete('/:id', deleteSolicitudInversion);
 router.get('/user/:userId', getSolicitudesInversionByUserId);
 router.get('/showButton/:id', showButton);
 router.get('/getTotals/totals', getTotals),
+router.get('/getInversoresDeSolicitud/:id', getInversoresDeSolicitud),
+router.put('/finalizarInversion/:id', finalizarInversion),
+router.put('/revertirInversion/:id', revertirInversion),
 
 
   module.exports = router;

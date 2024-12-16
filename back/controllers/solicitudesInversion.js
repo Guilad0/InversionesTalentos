@@ -10,7 +10,10 @@ const getSolicitudesInversion = (req, res) => {
   const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
 
   // Consulta para contar el número total de filas
-  const queryFilas = (filtro == 'General') ? `SELECT COUNT(*) AS numFilas FROM solicitudes_inversion` : `SELECT COUNT(*) AS numFilas FROM solicitudes_inversion where aprobado = '${filtro}'`;
+  const queryFilas =
+    filtro == "General"
+      ? `SELECT COUNT(*) AS numFilas FROM solicitudes_inversion`
+      : `SELECT COUNT(*) AS numFilas FROM solicitudes_inversion where aprobado = '${filtro}'`;
 
   conexion.query(queryFilas, (err, results) => {
     if (err) {
@@ -21,11 +24,16 @@ const getSolicitudesInversion = (req, res) => {
     const numPaginas = Math.ceil(numFilas / porPagina);
 
     // Consulta para obtener los datos con paginación
-    const query = (filtro == 'General') ? `SELECT * FROM solicitudes_inversion LIMIT ${limite}` : `SELECT * FROM solicitudes_inversion where aprobado = '${filtro}' LIMIT ${limite}`;
+    const query =
+      filtro == "General"
+        ? `SELECT * FROM solicitudes_inversion LIMIT ${limite}`
+        : `SELECT * FROM solicitudes_inversion where aprobado = '${filtro}' LIMIT ${limite}`;
 
     conexion.query(query, (err, results) => {
       if (err) {
-        return res.status(500).json({ msg: "Error al obtener solicitudes de inversión", err });
+        return res
+          .status(500)
+          .json({ msg: "Error al obtener solicitudes de inversión", err });
       }
 
       const paginas = Array.from({ length: numPaginas }, (_, i) => i + 1);
@@ -39,7 +47,13 @@ const getSolicitudesInversion = (req, res) => {
         next: pagina < numPaginas ? pagina + 1 : null,
       };
 
-      res.status(200).json({ data: results, paginacion, message: "Solicitudes de inversión consultadas correctamente" });
+      res
+        .status(200)
+        .json({
+          data: results,
+          paginacion,
+          message: "Solicitudes de inversión consultadas correctamente",
+        });
     });
   });
 };
@@ -54,22 +68,26 @@ const getTotals = (req, res) => {
     aprobado WITH ROLLUP;`;
   conexion.query(query, (err, results) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al obtener los totales de inversión", err });
+      return res
+        .status(500)
+        .json({ msg: "Error al obtener los totales de inversión", err });
     }
     res.status(200).json({ results });
-  })
-}
+  });
+};
 
 // get para pendientes de inversion
 const getSolicitudesInversionPendientes = (req, res) => {
-  const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || '';
+  const estado = req.query.estado || ""; // Obtiene el estado de la consulta si existe
+  const busqueda = req.query.search || "";
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
 
   // Agregar filtro de estado a la consulta SQL si está presente
-  let filtroEstado = estado ? `AND solicitudes_inversion.estado = '${estado}'` : '';
+  let filtroEstado = estado
+    ? `AND solicitudes_inversion.estado = '${estado}'`
+    : "";
 
   const queryFilas = `
     SELECT COUNT(*) AS numFilas
@@ -93,7 +111,9 @@ const getSolicitudesInversionPendientes = (req, res) => {
 
     conexion.query(query, function (error, results) {
       if (error) {
-        res.status(500).send({ error, message: "Error al realizar la petición" });
+        res
+          .status(500)
+          .send({ error, message: "Error al realizar la petición" });
       } else {
         res.status(200).send({
           pagination: {
@@ -112,17 +132,18 @@ const getSolicitudesInversionPendientes = (req, res) => {
   });
 };
 
-
 // get para aprobados de inversiones
 const getSolicitudesInversionAprobados = (req, res) => {
-  const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || '';
+  const estado = req.query.estado || ""; // Obtiene el estado de la consulta si existe
+  const busqueda = req.query.search || "";
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
 
   // Agregar filtro de estado a la consulta SQL si está presente
-  let filtroEstado = estado ? `AND solicitudes_inversion.estado = '${estado}'` : '';
+  let filtroEstado = estado
+    ? `AND solicitudes_inversion.estado = '${estado}'`
+    : "";
 
   const queryFilas = `
     SELECT COUNT(*) AS numFilas
@@ -146,7 +167,9 @@ const getSolicitudesInversionAprobados = (req, res) => {
 
     conexion.query(query, function (error, results) {
       if (error) {
-        res.status(500).send({ error, message: "Error al realizar la petición" });
+        res
+          .status(500)
+          .send({ error, message: "Error al realizar la petición" });
       } else {
         res.status(200).send({
           pagination: {
@@ -165,18 +188,18 @@ const getSolicitudesInversionAprobados = (req, res) => {
   });
 };
 
-
-
 // get para rechazados de inversiones
 const getSolicitudesInversionRechazados = (req, res) => {
-  const estado = req.query.estado || ''; // Obtiene el estado de la consulta si existe
-  const busqueda = req.query.search || '';
+  const estado = req.query.estado || ""; // Obtiene el estado de la consulta si existe
+  const busqueda = req.query.search || "";
   const pagina = parseInt(req.query.page, 10) || 1;
   const porPagina = 10;
   const salto = (pagina - 1) * porPagina;
 
   // Agregar filtro de estado a la consulta SQL si está presente
-  let filtroEstado = estado ? `AND solicitudes_inversion.estado = '${estado}'` : '';
+  let filtroEstado = estado
+    ? `AND solicitudes_inversion.estado = '${estado}'`
+    : "";
 
   const queryFilas = `
     SELECT COUNT(*) AS numFilas
@@ -200,7 +223,9 @@ const getSolicitudesInversionRechazados = (req, res) => {
 
     conexion.query(query, function (error, results) {
       if (error) {
-        res.status(500).send({ error, message: "Error al realizar la petición" });
+        res
+          .status(500)
+          .send({ error, message: "Error al realizar la petición" });
       } else {
         res.status(200).send({
           pagination: {
@@ -219,20 +244,145 @@ const getSolicitudesInversionRechazados = (req, res) => {
   });
 };
 
-
 const getSolicitudInversionById = (req, res) => {
   const { id } = req.params;
   const query = "SELECT * FROM solicitudes_inversion WHERE id = ?";
   conexion.query(query, [id], (err, results) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al obtener la solicitud de inversión", err });
+      return res
+        .status(500)
+        .json({ msg: "Error al obtener la solicitud de inversión", err });
     }
     res.status(200).json({ results });
   });
 };
 
+const getInversoresDeSolicitud = (req, res) => {
+  let query = `SELECT inversor_id, monto,estado_inversion FROM inversiones WHERE solicitud_inv_id = ${req.params.id}`;
+  conexion.query(query, (err, resultsInversores) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ msg: "Error al obtener la solicitud de inversión", err });
+    }
+    if (resultsInversores.length === 0) {
+      return res.status(200).json({ results: [], totalInvertido: 0 });
+    }
+    const idInversionistas = resultsInversores.map((s) => s.inversor_id);
+    console.log(idInversionistas.join(","));
+    query = `select 
+          nombre,
+          apellido 
+          from usuarios where usuario_id IN (${idInversionistas.join(",")})`;
+    conexion.query(query, (err, data) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ msg: "Error al obtener la solicitud de inversión", err });
+      }
+      let totalInvertido = 0;
+      let estadoInv = ''
+      const results = data.map((inv, i) => {
+        const inversor = resultsInversores[i];
+        totalInvertido += parseInt(resultsInversores[i].monto);
+        estadoInv += parseInt(resultsInversores[i].estado_inversion);
+        return {
+          ...inv,
+          ...inversor,
+          ...estadoInv
+        };
+      });
+      res.status(200).json({ results, totalInvertido });
+    });
+  });
+};
+
+const finalizarInversion = (req, res) => {
+  let query = `UPDATE solicitudes_inversion SET fecha_fin_recaudacion = ?, estado_inversion = 'Finalizado' WHERE id = ?`;
+  const fechaActual = new Date().toISOString().split("T")[0];
+  conexion.query(query, [fechaActual, req.params.id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ msg: "Error al actualizar inversiones" });
+    }
+    res.status(200).json({ results });
+  });
+};
+
+const revertirInversion = (req, res) => {
+  let query = `UPDATE solicitudes_inversion SET fecha_fin_recaudacion = ?, observaciones= ?, estado_inversion = 'Reversion' WHERE id = ?`;
+  const fechaActual = new Date().toISOString().split("T")[0];
+  conexion.query(
+    query,
+    [fechaActual, req.query.observaciones, req.params.id],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({ msg: "Error al actualizar inversiones" });
+      }
+      console.log(req.params.id);
+      query = `
+      UPDATE inversiones
+      SET estado_inversion = 'Revertido'
+      WHERE solicitud_inv_id = ${req.params.id};    
+      `;
+      conexion.query(query, (err, results) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ msg: "Error al actualizar inversiones" });
+        }
+        query = `SELECT cliente_id, inversor_id, inversion_id
+      FROM inversiones
+      WHERE solicitud_inv_id = ${req.params.id};`;
+        conexion.query(query, (err, results) => {
+          if (err) {
+            return res
+              .status(500)
+              .json({ msg: "Error al actualizar inversiones" });
+          }
+          const usersId = results.flatMap(item => [
+            { tipo: 'talento', id: item.cliente_id,tipoMovimiento: 'Egreso', },
+            { tipo: 'inversor', id: item.inversor_id,tipoMovimiento: 'Ingreso', }
+          ]);
+          const promises = usersId.map((cliente) => {
+            const query = `UPDATE movimientos SET tipo=?,descripcion='Reversion' WHERE usuario_id = ?`;
+            return new Promise((resolve, reject) => {
+              conexion.query(query, [cliente.tipoMovimiento, cliente.id], (err, results) => {
+                if (err) {
+                  console.error(`Error al actualizar el id ${cliente.id}:`, err);
+                  reject(err);
+                } else {
+                  console.log(`Actualización exitosa para el id ${cliente.id}`);
+                  resolve(results);
+                }
+              });
+            });
+          });
+          Promise.all(promises)
+          .then(() => {
+            res.status(200).json({ msg: "Todas las actualizaciones se completaron correctamente." });
+          })
+          .catch((err) => {
+            res.status(500).json({  msg: "Ocurrió un error al procesar las actualizaciones." });
+          });
+          
+        });
+      });
+    }
+  );
+};
+
 const createSolicitudInversion = (req, res) => {
-  const { cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago } = req.body;
+  const {
+    cliente_id,
+    nombre,
+    descripcion,
+    fecha_inicio_recaudacion,
+    fecha_fin_recaudacion,
+    monto,
+    cantidad_pagos,
+    fecha_inicio_pago,
+    fecha_fin_pago,
+  } = req.body;
 
   // Primero actualizar solicitudes rechazadas
   const updateQuery = `
@@ -243,7 +393,9 @@ const createSolicitudInversion = (req, res) => {
 
   conexion.query(updateQuery, [cliente_id], (updateErr) => {
     if (updateErr) {
-      return res.status(500).json({ msg: "Error al actualizar solicitudes rechazadas", updateErr });
+      return res
+        .status(500)
+        .json({ msg: "Error al actualizar solicitudes rechazadas", updateErr });
     }
 
     // Consultar categoría y continuar con el flujo normal
@@ -255,58 +407,144 @@ const createSolicitudInversion = (req, res) => {
 
     conexion.query(queryCategoria, [cliente_id], (err, categoriaResults) => {
       if (err) {
-        return res.status(500).json({ msg: "Error al consultar la categoría del usuario", err });
+        return res
+          .status(500)
+          .json({ msg: "Error al consultar la categoría del usuario", err });
       }
 
       if (!categoriaResults || categoriaResults.length === 0) {
-        return res.status(400).json({ msg: "No se encontró la categoría del usuario" });
+        return res
+          .status(400)
+          .json({ msg: "No se encontró la categoría del usuario" });
       }
 
-      const { monto_minimo_inversion, monto_maximo_inversion } = categoriaResults[0];
+      const { monto_minimo_inversion, monto_maximo_inversion } =
+        categoriaResults[0];
 
       let aprobado = "Aprobado";
       if (monto > monto_maximo_inversion || monto < monto_minimo_inversion) {
         aprobado = "Pendiente";
       }
 
-      const query = "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      const query =
+        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado], (err, results) => {
-        if (err) {
-          return res.status(500).json({ msg: "Error al crear la solicitud de inversión", err });
-        }
-        res.status(201).json({
-          msg: "Solicitud de inversión creada exitosamente",
-          results,
+      conexion.query(
+        query,
+        [
+          cliente_id,
+          nombre,
+          descripcion,
+          fecha_inicio_recaudacion,
+          fecha_fin_recaudacion,
+          monto,
+          cantidad_pagos,
+          fecha_inicio_pago,
+          fecha_fin_pago,
           aprobado,
-          montoMinimo: monto_minimo_inversion,
-          montoMaximo: monto_maximo_inversion
-        });
-      });
+        ],
+        (err, results) => {
+          if (err) {
+            return res
+              .status(500)
+              .json({ msg: "Error al crear la solicitud de inversión", err });
+          }
+          res.status(201).json({
+            msg: "Solicitud de inversión creada exitosamente",
+            results,
+            aprobado,
+            montoMinimo: monto_minimo_inversion,
+            montoMaximo: monto_maximo_inversion,
+          });
+        }
+      );
     });
   });
 };
 
 const updateSolicitudInversion = (req, res) => {
   const { id } = req.params;
-  const { cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, estado } = req.body;
-  const query = "UPDATE solicitudes_inversion SET cliente_id = ?, nombre = ?, descripcion = ?, fecha_inicio_recaudacion = ?, fecha_fin_recaudacion = ?, monto = ?, cantidad_pagos = ?, fecha_inicio_pago = ?, fecha_fin_pago = ?, aprobado = ?, estado = ? WHERE id = ?";
-  conexion.query(query, [cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, estado, id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ msg: "Error al actualizar la solicitud de inversión", err });
+  const {
+    cliente_id,
+    nombre,
+    descripcion,
+    fecha_inicio_recaudacion,
+    fecha_fin_recaudacion,
+    monto,
+    cantidad_pagos,
+    fecha_inicio_pago,
+    fecha_fin_pago,
+    aprobado,
+    estado,
+  } = req.body;
+  const query =
+    "UPDATE solicitudes_inversion SET cliente_id = ?, nombre = ?, descripcion = ?, fecha_inicio_recaudacion = ?, fecha_fin_recaudacion = ?, monto = ?, cantidad_pagos = ?, fecha_inicio_pago = ?, fecha_fin_pago = ?, aprobado = ?, estado = ? WHERE id = ?";
+  conexion.query(
+    query,
+    [
+      cliente_id,
+      nombre,
+      descripcion,
+      fecha_inicio_recaudacion,
+      fecha_fin_recaudacion,
+      monto,
+      cantidad_pagos,
+      fecha_inicio_pago,
+      fecha_fin_pago,
+      aprobado,
+      estado,
+      id,
+    ],
+    (err, results) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ msg: "Error al actualizar la solicitud de inversión", err });
+      }
+      res
+        .status(200)
+        .json({
+          msg: "Solicitud de inversión actualizada exitosamente",
+          results,
+        });
     }
-    res.status(200).json({ msg: "Solicitud de inversión actualizada exitosamente", results });
-  });
+  );
 };
 
-const aprobarSolicitudInversion = (req, res) => {
+const procesarSolicitudInversion = (req, res) => {
   const { id } = req.params;
-  const query = `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}' WHERE id = ?`;
+  let query =
+    req.query.action == "Aprobado"
+      ? `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Proceso' WHERE id = ?`
+      : `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Pendiente' WHERE id = ?`;
   conexion.query(query, [id], (err, results) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al aprobar la solicitud de inversión", err });
+      return res
+        .status(500)
+        .json({ msg: "Error al procesar la solicitud de inversión", err });
     }
-    res.status(200).json({ msg: "Solicitud de inversión aprobada exitosamente", results });
+    if (req.query.action == "Rechazado") {
+      return res
+        .status(200)
+        .json({
+          msg: "Solicitud de inversión rechazada exitosamente",
+          results,
+        });
+    }
+    const { minInv, maxInv, idCliente } = req.query;
+    query =
+      "update informacion set monto_inversion = ?, cantidad_maxima_inversiones = ? where cliente_id = ?";
+    conexion.query(query, [minInv, maxInv, idCliente], (err, results) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({
+            msg: "Error al procesar los montos de inversiond el cliente",
+            err,
+          });
+      }
+      res.status(200).json({ msg: "Solicitud aprobadao" });
+    });
   });
 };
 
@@ -315,9 +553,19 @@ const deleteSolicitudInversion = (req, res) => {
   const query = "UPDATE solicitudes_inversion SET estado = 0 WHERE id = ?";
   conexion.query(query, [id], (err, results) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al cambiar el estado de la solicitud de inversión", err });
+      return res
+        .status(500)
+        .json({
+          msg: "Error al cambiar el estado de la solicitud de inversión",
+          err,
+        });
     }
-    res.status(200).json({ msg: "Estado de la solicitud de inversión cambiado exitosamente", results });
+    res
+      .status(200)
+      .json({
+        msg: "Estado de la solicitud de inversión cambiado exitosamente",
+        results,
+      });
   });
 };
 const getSolicitudesInversionByUserId = (req, res) => {
@@ -325,7 +573,12 @@ const getSolicitudesInversionByUserId = (req, res) => {
   const query = "SELECT * FROM solicitudes_inversion WHERE cliente_id = ?";
   conexion.query(query, [userId], (err, results) => {
     if (err) {
-      return res.status(500).json({ msg: "Error al obtener las solicitudes de inversión del usuario", err });
+      return res
+        .status(500)
+        .json({
+          msg: "Error al obtener las solicitudes de inversión del usuario",
+          err,
+        });
     }
     res.status(200).json({ results });
   });
@@ -366,12 +619,12 @@ const showButton = (req, res) => {
     if (err) {
       return res.status(500).json({
         error: err,
-        message: "Error al consultar el estado de las solicitudes"
+        message: "Error al consultar el estado de las solicitudes",
       });
     }
     res.status(200).json({
       showButton: results[0]?.show_button || 0,
-      clienteId: id
+      clienteId: id,
     });
   });
 };
@@ -384,9 +637,12 @@ module.exports = {
   getSolicitudInversionById,
   createSolicitudInversion,
   updateSolicitudInversion,
-  aprobarSolicitudInversion,
+  procesarSolicitudInversion,
   deleteSolicitudInversion,
   getSolicitudesInversionByUserId,
   getTotals,
-  showButton
+  showButton,
+  getInversoresDeSolicitud,
+  finalizarInversion,
+  revertirInversion,
 };

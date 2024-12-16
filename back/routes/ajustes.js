@@ -33,6 +33,17 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/ajustesTokens', (req, res) => {
+    conexion.query('SELECT valor_token FROM ajustes', (error, results) => {
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+        res.status(200).json({results:results[0]});
+    });
+});
+
+
+
 // Actualizar ajuste
 router.put('/:id', (req, res) => {
     const { id } = req.params;
