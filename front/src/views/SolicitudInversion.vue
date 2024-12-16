@@ -60,10 +60,10 @@
                 ></label
               >
               <input
-                ref="refMinDate"
                 id="fecha_inicio_recaudacion"
                 v-model="fecha_inicio_recaudacion"
                 type="date"
+                :min="fechaActual"
                 class="input form-control"
                 required
               />
@@ -81,6 +81,7 @@
                 id="fecha_fin_recaudacion"
                 v-model="fecha_fin_recaudacion"
                 type="date"
+                :min="fechaActual"
                 class="input form-control"
                 required
               />
@@ -95,7 +96,7 @@
               >
               <input
                 id="monto"
-                v-model="monto"
+                v-model.number="monto"
                 ref="refMonto"
                 type="number"
                 class="input form-control no-spin"
@@ -113,7 +114,7 @@
               >
               <input
                 id="cantidad_pagos"
-                v-model="cantidad_pagos"
+                v-model.number="cantidad_pagos"
                 ref="refCantidadPagos"
                 type="number"
                 class="input form-control no-spin"
@@ -132,10 +133,10 @@
                 >Fecha Inicio Pago<strong class="text-danger">*</strong></label
               >
               <input
-                ref="refMinDate"
                 id="fecha_inicio_pago"
                 v-model="fecha_inicio_pago"
                 type="date"
+                :min="fechaActual"
                 class="input form-control"
                 required
               />
@@ -188,21 +189,11 @@ const refDescripcion = ref("");
 const refMonto = ref("");
 const refNombre = ref("");
 const refMaxDate = ref("");
-const minDate = ref("1970-01-01");
-const maxDate = ref(new Date().toISOString().split("T")[0]);
-
 // Obtener el cliente_id desde localStorage al montar el componente
 const user = ref(JSON.parse(localStorage.getItem("usuario")));
-const validarFormulario = (event) => {
-  const form = event.target.closest("form");
-  if (!form.checkValidity()) {
-    event.preventDefault();
-    event.stopPropagation();
-    form.classList.add("was-validated");
-    return false;
-  }
-  return true;
-};
+
+const fechaActual = ref(new Date().toISOString().split("T")[0]);
+
 
 onMounted(() => {
   console.log(user.value);
@@ -225,7 +216,12 @@ onMounted(() => {
 
 // Función para registrar la experiencia
 const registrarExperiencia = async (event) => {
-  if (!validarFormulario(event)) return;
+  nombre.value = nombre.value.trim();
+  descripcion.value = descripcion.value.trim();
+  if (!nombre.value || !descripcion.value || monto.value <= 0 || cantidad_pagos.value <= 0) {
+    errorAlert("Todos los campos obligatorios deben ser completados correctamente", "Error");
+    return;
+  }
   /* if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
     nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
     refNombre.value.focus();
