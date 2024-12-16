@@ -67,6 +67,9 @@
                 class="input form-control"
                 required
               />
+              <div v-if="fecha_inicio_recaudacion && fecha_inicio_recaudacion < fechaActual" class="text-danger">
+                La fecha de inicio de recaudación no puede ser anterior a hoy.
+              </div>
             </div>
           </div>
           <div class="col mb-6">
@@ -136,10 +139,13 @@
                 id="fecha_inicio_pago"
                 v-model="fecha_inicio_pago"
                 type="date"
-                :min="fechaActual"
+                :min="fecha_fin_recaudacion"
                 class="input form-control"
                 required
               />
+              <div v-if="fecha_inicio_pago && fecha_inicio_pago <= fecha_fin_recaudacion" class="text-danger">
+                La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.
+              </div>
             </div>
           </div>
           <div class="col mb-6">
@@ -215,88 +221,77 @@ onMounted(() => {
 });
 
 // Función para registrar la experiencia
-const registrarExperiencia = async (event) => {
-  nombre.value = nombre.value.trim();
-  descripcion.value = descripcion.value.trim();
-  if (!nombre.value || !descripcion.value || monto.value <= 0 || cantidad_pagos.value <= 0) {
-    errorAlert("Todos los campos obligatorios deben ser completados correctamente", "Error");
-    return;
-  }
-  /* if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
-    refNombre.value.focus();
-    errorAlert("El campo motivo debe contener más de 5 letras.", "Error");
-    return;
-  }
-  if (monto.value && monto.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    monto.value = monto.value.trim() == "" ? "" : monto.value;
-    refMonto.value.focus();
-    errorAlert("El campo monto  debe contener más de 5 letras.", "Error");
-    return;
-  }
+const registrarExperiencia = async () => {
+  if (!validarCampos()) return;
 
-  if (
-    descripcion.value &&
-    descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5
-  ) {
-    descripcion.value = descripcion.value.trim() == "" ? "" : descripcion.value;
-    refDescripcion.value.focus();
-    errorAlert("La descripción no puede estar vacía ni contener solo espacios.", "Error");
-    return;
-  }
-  if (fecha_inicio_recaudacion.value <= minDate.value) {
-    errorAlert("Fecha de inicio no valida.", "Error");
-    refMinDate.value.focus();
-    return;
-  }
-  if (fecha_fin_recaudacion.value > maxDate.value) {
-    errorAlert("Fecha de inicio no valida.", "Error");
-    refMaxDate.value.focus();
-    return;
-  }
-  if (fecha_inicio_recaudacion.value >= fecha_fin_recaudacion.value) {
-    errorAlert("La fecha de inicio no puede ser mayor a la fecha final.", "Error");
-    refMinDate.value.focus();
-    return;
-  } */
   const datos = {
     cliente_id: cliente_id.value,
+    nombre: nombre.value,
     descripcion: descripcion.value,
+    monto: monto.value,
+    cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
-    monto: monto.value,
-    nombre: nombre.value,
-    cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_pago: fecha_inicio_pago.value,
     fecha_fin_pago: fecha_fin_pago.value,
   };
-  console.log(datos);
+
   try {
     await axios.post(
       import.meta.env.VITE_BASE_URL + "/solicitudesInversion",
       datos
     );
-    // Limpiar los campos después de registrar
-    descripcion.value = "";
-    fecha_inicio_recaudacion.value = "";
-    fecha_fin_recaudacion.value = "";
-    monto.value = "";
-    nombre.value = "";
-    cantidad_pagos.value = "";
-    fecha_inicio_pago.value = "";
-    fecha_fin_pago.value = "";
     successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
-    // Redirigir al perfil
+    limpiarCampos();
     router.push({ name: "perfil" });
   } catch (error) {
-    console.error(error);
-    errorAlert(
-      "Hubo un problema al registrar la Solicitud de Inversión.",
-      "Error"
-    );
-    // window.location.reload();
+    errorAlert("Error al registrar la Solicitud de Inversión.", "Error");
   }
 };
+
+const validarCampos = () => {
+  if (!nombre.value.trim()) {
+    errorAlert("El campo 'Motivo' es obligatorio.", "Error");
+    return false;
+  }
+  if (!descripcion.value.trim()) {
+    errorAlert("El campo 'Descripción' es obligatorio.", "Error");
+    return false;
+  }
+  if (monto.value <= 0) {
+    errorAlert("El monto debe ser mayor a 0.", "Error");
+    return false;
+  }
+  if (cantidad_pagos.value <= 0) {
+    errorAlert("La cantidad de pagos debe ser mayor a 0.", "Error");
+    return false;
+  }
+  if (!fecha_inicio_recaudacion.value || fecha_inicio_recaudacion.value < fechaActual.value) {
+    errorAlert("La fecha de inicio de recaudación debe ser igual o posterior a hoy.", "Error");
+    return false;
+  }
+  if (!fecha_fin_recaudacion.value || fecha_fin_recaudacion.value <= fecha_inicio_recaudacion.value) {
+    errorAlert("La fecha final de recaudación debe ser posterior a la fecha de inicio.", "Error");
+    return false;
+  }
+  if (!fecha_inicio_pago.value || fecha_inicio_pago.value <= fecha_fin_recaudacion.value) {
+    errorAlert("La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.", "Error");
+    return false;
+  }
+  return true;
+};
+
+const limpiarCampos = () => {
+  nombre.value = "";
+  descripcion.value = "";
+  monto.value = "";
+  cantidad_pagos.value = "";
+  fecha_inicio_recaudacion.value = "";
+  fecha_fin_recaudacion.value = "";
+  fecha_inicio_pago.value = "";
+  fecha_fin_pago.value = "";
+};
+
 
 const calcularFechaFinInversion = () => {
   if (fecha_inicio_pago.value) {
