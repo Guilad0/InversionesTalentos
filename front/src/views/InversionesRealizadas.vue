@@ -1,13 +1,25 @@
 <template>
-  <div class="container animate__animated animate__fadeInLeftBig container-mobile" >
-    <div class="col-3">
-      <div class="card custom-card">
+  <div class="row  my-4">
+    <!-- Contenedor Izquierdo -->
+    <div class="col-2 ms-5">
+      <div class="card profileContainer custom-card">
         <div class="card-body">
           <ul>
             <div class="text-center my-4">
-              <img v-if="!user?.imagen" src="@/assets/images/profile_photo.png" alt="" width="150" class="rounded-circle" />
-              <img v-else :src="user?.imagen" alt="" width="150" class="rounded-circle" 
-            />
+              <img
+                v-if="!user?.imagen"
+                src="@/assets/images/profile_photo.png"
+                alt=""
+                width="150"
+                class="rounded-circle"
+              />
+              <img
+                v-else
+                :src="user?.imagen"
+                alt=""
+                width="150"
+                class="rounded-circle"
+              />
             </div>
 
             <!-- RouterLink para Perfil -->
@@ -39,23 +51,33 @@
                 <i class="fas fa-piggy-bank me-3"></i>Inversiones
               </li>
             </RouterLink>
-
-            <!-- RouterLink para reportes -->
-            <!-- <RouterLink class="nav-link my-3" to="reportes">
-              <li class="py-3 ps-2 rounded nav-link my-3" :class="{ 'active': currentPath === 'reportes' }">
-                <i class="fa-solif fa-chart-line me-3"></i>Reportes
-              </li>
-            </RouterLink> -->
           </ul>
         </div>
       </div>
     </div>
+
+    <!-- Contenedor Derecho -->
+    <div class="col-4 container2">
+      <div class="content-container">
+        <h2>Bienvenido</h2>
+        <p>Aquí puedes gestionar tus datos, revisar inversiones y más.</p>
+        <!-- Añade más contenido aquí -->
+      </div>
+    </div>
+    <div class="col-4 container3">
+      <div class="content-container">
+        <h2>Bienvenido</h2>
+        <p>Aquí puedes gestionar tus datos, revisar inversiones y más.</p>
+        <!-- Añade más contenido aquí -->
+      </div>
+    </div>
   </div>
 </template>
+
 <script setup>
 import { getUser } from "@/helpers/utilities";
 import { ref, onMounted } from "vue";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 const currentPath = route.name;
@@ -68,12 +90,25 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.custom-card {
 
+.profileContainer {
+  margin-left: 50px;
+  
+}
+
+.container2 {
+  margin-top:40px; 
+}
+.container3 {
+  margin-top:40px; 
+}
+.custom-card {
   background-color: #f9f7f4; /* Color de fondo */
-  border: 1px solid #17223b; /* Borde */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
   border-radius: 10px;
+  margin-left: 0;
+  margin-top:40px;
+  text-align: center;
 }
 
 .nav-link {
@@ -81,7 +116,6 @@ onMounted(async () => {
   font-weight: 500;
   display: block;
   transition: all 0.3s ease;
-  border: none;
 }
 
 .nav-link li {
@@ -98,25 +132,26 @@ onMounted(async () => {
   color: white;
 }
 
-.nav-link li:hover {
-  cursor: pointer;
-}
-
 .active {
   background-color: #17223b;
   color: white !important;
 }
 
-.my-3 {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
 .container-mobile {
   display: flex;
-  justify-content: center;
-  width: 100vw !important;
-  padding: 0px;
-  margin: 0px;
+  justify-content: space-between;
+  width: 100vw;
+}
+
+.col-3,
+.col-9 {
+  padding: 10px;
+}
+
+.content-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 </style>
