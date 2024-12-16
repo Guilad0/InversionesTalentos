@@ -570,20 +570,74 @@ const deleteSolicitudInversion = (req, res) => {
 };
 const getSolicitudesInversionByUserId = (req, res) => {
   const { userId } = req.params;
-  const query = "SELECT * FROM solicitudes_inversion WHERE cliente_id = ?";
+  const query = `
+    SELECT 
+      s.*,
+      COALESCE(SUM(CASE WHEN i.estado = 1 THEN i.monto ELSE 0 END), 0) as monto_recaudado,
+      s.monto - COALESCE(SUM(CASE WHEN i.estado = 1 THEN i.monto ELSE 0 END), 0) as monto_faltante,
+      IFNULL(
+        JSON_ARRAYAGG(
+          CASE 
+            WHEN i.inversor_id IS NOT NULL AND i.estado = 1 THEN
+              JSON_OBJECT(
+                'inversor_id', i.inversor_id,
+                'nombre', CONCAT(u.nombre, ' ', u.apellido),
+                'monto', i.monto,
+                'fecha_deposito', DATE_FORMAT(i.fecha_deposito, '%Y-%m-%d'),
+                'ganancia_estimada', i.ganancia_estimada,
+                'fecha_devolucion', DATE_FORMAT(i.fecha_devolucion, '%Y-%m-%d'),
+                'estado_inversion', i.estado_inversion
+              )
+            ELSE NULL 
+          END
+        ),
+        '[]'
+      ) as inversores
+    FROM solicitudes_inversion s
+    LEFT JOIN inversiones i ON s.id = i.solicitud_inv_id
+    LEFT JOIN usuarios u ON i.inversor_id = u.usuario_id
+    WHERE s.cliente_id = ? AND s.estado = 1
+    GROUP BY s.id`;
+
   conexion.query(query, [userId], (err, results) => {
     if (err) {
-      return res
-        .status(500)
-        .json({
-          msg: "Error al obtener las solicitudes de inversión del usuario",
-          err,
-        });
+      return res.status(500).json({
+        msg: "Error al obtener las solicitudes de inversión del usuario",
+        err,
+      });
     }
-    res.status(200).json({ results });
+    const processedResults = results.map(row => {
+      try {
+        console.log('Inversores antes de parse:', row.inversores); // Debug log
+
+        const inversoresArray = JSON.parse(row.inversores || '[]')
+          .filter(inv => inv !== null)
+          .map(inv => ({
+            ...inv,
+            monto: parseFloat(inv.monto || 0),
+            ganancia_estimada: parseFloat(inv.ganancia_estimada || 0)
+          }));
+
+        return {
+          ...row,
+          monto_recaudado: parseFloat(row.monto_recaudado || 0),
+          monto_faltante: parseFloat(row.monto_faltante || 0),
+          inversores: inversoresArray
+        };
+      } catch (error) {
+        console.error('Error procesando fila:', error, row);
+        return {
+          ...row,
+          monto_recaudado: parseFloat(row.monto_recaudado || 0),
+          monto_faltante: parseFloat(row.monto_faltante || 0),
+          inversores: []
+        };
+      }
+    });
+
+    res.status(200).json({ results: processedResults });
   });
 };
-
 const showButton = (req, res) => {
   const id = req.params.id;
   const query = `
