@@ -29,17 +29,17 @@
                 <label v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" > {{ periodoRestanmte }} Dias </label>
                 <label v-else> 0 Dias</label>
                 </label> <br>
-                <label > <strong>Finaliza en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }} </label>
+                <label > <strong>Finaliza en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label>
                 
             </div>
             <div class="col ">
             <p class="mb-2"> <strong>Finalizado/Revertido</strong> <br></p>
            
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Finalizado'" >
-                <label  class="" >   Finalizado en  <br>{{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }}</label> <br>
+                <label  class="" >   Finalizado en  <br>{{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }}</label> <br>
               </div>
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Reversion'" >
-                <label  class="" >  Revertido en <br> {{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }} </label> <br>
+                <label  class="" >  Revertido en <br> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label> <br>
               </div>
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" >
                 <label  class="" > En Proceso </label> <br>
