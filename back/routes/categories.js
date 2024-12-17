@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-const { getCategories,createUrlImg,saveCategory,changeState,updateImgCategory,getById,getVideoUrl
+const { getCategories,createUrlImg,saveCategory,changeState,updateImgCategory,getById,getVideoUrl, addRubr
 } = require('../controllers/categories');
 
 
@@ -13,6 +13,7 @@ router.put('/:id',updateImgCategory)
 router.get('/image/:id',createUrlImg)
 router.get('/video/:id',getVideoUrl)
 router.put('/updateImageCategory/:id', updateImgCategory)
-router.get('/:id', getById)
+router.get('/:id', getById) 
+router.post('/rubro', addRubr)
 
 module.exports = router;

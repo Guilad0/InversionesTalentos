@@ -5,6 +5,8 @@ const { v4: uuidv4 } = require("uuid");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const fs = require("fs");
+const e = require("express");
+const { restart } = require("nodemon");
 
 /**
 obtiene la lista de categorias activas
@@ -278,6 +280,27 @@ const createUrlImg = (req, res) => {
   });
 };
 
+const addRubr = async (req, res) => {
+  const {usuario_id, categoria_persona_id} = req.body;
+  
+  if (!categoria_persona_id || !usuario_id) {
+    return res.status(400).json({
+      msg: "Categoria o User no encontrados"
+    })
+  }
+  const query = "UPDATE usuarios SET categoria_persona_id = ? WHERE usuario_id = ?";
+  conexion.query(query, [categoria_persona_id, usuario_id], (error, results) => {
+    if(error){
+        return res.status(500).json({ error: error.message });
+    }
+    else{
+      return res.status(200).json({ results,
+        message:"Exito"
+       });
+    }    
+  })
+}
+
 
 const getVideoUrl = (req, res) => {
   const { id } = req.params;
@@ -317,5 +340,6 @@ module.exports = {
   getById,
   updateImgCategory,
   createUrlImg,
-  getVideoUrl
+  getVideoUrl,
+  addRubr
 };
