@@ -26,7 +26,7 @@
                         <option value="pendiente">Pendiente</option>
                         <option value="proceso">Proceso</option>
                         <option value="finalizado">Finalizado</option>
-                        <option value="reversion">Reversion</option>
+                        <option value="reversion">Reversión</option>
                     </select>
                 </div>
 
