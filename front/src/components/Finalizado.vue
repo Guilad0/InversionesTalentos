@@ -1,7 +1,7 @@
 <template>
     <main class="bg-light">
         <div class="content">
-            <h4 class="d-block text-start mb-2 text-center title">Reversión</h4>
+            <h4 class="d-block text-start mb-2 text-center title">Finalizado</h4>
             <div class="table-container">
                 <table class="table overflow-x-scroll">
                     <thead>
@@ -9,30 +9,37 @@
                             <th class="td-custom align-middle custom-size text-start">
                                 Cliente
                             </th>
-                            <th class="td-custom custom-size">Monto Recaudado</th>
+                            <th class="td-custom custom-size text-start">Descripción</th>
+                            <th class="td-custom align-middle custom-size">Monto</th>
+                            <th class="td-custom align-middle custom-size">Fecha Inicio</th>
+                            <th class="td-custom align-middle custom-size">Fecha Fin</th>
                             <th class="td-custom align-middle custom-size">Inversores</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(cliente, clienteIndex) in Object.keys(
-                            inversionesPorCliente
-                        )" :key="clienteIndex">
+                        <tr v-for="(solicitud, index) in solicitudesInversion" :key="solicitud.id">
                             <td class="text-start fw-bold">
-                                {{ clienteIndex + 1 }}. {{ cliente }}
+                                {{ index + 1 }}. {{ solicitud.cliente.nombre }}
+                                {{ solicitud.cliente.apellido }}
                             </td>
+                            <td class="text-start">{{ solicitud.descripcion }}</td>
                             <td class="text-center align-middle fw-bold">
                                 {{
-                                    calcularMontoRecaudado(
-                                        inversionesPorCliente[cliente]
-                                    ).toLocaleString(undefined, {
+                                    parseFloat(solicitud.monto).toLocaleString(undefined, {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
-                                    })
+                                })
                                 }}
                             </td>
+                            <td class="text-center">
+                                {{ formatearFecha(solicitud.fecha_inicio_recaudacion) }}
+                            </td>
+                            <td class="text-center">
+                                {{ formatearFecha(solicitud.fecha_fin_recaudacion) }}
+                            </td>
                             <td class="text-center align-middle">
-                                <button class="btn btn-primary btn-sm"
-                                    @click="abrirModal(cliente, inversionesPorCliente[cliente])">
+                                <button class="btn btn-primary btn-sm" @click="abrirModal(solicitud)"
+                                    :disabled="!tieneInversores(solicitud.inversores)">
                                     Ver Inversores
                                 </button>
                             </td>
@@ -91,12 +98,14 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import InversoresModal from "./InversoresModal.vue";
 
-const inversionesPorCliente = ref({});
+const solicitudesInversion = ref([]);
 const inversionesModal = ref([]);
 const clienteActual = ref("");
 const mostrarModal = ref(false);
 const paginacion = ref({});
-const BaseURL = import.meta.env.VITE_BASE_URL + "/reporteReversion";
+const BaseURL =
+    import.meta.env.VITE_BASE_URL + "/reporteSolicitudesInversion/finalizado";
+
 
 onMounted(async () => {
     await obtenerDatos();
@@ -105,33 +114,25 @@ onMounted(async () => {
 const obtenerDatos = async (page = 1) => {
     try {
         const { data } = await axios.get(`${BaseURL}?page=${page}`);
-        console.log(data);
-        // Asegúrate de que cada cliente tiene una clave 'inversiones'
-        Object.keys(data.inversionesPorCliente).forEach((cliente) => {
-            if (!Array.isArray(data.inversionesPorCliente[cliente])) {
-                data.inversionesPorCliente[cliente] = [];
-            }
-        });
-        inversionesPorCliente.value = data.inversionesPorCliente;
-        paginacion.value = data.paginacion;
+        solicitudesInversion.value = data.data.solicitudes_inversion;
+        paginacion.value = data.data.paginacion;
     } catch (error) {
         console.error(error);
     }
 };
 
-const calcularMontoRecaudado = (inversiones) => {
-    if (!Array.isArray(inversiones)) {
-        return 0; // Si no es un array, retorna 0
-    }
-    return inversiones.reduce((total, inversion) => {
-        const monto = parseFloat(inversion.monto);
-        return total + (isNaN(monto) ? 0 : monto); // Sumar solo si el monto es un número válido
-    }, 0);
+const formatearFecha = (fecha) => {
+    return new Date(fecha).toLocaleDateString("es-ES");
+};
+const tieneInversores = (inversores) => {
+    return (
+        Array.isArray(inversores) && inversores.length > 0 && inversores[0] !== null
+    );
 };
 
-const abrirModal = (cliente, inversiones) => {
-    clienteActual.value = cliente;
-    inversionesModal.value = inversiones;
+const abrirModal = (solicitud) => {
+    clienteActual.value = `${solicitud.cliente.nombre} ${solicitud.cliente.apellido}`;
+    inversionesModal.value = solicitud.inversores;
     mostrarModal.value = true;
 };
 
