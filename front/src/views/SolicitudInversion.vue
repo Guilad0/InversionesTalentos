@@ -22,6 +22,7 @@
               <input
                 id="nombre"
                 v-model="nombre"
+                @input="eliminarEspacioInicio('nombre')"
                 ref="refNombre"
                 type="text"
                 class="input form-control"
@@ -42,6 +43,7 @@
             id="descripcion"
             ref="refDescripcion"
             v-model="descripcion"
+            @input="eliminarEspacioInicio('descripcion')"
             pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
             class="input form-control"
             rows="3"
@@ -99,9 +101,11 @@
               >
               <input
                 id="monto"
-                v-model.number="monto"
+                v-model="monto"
+                @input="formatearMonto"
+                @blur="formatearMonto"
                 ref="refMonto"
-                type="number"
+                type="text"
                 class="input form-control no-spin"
                 required
               />
@@ -228,7 +232,7 @@ const registrarExperiencia = async () => {
     cliente_id: cliente_id.value,
     nombre: nombre.value,
     descripcion: descripcion.value,
-    monto: monto.value,
+    monto: parseFloat(monto.value.replace(/[^0-9.-]+/g, "")),
     cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
@@ -279,6 +283,25 @@ const validarCampos = () => {
     return false;
   }
   return true;
+};
+
+const eliminarEspacioInicio = (campo) => {
+  if (campo === "nombre") {
+    nombre.value = nombre.value.replace(/^\s+/, ""); // Elimina los espacios al inicio de 'nombre'
+  } else if (campo === "descripcion") {
+    descripcion.value = descripcion.value.replace(/^\s+/, ""); // Elimina los espacios al inicio de 'descripcion'
+  }
+};
+
+const formatearMonto = () => {
+  let montoStr = monto.value.replace(/[^0-9]/g, "");
+
+  if (montoStr.length > 0) {
+
+    monto.value = `$${parseInt(montoStr).toLocaleString("es-ES")}`;
+  } else {
+    monto.value = ""; 
+  }
 };
 
 const limpiarCampos = () => {
@@ -344,7 +367,7 @@ watchEffect(() => {
   border-radius: none;
   box-sizing: border-box;
   padding: 30px;
-  width: 800px;
+  width: 550px;
   z-index: 2;
 }
 
