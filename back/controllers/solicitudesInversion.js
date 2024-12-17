@@ -719,6 +719,27 @@ const showButton = (req, res) => {
     });
   });
 };
+const cambiarEstadoProceso = (req, res) => {
+  const { id } = req.params;
+  const query = `
+    UPDATE solicitudes_inversion 
+    SET estado_inversion = 'Proceso' 
+    WHERE id = ?`;
+
+  conexion.query(query, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        msg: "Error al cambiar el estado de la solicitud a Proceso",
+        error: err
+      });
+    }
+
+    res.status(200).json({
+      msg: "Estado de la solicitud cambiado a Proceso exitosamente",
+      results
+    });
+  });
+};
 
 module.exports = {
   getSolicitudesInversion,
@@ -736,4 +757,5 @@ module.exports = {
   getInversoresDeSolicitud,
   finalizarInversion,
   revertirInversion,
+  cambiarEstadoProceso,
 };
