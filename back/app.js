@@ -34,6 +34,7 @@ var informacionRoutes = require('./routes/informacionRoutes');
 var previewRouter = require('./routes/preview');
 var solicitudesInversionRouter = require('./routes/solicitudesInversion');
 var reporteReversionRouter = require('./routes/reporteReversion');
+var reporteSolicitudesInversionRouter = require('./routes/reporteSolicitudesInversion');
 
 var app = express();
 
@@ -85,5 +86,7 @@ app.use('/informacion', informacionRoutes);
 app.use('/preview', previewRouter);
 app.use('/solicitudesInversion', solicitudesInversionRouter);
 app.use('/reporteReversion', reporteReversionRouter);
+app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
+
 
 module.exports = app;
