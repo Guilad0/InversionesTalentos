@@ -597,7 +597,7 @@ const getSolicitudesInversionByUserId = (req, res) => {
                 'fecha_deposito', DATE_FORMAT(i.fecha_deposito, '%Y-%m-%d'),
                 'ganancia_estimada', i.ganancia_estimada,
                 'fecha_devolucion', DATE_FORMAT(i.fecha_devolucion, '%Y-%m-%d'),
-                'estado_inversion', i.estado_inversion
+                'estado_inversion', s.estado_inversion  /* Cambiado de i.estado_inversion a s.estado_inversion */
               )
             ELSE NULL 
           END
