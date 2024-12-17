@@ -28,7 +28,7 @@
                                     parseFloat(solicitud.monto).toLocaleString(undefined, {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
-                                })
+                                    })
                                 }}
                             </td>
                             <td class="text-center">
@@ -48,10 +48,9 @@
                 </table>
             </div>
 
-            <!-- Modal Component -->
-            <InversoresModal v-if="mostrarModal" :cliente="clienteActual" :inversiones="inversionesModal"
+            <InversoresModalProceso v-if="mostrarModal" :cliente="clienteActual" :inversiones="inversionesModal"
                 @cerrar="cerrarModal" />
-            <!-- Pagination -->
+
             <div class="footer">
                 <div class="d-flex justify-content-center">
                     <nav v-if="paginacion.total > 0" aria-label="Page navigation example">
@@ -96,7 +95,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import InversoresModal from "./InversoresModal.vue";
+import InversoresModalProceso from "./InversoresModalReport.vue";
 
 const solicitudesInversion = ref([]);
 const inversionesModal = ref([]);
