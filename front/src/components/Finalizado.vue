@@ -1,7 +1,7 @@
 <template>
     <main class="bg-light">
         <div class="content">
-            <h4 class="d-block text-start mb-2 text-center title">Reversion</h4>
+            <h4 class="d-block text-start mb-2 text-center title">Reversión</h4>
             <div class="table-container">
                 <table class="table overflow-x-scroll">
                     <thead>
@@ -27,7 +27,7 @@
                                     ).toLocaleString(undefined, {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
-                                })
+                                    })
                                 }}
                             </td>
                             <td class="text-center align-middle">
