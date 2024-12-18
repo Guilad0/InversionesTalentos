@@ -1,5 +1,7 @@
 import router from "@/router";
 import iziToast from "izitoast";
+
+
 export const isAuthenticated = () => {
   if (localStorage.getItem("token")) {
     return true;
@@ -8,6 +10,7 @@ export const isAuthenticated = () => {
     return false;
   }
 };
+
 export const isAuthenticatedAlert = () => {
   if (localStorage.getItem("token")) {
     return true;
@@ -24,4 +27,17 @@ export const isAuthenticatedAlert = () => {
     router.push(router.currentRoute.value.path);
     return false;
   }
+};
+
+export function getHeaderRequest() {
+  const token = localStorage.getItem('token') || "";
+  const header = {
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      'Cache-Control': 'no-cache'
+    },
+  };
+  return header;
 };

@@ -14,6 +14,8 @@ const auth = (req, res) => {
 
     const sql = 'SELECT * FROM usuarios WHERE correo = ?';
     conexion.query(sql, [correo], async (error, results) => {
+        let passwordHash = await bcrypt.hash('admin', 10);
+        console.log(passwordHash);
         if (error) {
             res.status(500).json({
                 msg: 'Error al autenticar',
