@@ -6,15 +6,19 @@
         <h1 class="modal-title fs-5 m-auto" id="staticBackdropLabel">Detalles de la Inversion</h1>
         
       </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-center m-auto text-center p-3">
+      <div  class="modal-body">
+        <div v-if="loading == false" class="d-flex justify-content-center m-auto text-center p-3">
           <div class="col">
             <p class=""> <strong>Solicitante de la Inversion</strong> <br> <label class="py-2">{{ props.inversionSeleccionada.nombre }} </label></p>
             </div>
           <div class="col">
             <p  class=""> <strong>Inversores ({{ inversores.length }}) </strong>  <br> 
               <label  v-for="(inv, i) in inversores" :key="i" class="d-block pt-2">
-              {{ inv.nombre }} {{ inv.apellido }} ( {{ inv.monto }} -  <strong>{{ inv.estado_inversion }}</strong>)
+              {{ inv.nombre }} {{ inv.apellido }}  {{ inv.monto }} -  
+              <strong v-if="props.inversionSeleccionada.estado_inversion == 'Pendiente'" >Proceso de Recaudacion)</strong>
+              <strong v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" >Proceso de Devolucion</strong>
+              <strong v-if="props.inversionSeleccionada.estado_inversion == 'Finalizado'" >liquidada</strong>
+              <strong v-if="props.inversionSeleccionada.estado_inversion == 'Reversion'" >Revertido</strong>
               </label> <br>
               
              </p>
@@ -24,31 +28,39 @@
              </p>
                 <label class="py-2 " > <strong>Tokens Requeridos:</strong>  {{ tokensRequeridos }} </label> <br>
                 <label class="pb-2" > <strong>Tokens Recaudados:</strong>  {{ totalInvertido }} </label> <br>
-                <label class="pb-2" > <strong>Estado:</strong>  {{ props.inversionSeleccionada.estado_inversion }} </label> <br>
+                <!-- <label class="pb-2" > <strong>Estado:</strong>  {{ props.inversionSeleccionada.estado_inversion }} </label> <br> -->
                 <label class="pb-2" > <strong>Periodo Restante: </strong>  
                 <label v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" > {{ periodoRestanmte }} Dias </label>
                 <label v-else> 0 Dias</label>
                 </label> <br>
-                <label > <strong>Finaliza en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }} </label>
+                <label v-if="props.inversionSeleccionada.estado_inversion !=='Finalizado'"> <strong>Finaliza en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label>
+                <label v-else> <strong>Finalizo en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label>
                 
             </div>
             <div class="col ">
             <p class="mb-2"> <strong>Finalizado/Revertido</strong> <br></p>
            
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Finalizado'" >
-                <label  class="" >   Finalizado en  <br>{{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }}</label> <br>
+                <label  class="" >   Finalizado en  <br>{{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }}</label> <br>
               </div>
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Reversion'" >
-                <label  class="" >  Revertido en <br> {{ props.inversionSeleccionada.fecha_fin_recaudacion.slice(0,10) }} </label> <br>
+                <label  class="" >  Revertido en <br> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label> <br>
               </div>
               <div v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" >
-                <label  class="" > En Proceso </label> <br>
+                <label  class="" > En Proceso de Devolucion</label> <br>
+              </div>
+              <div v-if="props.inversionSeleccionada.estado_inversion == 'Pendiente'" >
+                <label  class="" > En Proceso de Recaudacion</label> <br>
               </div>
             
             </div>
         </div>
+          <div v-else class="custom-body d-flex justify-content-center align-content-center">
+            <div class="m-auto">
+              Cargando ...
+            </div>
+          </div>
       </div>
-          
       <div class="modal-footer d-flex justify-content-center p-2">
         <button type="button" class="btn btn-gray  rounded-2 border" data-bs-dismiss="modal">Close</button>
       </div>
@@ -107,17 +119,22 @@ const getAjustes =async () =>{
     
   }
 }
-
+const loading = ref(false)
 watch(
       () => props.inversionSeleccionada,
       async (newValue, oldValue) => {
         if (newValue !== oldValue) {
           if (newValue) {
             try {
+              loading.value = true
               await getAjustes()
               await getInversores();
             } catch (error) {
               console.error(error);
+            }finally{
+              setTimeout(() => {
+                loading.value = false
+              }, 500);
             }
           }
         }
@@ -128,6 +145,9 @@ watch(
 </script>
 
 <style setup> 
+.custom-body{
+  height: 170px;
+}
 li{
   list-style: none;
 }

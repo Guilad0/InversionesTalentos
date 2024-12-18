@@ -217,12 +217,14 @@
   import apexchart from "vue3-apexcharts";
   import { errorAlert } from "@/helpers/iziToast";
   import * as XLSX from "xlsx";
+import { getHeaderRequest } from "@/helpers/Authenticator";
   
   let currentPath = useRouter();
   currentPath = currentPath.name;
   
   const route = useRouter();
   let baseURL = import.meta.env.VITE_BASE_URL + "/reportes/";
+  const header = getHeaderRequest();
   
   onMounted(async () => {
     await obtenerTotales();
@@ -293,7 +295,7 @@
   const obtenerUsuarios = async () => {
     series3.value = [];
     try {
-      const { data } = await axios.get(baseURL + "usuariosCantidad");
+      const { data } = await axios.get(baseURL + "usuariosCantidad", header);
       var roles = [];
       var datosCantidad = [];
       for (let i = 0; i < data.data.length; i++) {
@@ -318,7 +320,7 @@
   const obtenerTotales = async () => {
     series.value = [];
     try {
-      const { data } = await axios.get(baseURL + "totalCompras");
+      const { data } = await axios.get(baseURL + "totalCompras", header);
       var datosMesCompra = [];
       for (let i = 0; i < meses.length; i++) {
         let mes = i + 1;
@@ -338,7 +340,7 @@
       console.log(error);
     }
     try {
-      const { data } = await axios.get(baseURL + "totalInversiones");
+      const { data } = await axios.get(baseURL + "totalInversiones", header);
   
       var datosMesVenta = [];
       for (let i = 0; i < meses.length; i++) {
@@ -366,7 +368,7 @@
   const obtenerGanancias = async () => {
     series2.value = [];
     try {
-      const { data } = await axios.get(baseURL + "gananciasPendientes");
+      const { data } = await axios.get(baseURL + "gananciasPendientes", header);
   
       var datosMesPendientes = [];
       for (let i = 0; i < meses.length; i++) {
@@ -390,7 +392,7 @@
       console.log(error);
     }
     try {
-      const { data } = await axios.get(baseURL + "gananciasAprobadas");
+      const { data } = await axios.get(baseURL + "gananciasAprobadas", header);
   
       var datosMesAprobado = [];
       for (let i = 0; i < meses.length; i++) {
@@ -436,7 +438,7 @@
       bandReport.value = true
       if (fechaInicio.value <= fechaFinal.value) {
         try {
-          const { data } = await axios.get(import.meta.env.VITE_BASE_URL + `/reportes/${typeReport.value}?fechaInicial=${fechaInicio.value}&fechaFinal=${fechaFinal.value}`)
+          const { data } = await axios.get(import.meta.env.VITE_BASE_URL + `/reportes/${typeReport.value}?fechaInicial=${fechaInicio.value}&fechaFinal=${fechaFinal.value}`, header)
           reports.value = data.data;
           console.log(reports.value);
         } catch (error) {
@@ -470,17 +472,17 @@
   const movDeveoluciones = ref({})
   const getReportsTotals = async () => {
     try {
-      const { data } = await axios.get(baseURL + '/mayorInversionista')
+      const { data } = await axios.get(baseURL + '/mayorInversionista', header)
       nombre_inversor.value = data.data[0].nombre_inversor
       total_inversiones.value = data.data[0].total_inversiones
       total_tokens.value = data.data[0].total_tokens
-      const { data: data2 } = await axios.get(baseURL + '/mayorCliente')
+      const { data: data2 } = await axios.get(baseURL + '/mayorCliente', header)
       nombre_cliente.value = data2.data[0].nombre_cliente
       total_inversiones_cliente.value = data2.data[0].total_inversiones
       total_tokens_cliente.value = data2.data[0].total_tokens
-      const { data: data3 } = await axios.get(baseURL + '/sumaComisiones')
+      const { data: data3 } = await axios.get(baseURL + '/sumaComisiones', header)
       total_comisiones.value = data3.data[1].total_comisiones
-      const { data: data4 } = await axios.get(baseURL + '/totalMovimientos')
+      const { data: data4 } = await axios.get(baseURL + '/totalMovimientos', header)
       movTokens.value = data4.data[0];
       movRetiros.value = data4.data[3];
       movDeveoluciones.value = data4.data[5];

@@ -92,11 +92,15 @@ router.put("/inversion/:id", function (req, res, next) {
   });
 });
 
-
 router.get("/inversionista/:id", function (req, res, next) {
+  
+  const page = parseInt(req.query.page) || 1; 
+  const limit = parseInt(req.query.limit) || 10; 
+  const offset = (page - 1) * limit; 
+
   var query = `
     SELECT
-      inversiones.*,
+      inversiones.*, 
       usuarios.imagen,
       CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS nombre_cliente,
       DATE_FORMAT(inversiones.fecha_deposito, '%Y-%m-%d') AS fecha_inversion,
@@ -109,7 +113,6 @@ router.get("/inversionista/:id", function (req, res, next) {
       DATE_FORMAT(solicitudes_inversion.fecha_fin_recaudacion, '%Y-%m-%d') AS fecha_fin_recaudacion,
       DATE_FORMAT(solicitudes_inversion.fecha_inicio_pago, '%Y-%m-%d') AS fecha_inicio_pago,
       DATE_FORMAT(solicitudes_inversion.fecha_fin_pago, '%Y-%m-%d') AS fecha_fin_pago,
- 
       solicitudes_inversion.estado_inversion,
       (
         SELECT COALESCE(SUM(inv2.monto), 0)
@@ -125,10 +128,20 @@ router.get("/inversionista/:id", function (req, res, next) {
     INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
     LEFT JOIN solicitudes_inversion ON inversiones.solicitud_inv_id = solicitudes_inversion.id
     WHERE inversiones.inversor_id = ${req.params.id}
-      AND solicitudes_inversion.aprobado = 'Aprobado'
-    ORDER BY inversiones.inversion_id DESC`;
+    AND solicitudes_inversion.aprobado = 'Aprobado'
+    ORDER BY inversiones.inversion_id DESC
+    LIMIT ${limit} OFFSET ${offset}`;
 
-  connection.query(query, function (error, results, fields) {
+  var countQuery = `
+    SELECT COUNT(*) as total
+    FROM inversiones
+    INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id
+    LEFT JOIN solicitudes_inversion ON inversiones.solicitud_inv_id = solicitudes_inversion.id
+    WHERE inversiones.inversor_id = ${req.params.id}
+      AND solicitudes_inversion.aprobado = 'Aprobado';
+  `;
+
+  connection.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -136,36 +149,54 @@ router.get("/inversionista/:id", function (req, res, next) {
         message: "Error al realizar la petición"
       });
     } else {
-      const inversiones = results.map(result => ({
-        inversion_id: result.inversion_id,
-        cliente_id: result.cliente_id,
-        inversor_id: result.inversor_id,
-        monto: result.monto,
-        fecha_inversion: result.fecha_inversion,
-        fecha_retorno: result.fecha_retorno,
-        estado: result.estado,
-        imagen: result.imagen,
-        nombre_cliente: result.nombre_cliente,
-        talento_inversion: {
-          nombre: result.solicitud_nombre,
-          descripcion: result.solicitud_descripcion,
-          monto: result.solicitud_monto,
-          cantidad_pagos: result.cantidad_pagos,
-          fecha_inicio_recaudacion: result.fecha_inicio_recaudacion,
-          fecha_fin_recaudacion: result.fecha_fin_recaudacion,
-          fecha_inicio_pago: result.fecha_inicio_pago,
-          fecha_fin_pago: result.fecha_fin_pago,
-          estado_inversion: result.estado_inversion,
-          total_recaudado: result.total_recaudado,
-          total_inversores: result.total_inversores,
-          restante_recaudar: result.solicitud_monto - result.total_recaudado
+      connection.query(countQuery, function (countError, countResults) {
+        if (countError) {
+          console.log(countError);
+          res.status(500).send({
+            error: countError,
+            message: "Error al obtener el total de registros"
+          });
+        } else {
+          const total = countResults[0].total;
+          const totalPages = Math.ceil(total / limit); 
 
+          const inversiones = results.map(result => ({
+            inversion_id: result.inversion_id,
+            cliente_id: result.cliente_id,
+            inversor_id: result.inversor_id,
+            monto: result.monto,
+            fecha_inversion: result.fecha_inversion,
+            fecha_retorno: result.fecha_retorno,
+            estado: result.estado,
+            imagen: result.imagen,
+            nombre_cliente: result.nombre_cliente,
+            talento_inversion: {
+              nombre: result.solicitud_nombre,
+              descripcion: result.solicitud_descripcion,
+              monto: result.solicitud_monto,
+              cantidad_pagos: result.cantidad_pagos,
+              fecha_inicio_recaudacion: result.fecha_inicio_recaudacion,
+              fecha_fin_recaudacion: result.fecha_fin_recaudacion,
+              fecha_inicio_pago: result.fecha_inicio_pago,
+              fecha_fin_pago: result.fecha_fin_pago,
+              estado_inversion: result.estado_inversion,
+              total_recaudado: result.total_recaudado,
+              total_inversores: result.total_inversores,
+              restante_recaudar: result.solicitud_monto - result.total_recaudado
+            }
+          }));
+
+          res.status(200).send({
+            data: inversiones,
+            pagination: {
+              total,
+              totalPages,
+              currentPage: page,
+              perPage: limit
+            },
+            message: "Inversiones consultadas correctamente"
+          });
         }
-      }));
-
-      res.status(200).send({
-        data: inversiones,
-        message: "Inversiones consultadas correctamente"
       });
     }
   });
