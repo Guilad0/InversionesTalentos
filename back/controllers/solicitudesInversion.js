@@ -59,13 +59,14 @@ const getSolicitudesInversion = (req, res) => {
 };
 
 const getTotals = (req, res) => {
-  const query = `SELECT 
-    IFNULL(aprobado, 'todo') AS estado, 
+  const query = `
+SELECT 
+    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Rechazado,
+    SUM(CASE WHEN aprobado = 'Aprobado' THEN 1 ELSE 0 END) AS Aprobado,
+    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Pendiente,
     COUNT(*) AS total
-    FROM 
-        solicitudes_inversion
-    GROUP BY 
-    aprobado WITH ROLLUP;`;
+FROM solicitudes_inversion;
+  `;
   conexion.query(query, (err, results) => {
     if (err) {
       return res
@@ -258,7 +259,7 @@ const getSolicitudInversionById = (req, res) => {
 };
 
 const getInversoresDeSolicitud = (req, res) => {
-  let query = `SELECT inversor_id, monto,estado_inversion FROM inversiones WHERE solicitud_inv_id = ${req.params.id}`;
+  let query = `SELECT inversor_id, monto FROM inversiones WHERE solicitud_inv_id = ${req.params.id}`;
   conexion.query(query, (err, resultsInversores) => {
     if (err) {
       return res
@@ -285,11 +286,9 @@ const getInversoresDeSolicitud = (req, res) => {
       const results = data.map((inv, i) => {
         const inversor = resultsInversores[i];
         totalInvertido += parseInt(resultsInversores[i].monto);
-        estadoInv += parseInt(resultsInversores[i].estado_inversion);
         return {
           ...inv,
           ...inversor,
-          ...estadoInv
         };
       });
       res.status(200).json({ results, totalInvertido });
@@ -513,10 +512,11 @@ const updateSolicitudInversion = (req, res) => {
 
 const procesarSolicitudInversion = (req, res) => {
   const { id } = req.params;
+  console.log(req.query.porcentaje_interes);
   let query =
     req.query.action == "Aprobado"
-      ? `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Proceso' WHERE id = ?`
-      : `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Pendiente' WHERE id = ?`;
+      ? `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}', porcentaje_interes = ${req.query.porcentaje_interes} WHERE id = ?`
+      : `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}' WHERE id = ?`;
   conexion.query(query, [id], (err, results) => {
     if (err) {
       return res
