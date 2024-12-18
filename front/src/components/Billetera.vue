@@ -112,60 +112,6 @@
       </div>
     </div>
 
-    <!-- Modal Inversión -->
-    <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <div class="modal-content bg-degrade">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la Inversión</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form action="#" class="needs-validation" novalidate>
-              <p class="text-xl text-white text-center">Tokens Restantes: {{ tokensTOTAL }}</p>
-              <div class="row">
-                <!-- Selección de Cliente -->
-              </div>
-              <div class="row">
-                <!-- Tokens a Invertir -->
-                <div class="col-md-4 offset-md-2">
-                  <div class="mb-3">
-                    <label for="monto_tokens_invertir" class="form-label">Tokens a invertir</label>
-                    <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir" class="form-control"
-                      @input="calcularGanancias()" required />
-                  </div>
-                </div>
-                <!-- Meses de Inversión -->
-                <div class="col-md-4">
-                  <div class="mb-3">
-                    <label class="form-label">Meses de Inversión</label>
-                    <p class="text-xl text-white text-center">{{ tiempo_inversion }}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <!-- Ganancias -->
-                <div class="col-md-4 offset-md-4">
-                  <div class="mb-3 text-center">
-                    <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-                    <p class="text-xl text-white text-center">{{ ganancia_tokens_inv }}</p>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" @click="inversionistaInvertir()"
-              class="animate__animated animate__fadeInUp animate__slow btn-6 m-2" data-bs-dismiss="modal">
-              Invertir<span></span>
-            </button>
-            <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7 m-2"
-              data-bs-dismiss="modal">Cerrar<span></span></button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- Modal Solicitud Retiro -->
     <div class="modal fade" id="modalSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">

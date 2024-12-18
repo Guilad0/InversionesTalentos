@@ -743,6 +743,23 @@ const cambiarEstadoProceso = (req, res) => {
   });
 };
 
+const getSolicitudByClienteId = (req, res) => {
+  let query = `SELECT * FROM solicitudes_inversion WHERE cliente_id = ${req.params.id}`;
+  conexion.query(query, (err, results) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ msg: "Error al obtener la solicitud de inversión", err });
+    }
+    results[0].fecha_fin_pago = new Date(results[0].fecha_fin_pago)
+    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    results[0].fecha_inicio_pago = new Date(results[0].fecha_inicio_pago)
+    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    res.status(200).json({ results:results[0] })
+  });
+};
+
+
 module.exports = {
   getSolicitudesInversion,
   getSolicitudesInversionAprobados,
@@ -760,4 +777,5 @@ module.exports = {
   finalizarInversion,
   revertirInversion,
   cambiarEstadoProceso,
+  getSolicitudByClienteId
 };
