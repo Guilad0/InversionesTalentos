@@ -13,12 +13,12 @@
       </div> -->
 
       <form @submit.prevent="registrarExperiencia" novalidate>
-        <div class="row mb-3">
-          <div class="col mb-6">
+        <div class="row mb-4">
+          <div class="col-12">
             <div class="input-container">
-              <label for="nombre" class="label"
-                >Motivo<strong class="text-danger">*</strong></label
-              >
+              <label for="nombre" class="label">
+                Motivo<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="nombre"
                 v-model="nombre"
@@ -28,39 +28,32 @@
                 class="input form-control"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Debes Completar este Campo
-              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-container">
+              <label for="descripcion" class="label">
+                Descripción <strong class="text-danger">*</strong>
+              </label>
+              <textarea
+                id="descripcion"
+                ref="refDescripcion"
+                v-model="descripcion"
+                @input="eliminarEspacioInicio('descripcion')"
+                class="input form-control"
+                rows="3"
+                required
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <div class="input-container2">
-          <label for="descripcion" class="label"
-            >Descripción <strong class="text-danger">*</strong></label
-          >
-          <textarea
-            id="descripcion"
-            ref="refDescripcion"
-            v-model="descripcion"
-            @input="eliminarEspacioInicio('descripcion')"
-            pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
-            class="input form-control"
-            rows="3"
-            required
-          ></textarea>
-          <div class="ms-2 invalid-feedback fs-custom">
-            Debes Completar este Campo
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+        <div class="row mb-4">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_inicio_recaudacion" class="label"
-                >Fecha Inicio Recaudación<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_inicio_recaudacion" class="label">
+                Fecha Inicio Recaudación<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="fecha_inicio_recaudacion"
                 v-model="fecha_inicio_recaudacion"
@@ -69,20 +62,14 @@
                 class="input form-control"
                 required
               />
-              <div v-if="fecha_inicio_recaudacion && fecha_inicio_recaudacion < fechaActual" class="text-danger">
-                La fecha de inicio de recaudación no puede ser anterior a hoy.
-              </div>
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_fin_recaudacion" class="label"
-                >Fecha Final Recaudación<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_fin_recaudacion" class="label">
+                Fecha Final Recaudación<strong class="text-danger">*</strong>
+              </label>
               <input
-                ref="refMaxDate"
                 id="fecha_fin_recaudacion"
                 v-model="fecha_fin_recaudacion"
                 type="date"
@@ -93,52 +80,56 @@
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+
+        <div class="row mb-4">
+          <div class="col-md-4">
             <div class="input-container">
-              <label for="monto" class="label"
-                >Monto<strong class="text-danger">*</strong></label
-              >
+              <label for="monto" class="label">
+                Monto<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="monto"
                 v-model="monto"
                 @input="formatearMonto"
-                @blur="formatearMonto"
-                ref="refMonto"
                 type="text"
                 class="input form-control no-spin"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, ingresar un valor mayor a 0
-              </div>
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-4">
             <div class="input-container">
-              <label for="cantidad_pagos" class="label"
-                >Cantidad Pagos<strong class="text-danger">*</strong></label
-              >
+              <label class="label">Porcentaje de Interés</label>
+              <input
+                v-model="porcentajeInteresFormateado"
+                type="text"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-container">
+              <label for="cantidad_pagos" class="label">
+                Cantidad Pagos<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="cantidad_pagos"
                 v-model.number="cantidad_pagos"
-                ref="refCantidadPagos"
                 type="number"
                 class="input form-control no-spin"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, ingresar un valor mayor a 0
-              </div>
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+
+        <div class="row mb-4">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_inicio_pago" class="label"
-                >Fecha Inicio Pago<strong class="text-danger">*</strong></label
-              >
+              <label for="fecha_inicio_pago" class="label">
+                Fecha Inicio Pago<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="fecha_inicio_pago"
                 v-model="fecha_inicio_pago"
@@ -147,22 +138,42 @@
                 class="input form-control"
                 required
               />
-              <div v-if="fecha_inicio_pago && fecha_inicio_pago <= fecha_fin_recaudacion" class="text-danger">
-                La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.
-              </div>
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_fin_pago" class="label"
-                >Fecha Fin Inversión<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_fin_pago" class="label">
+                Fecha Fin Inversión
+              </label>
               <input
                 id="fecha_fin_pago"
                 v-model="fecha_fin_pago"
                 type="date"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="input-container">
+              <label class="label">Pago Mensual</label>
+              <input
+                v-model="pagoMensual"
+                type="text"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-container">
+              <label class="label">Monto Total a Pagar</label>
+              <input
+                v-model="montoTotal"
+                type="text"
                 class="input form-control"
                 readonly
               />
@@ -178,7 +189,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted, watchEffect, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import iziToast from "izitoast";
@@ -203,9 +214,12 @@ const refMaxDate = ref("");
 const user = ref(JSON.parse(localStorage.getItem("usuario")));
 
 const fechaActual = ref(new Date().toISOString().split("T")[0]);
-
+const porcentajeInteres = ref(0);
+const pagoMensual = ref("");
+const montoTotal = ref("");
 
 onMounted(() => {
+  obtenerPorcentajeInteres();
   console.log(user.value);
   if (user) {
     cliente_id.value = user.value.usuario_id;
@@ -224,6 +238,43 @@ onMounted(() => {
   }
 });
 
+const obtenerPorcentajeInteres = async () => {
+  if (user.value) {
+    cliente_id.value = user.value.usuario_id;
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/categories/user/${cliente_id.value}`
+      );
+      porcentajeInteres.value = response.data.porcentaje_interes;
+    } catch (error) {
+      console.error("Error al obtener el porcentaje de interés:", error);
+    }
+  }
+};
+const porcentajeInteresFormateado = computed(() => {
+  return porcentajeInteres.value ? `${porcentajeInteres.value}%` : "0%";
+});
+const calcularMontos = () => {
+  if (monto.value && cantidad_pagos.value > 0) {
+    // Convertir el monto de string con formato ($1,234) a número
+    const montoNumerico = parseFloat(monto.value.replace(/[^0-9.-]+/g, ""));
+
+    // Calcular el monto total (monto + interés)
+    const interes = montoNumerico * (porcentajeInteres.value / 100);
+    const total = montoNumerico + interes;
+    montoTotal.value = `$${total.toLocaleString("es-ES")}`;
+
+    // Calcular el pago mensual
+    const mensual = total / cantidad_pagos.value;
+    pagoMensual.value = `$${mensual.toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  } else {
+    montoTotal.value = "";
+    pagoMensual.value = "";
+  }
+};
 // Función para registrar la experiencia
 const registrarExperiencia = async () => {
   if (!validarCampos()) return;
@@ -238,6 +289,7 @@ const registrarExperiencia = async () => {
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
     fecha_inicio_pago: fecha_inicio_pago.value,
     fecha_fin_pago: fecha_fin_pago.value,
+    porcentaje_interes: porcentajeInteres.value,
   };
 
   try {
@@ -270,16 +322,34 @@ const validarCampos = () => {
     errorAlert("La cantidad de pagos debe ser mayor a 0.", "Error");
     return false;
   }
-  if (!fecha_inicio_recaudacion.value || fecha_inicio_recaudacion.value < fechaActual.value) {
-    errorAlert("La fecha de inicio de recaudación debe ser igual o posterior a hoy.", "Error");
+  if (
+    !fecha_inicio_recaudacion.value ||
+    fecha_inicio_recaudacion.value < fechaActual.value
+  ) {
+    errorAlert(
+      "La fecha de inicio de recaudación debe ser igual o posterior a hoy.",
+      "Error"
+    );
     return false;
   }
-  if (!fecha_fin_recaudacion.value || fecha_fin_recaudacion.value <= fecha_inicio_recaudacion.value) {
-    errorAlert("La fecha final de recaudación debe ser posterior a la fecha de inicio.", "Error");
+  if (
+    !fecha_fin_recaudacion.value ||
+    fecha_fin_recaudacion.value <= fecha_inicio_recaudacion.value
+  ) {
+    errorAlert(
+      "La fecha final de recaudación debe ser posterior a la fecha de inicio.",
+      "Error"
+    );
     return false;
   }
-  if (!fecha_inicio_pago.value || fecha_inicio_pago.value <= fecha_fin_recaudacion.value) {
-    errorAlert("La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.", "Error");
+  if (
+    !fecha_inicio_pago.value ||
+    fecha_inicio_pago.value <= fecha_fin_recaudacion.value
+  ) {
+    errorAlert(
+      "La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.",
+      "Error"
+    );
     return false;
   }
   return true;
@@ -297,10 +367,10 @@ const formatearMonto = () => {
   let montoStr = monto.value.replace(/[^0-9]/g, "");
 
   if (montoStr.length > 0) {
-
-    monto.value = `$${parseInt(montoStr).toLocaleString("es-ES")}`;
+    const montoNumerico = parseInt(montoStr);
+    monto.value = `$${montoNumerico}`;
   } else {
-    monto.value = ""; 
+    monto.value = "";
   }
 };
 
@@ -314,7 +384,6 @@ const limpiarCampos = () => {
   fecha_inicio_pago.value = "";
   fecha_fin_pago.value = "";
 };
-
 
 const calcularFechaFinInversion = () => {
   if (fecha_inicio_pago.value) {
@@ -331,6 +400,7 @@ const calcularFechaFinInversion = () => {
   }
 };
 watchEffect(() => {
+  calcularMontos();
   calcularFechaFinInversion();
 });
 </script>
@@ -367,7 +437,7 @@ watchEffect(() => {
   border-radius: none;
   box-sizing: border-box;
   padding: 30px;
-  width: 550px;
+  width: 700px;
   z-index: 2;
 }
 

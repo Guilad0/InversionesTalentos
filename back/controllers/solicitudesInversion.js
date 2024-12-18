@@ -382,6 +382,7 @@ const createSolicitudInversion = (req, res) => {
     cantidad_pagos,
     fecha_inicio_pago,
     fecha_fin_pago,
+    porcentaje_interes,
   } = req.body;
 
   // Primero actualizar solicitudes rechazadas
@@ -427,7 +428,7 @@ const createSolicitudInversion = (req, res) => {
       }
 
       const query =
-        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, porcentaje_interes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       conexion.query(
         query,
@@ -442,6 +443,7 @@ const createSolicitudInversion = (req, res) => {
           fecha_inicio_pago,
           fecha_fin_pago,
           aprobado,
+          porcentaje_interes,
         ],
         (err, results) => {
           if (err) {
