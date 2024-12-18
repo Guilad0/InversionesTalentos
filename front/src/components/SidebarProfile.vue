@@ -74,6 +74,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.card {
+  margin-left: none;
+  width: 300px; /* Aumenta el ancho del sidebar */
+  padding: 15px; /* Aumenta el relleno para mejorar el aspecto */
+  background-color:none;
+  border-radius: 8px;
+  box-shadow: none;
+}
 ul {
   list-style: none;
   padding: 0;
