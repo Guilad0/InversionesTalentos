@@ -255,7 +255,7 @@
                       <input type="number" class="form-control input text-dark" v-model="montoMax">
                     </div>
                     <div class="col">
-                      <label for="editImage" class="form-label custom-subtitle ">Porcentaje</label>
+                      <label for="editImage" class="form-label custom-subtitle padding">Porcentaje</label>
                       <input type="number" class="form-control input text-dark" step="0.01" v-model="porcentaje">
                     </div>
                   </div>
@@ -616,7 +616,9 @@ const clearSearch = () => {
   position: relative;
   width: 100%;
 }
-
+.padding{
+  padding-bottom: 27px;
+}
 .ic1 {
   margin-top: 20px;
 }
