@@ -50,6 +50,17 @@
               placeholder="Monto maximo de inversion"
             />
               </div>
+              <div class="col">
+                <label for="porcentaje_interes" class="form-label fw-bolder">Porcentaje</label>
+                <input 
+                  type="text"
+                  class="form-control"
+                  id="porcentaje_interes"
+                  min="0"
+                  @blur="formatearSigno"
+                  v-model="porcentaje_interes"
+                />
+              </div>
          
               <div class="text-center col m-auto">
               <button
@@ -83,6 +94,7 @@
                 <th class="td-custom">Nombre</th>
                 <th class="td-custom">Inversion Minima</th>
                 <th class="td-custom">Inversion Maxima</th>
+                <th class="td-custom">Porcentaje</th>
                 <th class="td-custom">Imagen</th>
                 <th class="td-custom">Estado</th>
                 <th class="td-custom">Acciones</th>
@@ -94,6 +106,7 @@
                 <td class="align-middle ">{{ categoria.nombre }}</td>
                 <td class="align-middle text-center"> {{ categoria.monto_minimo_inversion }}</td>
                 <td class="align-middle text-center"> {{ categoria.monto_maximo_inversion }}</td>
+                <td class="align-middle text-center">{{ categoria.porcentaje_interes }} %</td>
                 <td class="text-center">
                   <img
                     :src="`${BaseURL.replace('/categories', '')}/uploads/categories/${
@@ -274,6 +287,7 @@ const montoInvMin = ref(0);
 const montoInvMax = ref(0);
 const montoMax = ref(0);
 const montoMin = ref(0);
+const porcentaje_interes = ref(0);
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
 const BaseURL = import.meta.env.VITE_BASE_URL + "/categories";
 
@@ -300,6 +314,21 @@ const handleModalCreateHidden = () => {
 const handleModalEditHidden = () => {
   console.log("Modal de edición cerrado");
   formEdit.value = { nombre: "", image: null }; // Limpiar formulario al cerrar
+};
+
+const formatearSigno = () => {
+  let porcentajeStr = porcentaje_interes.value.replace(/[^0-9.]/g, ""); // Remover todo lo que no sean números o puntos decimales
+
+  if (porcentajeStr.length > 0) {
+    let num = parseFloat(porcentajeStr);
+    if (num % 1 === 0) {
+      porcentaje_interes.value = `${num.toFixed(0)}%`; // Si es entero, mostrar solo la parte entera
+    } else {
+      porcentaje_interes.value = `${num.toFixed(2)}%`; // Si tiene decimales, mostrar con dos decimales
+    }
+  } else {
+    porcentaje_interes.value = ""; 
+  }
 };
 
 const obtenerCategorias = async (page = 1, search = "") => {
@@ -329,7 +358,7 @@ const cambiarEstado = async (categoria_persona_id) => {
 };
 
 // Mostrar el modal para editar una categoría existente
-const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maximo_inv ) => {
+const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maximo_inv, porcentaje_interes ) => {
   try {
     const { data } = await axios.get(`${BaseURL}/${categoria_persona_id}`);
     formEdit.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
@@ -337,6 +366,7 @@ const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maxim
     // Forzar actualización del DOM antes de mostrar el modal 
     montoMax.value = monto_maximo_inv
     montoMin.value = monto_minimo_inv
+    porcentaje.value = porcentaje_interes
     await nextTick();
     const editModal = new bootstrap.Modal(document.getElementById("modalEditCategory"));
     editModal.show();
@@ -359,6 +389,8 @@ const createCategory = async () => {
   formData.append("nombre", formCreate.value.nombre.trim());
   formData.append("montoInvMin", montoInvMin.value);
   formData.append("montoInvMax", montoInvMax.value);
+  const porcentajeSinSigno = porcentaje_interes.value.replace('%', '');
+  formData.append("porcentaje_interes", porcentajeSinSigno);
   
   if (!formCreate.value.image) {
     errorAlert("La iamgen es requerida", "Error"); // Mostrar mensaje de error en caso de excepción
@@ -374,6 +406,11 @@ const createCategory = async () => {
   }
   if (formCreate.value.image) {
     formData.append("image", formCreate.value.image);
+  }
+  //el interes sea solo del 1 al 100
+  if (porcentajeSinSigno < 1 || porcentajeSinSigno > 100) {
+    errorAlert("El interes debe estar entre 1 y 100", "Error"); // Mostrar mensaje de error en caso de excepción
+    return
   }
   try {
     console.log("Enviando datos al servidor", formCreate.value);
@@ -392,6 +429,7 @@ const createCategory = async () => {
       document.getElementById("createImage").value = null
       montoInvMax.value = 0;
       montoInvMin.value = 0;
+      porcentaje_interes.value = 0;
       
     } else {
       errorAlert(data.msg, "Error"); // Mostrar mensaje de error si no fue exitoso
@@ -418,6 +456,7 @@ const editCategory = async () => {
   formData.append("nombre", formEdit.value.nombre.trim());
   formData.append("monto_minimo_inversion", montoMin.value);
   formData.append("monto_maximo_inversion", montoMax.value);
+  formData.append("porcentaje_interes", porcentaje_interes.value);
   if (formEdit.value.image) {
     formData.append("image", formEdit.value.image); // Añadir la imagen al FormData
   }

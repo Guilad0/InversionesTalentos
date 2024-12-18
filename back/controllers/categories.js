@@ -37,7 +37,7 @@ const getCategories = (req, res) => {
     const numPaginas = Math.ceil(numFilas / porPagina);
 
     // Consulta para obtener los datos con paginación y búsqueda
-    const query = `SELECT categoria_persona_id, nombre, imagen, estado, monto_minimo_inversion,monto_maximo_inversion
+    const query = `SELECT categoria_persona_id, nombre, imagen, estado, monto_minimo_inversion,monto_maximo_inversion, porcentaje_interes
                    FROM categoria_personas
                    WHERE nombre LIKE '%${busqueda}%'
                    LIMIT ${limite};`;
@@ -114,8 +114,8 @@ const saveCategory = (req, res) => {
       msg: "Sin archivos para subir",
     });
   }
-  let { nombre, montoInvMin, montoInvMax } = req.body;
-
+  let { nombre,montoInvMin, montoInvMax, porcentaje_interes } = req.body;
+  
   const queryCheck = "SELECT * FROM categoria_personas WHERE nombre = ?";
   conexion.query(queryCheck, [nombre], async (err, data) => {
     if (err) {
@@ -138,8 +138,8 @@ const saveCategory = (req, res) => {
         ["jpg", "png", "jpeg"],
         "categories"
       );
-      query = "INSERT INTO categoria_personas (imagen,nombre, monto_minimo_inversion,monto_maximo_inversion) VALUES (?,?,?,?)";
-      conexion.query(query, [imgPath, nombre, montoInvMin, montoInvMax], (err) => {
+      query = "INSERT INTO categoria_personas (imagen,nombre, monto_minimo_inversion,monto_maximo_inversion, porcentaje_interes) VALUES (?,?,?,?,?)";
+      conexion.query(query, [imgPath, nombre, montoInvMin, montoInvMax, porcentaje_interes], (err) => {
         if (err) {
           res.status(500).json({
             success: false,
@@ -182,12 +182,12 @@ const getById = (req, res) => {
  * Actualiza una imagen del servidor
  */
 const updateImgCategory = (req, res) => {
-  let { nombre, monto_maximo_inversion, monto_minimo_inversion } = req.body;
+  let { nombre,monto_maximo_inversion,monto_minimo_inversion, porcentaje_interes } = req.body;
   let query = "";
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
     const query =
-      "UPDATE categoria_personas SET nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ? WHERE categoria_persona_id = ?";
-    conexion.query(query, [nombre, monto_minimo_inversion, monto_maximo_inversion, req.params.id], (err) => {
+      "UPDATE categoria_personas SET nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ?, porcentaje_interes = ? WHERE categoria_persona_id = ?";
+    conexion.query(query, [nombre, monto_minimo_inversion,monto_maximo_inversion, porcentaje_interes, req.params.id], (err) => {
       if (err) {
         res.status(500).json({
           msg: "Error al procesar la actualizacion",
@@ -232,8 +232,8 @@ const updateImgCategory = (req, res) => {
           "categories"
         );
         const queryUpdate =
-          "UPDATE categoria_personas SET imagen = ?, nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ? WHERE categoria_persona_id = ?";
-        conexion.query(queryUpdate, [imgPath, nombre, monto_minimo_inversion, monto_maximo_inversion, req.params.id], (err) => {
+          "UPDATE categoria_personas SET imagen = ?, nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ?, porcentaje_interes = ? WHERE categoria_persona_id = ?";
+        conexion.query(queryUpdate, [imgPath, nombre,monto_minimo_inversion,monto_maximo_inversion, req.params.id], (err) => {
           if (err) {
             console.error("Error al actualizar la categoría con imagen:", err);
             return res.status(500).json({ err });
