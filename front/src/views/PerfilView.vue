@@ -538,7 +538,10 @@
             </div>
           </div>
           <hr />
-          <div class="d-flex justify-content-between py-4">
+          <div
+            v-if="user.rol === 'Cliente'"
+            class="d-flex justify-content-between py-4"
+          >
             <div class="">
               <i class="fas fa-smile"></i>
               Solicitar Inversión

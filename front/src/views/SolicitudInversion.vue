@@ -13,145 +13,167 @@
       </div> -->
 
       <form @submit.prevent="registrarExperiencia" novalidate>
-        <div class="row mb-3">
-          <div class="col mb-6">
+        <div class="row mb-4">
+          <div class="col-12">
             <div class="input-container">
-              <label for="nombre" class="label"
-                >Motivo<strong class="text-danger">*</strong></label
-              >
+              <label for="nombre" class="label">
+                Motivo<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="nombre"
                 v-model="nombre"
+                @input="eliminarEspacioInicio('nombre')"
                 ref="refNombre"
                 type="text"
                 class="input form-control"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Debes Completar este Campo
-              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-container">
+              <label for="descripcion" class="label">
+                Descripción <strong class="text-danger">*</strong>
+              </label>
+              <textarea
+                id="descripcion"
+                ref="refDescripcion"
+                v-model="descripcion"
+                @input="eliminarEspacioInicio('descripcion')"
+                class="input form-control"
+                rows="3"
+                required
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <div class="input-container2">
-          <label for="descripcion" class="label"
-            >Descripción <strong class="text-danger">*</strong></label
-          >
-          <textarea
-            id="descripcion"
-            ref="refDescripcion"
-            v-model="descripcion"
-            pattern="^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*.{3,}$"
-            class="input form-control"
-            rows="3"
-            required
-          ></textarea>
-          <div class="ms-2 invalid-feedback fs-custom">
-            Debes Completar este Campo
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+        <div class="row mb-4">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_inicio_recaudacion" class="label"
-                >Fecha Inicio Recaudación<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_inicio_recaudacion" class="label">
+                Fecha Inicio Recaudación<strong class="text-danger">*</strong>
+              </label>
               <input
-                ref="refMinDate"
                 id="fecha_inicio_recaudacion"
                 v-model="fecha_inicio_recaudacion"
                 type="date"
+                :min="fechaActual"
                 class="input form-control"
                 required
               />
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_fin_recaudacion" class="label"
-                >Fecha Final Recaudación<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_fin_recaudacion" class="label">
+                Fecha Final Recaudación<strong class="text-danger">*</strong>
+              </label>
               <input
-                ref="refMaxDate"
                 id="fecha_fin_recaudacion"
                 v-model="fecha_fin_recaudacion"
                 type="date"
+                :min="fechaActual"
                 class="input form-control"
                 required
               />
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+
+        <div class="row mb-4">
+          <div class="col-md-4">
             <div class="input-container">
-              <label for="monto" class="label"
-                >Monto<strong class="text-danger">*</strong></label
-              >
+              <label for="monto" class="label">
+                Monto<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="monto"
                 v-model="monto"
-                ref="refMonto"
-                type="number"
+                @input="formatearMonto"
+                type="text"
                 class="input form-control no-spin"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, ingresar un valor mayor a 0
-              </div>
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-4">
             <div class="input-container">
-              <label for="cantidad_pagos" class="label"
-                >Cantidad Pagos<strong class="text-danger">*</strong></label
-              >
+              <label class="label">Porcentaje de Interés</label>
+              <input
+                v-model="porcentajeInteresFormateado"
+                type="text"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-container">
+              <label for="cantidad_pagos" class="label">
+                Cantidad Pagos<strong class="text-danger">*</strong>
+              </label>
               <input
                 id="cantidad_pagos"
-                v-model="cantidad_pagos"
-                ref="refCantidadPagos"
+                v-model.number="cantidad_pagos"
                 type="number"
                 class="input form-control no-spin"
                 required
               />
-              <div class="ms-2 invalid-feedback fs-custom">
-                Campo requerido, ingresar un valor mayor a 0
-              </div>
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col mb-6">
+
+        <div class="row mb-4">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_inicio_pago" class="label"
-                >Fecha Inicio Pago<strong class="text-danger">*</strong></label
-              >
+              <label for="fecha_inicio_pago" class="label">
+                Fecha Inicio Pago<strong class="text-danger">*</strong>
+              </label>
               <input
-                ref="refMinDate"
                 id="fecha_inicio_pago"
                 v-model="fecha_inicio_pago"
                 type="date"
+                :min="fecha_fin_recaudacion"
                 class="input form-control"
                 required
               />
             </div>
           </div>
-          <div class="col mb-6">
+          <div class="col-md-6">
             <div class="input-container">
-              <label for="fecha_fin_pago" class="label"
-                >Fecha Fin Inversión<strong class="text-danger"
-                  >*</strong
-                ></label
-              >
+              <label for="fecha_fin_pago" class="label">
+                Fecha Fin Inversión
+              </label>
               <input
                 id="fecha_fin_pago"
                 v-model="fecha_fin_pago"
                 type="date"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="input-container">
+              <label class="label">Pago Mensual</label>
+              <input
+                v-model="pagoMensual"
+                type="text"
+                class="input form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-container">
+              <label class="label">Monto Total a Pagar</label>
+              <input
+                v-model="montoTotal"
+                type="text"
                 class="input form-control"
                 readonly
               />
@@ -167,7 +189,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted, watchEffect, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import iziToast from "izitoast";
@@ -188,23 +210,16 @@ const refDescripcion = ref("");
 const refMonto = ref("");
 const refNombre = ref("");
 const refMaxDate = ref("");
-const minDate = ref("1970-01-01");
-const maxDate = ref(new Date().toISOString().split("T")[0]);
-
 // Obtener el cliente_id desde localStorage al montar el componente
 const user = ref(JSON.parse(localStorage.getItem("usuario")));
-const validarFormulario = (event) => {
-  const form = event.target.closest("form");
-  if (!form.checkValidity()) {
-    event.preventDefault();
-    event.stopPropagation();
-    form.classList.add("was-validated");
-    return false;
-  }
-  return true;
-};
+
+const fechaActual = ref(new Date().toISOString().split("T")[0]);
+const porcentajeInteres = ref(0);
+const pagoMensual = ref("");
+const montoTotal = ref("");
 
 onMounted(() => {
+  obtenerPorcentajeInteres();
   console.log(user.value);
   if (user) {
     cliente_id.value = user.value.usuario_id;
@@ -223,83 +238,151 @@ onMounted(() => {
   }
 });
 
-// Función para registrar la experiencia
-const registrarExperiencia = async (event) => {
-  if (!validarFormulario(event)) return;
-  /* if (nombre.value && nombre.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    nombre.value = nombre.value.trim() == "" ? "" : nombre.value;
-    refNombre.value.focus();
-    errorAlert("El campo motivo debe contener más de 5 letras.", "Error");
-    return;
+const obtenerPorcentajeInteres = async () => {
+  if (user.value) {
+    cliente_id.value = user.value.usuario_id;
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/categories/user/${cliente_id.value}`
+      );
+      porcentajeInteres.value = response.data.porcentaje_interes;
+    } catch (error) {
+      console.error("Error al obtener el porcentaje de interés:", error);
+    }
   }
-  if (monto.value && monto.value.trim().replace(/[^A-Za-z]/g, "").length <= 5) {
-    monto.value = monto.value.trim() == "" ? "" : monto.value;
-    refMonto.value.focus();
-    errorAlert("El campo monto  debe contener más de 5 letras.", "Error");
-    return;
-  }
+};
+const porcentajeInteresFormateado = computed(() => {
+  return porcentajeInteres.value ? `${porcentajeInteres.value}%` : "0%";
+});
+const calcularMontos = () => {
+  if (monto.value && cantidad_pagos.value > 0) {
+    // Convertir el monto de string con formato ($1,234) a número
+    const montoNumerico = parseFloat(monto.value.replace(/[^0-9.-]+/g, ""));
 
-  if (
-    descripcion.value &&
-    descripcion.value.trim().replace(/[^A-Za-z]/g, "").length <= 5
-  ) {
-    descripcion.value = descripcion.value.trim() == "" ? "" : descripcion.value;
-    refDescripcion.value.focus();
-    errorAlert("La descripción no puede estar vacía ni contener solo espacios.", "Error");
-    return;
+    // Calcular el monto total (monto + interés)
+    const interes = montoNumerico * (porcentajeInteres.value / 100);
+    const total = montoNumerico + interes;
+    montoTotal.value = `$${total.toLocaleString("es-ES")}`;
+
+    // Calcular el pago mensual
+    const mensual = total / cantidad_pagos.value;
+    pagoMensual.value = `$${mensual.toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  } else {
+    montoTotal.value = "";
+    pagoMensual.value = "";
   }
-  if (fecha_inicio_recaudacion.value <= minDate.value) {
-    errorAlert("Fecha de inicio no valida.", "Error");
-    refMinDate.value.focus();
-    return;
-  }
-  if (fecha_fin_recaudacion.value > maxDate.value) {
-    errorAlert("Fecha de inicio no valida.", "Error");
-    refMaxDate.value.focus();
-    return;
-  }
-  if (fecha_inicio_recaudacion.value >= fecha_fin_recaudacion.value) {
-    errorAlert("La fecha de inicio no puede ser mayor a la fecha final.", "Error");
-    refMinDate.value.focus();
-    return;
-  } */
+};
+// Función para registrar la experiencia
+const registrarExperiencia = async () => {
+  if (!validarCampos()) return;
+
   const datos = {
     cliente_id: cliente_id.value,
+    nombre: nombre.value,
     descripcion: descripcion.value,
+    monto: parseFloat(monto.value.replace(/[^0-9.-]+/g, "")),
+    cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
-    monto: monto.value,
-    nombre: nombre.value,
-    cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_pago: fecha_inicio_pago.value,
     fecha_fin_pago: fecha_fin_pago.value,
+    porcentaje_interes: porcentajeInteres.value,
   };
-  console.log(datos);
+
   try {
     await axios.post(
       import.meta.env.VITE_BASE_URL + "/solicitudesInversion",
       datos
     );
-    // Limpiar los campos después de registrar
-    descripcion.value = "";
-    fecha_inicio_recaudacion.value = "";
-    fecha_fin_recaudacion.value = "";
-    monto.value = "";
-    nombre.value = "";
-    cantidad_pagos.value = "";
-    fecha_inicio_pago.value = "";
-    fecha_fin_pago.value = "";
     successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
-    // Redirigir al perfil
+    limpiarCampos();
     router.push({ name: "perfil" });
   } catch (error) {
-    console.error(error);
+    errorAlert("Error al registrar la Solicitud de Inversión.", "Error");
+  }
+};
+
+const validarCampos = () => {
+  if (!nombre.value.trim()) {
+    errorAlert("El campo 'Motivo' es obligatorio.", "Error");
+    return false;
+  }
+  if (!descripcion.value.trim()) {
+    errorAlert("El campo 'Descripción' es obligatorio.", "Error");
+    return false;
+  }
+  if (monto.value <= 0) {
+    errorAlert("El monto debe ser mayor a 0.", "Error");
+    return false;
+  }
+  if (cantidad_pagos.value <= 0) {
+    errorAlert("La cantidad de pagos debe ser mayor a 0.", "Error");
+    return false;
+  }
+  if (
+    !fecha_inicio_recaudacion.value ||
+    fecha_inicio_recaudacion.value < fechaActual.value
+  ) {
     errorAlert(
-      "Hubo un problema al registrar la Solicitud de Inversión.",
+      "La fecha de inicio de recaudación debe ser igual o posterior a hoy.",
       "Error"
     );
-    // window.location.reload();
+    return false;
   }
+  if (
+    !fecha_fin_recaudacion.value ||
+    fecha_fin_recaudacion.value <= fecha_inicio_recaudacion.value
+  ) {
+    errorAlert(
+      "La fecha final de recaudación debe ser posterior a la fecha de inicio.",
+      "Error"
+    );
+    return false;
+  }
+  if (
+    !fecha_inicio_pago.value ||
+    fecha_inicio_pago.value <= fecha_fin_recaudacion.value
+  ) {
+    errorAlert(
+      "La fecha de inicio de pago debe ser posterior a la fecha final de recaudación.",
+      "Error"
+    );
+    return false;
+  }
+  return true;
+};
+
+const eliminarEspacioInicio = (campo) => {
+  if (campo === "nombre") {
+    nombre.value = nombre.value.replace(/^\s+/, ""); // Elimina los espacios al inicio de 'nombre'
+  } else if (campo === "descripcion") {
+    descripcion.value = descripcion.value.replace(/^\s+/, ""); // Elimina los espacios al inicio de 'descripcion'
+  }
+};
+
+const formatearMonto = () => {
+  let montoStr = monto.value.replace(/[^0-9]/g, "");
+
+  if (montoStr.length > 0) {
+    const montoNumerico = parseInt(montoStr);
+    monto.value = `$${montoNumerico}`;
+  } else {
+    monto.value = "";
+  }
+};
+
+const limpiarCampos = () => {
+  nombre.value = "";
+  descripcion.value = "";
+  monto.value = "";
+  cantidad_pagos.value = "";
+  fecha_inicio_recaudacion.value = "";
+  fecha_fin_recaudacion.value = "";
+  fecha_inicio_pago.value = "";
+  fecha_fin_pago.value = "";
 };
 
 const calcularFechaFinInversion = () => {
@@ -317,6 +400,7 @@ const calcularFechaFinInversion = () => {
   }
 };
 watchEffect(() => {
+  calcularMontos();
   calcularFechaFinInversion();
 });
 </script>
@@ -353,7 +437,7 @@ watchEffect(() => {
   border-radius: none;
   box-sizing: border-box;
   padding: 30px;
-  width: 800px;
+  width: 700px;
   z-index: 2;
 }
 

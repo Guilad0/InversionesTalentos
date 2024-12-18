@@ -8,6 +8,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import vue3GoogleLogin from 'vue3-google-login'
 import iziToast from './plugins/iziToast';
+import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
+
 
 
 // import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -18,6 +21,8 @@ import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 const pinia = createPinia();
 const app = createApp(App)
+
+app.component('Multiselect', Multiselect);
 
 app.config.globalProperties.$swal = Swal;
 app.config.globalProperties.$notyf = new Notyf();

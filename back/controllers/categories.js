@@ -5,6 +5,8 @@ const { v4: uuidv4 } = require("uuid");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const fs = require("fs");
+const e = require("express");
+const { restart } = require("nodemon");
 
 /**
 obtiene la lista de categorias activas
@@ -112,8 +114,8 @@ const saveCategory = (req, res) => {
       msg: "Sin archivos para subir",
     });
   }
-  let { nombre,montoInvMin, montoInvMax } = req.body;
-  
+  let { nombre, montoInvMin, montoInvMax } = req.body;
+
   const queryCheck = "SELECT * FROM categoria_personas WHERE nombre = ?";
   conexion.query(queryCheck, [nombre], async (err, data) => {
     if (err) {
@@ -140,7 +142,7 @@ const saveCategory = (req, res) => {
       conexion.query(query, [imgPath, nombre, montoInvMin, montoInvMax], (err) => {
         if (err) {
           res.status(500).json({
-            success: false, 
+            success: false,
             msg: "Error al insertar la categoría en la base de datos",
             err,
           });
@@ -180,12 +182,12 @@ const getById = (req, res) => {
  * Actualiza una imagen del servidor
  */
 const updateImgCategory = (req, res) => {
-  let { nombre,monto_maximo_inversion,monto_minimo_inversion } = req.body;
+  let { nombre, monto_maximo_inversion, monto_minimo_inversion } = req.body;
   let query = "";
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
     const query =
       "UPDATE categoria_personas SET nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ? WHERE categoria_persona_id = ?";
-    conexion.query(query, [nombre, monto_minimo_inversion,monto_maximo_inversion, req.params.id], (err) => {
+    conexion.query(query, [nombre, monto_minimo_inversion, monto_maximo_inversion, req.params.id], (err) => {
       if (err) {
         res.status(500).json({
           msg: "Error al procesar la actualizacion",
@@ -231,7 +233,7 @@ const updateImgCategory = (req, res) => {
         );
         const queryUpdate =
           "UPDATE categoria_personas SET imagen = ?, nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ? WHERE categoria_persona_id = ?";
-        conexion.query(queryUpdate, [imgPath, nombre,monto_minimo_inversion,monto_maximo_inversion, req.params.id], (err) => {
+        conexion.query(queryUpdate, [imgPath, nombre, monto_minimo_inversion, monto_maximo_inversion, req.params.id], (err) => {
           if (err) {
             console.error("Error al actualizar la categoría con imagen:", err);
             return res.status(500).json({ err });
@@ -249,7 +251,7 @@ const updateImgCategory = (req, res) => {
 
 const createUrlImg = (req, res) => {
   let query = "SELECT * FROM categoria_personas WHERE categoria_persona_id=?";
-  
+
   conexion.query(query, [req.params.id], (err, data) => {
     if (err) {
       console.error('Error al buscar categoria:', err);
@@ -277,6 +279,28 @@ const createUrlImg = (req, res) => {
     });
   });
 };
+
+const addRubr = async (req, res) => {
+  const { usuario_id, categoria_persona_id } = req.body;
+
+  if (!categoria_persona_id || !usuario_id) {
+    return res.status(400).json({
+      msg: "Categoria o User no encontrados"
+    })
+  }
+  const query = "UPDATE usuarios SET categoria_persona_id = ? WHERE usuario_id = ?";
+  conexion.query(query, [categoria_persona_id, usuario_id], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    else {
+      return res.status(200).json({
+        results,
+        message: "Exito"
+      });
+    }
+  })
+}
 
 
 const getVideoUrl = (req, res) => {
@@ -308,7 +332,33 @@ const getVideoUrl = (req, res) => {
     });
   });
 };
+const getCategoryByUserId = (req, res) => {
+  const { id } = req.params;
 
+  const query = `
+    SELECT cp.*
+    FROM categoria_personas cp
+    JOIN usuarios u ON u.categoria_persona_id = cp.categoria_persona_id
+    WHERE u.usuario_id = ?;
+  `;
+
+  conexion.query(query, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        err,
+        msg: "Error al obtener la categoría del usuario",
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        msg: "Categoría no encontrada para el usuario especificado",
+      });
+    }
+
+    res.status(200).json(results[0]);
+  });
+};
 
 module.exports = {
   getCategories,
@@ -317,5 +367,7 @@ module.exports = {
   getById,
   updateImgCategory,
   createUrlImg,
-  getVideoUrl
+  getVideoUrl,
+  addRubr,
+  getCategoryByUserId
 };

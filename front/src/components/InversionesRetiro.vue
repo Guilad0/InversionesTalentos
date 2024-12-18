@@ -1260,6 +1260,7 @@ import {
 import apexchart from "vue3-apexcharts";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
+import { getHeaderRequest } from "@/helpers/Authenticator";
 // import autoTable from "jspdf-autotable";
 // const route = useRouter();
 const tabsInv = ref(["Inversiones", "Retiros"]);
@@ -1278,6 +1279,7 @@ const usuario = JSON.parse(localStorage.getItem("usuario"));
 const usuario_id = ref(usuario.usuario_id);
 const usuario_rol = ref(usuario.rol);
 const client = ref("");
+const header = getHeaderRequest();
 
 if (usuario_rol.value == "Inversionista") {
   inversionista_ID.value = usuario_id.value;
@@ -1315,7 +1317,7 @@ const tokensDeudasCliente = ref(0);
 
 const obtenerInversiones_Inversionista = async () => {
   try {
-    const { data } = await axios.get(baseURL + "inversionista/" + inversionista_ID.value);
+    const { data } = await axios.get(baseURL + "inversionista/" + inversionista_ID.value, header);
     inversiones.value = data.data;
     console.log(inversiones.value);
   } catch (error) {
@@ -1326,7 +1328,7 @@ const obtenerInversiones_Inversionista = async () => {
 const obtenerInversionista_retiro = async () => {
   try {
     const { data } = await axios.get(
-      baseURL + "inversionista_retiros/" + inversionista_ID.value
+      baseURL + "inversionista_retiros/" + inversionista_ID.value, header
     );
     inversionistas_retiros.value = data.data;
   } catch (error) {
@@ -1336,7 +1338,7 @@ const obtenerInversionista_retiro = async () => {
 
 const obtenerInversiones_Clientes = async () => {
   try {
-    const { data } = await axios.get(baseURL + "cliente/" + cliente_ID.value);
+    const { data } = await axios.get(baseURL + "cliente/" + cliente_ID.value, header);
     inversiones_recibidas.value = data.data;
   } catch (error) {
     console.log(error);
@@ -1345,7 +1347,7 @@ const obtenerInversiones_Clientes = async () => {
 
 const obtenerCliente_retiro = async () => {
   try {
-    const { data } = await axios.get(baseURL + "cliente_retiros/" + cliente_ID.value);
+    const { data } = await axios.get(baseURL + "cliente_retiros/" + cliente_ID.value, header);
     clientes_retiros.value = data.data;
   } catch (error) {
     console.log(error);
@@ -1355,7 +1357,7 @@ const obtenerCliente_retiro = async () => {
 const obtenerInversiones_Clientes_Vencidas = async () => {
   try {
     const { data } = await axios.get(
-      baseURL + "inversiones_vencidas/" + cliente_ID.value
+      baseURL + "inversiones_vencidas/" + cliente_ID.value, header
     );
     inversiones_vencidas.value = data.data;
     console.log(inversiones_vencidas.value);
@@ -1367,7 +1369,7 @@ const obtenerInversiones_Clientes_Vencidas = async () => {
 const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(
-      baseURL + "tokensClienteRecibido/" + cliente_ID.value
+      baseURL + "tokensClienteRecibido/" + cliente_ID.value, header
     );
     tokensRecibidosCliente.value =
       data.data[0].totalTokensRecibidos + data.data[0].tokensCompradosCliente;
@@ -1535,7 +1537,7 @@ const getData = async (url) => {
   loadingReports.value = true;
   console.log(baseUrl + url);
   try {
-    const { data } = await axios.get(baseUrl + url);
+    const { data } = await axios.get(baseUrl + url, header);
     (reports.value = data.data), console.log(reports.value);
   } catch (error) {
     console.log(error);
@@ -1599,7 +1601,7 @@ const options = ref({
 const obtenerTotales = async () => {
   series.value = [];
   try {
-    const { data } = await axios.get(reportUrl + "totalCompras/" + usuario_id.value);
+    const { data } = await axios.get(reportUrl + "totalCompras/" + usuario_id.value, header);
     console.log(data);
     var datosMesCompra = [];
     for (let i = 0; i < meses.length; i++) {
@@ -1623,7 +1625,7 @@ const obtenerTotales = async () => {
     console.log(error);
   }
   try {
-    const { data } = await axios.get(reportUrl + "totalInversiones/" + usuario_id.value);
+    const { data } = await axios.get(reportUrl + "totalInversiones/" + usuario_id.value, header);
 
     var datosMesVenta = [];
     for (let i = 0; i < meses.length; i++) {

@@ -1,43 +1,38 @@
 <template>
   <main class="bg-light">
     <div class="content">
-      <h4 class="d-block text-start mb-2 text-center title">Reversion</h4>
+      <h4 class="d-block text-start mb-2 text-center title">Reversión</h4>
       <div class="table-container">
         <table class="table overflow-x-scroll">
           <thead>
             <tr class="table-secondary">
-              <th class="td-custom align-middle custom-size">Cliente</th>
+              <th class="td-custom align-middle custom-size text-start">Cliente</th>
               <th class="td-custom custom-size">Monto Recaudado</th>
               <th class="td-custom align-middle custom-size">Inversores</th>
             </tr>
           </thead>
           <tbody>
-            <template v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
-              <tr>
-                <td class="text-start fw-bold">
-                  {{ clienteIndex + 1 }}. {{ cliente }}
-                </td>
-                <td class="text-center align-middle fw-bold">
-                  {{ calcularMontoRecaudado(inversionesPorCliente[cliente]).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
-                </td>
-                <td class="text-center align-middle">
-                  <button 
-                    class="btn btn-primary btn-sm" 
-                    @click="abrirModal(cliente, inversionesPorCliente[cliente])">
-                    Ver Inversores
-                  </button>
-                </td>
-              </tr>
-            </template>
+            <tr v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
+              <td class="text-start fw-bold">
+                {{ clienteIndex + 1 }}. {{ cliente }}
+              </td>
+              <td class="text-center align-middle fw-bold">
+                {{ calcularMontoRecaudado(inversionesPorCliente[cliente]).toLocaleString(undefined, {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2
+                }) }}
+              </td>
+              <td class="text-center align-middle">
+                <button class="btn btn-primary btn-sm" @click="abrirModal(cliente, inversionesPorCliente[cliente])">
+                  Ver Inversores
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-      
+
       <!-- Modal Component -->
-      <InversoresModal 
-        v-if="mostrarModal" 
-        :cliente="clienteActual" 
-        :inversiones="inversionesModal" 
+      <InversoresModal v-if="mostrarModal" :cliente="clienteActual" :inversiones="inversionesModal"
         @cerrar="cerrarModal" />
       <!-- Pagination -->
       <div class="footer">
@@ -55,7 +50,8 @@
                   <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </li>
-              <li v-for="page in paginacion.pages" :key="page" class="page-item" :class="paginacion.current === page ? 'active' : ''">
+              <li v-for="page in paginacion.pages" :key="page" class="page-item"
+                :class="paginacion.current === page ? 'active' : ''">
                 <button @click="obtenerDatos(page)"
                   class="page-link bg-light mx-2 color-gray fw-bolder rounded-5 border border-3">
                   {{ page }}

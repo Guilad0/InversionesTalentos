@@ -1,5 +1,9 @@
 import axios from "axios";
+import { getHeaderRequest } from "./Authenticator";
+
 const baseURL = import.meta.env.VITE_BASE_URL;
+const header = getHeaderRequest();
+
 export const orderByName = (clients) => {
   return clients.sort((a, b) => {
     let nombreA = a.nombre.toLowerCase();
@@ -44,7 +48,7 @@ export const getUser = async () => {
       return null;
     }
     const { data } = await axios.get(
-      baseURL+"/users/getUserById/" + user.usuario_id
+      baseURL+"/users/getUserById/" + user.usuario_id, header
     );
 
     localStorage.setItem("usuario", JSON.stringify(data.results[0]));

@@ -59,13 +59,14 @@ const getSolicitudesInversion = (req, res) => {
 };
 
 const getTotals = (req, res) => {
-  const query = `SELECT 
-    IFNULL(aprobado, 'todo') AS estado, 
+  const query = `
+SELECT 
+    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Rechazado,
+    SUM(CASE WHEN aprobado = 'Aprobado' THEN 1 ELSE 0 END) AS Aprobado,
+    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Pendiente,
     COUNT(*) AS total
-    FROM 
-        solicitudes_inversion
-    GROUP BY 
-    aprobado WITH ROLLUP;`;
+FROM solicitudes_inversion;
+  `;
   conexion.query(query, (err, results) => {
     if (err) {
       return res
@@ -258,7 +259,7 @@ const getSolicitudInversionById = (req, res) => {
 };
 
 const getInversoresDeSolicitud = (req, res) => {
-  let query = `SELECT inversor_id, monto,estado_inversion FROM inversiones WHERE solicitud_inv_id = ${req.params.id}`;
+  let query = `SELECT inversor_id, monto FROM inversiones WHERE solicitud_inv_id = ${req.params.id}`;
   conexion.query(query, (err, resultsInversores) => {
     if (err) {
       return res
@@ -285,11 +286,9 @@ const getInversoresDeSolicitud = (req, res) => {
       const results = data.map((inv, i) => {
         const inversor = resultsInversores[i];
         totalInvertido += parseInt(resultsInversores[i].monto);
-        estadoInv += parseInt(resultsInversores[i].estado_inversion);
         return {
           ...inv,
           ...inversor,
-          ...estadoInv
         };
       });
       res.status(200).json({ results, totalInvertido });
@@ -382,6 +381,7 @@ const createSolicitudInversion = (req, res) => {
     cantidad_pagos,
     fecha_inicio_pago,
     fecha_fin_pago,
+    porcentaje_interes,
   } = req.body;
 
   // Primero actualizar solicitudes rechazadas
@@ -427,7 +427,7 @@ const createSolicitudInversion = (req, res) => {
       }
 
       const query =
-        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, porcentaje_interes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       conexion.query(
         query,
@@ -442,6 +442,7 @@ const createSolicitudInversion = (req, res) => {
           fecha_inicio_pago,
           fecha_fin_pago,
           aprobado,
+          porcentaje_interes,
         ],
         (err, results) => {
           if (err) {
@@ -513,10 +514,11 @@ const updateSolicitudInversion = (req, res) => {
 
 const procesarSolicitudInversion = (req, res) => {
   const { id } = req.params;
+  console.log(req.query.porcentaje_interes);
   let query =
     req.query.action == "Aprobado"
-      ? `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Proceso' WHERE id = ?`
-      : `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}',estado_inversion = 'Pendiente' WHERE id = ?`;
+      ? `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}', porcentaje_interes = ${req.query.porcentaje_interes} WHERE id = ?`
+      : `UPDATE solicitudes_inversion SET observaciones='${req.query.observaciones}', aprobado = '${req.query.action}' WHERE id = ?`;
   conexion.query(query, [id], (err, results) => {
     if (err) {
       return res
@@ -570,20 +572,109 @@ const deleteSolicitudInversion = (req, res) => {
 };
 const getSolicitudesInversionByUserId = (req, res) => {
   const { userId } = req.params;
-  const query = "SELECT * FROM solicitudes_inversion WHERE cliente_id = ?";
-  conexion.query(query, [userId], (err, results) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({
-          msg: "Error al obtener las solicitudes de inversión del usuario",
-          err,
-        });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
+
+  const countQuery = `
+    SELECT COUNT(*) as total 
+    FROM solicitudes_inversion 
+    WHERE cliente_id = ? AND estado = 1`;
+
+
+  const query = `
+    SELECT 
+      s.*,
+      COALESCE(SUM(CASE WHEN i.estado = 1 THEN i.monto ELSE 0 END), 0) as monto_recaudado,
+      s.monto - COALESCE(SUM(CASE WHEN i.estado = 1 THEN i.monto ELSE 0 END), 0) as monto_faltante,
+      IFNULL(
+        JSON_ARRAYAGG(
+          CASE 
+            WHEN i.inversor_id IS NOT NULL AND i.estado = 1 THEN
+              JSON_OBJECT(
+                'inversor_id', i.inversor_id,
+                'nombre', CONCAT(u.nombre, ' ', u.apellido),
+                'monto', i.monto,
+                'fecha_deposito', DATE_FORMAT(i.fecha_deposito, '%Y-%m-%d'),
+                'ganancia_estimada', i.ganancia_estimada,
+                'fecha_devolucion', DATE_FORMAT(i.fecha_devolucion, '%Y-%m-%d'),
+                'estado_inversion', s.estado_inversion  /* Cambiado de i.estado_inversion a s.estado_inversion */
+              )
+            ELSE NULL 
+          END
+        ),
+        '[]'
+      ) as inversores
+    FROM solicitudes_inversion s
+    LEFT JOIN inversiones i ON s.id = i.solicitud_inv_id
+    LEFT JOIN usuarios u ON i.inversor_id = u.usuario_id
+    WHERE s.cliente_id = ? AND s.estado = 1
+    GROUP BY s.id
+    ORDER BY s.id DESC
+    LIMIT ? OFFSET ?`;
+
+
+  conexion.query(countQuery, [userId], (countError, countResults) => {
+    if (countError) {
+      return res.status(500).json({
+        msg: "Error al obtener el total de registros",
+        error: countError
+      });
     }
-    res.status(200).json({ results });
+
+    const total = countResults[0].total;
+    const totalPages = Math.ceil(total / limit);
+
+
+    conexion.query(query, [userId, limit, offset], (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          msg: "Error al obtener las solicitudes de inversión del usuario",
+          error: err
+        });
+      }
+
+      const processedResults = results.map(row => {
+        try {
+          const inversoresArray = JSON.parse(row.inversores || '[]')
+            .filter(inv => inv !== null)
+            .map(inv => ({
+              ...inv,
+              monto: parseFloat(inv.monto || 0),
+              ganancia_estimada: parseFloat(inv.ganancia_estimada || 0)
+            }));
+
+          return {
+            ...row,
+            monto_recaudado: parseFloat(row.monto_recaudado || 0),
+            monto_faltante: parseFloat(row.monto_faltante || 0),
+            inversores: inversoresArray
+          };
+        } catch (error) {
+          console.error('Error procesando fila:', error, row);
+          return {
+            ...row,
+            monto_recaudado: parseFloat(row.monto_recaudado || 0),
+            monto_faltante: parseFloat(row.monto_faltante || 0),
+            inversores: []
+          };
+        }
+      });
+
+      res.status(200).json({
+        data: processedResults,
+        pagination: {
+          total,
+          totalPages,
+          currentPage: page,
+          perPage: limit
+        },
+        message: "Solicitudes consultadas correctamente"
+      });
+    });
   });
 };
-
 const showButton = (req, res) => {
   const id = req.params.id;
   const query = `
@@ -630,6 +721,27 @@ const showButton = (req, res) => {
     });
   });
 };
+const cambiarEstadoProceso = (req, res) => {
+  const { id } = req.params;
+  const query = `
+    UPDATE solicitudes_inversion 
+    SET estado_inversion = 'Proceso' 
+    WHERE id = ?`;
+
+  conexion.query(query, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        msg: "Error al cambiar el estado de la solicitud a Proceso",
+        error: err
+      });
+    }
+
+    res.status(200).json({
+      msg: "Estado de la solicitud cambiado a Proceso exitosamente",
+      results
+    });
+  });
+};
 
 module.exports = {
   getSolicitudesInversion,
@@ -647,4 +759,5 @@ module.exports = {
   getInversoresDeSolicitud,
   finalizarInversion,
   revertirInversion,
+  cambiarEstadoProceso,
 };
