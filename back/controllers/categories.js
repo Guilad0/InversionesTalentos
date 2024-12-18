@@ -89,7 +89,7 @@ const changeState = (req, res) => {
     }
     let state = data[0].estado;
     console.log(state);
-    query = `UPDATE categoria_personas SET estado=!estado WHERE categoria_persona_id = ?`;
+    query = `UPDATE categoria_personas SET estado = NOT estado WHERE categoria_persona_id = ?`;
     conexion.query(query, [req.params.id], (err) => {
       if (err) {
         res.status(500).json({
