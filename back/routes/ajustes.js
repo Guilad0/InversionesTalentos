@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/ajustesTokens', (req, res) => {
-    conexion.query('SELECT valor_token FROM ajustes', (error, results) => {
+    conexion.query('SELECT valor_token, tipo_moneda FROM ajustes', (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }

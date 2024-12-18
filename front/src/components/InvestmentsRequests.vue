@@ -62,17 +62,18 @@
             </div>
           </div>
         </div>
-        <div class="table-container">
-          <table class="table overflow-x-scroll ">
+        <div v-if="solicitudes.length > 0" class="table-container">
+          <table class="table overflow-x-scroll animate__animated animate__fadeIn">
             <thead>
               <tr class="table-secondary">
                 <th class="td-custom align-middle custom-size">ID</th>
                 <th class="td-custom align-middle custom-size">Nombre Usuario</th>
                 <th class="td-custom align-middle custom-size">Descripcion</th>
                 <th class="td-custom align-middle custom-size">Periodo de Recaudacion</th>
-                <th class="td-custom align-middle custom-size">Monto USD</th>
-                <th class="td-custom align-middle custom-size">Cantidad Pago</th>
                 <th class="td-custom align-middle custom-size">Periodo de Pagos</th>
+                <th class="td-custom align-middle custom-size">Monto $</th>
+                <th class="td-custom align-middle custom-size">Cantidad Pago</th>
+                <th class="td-custom align-middle custom-size">% Interes</th>
                 <th class="td-custom align-middle custom-size">Estado</th>
                 <th class="td-custom align-middle custom-size">Aprobar Rechazar</th>
                 <th class="td-custom align-middle custom-size">Finalizar Revertir</th>
@@ -85,10 +86,11 @@
                 <td class="text-center align-middle">{{ item.descripcion }}</td>
                 <td class="text-center align-middle">{{ new Date(item.fecha_inicio_recaudacion).toLocaleDateString() }}
                   - {{ new Date(item.fecha_fin_recaudacion).toLocaleDateString() }}</td>
+                  <td class="text-center align-middle">{{ new Date(item.fecha_inicio_pago).toLocaleDateString() }} - {{
+                    new Date(item.fecha_fin_pago).toLocaleDateString() }}</td>
                 <td class="text-center align-middle">{{ item.monto }}</td>
                 <td class="text-center align-middle">{{ item.cantidad_pagos }}</td>
-                <td class="text-center align-middle">{{ new Date(item.fecha_inicio_pago).toLocaleDateString() }} - {{
-                  new Date(item.fecha_fin_pago).toLocaleDateString() }}</td>
+                <td class="text-center align-middle">{{ item.porcentaje_interes }}</td>
                 <td class="text-center align-middle">
                   <span v-if="item.aprobado == 'Pendiente'" class="badge text-bg-warning text-dark ">{{
                     item.aprobado
@@ -103,7 +105,7 @@
                 <td class="text-center align-middle">
                   <div v-if="item.aprobado == 'Pendiente'" class="d-flex justify-content-center">
                     <button class="border-0 m-auto hover-button  mx-1"
-                      @click="procesarSolicitud(item.id, 'Aprobado', item.monto, item.nombre, item.cliente_id)">
+                      @click="procesarSolicitud(item.id, 'Aprobado', item.monto, item.nombre, item.cliente_id,item.porcentaje_interes)">
                       <i class="fa-regular fa-circle-check text-success "></i>
 
                     </button>
@@ -135,6 +137,7 @@
               </tr>
             </tbody>
           </table>
+
           <!-- Modal Aprobar Inv -->
           <div class="modal fade" id="aprobarInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -158,8 +161,14 @@
                         placeholder="Monto maximo de inversion">
                     </div>
                   </div>
-                  <p class="mt-3 mb-1 text-justify px-2">Los parámetros establecidos no podrán ser modificados durante
-                    el proceso de recaudación.</p>
+                    <label for="porcentaje_interes" class="my-2" >Interes de la solicitud %</label>
+                  <div class="col px-5 row">
+                    <input type="number" id="porcentaje_interes"  class="form-control mb-2 montoInvCustom" v-model="porcentaje_interes">
+                  </div>
+                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ montoFinal*(porcentaje_interes/100)+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }}{{ ajustes.tipo_moneda }} <br>
+                    Los parámetros establecidos no podrán ser modificados durante
+                    el proceso de recaudación.
+                   </p>
                 </div>
                 <div class="modal-footer d-flex justify-content-center  ">
                   <button type="button" class="rounded-3 btn-gray btn border" data-bs-dismiss="modal"
@@ -215,6 +224,13 @@
               </div>
             </div>
           </div>
+        </div>
+          <div v-else class="animate__animated animate__fadeIn mt-2 ">
+        <div class="alert alert-orange-custom text-center rounded-3" role="alert">
+          <h4 class="alert-heading ">No se encontraron resultados</h4>
+          <p> Intenta ajustar los filtros.</p>
+
+        </div>
         </div>
         <!-- paginacion -->
         <div class="d-flex justify-content-center">
@@ -282,7 +298,9 @@ const solicitudesRechazados = ref(0);
 const observaciones = ref('');
 const msgAprobacion = ref('');
 const idClient = ref(null)
+const loadingTabla = ref(false) 
 onMounted(async () => {
+  loadingTabla.value = true
   await obtenerDatos();
   await obtenerTotales();
   await getAjustes();
@@ -290,6 +308,7 @@ onMounted(async () => {
   modalRefEstadoInv.value = document.getElementById('modalEstadoInversion');
   modalRefRevertir.value = document.getElementById('revertirInv');
   modalAprobarInv.value = document.getElementById('aprobarInv');
+  loadingTabla.value = false
 });
 
 
@@ -311,7 +330,7 @@ const procesarInversion = async (idInversion, action) => {
     if( band == true ){
       try {
       await axios.put(BaseURL + '/finalizarInversion/' + idInversion);
-      await obtenerDatos();
+      await obtenerDatos(paginacion.value.current, "", "");
       await obtenerTotales();
     } catch (error) {
       console.log(error);
@@ -351,7 +370,9 @@ const cleanFields = () => {
   actInv.value = '';
   minInv.value = 0;
   maxInv.value = 0;
+  porcentaje_interes.value = 0
 }
+const montoFinal = ref(0)
 const filtro = ref('General')
 const obtenerDatos = async (page = 1, search = "") => {
   try {
@@ -368,27 +389,32 @@ const obtenerDatos = async (page = 1, search = "") => {
 const obtenerTotales = async () => {
   try {
     const { data } = await axios.get(`${BaseURL}/getTotals/totals`);
-    console.log(data.results);
-    totalSolicitudes.value = data.results[3].total
-    solicitudesPendientes.value = data.results[0].total
-    solicitudesAprobados.value = data.results[1].total
-    solicitudesRechazados.value = data.results[2].total
+    console.log('Totalessssssssssssssssssssssssss',data.results);
+    console.log('Totalessssssssssssssssssssssssss',data.results[0]);
+    totalSolicitudes.value = data.results[0]?.total || 0
+    solicitudesPendientes.value = data.results[0]?.Pendiente || 0
+    solicitudesAprobados.value = data.results[0]?.Aprobado || 0
+    solicitudesRechazados.value = data.results[0]?.Rechazado || 0
 
   } catch (error) {
     console.log("Error al obtener totales:", error);
   }
 };
+const porcentaje_interes = ref(0)
 const idInv = ref('')
 const actInv = ref('')
-const procesarSolicitud = async (id, action, monto, nombreUser, userId) => {
+const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) => {
   if (action == 'Aprobado') {
+    montoFinal.value = interes * monto;
+    montoFinal.value += Number(monto) 
+    porcentaje_interes.value = interes
     observaciones.value = '';
     idClient.value = userId;
     const valorTokens = monto * ajustes.value.valor_token;
     idInv.value = id;
     actInv.value = action;
-    msgAprobacion.value = `La inversion con el identificador ${id} perteneciente al usuario ${nombreUser}, con un monto a requerir de ${monto} USD
-    equivalente a ${valorTokens} Tokens, sera aprobado despues de configurar los parametros de inversion.`;
+    msgAprobacion.value = `La inversion con el identificador ${id} perteneciente al usuario ${nombreUser}, con un monto a requerir de ${monto}$
+    equivalente a ${valorTokens}${ajustes.value.tipo_moneda}, sera aprobado despues de configurar los parametros de inversion.`;
     const modal = new bootstrap.Modal(modalAprobarInv.value);
     modal.show();
   } else {
@@ -433,8 +459,13 @@ const aprobar = async () => {
     errorAlert('La cantidad minima de inversion no pouede ser mayor a la cantidad maxima de inversion', 'Error')
     return
   }
+  if (porcentaje_interes.value > 100 || porcentaje_interes.value < 0) {
+    errorAlert('El porcentaje debe estar entre 0 a 100%', 'Error')
+    return
+  }
   try {
-    await axios.put(BaseURL + "/aprobar/" + idInv.value + '?action=' + actInv.value + '&observaciones=' + observaciones.value + `&idCliente=${idClient.value}&minInv=${minInv.value}&maxInv=${maxInv.value}`);
+    await axios.put(BaseURL + "/aprobar/" + idInv.value + '?action=' + actInv.value + '&observaciones=' + observaciones.value + `&idCliente=${idClient.value}&minInv=${minInv.value}&maxInv=${maxInv.value}&porcentaje_interes=${porcentaje_interes.value}`);
+    console.log('paginacionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',paginacion.value.current);
     await obtenerDatos(paginacion.value.current, "", "");
     await obtenerTotales();
     var modal = bootstrap.Modal.getInstance(modalAprobarInv.value) || new bootstrap.Modal(modalAprobarInv.value);
@@ -474,7 +505,15 @@ const revertir =async () =>{
 </script>
 
 <style scoped>
+
+.alert-orange-custom {
+  background-color: var(--yellow-orange);
+  color: white;
+}
+
 .montoInvCustom {
+  
+
   font-size: 0.7rem;
 }
 
