@@ -115,6 +115,8 @@ const saveCategory = (req, res) => {
     });
   }
   let { nombre,montoInvMin, montoInvMax, porcentaje_interes } = req.body;
+
+  porcentaje_interes = parseFloat(porcentaje_interes).toFixed(2);
   
   const queryCheck = "SELECT * FROM categoria_personas WHERE nombre = ?";
   conexion.query(queryCheck, [nombre], async (err, data) => {
@@ -184,6 +186,7 @@ const getById = (req, res) => {
 const updateImgCategory = (req, res) => {
   let { nombre,monto_maximo_inversion,monto_minimo_inversion, porcentaje_interes } = req.body;
   let query = "";
+
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.image) {
     const query =
       "UPDATE categoria_personas SET nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ?, porcentaje_interes = ? WHERE categoria_persona_id = ?";
@@ -233,7 +236,7 @@ const updateImgCategory = (req, res) => {
         );
         const queryUpdate =
           "UPDATE categoria_personas SET imagen = ?, nombre = ?, monto_minimo_inversion =?, monto_maximo_inversion = ?, porcentaje_interes = ? WHERE categoria_persona_id = ?";
-        conexion.query(queryUpdate, [imgPath, nombre,monto_minimo_inversion,monto_maximo_inversion, req.params.id], (err) => {
+        conexion.query(queryUpdate, [imgPath, nombre,monto_minimo_inversion,monto_maximo_inversion,  req.params.id], (err) => {
           if (err) {
             console.error("Error al actualizar la categoría con imagen:", err);
             return res.status(500).json({ err });
