@@ -103,7 +103,7 @@ ul {
 }
 
 .nav-link:hover li {
-  background-color: var(--gray-color);
+  background-color: var(--yellow-orange);
 
   color:white
 }

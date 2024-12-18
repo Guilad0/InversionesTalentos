@@ -1,151 +1,134 @@
 <template>
-  <div class="row  my-4">
-    <!-- Contenedor Izquierdo -->
-    <div class="col-2 ms-5">
-      <div class="card profileContainer custom-card">
-        <div class="card-body">
+  <div class="row my-4">
+    <!-- Contenedor Izquierdo (Sidebar) -->
+    <div class="col-3 ms-4 sidebar-container">
+      <SidebarProfile :user="user" :currentPath="currentPath" />
+    </div>
+
+    <!-- Contenedor Derecho 1 -->
+    <div class="col-4 container2">
+      <div class="content-container">
+        <h2>Bienvenido {{ user?.nombre }} {{ user?.apellido }}</h2>
+        <div v-if="dataContainer2.length > 0">
           <ul>
-            <div class="text-center my-4">
-              <img
-                v-if="!user?.imagen"
-                src="@/assets/images/profile_photo.png"
-                alt=""
-                width="150"
-                class="rounded-circle"
-              />
-              <img
-                v-else
-                :src="user?.imagen"
-                alt=""
-                width="150"
-                class="rounded-circle"
-              />
-            </div>
-
-            <!-- RouterLink para Perfil -->
-            <RouterLink class="nav-link my-3" to="perfil">
-              <li
-                class="py-3 ps-2 rounded nav-link my-3"
-                :class="{ active: currentPath === 'perfil' }"
-              >
-                <i class="fa-regular fa-user me-3"></i>Perfil
-              </li>
-            </RouterLink>
-
-            <!-- RouterLink para Billetera -->
-            <RouterLink class="nav-link my-3" to="billetera">
-              <li
-                class="py-3 ps-2 rounded nav-link my-3"
-                :class="{ active: currentPath === 'billetera' }"
-              >
-                <i class="fa-solid fa-wallet me-3"></i>Billetera
-              </li>
-            </RouterLink>
-
-            <!-- RouterLink para Inversiones -->
-            <RouterLink class="nav-link my-3" to="/inversionesRealizadas">
-              <li
-                class="py-3 ps-2 rounded nav-link my-3"
-                :class="{ active: currentPath === 'inversionesRealizadas' }"
-              >
-                <i class="fas fa-piggy-bank me-3"></i>Inversiones
-              </li>
-            </RouterLink>
+            <li v-for="(item, index) in dataContainer2" :key="index">
+              <p>Cliente ID: {{ item.cliente_id }}</p>
+              <p>Nombre Cliente: {{ item.nombre_cliente }}</p>
+              <p>Monto de inversión: ${{ item.monto }}</p>
+              <p>Fecha de inversión: {{ item.fecha_inversion }}</p>
+              <p>Fecha de retorno: {{ item.fecha_retorno }}</p>
+              <p>Estado: {{ item.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
+            </li>
           </ul>
+        </div>
+        <div v-else>
+          <p>No hay datos disponibles para mostrar.</p>
         </div>
       </div>
     </div>
 
-    <!-- Contenedor Derecho -->
-    <div class="col-4 container2">
-      <div class="content-container">
-        <h2>Bienvenido</h2>
-        <p>Aquí puedes gestionar tus datos, revisar inversiones y más.</p>
-        <!-- Añade más contenido aquí -->
-      </div>
-    </div>
+    <!-- Contenedor Derecho 2 -->
     <div class="col-4 container3">
       <div class="content-container">
-        <h2>Bienvenido</h2>
-        <p>Aquí puedes gestionar tus datos, revisar inversiones y más.</p>
-        <!-- Añade más contenido aquí -->
+        <h2>Detalles de Talento Inversión</h2>
+        <div v-if="dataContainer3.length > 0">
+          <ul>
+            <li v-for="(item, index) in dataContainer3" :key="index">
+              <h4>{{ item.talento_inversion.nombre }}</h4>
+              <p>Descripción: {{ item.talento_inversion.descripcion }}</p>
+              <p>Monto Total: ${{ item.talento_inversion.monto }}</p>
+              <p>Cantidad de pagos: {{ item.talento_inversion.cantidad_pagos }}</p>
+              <p>Fecha de inicio recaudación: {{ item.talento_inversion.fecha_inicio_recaudacion }}</p>
+              <p>Fecha de fin recaudación: {{ item.talento_inversion.fecha_fin_recaudacion }}</p>
+            </li>
+          </ul>
+        </div>
+        <div v-else>
+          <p>No hay detalles disponibles para mostrar.</p>
+        </div>
+
+        <div v-if="dataContainer3.length > 0" class="timeline">
+          <h4>Total recaudado: ${{ item.totalRecaudado }}</h4>
+          <h4>Restante a recaudar: ${{ item.restanteRecaudar }}</h4>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { getUser } from "@/helpers/utilities";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
+import axios from "axios";
+import SidebarProfile from "@/components/SidebarProfile.vue"; // Importación del componente
 
 const route = useRoute();
 const currentPath = route.name;
 const user = ref(null);
 
-onMounted(async () => {
-  user.value = await getUser();
-  console.log(user.value);
+const dataContainer2 = ref([]); // Datos para el contenedor 2 (Inversiones)
+const dataContainer3 = ref([]); // Datos para el contenedor 3 (Detalles de talento inversión)
+
+// Función para cargar datos del API
+const loadData = async () => {
+  try {
+    const responseContainer2 = await axios.get(
+      "http://localhost:3000/inversionesRetiros/inversionista/148"
+    );
+    const responseContainer3 = await axios.get(
+      "http://localhost:3000/inversionesRetiros/inversionista/148"
+    );
+
+    // Verificar la respuesta de la API
+    console.log("Respuesta API Container 2:", responseContainer2.data);
+    console.log("Respuesta API Container 3:", responseContainer3.data);
+
+    // Almacenar los datos obtenidos en las variables reactivas
+    dataContainer2.value = responseContainer2.data;
+    dataContainer3.value = responseContainer3.data;
+  } catch (error) {
+    console.error("Error al obtener los datos: ", error);
+  }
+};
+
+const totalRecaudado = computed(() => {
+  let total = 0;
+  for (const item of dataContainer3.value) {
+    total += parseFloat(item.talento_inversion.total_recaudado) || 0; // Sumar total_recaudado si existe
+  }
+  return total;
+});
+
+const restanteRecaudar = computed(() => {
+  let total = 0;
+  for (const item of dataContainer3.value) {
+    total += parseFloat(item.talento_inversion.restante_recaudado) || 0; // Sumar restante_recaudado si existe
+  }
+  return total;
+});
+
+// Cargar los datos cuando el componente se monta
+onMounted(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    user.value = JSON.parse(storedUser); // Guardar en la variable reactiva
+  } else {
+    console.log("No se encontró el usuario en localStorage");
+  }
+
+  loadData(); // Asegúrate de cargar los datos al montar el componente
 });
 </script>
 
 <style scoped>
-
-.profileContainer {
-  margin-left: 50px;
-  
-}
-
-.container2 {
-  margin-top:40px; 
-}
-.container3 {
-  margin-top:40px; 
-}
-.custom-card {
-  background-color: #f9f7f4; /* Color de fondo */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-  border-radius: 10px;
-  margin-left: 0;
-  margin-top:40px;
-  text-align: center;
-}
-
-.nav-link {
-  text-decoration: none;
-  font-weight: 500;
-  display: block;
-  transition: all 0.3s ease;
-}
-
-.nav-link li {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+/* Estilos para la tabla y línea de tiempo */
+.sidebar-container {
+  margin-left: 40px;
+  width: 350px; /* Aumenta el ancho del sidebar */
+  padding: 15px; /* Aumenta el relleno para mejorar el aspecto */
+  background-color: #f8f9fa;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.nav-link:hover li {
-  background-color: #17223b;
-  color: white;
-}
-
-.active {
-  background-color: #17223b;
-  color: white !important;
-}
-
-.container-mobile {
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
-}
-
-.col-3,
-.col-9 {
-  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .content-container {
@@ -153,5 +136,30 @@ onMounted(async () => {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timeline h4 {
+  margin: 5px 0;
+}
+
+.container2, .container3 {
+  margin-top: 40px;
+}
+
+.custom-card {
+  background-color: #f9f7f4;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 0;
+  margin-top: 40px;
+  text-align: center;
 }
 </style>

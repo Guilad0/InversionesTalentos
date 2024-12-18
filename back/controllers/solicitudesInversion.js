@@ -340,8 +340,8 @@ const revertirInversion = (req, res) => {
               .json({ msg: "Error al actualizar inversiones" });
           }
           const usersId = results.flatMap(item => [
-            { tipo: 'talento', id: item.cliente_id,tipoMovimiento: 'Egreso', },
-            { tipo: 'inversor', id: item.inversor_id,tipoMovimiento: 'Ingreso', }
+            { tipo: 'talento', id: item.cliente_id, tipoMovimiento: 'Egreso', },
+            { tipo: 'inversor', id: item.inversor_id, tipoMovimiento: 'Ingreso', }
           ]);
           const promises = usersId.map((cliente) => {
             const query = `UPDATE movimientos SET tipo=?,descripcion='Reversion' WHERE usuario_id = ?`;
@@ -358,13 +358,13 @@ const revertirInversion = (req, res) => {
             });
           });
           Promise.all(promises)
-          .then(() => {
-            res.status(200).json({ msg: "Todas las actualizaciones se completaron correctamente." });
-          })
-          .catch((err) => {
-            res.status(500).json({  msg: "Ocurrió un error al procesar las actualizaciones." });
-          });
-          
+            .then(() => {
+              res.status(200).json({ msg: "Todas las actualizaciones se completaron correctamente." });
+            })
+            .catch((err) => {
+              res.status(500).json({ msg: "Ocurrió un error al procesar las actualizaciones." });
+            });
+
         });
       });
     }
@@ -600,6 +600,9 @@ const showButton = (req, res) => {
     )
     SELECT 
       CASE 
+        WHEN NOT EXISTS (
+          SELECT 1 FROM ultima_solicitud
+        ) THEN 1
         WHEN (
           SELECT 
             CASE 
@@ -611,8 +614,7 @@ const showButton = (req, res) => {
           FROM ultima_solicitud
         ) = 1 THEN 1
         ELSE 0
-      END as show_button
-    FROM ultima_solicitud;
+      END as show_button;
   `;
 
   conexion.query(query, [id], (err, results) => {
