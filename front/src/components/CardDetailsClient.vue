@@ -42,11 +42,11 @@
                 <span v-if="prom">{{ prom }}</span>
 
               </div>
-              
+
               <div>
 
                 <span class="stars" v-html="generarEstrellas(prom)"></span>
-                <label class="fs-6 p-2">Inversion desde  <strong>{{ client.monto_inversion*1 }} Tokens</strong></label>
+                <label class="fs-6 p-2">Inversion desde <strong>{{ client.monto_inversion * 1 }} Tokens</strong></label>
               </div>
 
             </div>
@@ -55,27 +55,27 @@
 
           <div class="row">
 
-            <button  :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" data-bs-toggle="modal"
-              data-bs-target="#modalVideoPresentacion">
+            <button :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
+              data-bs-toggle="modal" data-bs-target="#modalVideoPresentacion">
               <i class="fas fa-video"></i> Video Presentación<span></span>
             </button>
 
-            <button  :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+            <button :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               :class="{ 'active-button': mostrarInformacion }" @click="toggleInformacion()">
               <i class="fas fa-info-circle"></i> Información<span></span>
             </button>
 
-            <button  :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+            <button :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               :class="{ 'active-button': mostrarLogros }" @click="toggleLogros()">
               <i class="fas fa-trophy"></i> Logros<span></span>
             </button>
 
-            <button  :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
+            <button :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               :class="{ 'active-button': mostrarExperiencia }" @click="toggleExperiencia()">
               <i class="fas fa-briefcase"></i> Experiencia<span></span>
             </button>
 
-            <button :disabled="loadingValues"  v-if="user.rol !== 'Admin'"
+            <button :disabled="loadingValues" v-if="user.rol !== 'Admin'"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3" @click="irBilletera">
               <i class="fas fa-wallet"></i> Fondear mi Billetera<span></span>
             </button>
@@ -98,13 +98,12 @@
             <div class="  d-flex  justify-content-evenly gap-3 text-center">
 
               <p class="font col"> <strong>Objetivo de la Inversión </strong> <br>{{ inv.descripcion }}</p>
-              <p class="font col"> <strong>Tokens Requeridos </strong> <br> {{ inv.monto*valorTokens }} </p>
+              <p class="font col"> <strong>Tokens Requeridos </strong> <br> {{ inv.monto * valorTokens }} </p>
               <p class="font col"> <strong>Periodo de recaudacion </strong> <br> {{ inv.fecha_inicio_recaudacion }} - {{
                 inv.fecha_fin_recaudacion }}</p>
             </div>
           </div>
           <div v-else class="mt-3 text-center align-middle m-auto">cargando</div>
-
 
 
         </div>
@@ -205,100 +204,85 @@
       </div>
     </div>
 
-
     <!-- Modal Inversión -->
     <div class="modal fade" id="modalInversion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content bg-degrade-inverso text-white">
-
           <div class="modal-header">
-
             <h1 class="m-auto modal-title fs-5" id="staticBackdropLabel">Datos de la Inversión</h1>
-
-            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-
           </div>
-
           <div class="modal-body">
-
-            <p class="text-xl text-center">Tokens Disponibles: {{ tokensCompradosInversionista -
-              tokensInvertidosInversionista - monto_tokens_invertir }}</p>
-
+            <!-- Primera fila con una columna -->
+            <div class="row">
+              <div class="col text-center">
+                <p>Estás invirtiendo en el talento {{ client.nombre }} que tiene como objetivo recaudar <strong>{{
+                  inv.monto*valorTokens }}</strong> tokens.</p>
+                <p>Puedes invertir hasta el: <strong>{{
+                  inv.fecha_fin_recaudacion }}</strong></p>
+              </div>
+            </div>
+            <br>
+            <br>
             <form action="#" class="needs-validation" novalidate>
-              <div class="d-flex justify-content-center p-0 ">
-                <div class="col row justify-content-center m-auto">
+              <!-- Segunda fila con tres columnas -->
+              <div class="row">
+                <div class="col">
+                  <p class="text-center">Tokens Disponibles: <strong>{{ tokensCompradosInversionista -
+                    tokensInvertidosInversionista - monto_tokens_invertir }}</strong></p>
+                </div>
+                <div class="col">
                   <div class="mb-3">
-
                     <label for="monto_tokens_invertir" class="form-label">Tokens a Invertir</label>
-
                     <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
                       class="form-control mb-2" @input="calcularGanancias()" required />
                     <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMinimo }">Monto minimo de inversion:
-                      {{ rangoMinimo }} </label>
+                      <strong>{{ rangoMinimo }}</strong> </label>
                     <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMaximo }">Monto maximo de inversion:
-                      {{ rangoMaximo }} </label>
-
+                      <strong>{{ rangoMaximo }}</strong> </label>
                   </div>
                 </div>
-                <div class="col row justify-content-center m-auto">
-                  <!-- Cliente -->
+                <div class="col text-center">
+
+                  <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
+                  <p class="text-center"><strong>{{ ganancia_tokens_inv }}</strong></p>
+                </div>
+              </div>
+              <br>
+              <!-- Tercera fila con tres columnas -->
+              <div class="row">
+                <div class="col">
                   <div class="mb-3 text-center">
-
-                    <label for="cliente_id" class="form-label">Cliente</label>
-
-                    <p>{{ client.nombre }}</p>
-
+                    <label class="form-label">Fecha inicio de pago</label>
+                    <p>{{ fechaInicioPago }}</p>
                   </div>
-                  <!-- Tokens, Meses y Ganancia -->
-
                 </div>
-                <div class="col row justify-content-center m-auto">
-                  <div class="text-center">
-
-                    <div class="mb-3">
-
-                      <label class="form-label">Meses de Inversión</label>
-
-                      <p class="text-center m-auto">{{ tiempo_inversion }}</p>
-
-                    </div>
-
+                <div class="col">
+                  <div class="mb-3 text-center">
+                    <label class="form-label">Fecha fin de pago</label>
+                    <p>{{ fechaFinPago }}</p>
                   </div>
-                  <div class=" mb-3 text-center">
-
-                    <label class="form-label">Ganancia del {{ porcentaje_inversion }}%</label>
-
-                    <p class="text-center">{{ ganancia_tokens_inv }}</p>
-
+                </div>
+                <div class="col">
+                  <div class="mb-3 text-center">
+                    <label class="form-label">Cantidad de pagos</label>
+                    <p>{{ cantidadPagos }}</p>
                   </div>
                 </div>
               </div>
-
-
             </form>
-
           </div>
-
           <div class="modal-footer">
-
-            <button :disabled="bandMaximo != false  || bandMinimo != false" type="button" @click="inversionistaInvertir()"
-              class="animate__animated animate__fadeInUp animate__slow btn-6" data-bs-dismiss="modal">
-              Invertir<span></span>
-            </button>
-
+            <button :disabled="bandMaximo != false || bandMinimo != false" type="button"
+              @click="inversionistaInvertir()" class="animate__animated animate__fadeInUp animate__slow btn-6"
+              data-bs-dismiss="modal">Invertir<span></span></button>
             <button type="button" class="animate__animated animate__fadeInUp animate__slow btn-6 btn-7"
               data-bs-dismiss="modal" @click="closeModal">Cerrar<span></span></button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
+
     <div class="back-button2">
       <router-link to="/marketplace" class="btn-back">
         Volver al Marketplace
@@ -387,6 +371,7 @@ onMounted(async () => {
   await obtenerPromedio();
   await cargaValoresIniciales();
   await getInversion();
+  await obtenerFechasPagos();
   loadingValues.value = false
 
 });
@@ -418,7 +403,7 @@ const cargaValoresIniciales = async () => {
   try {
     loadingValores.value = true;
     const { data } = await axios.get(baseURL + "valores");
-    console.log('ajsutessssssssssss',data);
+    console.log('ajsutes', data);
     tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
     valorTokens.value = parseInt(data.data[0].valor_token);
     // monto_tokens_invertir.value = client.value.monto_inversion;
@@ -431,6 +416,26 @@ const cargaValoresIniciales = async () => {
   }
 
 }
+
+const cantidadPagos = ref(null);
+const fechaInicioPago = ref(null);
+const fechaFinPago = ref(null);
+const obtenerFechasPagos = async () => {
+  try {
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL  + '/solicitudesInversion/getSolicitudByClienteId/' + userId.value);
+    
+    if (data.results) {
+      const solicitud = data.results; // Suponiendo que es un único resultado
+      cantidadPagos.value = solicitud.cantidad_pagos;
+      fechaInicioPago.value = solicitud.fecha_inicio_pago;
+      fechaFinPago.value = solicitud.fecha_fin_pago;
+    } else {
+      console.log("No hay resultados disponibles.");
+    }
+  } catch (error) {
+    console.log("Error al obtener los datos de pagos:", error);
+  }
+};
 
 const controlTokens = ref(0)
 const bandMinimo = ref(null)
@@ -496,6 +501,8 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
   }
 };
 
+
+
 const loadingInvertir = ref(false)
 const inversionistaInvertir = async () => {
 
@@ -522,7 +529,7 @@ const inversionistaInvertir = async () => {
       monto: monto_tokens_invertir.value,
       ganancia_estimada: ganancia_estimada.value,
       fecha_devolucion: fecha_devolucion.value,
-      id_inv : inv.value.id
+      id_inv: inv.value.id
     };
     console.log(datos);
     console.log(baseURL + "invertirTokens", datos);
@@ -534,6 +541,7 @@ const inversionistaInvertir = async () => {
       await obtenerTokens_Inversionista()
       await obtenerTokens_Inversionista_Invertidos()
       await cargaValoresIniciales()
+      await obtenerFechasPagos()
       successAlert('Inversion realizada exitosamente', 'Felicidades!!!');
       var myModalEl = document.getElementById("modalInversion");
       var modal = bootstrap.Modal.getInstance(myModalEl);
@@ -810,3 +818,4 @@ button {
   transform: scale(0.95);
 }
 </style>
+
