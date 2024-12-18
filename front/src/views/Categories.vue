@@ -50,6 +50,16 @@
               placeholder="Monto maximo de inversion"
             />
               </div>
+              <div class="col">
+                <label for="porcentaje" class="form-label fw-bolder">Porcentaje</label>
+                <input 
+                  type="number"
+                  class="form-control"
+                  id="porcentaje"
+                  min="0"
+                  v-model="porcentaje_interes"
+                />
+              </div>
          
               <div class="text-center col m-auto">
               <button
@@ -83,6 +93,7 @@
                 <th class="td-custom">Nombre</th>
                 <th class="td-custom">Inversion Minima</th>
                 <th class="td-custom">Inversion Maxima</th>
+                <th class="td-custom">Porcentaje</th>
                 <th class="td-custom">Imagen</th>
                 <th class="td-custom">Estado</th>
                 <th class="td-custom">Acciones</th>
@@ -94,6 +105,7 @@
                 <td class="align-middle ">{{ categoria.nombre }}</td>
                 <td class="align-middle text-center"> {{ categoria.monto_minimo_inversion }}</td>
                 <td class="align-middle text-center"> {{ categoria.monto_maximo_inversion }}</td>
+                <td class="align-middle text-center">{{ categoria.porcentaje_interes }}%</td>
                 <td class="text-center">
                   <img
                     :src="`${BaseURL.replace('/categories', '')}/uploads/categories/${
@@ -112,7 +124,7 @@
                 </td>
                 <td class="text-center align-middle">
                   <button
-                    @click="editarCategoria(categoria.categoria_persona_id, categoria.monto_minimo_inversion, categoria.monto_maximo_inversion)"
+                    @click="editarCategoria(categoria.categoria_persona_id, categoria.monto_minimo_inversion, categoria.monto_maximo_inversion, categoria.porcentaje_interes)"
                     class="border-0  me-2 hover-button p-0"
                   >
                   <i class="fa-regular fa-pen-to-square"></i>
@@ -186,72 +198,76 @@
           </nav>
         </div>
       <div
-    class="modal fade"
-    id="modalEditCategory"
-    tabindex="-1"
-    aria-labelledby="modalEditCategoryLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content modal-card">
-        <div class="modal-header text-center">
-          <h5 class="modal-title w-100" id="modalEditCategoryLabel">Editar Categoría</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body" style="background-color: #17223b">
-          <form @submit.prevent="editCategory">
-            <div class="container">
-              <div class="row ">
-                <div class="col">
-                  <label for="editNombre" class="form-label custom-subtitle">
-                    Nombre de la Categoría
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control input text-dark"
-                    id="editNombre"
-                    v-model="formEdit.nombre"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="row my-2 ">
-                <div class="col">
-                  <label for="editImage" class="form-label custom-subtitle ">
-                    Imagen de la Categoría
-                  </label>
-                  <input
-                    type="file"
-                    class="form-control input text-dark"
-                    id="editImage"
-                    @change="handleFileChangeEdit"
-                  />
-                </div>
-              </div>
-              <div class="row ">
-                <div class="col">
-                  <label for="editImage" class="form-label custom-subtitle ">Inversion minima</label>
-                  <input type="number" class="form-control input text-dark" v-model="montoMin">
-                </div>
-                <div class="col">
-                  <label for="editImage" class="form-label custom-subtitle ">Inversion Maxima</label>
-                  <input type="number" class="form-control input text-dark" v-model="montoMax">
-                </div>
-              </div>
-              <div class="d-flex justify-content-center mt-4 mb-2">
-                  <button type="submit"  class="border btn btn-gray">Guardar Cambios</button>
-              </div>
+        class="modal fade"
+        id="modalEditCategory"
+        tabindex="-1"
+        aria-labelledby="modalEditCategoryLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content modal-card">
+            <div class="modal-header text-center">
+              <h5 class="modal-title w-100" id="modalEditCategoryLabel">Editar Categoría</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-          </form>
+            <div class="modal-body" style="background-color: #17223b">
+              <form @submit.prevent="editCategory">
+                <div class="container">
+                  <div class="row ">
+                    <div class="col">
+                      <label for="editNombre" class="form-label custom-subtitle">
+                        Nombre de la Categoría
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control input text-dark"
+                        id="editNombre"
+                        v-model="formEdit.nombre"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="row my-2 ">
+                    <div class="col">
+                      <label for="editImage" class="form-label custom-subtitle ">
+                        Imagen de la Categoría
+                      </label>
+                      <input
+                        type="file"
+                        class="form-control input text-dark"
+                        id="editImage"
+                        @change="handleFileChangeEdit"
+                      />
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col">
+                      <label for="editImage" class="form-label custom-subtitle ">Inversion minima</label>
+                      <input type="number" class="form-control input text-dark" v-model="montoMin">
+                    </div>
+                    <div class="col">
+                      <label for="editImage" class="form-label custom-subtitle ">Inversion Maxima</label>
+                      <input type="number" class="form-control input text-dark" v-model="montoMax">
+                    </div>
+                    <div class="col">
+                      <label for="editImage" class="form-label custom-subtitle ">Porcentaje</label>
+                      <input type="number" class="form-control input text-dark" step="0.01" v-model="porcentaje">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center mt-4 mb-2">
+                      <button type="submit"  class="border btn btn-gray">Guardar Cambios</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
     </div>
   </main>
 
@@ -274,6 +290,8 @@ const montoInvMin = ref(0);
 const montoInvMax = ref(0);
 const montoMax = ref(0);
 const montoMin = ref(0);
+const porcentaje_interes = ref(0);
+const porcentaje = ref(0);
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/categories";
 const BaseURL = import.meta.env.VITE_BASE_URL + "/categories";
 
@@ -329,7 +347,7 @@ const cambiarEstado = async (categoria_persona_id) => {
 };
 
 // Mostrar el modal para editar una categoría existente
-const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maximo_inv ) => {
+const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maximo_inv, porcentaje_interes ) => {
   try {
     const { data } = await axios.get(`${BaseURL}/${categoria_persona_id}`);
     formEdit.value = { nombre: data.nombre, image: null }; // Cargar la categoría para editar
@@ -337,10 +355,12 @@ const editarCategoria = async (categoria_persona_id,monto_minimo_inv,monto_maxim
     // Forzar actualización del DOM antes de mostrar el modal 
     montoMax.value = monto_maximo_inv
     montoMin.value = monto_minimo_inv
+    porcentaje.value = porcentaje_interes
     await nextTick();
     const editModal = new bootstrap.Modal(document.getElementById("modalEditCategory"));
     editModal.show();
   } catch (error) {
+    console.error("Error al obtener la categoría para editar:", error);
     errorAlert("Error al obtener la categoría para editar:", "Error");
   }
 };
@@ -359,6 +379,7 @@ const createCategory = async () => {
   formData.append("nombre", formCreate.value.nombre.trim());
   formData.append("montoInvMin", montoInvMin.value);
   formData.append("montoInvMax", montoInvMax.value);
+  formData.append("porcentaje_interes", porcentaje_interes.value);
   
   if (!formCreate.value.image) {
     errorAlert("La iamgen es requerida", "Error"); // Mostrar mensaje de error en caso de excepción
@@ -374,6 +395,11 @@ const createCategory = async () => {
   }
   if (formCreate.value.image) {
     formData.append("image", formCreate.value.image);
+  }
+  //el interes sea solo del 1 al 100
+  if(!porcentaje_interes.value || porcentaje_interes.value < 1 || porcentaje_interes.value > 100) {
+  errorAlert("El interés debe estar entre 1 y 100", "Error");
+  return;
   }
   try {
     console.log("Enviando datos al servidor", formCreate.value);
@@ -392,6 +418,7 @@ const createCategory = async () => {
       document.getElementById("createImage").value = null
       montoInvMax.value = 0;
       montoInvMin.value = 0;
+      porcentaje_interes.value = 0;
       
     } else {
       errorAlert(data.msg, "Error"); // Mostrar mensaje de error si no fue exitoso
@@ -413,11 +440,16 @@ const editCategory = async () => {
     errorAlert("La inversion minima no puede ser mayor a inversion maxima", "Error"); // Mostrar mensaje de error en caso de excepción
     return
   }
+  if(!porcentaje.value || porcentaje.value < 1 || porcentaje.value > 100) {
+  errorAlert("El interés debe estar entre 1 y 100", "Error");
+  return;
+  }
   
   const formData = new FormData();
   formData.append("nombre", formEdit.value.nombre.trim());
   formData.append("monto_minimo_inversion", montoMin.value);
   formData.append("monto_maximo_inversion", montoMax.value);
+  formData.append("porcentaje_interes", porcentaje.value);
   if (formEdit.value.image) {
     formData.append("image", formEdit.value.image); // Añadir la imagen al FormData
   }
@@ -434,6 +466,7 @@ const editCategory = async () => {
    await obtenerCategorias();
    montoMin.value = 0;
    montoMax.value = 0;
+   porcentaje.value = 0;
   } catch (error) {
     errorAlert("Error al actualizar la categoría", "Error");
   }
