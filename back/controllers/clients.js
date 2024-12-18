@@ -41,7 +41,7 @@ const getAllClientesWithInfo = (req, res) => {
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
     LEFT JOIN solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and s.aprobado = 'Aprobado' and s.estado_inversion = 'Proceso';
+        u.rol = "cliente" and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente';
     `;
     
     conexion.query(query, (err, results) => {
@@ -89,7 +89,7 @@ const getAllClientesByCategory = async (req, res) => {
         LEFT JOIN 
         solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and u.categoria_persona_id = ? and s.aprobado = 'Aprobado' and s.estado_inversion = 'Proceso';
+        u.rol = "cliente" and u.categoria_persona_id = ? and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente';
     ;
     `;
     
@@ -141,7 +141,7 @@ const getAllClientesByFilterName =  (req, res) => {
     LEFT JOIN 
         solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and s.aprobado = 'Aprobado'and s.estado_inversion = 'Proceso' and u.nombre like ?;
+        u.rol = "cliente" and s.aprobado = 'Aprobado'and s.estado_inversion = 'Pendiente' and u.nombre like ?;
     ;
     `;
     
