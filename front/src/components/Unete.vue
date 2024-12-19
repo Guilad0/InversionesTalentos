@@ -63,7 +63,7 @@
                     <button
                       type="button"
                       @click="rubrosuccess('Cliente')"
-                      class="btn btn-warning"
+                      class="btn btn-orange"
                     >
                       Guardar Cambios
                     </button>
