@@ -122,9 +122,9 @@
                   >
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
-                <td class="text-center align-middle ">
+                <td class="text-center align-middle" v-if="categoria.estado !== 0">
                   <button
-                    v-if="categoria.estado !== 0" 
+                     
                     @click="editarCategoria(categoria.categoria_persona_id, categoria.monto_minimo_inversion, categoria.monto_maximo_inversion, categoria.porcentaje_interes)"
                     class="border-0  me-2 hover-button p-0"
                   >
@@ -138,13 +138,14 @@
                   >
                   <i class="fa-solid fa-ban text-danger"></i>
                   </button>
-                  <button
-                    v-else
-                    @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="border-0 ms-2 hover-button fs-6  rounded-5 p-0 m-auto"
-                  >
-                  <i class="fa-regular fa-circle-check text-success align-middle"></i>
-                  </button>
+                </td>
+                  <td class="text-center align-middle" v-else>
+                    <button
+                      @click="cambiarEstado(categoria.categoria_persona_id)"
+                      class="border-0 hover-button fs-6  rounded-5 p-0 m-auto"
+                    >
+                    <i class="fa-regular fa-circle-check text-success align-middle"></i>
+                    </button>
                 </td>
               </tr>
             </tbody>
