@@ -19,13 +19,13 @@
             <button
               class="animate__animated animate__fadeInUp animate__slow btn-6"
               data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
+              data-bs-target="#modalRubro"
             >
               Únete Ahora
             </button>
             <div
               class="modal fade"
-              id="exampleModal"
+              id="modalRubro"
               tabindex="-1"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
@@ -60,7 +60,11 @@
                     >
                       Cerrar
                     </button>
-                    <button type="button" @click="rubrosuccess()" class="btn btn-warning">
+                    <button
+                      type="button"
+                      @click="rubrosuccess('Cliente')"
+                      class="btn btn-warning"
+                    >
                       Guardar Cambios
                     </button>
                   </div>
@@ -143,16 +147,29 @@ const obtenerCategoria = async () => {
   }
 };
 
-const rubrosuccess = async () => {
+const rubrosuccess = async (role) => {
   ismodal.value = false;
   console.log(rubroSelected.value.id);
+  const datos = {
+    usuario_id: user.value.usuario_id,
+    rol: role,
+  };
+  const { data } = await axios.get(
+    import.meta.env.VITE_BASE_URL +
+      `/clients/getUserById/user/?id=${user.value.usuario_id}`
+  );
 
   try {
     await axios.post(import.meta.env.VITE_BASE_URL + "/categories/rubro", {
       usuario_id: user.value.usuario_id,
       categoria_persona_id: rubroSelected.value.id,
     });
+    await axios.put(import.meta.env.VITE_BASE_URL + "/clients/changeRol/user", datos);
+    const updatedUser = data.results[0];
+    localStorage.setItem("usuario", JSON.stringify(updatedUser));
     successAlert("Rubro asignado correctamente", "Éxito");
+    window.location.reload();
+    router.push("perfil");
   } catch (error) {
     errorAlert("Error al asignar el rubro", "Error");
   }
