@@ -410,7 +410,8 @@ watchEffect(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 60px 0;
   margin: 0;
   position: relative;
   background-image: url("@/assets/images/otro-fondo3.png");
@@ -439,6 +440,7 @@ watchEffect(() => {
   padding: 30px;
   width: 700px;
   z-index: 2;
+  margin: 20px auto;
 }
 
 .title {
@@ -552,22 +554,40 @@ textarea.input {
   background-color: #f37926;
   color: #fff;
 }
+.row {
+  margin-bottom: 0.5rem !important;
+}
 
 /*resposividad*/
 @media (max-width: 768px) {
+  .background {
+    padding: 40px 0;
+  }
+
   .form {
-    width: 80%;
-    padding: 20px;
+    width: 90%;
+    padding: 15px;
+    margin: 10px auto;
+  }
+
+  .row {
+    margin-bottom: 0.25rem !important;
+  }
+
+  .input-container {
+    margin-top: 8px;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 22px;
+    margin-top: 0;
   }
 
   .subtitle {
-    font-size: 22px;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 10px;
   }
-
   .input {
     font-size: 16px;
     padding: 6px 10px;
@@ -584,9 +604,19 @@ textarea.input {
 }
 
 @media (max-width: 480px) {
+  .background {
+    padding: 20px 0;
+  }
+
   .form {
-    width: 85%;
-    padding: 15px;
+    width: 95%;
+    padding: 10px;
+  }
+  .input-container {
+    margin-top: 5px;
+  }
+  .row {
+    margin-bottom: 0.15rem !important;
   }
 
   .title {
@@ -597,10 +627,16 @@ textarea.input {
     font-size: 18px;
   }
 
-  .input {
+  .label {
     font-size: 14px;
+    margin-bottom: 2px;
   }
 
+  .input {
+    font-size: 14px;
+    padding: 6px 12px;
+    height: 35px;
+  }
   .submit {
     font-size: 14px;
     height: 40px;

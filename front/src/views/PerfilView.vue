@@ -163,7 +163,15 @@
           </div> -->
           <div></div>
         </div>
-        <div class="col-3 custom-profile shadow px-4 mobile-customer">
+        <div
+          class="col-3 shadow px-4 mobile-customer"
+          :style="{
+            maxHeight:
+              user.rol === 'Cliente' && user.verificado === 1
+                ? '330px'
+                : '210px',
+          }"
+        >
           <div class="d-flex justify-content-between py-4">
             <div class="">
               <i class="fa fa-lock" aria-hidden="true"></i>
@@ -537,9 +545,9 @@
               </div>
             </div>
           </div>
-          <hr />
+          <hr v-if="user.rol === 'Cliente' && user.verificado === 1" />
           <div
-            v-if="user.rol === 'Cliente'"
+            v-if="user.rol === 'Cliente' && user.verificado === 1"
             class="d-flex justify-content-between py-4"
           >
             <div class="">
@@ -1062,10 +1070,6 @@ const saveVideo = async () => {
 
 li {
   list-style: none;
-}
-
-.custom-profile {
-  max-height: 330px;
 }
 
 .btn-orange {
