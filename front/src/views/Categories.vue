@@ -122,8 +122,9 @@
                   >
                   <span v-else class="badge text-bg-danger">Inactivo</span>
                 </td>
-                <td class="text-center align-middle">
+                <td class="text-center align-middle ">
                   <button
+                    v-if="categoria.estado !== 0" 
                     @click="editarCategoria(categoria.categoria_persona_id, categoria.monto_minimo_inversion, categoria.monto_maximo_inversion, categoria.porcentaje_interes)"
                     class="border-0  me-2 hover-button p-0"
                   >
@@ -140,9 +141,9 @@
                   <button
                     v-else
                     @click="cambiarEstado(categoria.categoria_persona_id)"
-                    class="border-0 ms-2 hover-button fs-6  rounded-5 p-0 m-auto "
+                    class="border-0 ms-2 hover-button fs-6  rounded-5 p-0 m-auto"
                   >
-                  <i class="fa-regular fa-circle-check text-success "></i>
+                  <i class="fa-regular fa-circle-check text-success align-middle"></i>
                   </button>
                 </td>
               </tr>
@@ -373,7 +374,6 @@ const handleFileChangeEdit = (event) => {
   formEdit.value.image = event.target.files[0]; // Guardar la imagen seleccionada
 };
 
-
 const createCategory = async () => {
   const formData = new FormData();
   formData.append("nombre", formCreate.value.nombre.trim());
@@ -431,7 +431,7 @@ const createCategory = async () => {
 
 
 const editCategory = async () => {
-
+  
   if (!montoMin.value  || !montoMax.value || montoMin.value <= 0 || montoMax.value <= 0) {
     errorAlert("Los montos de inversion son requeridos", "Error"); // Mostrar mensaje de error en caso de excepción
     return
@@ -617,7 +617,7 @@ const clearSearch = () => {
   width: 100%;
 }
 .padding{
-  padding-bottom: 27px;
+  padding-top: 27px;
 }
 .ic1 {
   margin-top: 20px;
