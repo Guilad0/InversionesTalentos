@@ -215,10 +215,12 @@ const user = ref(JSON.parse(localStorage.getItem("usuario")));
 
 const fechaActual = ref(new Date().toISOString().split("T")[0]);
 const porcentajeInteres = ref(0);
+const porcentajeGananciaPlataforma = ref(0);
 const pagoMensual = ref("");
 const montoTotal = ref("");
 
 onMounted(() => {
+  obtenetPorcentajeGananciaPlataforma();
   obtenerPorcentajeInteres();
   console.log(user.value);
   if (user) {
@@ -238,6 +240,21 @@ onMounted(() => {
   }
 });
 
+const obtenetPorcentajeGananciaPlataforma = async () => {
+  try {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/ajustes`
+    );
+    porcentajeGananciaPlataforma.value =
+      data.results[0].comision_porcentual_ganancia;
+  } catch (error) {
+    console.error(
+      "Error al obtener el porcentaje de ganancia de la plataforma:",
+      error
+    );
+  }
+};
+
 const obtenerPorcentajeInteres = async () => {
   if (user.value) {
     cliente_id.value = user.value.usuario_id;
@@ -245,7 +262,15 @@ const obtenerPorcentajeInteres = async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/categories/user/${cliente_id.value}`
       );
-      porcentajeInteres.value = response.data.porcentaje_interes;
+      porcentajeInteres.value = (
+        parseFloat(response.data.porcentaje_interes).toFixed(2) * 1 +
+        parseFloat(porcentajeGananciaPlataforma.value).toFixed(2) * 1
+      ).toFixed(2);
+      console.log(
+        "interes total",
+        porcentajeInteres.value,
+        porcentajeGananciaPlataforma.value
+      );
     } catch (error) {
       console.error("Error al obtener el porcentaje de interés:", error);
     }
@@ -256,17 +281,21 @@ const porcentajeInteresFormateado = computed(() => {
 });
 const calcularMontos = () => {
   if (monto.value && cantidad_pagos.value > 0) {
-    // Convertir el monto de string con formato ($1,234) a número
     const montoNumerico = parseFloat(monto.value.replace(/[^0-9.-]+/g, ""));
 
-    // Calcular el monto total (monto + interés)
-    const interes = montoNumerico * (porcentajeInteres.value / 100);
-    const total = montoNumerico + interes;
-    montoTotal.value = `$${total.toLocaleString("es-ES")}`;
+    // Calcular con 2 decimales
+    const interes = (montoNumerico * (porcentajeInteres.value / 100)).toFixed(
+      2
+    );
+    const total = (parseFloat(montoNumerico) + parseFloat(interes)).toFixed(2);
 
-    // Calcular el pago mensual
-    const mensual = total / cantidad_pagos.value;
-    pagoMensual.value = `$${mensual.toLocaleString("es-ES", {
+    montoTotal.value = `$${parseFloat(total).toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+
+    const mensual = (total / cantidad_pagos.value).toFixed(2);
+    pagoMensual.value = `$${parseFloat(mensual).toLocaleString("es-ES", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
