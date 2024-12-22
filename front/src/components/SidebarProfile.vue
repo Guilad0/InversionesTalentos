@@ -31,12 +31,20 @@
             </RouterLink>
 
             <!-- RouterLink para Inversiones -->
-            <RouterLink class="nav-link my-3" to="/inversionesRealizadas">
+            <RouterLink v-if="user?.rol == 'Inversionista'" class="nav-link my-3" to="/inversionesRealizadas">
               <li
                 class="py-3 ps-2 rounded nav-link my-3"
                 :class="{ active: currentPath === 'inversionesRealizadas' }"
               >
-                <i class="fas fa-piggy-bank me-3"></i>Inversiones
+                <i class="fas fa-piggy-bank me-3"></i>Gestion de Inversiones
+              </li>
+            </RouterLink>
+            <RouterLink v-if="user?.rol == 'Cliente'" class="nav-link my-3" to="/inversiones-talento">
+              <li
+                class="py-3 ps-2 rounded nav-link my-3"
+                :class="{ active: currentPath === 'inversiones-talento' }"
+              >
+              <i class="fa-solid fa-arrow-trend-up me-2"></i>Gestion de Inversiones
               </li>
             </RouterLink>
 
