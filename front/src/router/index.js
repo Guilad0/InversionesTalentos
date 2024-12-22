@@ -34,6 +34,7 @@ import SolicitudInversion from '@/views/SolicitudInversion.vue'
 import axios from 'axios'
 
 import InversionesRealizadas from '@/views/InversionesRealizadas.vue';
+import InversionesTalentoView from '@/views/InversionesTalentoView.vue'
 
 
 
@@ -191,6 +192,11 @@ const router = createRouter({
       path: '/not-found',
       name: 'notfound',
       component: NotFound
+    },
+    {
+      path: '/inversiones-talento',
+      name: 'inversiones-talento',
+      component: InversionesTalentoView
     },
     {
       path: '/solicitar-inversion',

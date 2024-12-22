@@ -101,11 +101,14 @@
                   <span v-if="item.aprobado == 'Rechazado'" class="badge text-bg-danger text-light">{{
                     item.aprobado
                   }}</span>
+                  <span v-if="item.aprobado == 'Inicial'" class="badge text-bg-secondary text-light">{{
+                    item.aprobado
+                  }}</span>
                 </td>
                 <td class="text-center align-middle">
-                  <div v-if="item.aprobado == 'Pendiente'" class="d-flex justify-content-center">
+                  <div v-if="item.aprobado == 'Inicial'" class="d-flex justify-content-center">
                     <button class="border-0 m-auto hover-button  mx-1"
-                      @click="procesarSolicitud(item.id, 'Aprobado', item.monto, item.nombre, item.cliente_id,item.porcentaje_interes)">
+                      @click="procesarSolicitud(item.id, 'Pendiente', item.monto, item.nombre, item.cliente_id,item.porcentaje_interes)">
                       <i class="fa-regular fa-circle-check text-success "></i>
 
                     </button>
@@ -153,19 +156,25 @@
 
                   <div class="d-flex gap-2 flex-wrap justify-content-center">
                     <div class="col-5">
+                     Cantidad minima de inversion
+                    </div>
+                    <div class="col-5">
                       <input type="number" v-model="minInv" class="form-control montoInvCustom"
                         placeholder="Monto minimo de inversion">
                     </div>
                     <div class="col-5">
-                      <input type="number" v-model="maxInv" class="form-control montoInvCustom"
-                        placeholder="Monto maximo de inversion">
+                      <label for="porcentaje_interes" class="my-2" >Interes de la solicitud %</label>
+
                     </div>
+                    <div class="col-5">
+                      <input type="number" id="porcentaje_interes"  class="form-control mb-2 montoInvCustom" v-model="porcentaje_interes">
+
+                    </div>
+                 
                   </div>
-                    <label for="porcentaje_interes" class="my-2" >Interes de la solicitud %</label>
                   <div class="col px-5 row">
-                    <input type="number" id="porcentaje_interes"  class="form-control mb-2 montoInvCustom" v-model="porcentaje_interes">
                   </div>
-                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ montoFinal*(porcentaje_interes/100)+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }}{{ ajustes.tipo_moneda }} <br>
+                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ montoFinal*(porcentaje_interes/100)+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }} {{ ajustes.tipo_moneda }} <br>
                     Los parámetros establecidos no podrán ser modificados durante
                     el proceso de recaudación.
                    </p>
@@ -404,7 +413,7 @@ const porcentaje_interes = ref(0)
 const idInv = ref('')
 const actInv = ref('')
 const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) => {
-  if (action == 'Aprobado') {
+  if (action == 'Pendiente') {
     montoFinal.value = interes * monto;
     montoFinal.value += Number(monto) 
     porcentaje_interes.value = interes
@@ -451,12 +460,9 @@ const rechazar = async () => {
 
 
 const aprobar = async () => {
-  if (minInv.value == 0 || maxInv.value == 0) {
-    errorAlert('Los parametros de inversion no pueden ser nulos o ceros', 'Error')
-    return
-  }
-  if (minInv.value > maxInv.value) {
-    errorAlert('La cantidad minima de inversion no pouede ser mayor a la cantidad maxima de inversion', 'Error')
+
+  if (minInv.value < 0) {
+    errorAlert('La cantidad minima de inversion no pouede ser menor a cero', 'Error')
     return
   }
   if (porcentaje_interes.value > 100 || porcentaje_interes.value < 0) {
@@ -464,7 +470,7 @@ const aprobar = async () => {
     return
   }
   try {
-    await axios.put(BaseURL + "/aprobar/" + idInv.value + '?action=' + actInv.value + '&observaciones=' + observaciones.value + `&idCliente=${idClient.value}&minInv=${minInv.value}&maxInv=${maxInv.value}&porcentaje_interes=${porcentaje_interes.value}`);
+    await axios.put(BaseURL + "/aprobar/" + idInv.value + '?action=' + actInv.value + '&observaciones=' + observaciones.value + `&idCliente=${idClient.value}&minInv=${minInv.value}&porcentaje_interes=${porcentaje_interes.value}`);
     console.log('paginacionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',paginacion.value.current);
     await obtenerDatos(paginacion.value.current, "", "");
     await obtenerTotales();
