@@ -1457,7 +1457,7 @@ const getReports = (report) => {
       const { startOfYesterday, endOfYesterday } = getYesterdayStartAndEnd();
       fechaInicio.value = startOfYesterday;
       fechaFin.value = endOfYesterday;
-      console.log(fechaInicio.value, fechaFin.value);
+      console.log(fechaInicio.value, fechaFi.value);n
       break;
     case "semana":
       const { startOfWeek, endOfWeek } = getWeekStartAndEnd();

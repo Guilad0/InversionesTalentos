@@ -90,6 +90,7 @@ onMounted(async () => {
 const obtenerDatos = async (page = 1) => {
     try {
         const { data } = await axios.get(`${BaseURL}?page=${page}`);
+        console.log(data);
         solicitudesInversion.value = data.data.solicitudes_inversion;
         paginacion.value = data.data.paginacion;
     } catch (error) {

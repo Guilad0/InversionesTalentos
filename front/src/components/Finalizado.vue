@@ -96,6 +96,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import InversoresModalProceso from "./InversoresModalReport.vue";
+import { getHeaderRequest } from "@/helpers/Authenticator";
 
 const solicitudesInversion = ref([]);
 const inversionesModal = ref([]);
@@ -104,7 +105,7 @@ const mostrarModal = ref(false);
 const paginacion = ref({});
 const BaseURL =
     import.meta.env.VITE_BASE_URL + "/reporteSolicitudesInversion/finalizado";
-
+const header = getHeaderRequest();
 
 onMounted(async () => {
     await obtenerDatos();
@@ -112,7 +113,8 @@ onMounted(async () => {
 
 const obtenerDatos = async (page = 1) => {
     try {
-        const { data } = await axios.get(`${BaseURL}?page=${page}`);
+        const { data } = await axios.get(`${BaseURL}?page=${page}`, header);
+        console.log(data);
         solicitudesInversion.value = data.data.solicitudes_inversion;
         paginacion.value = data.data.paginacion;
     } catch (error) {
