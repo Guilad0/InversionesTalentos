@@ -80,6 +80,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import InversoresModal from "./InversoresModal.vue";
+import { getHeaderRequest } from "@/helpers/Authenticator";
 
 const inversionesPorCliente = ref({});
 const inversionesModal = ref([]);
@@ -87,6 +88,7 @@ const clienteActual = ref("");
 const mostrarModal = ref(false);
 const paginacion = ref({});
 const BaseURL = import.meta.env.VITE_BASE_URL + "/reporteReversion";
+const header = getHeaderRequest();
 
 onMounted(async () => {
   await obtenerDatos();
@@ -94,7 +96,7 @@ onMounted(async () => {
 
 const obtenerDatos = async (page = 1) => {
   try {
-    const { data } = await axios.get(`${BaseURL}?page=${page}`);
+    const { data } = await axios.get(`${BaseURL}?page=${page}`, header);
     console.log(data);
     // Asegúrate de que cada cliente tiene una clave 'inversiones'
     Object.keys(data.inversionesPorCliente).forEach(cliente => {

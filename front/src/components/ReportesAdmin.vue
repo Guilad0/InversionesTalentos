@@ -20,17 +20,36 @@
                 <Gral />
             </div>
             <div class="container" v-if="currentNav == 'inversiones'">
-                <div class="mb-3 col-md-2">
-                    <select class="form-select custom-select" v-model="estadoSeleccionado"
-                        aria-label="Seleccionar estado">
-                        <option value="pendiente">Pendiente</option>
-                        <option value="proceso">Proceso</option>
-                        <option value="finalizado">Finalizado</option>
-                        <option value="reversion">Reversión</option>
-                    </select>
+                <div class="d-flex justify-content-center gap-5">
+                    <div class="mb-3 col-md-2 p-3">
+                        <select class="form-select custom-select" v-model="estadoSeleccionado"
+                            aria-label="Seleccionar estado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="proceso">Proceso</option>
+                            <option value="finalizado">Finalizado</option>
+                            <option value="reversion">Reversión</option>
+                        </select>
+                    </div>
+                    <span class="subtitle-class">Reportes</span>
+                    <div class="custom-abs-rigth">
+                        <button
+                          class="animate__animated animate__fadeInUp animate__slow btn-danger m-2 btn text-white"
+                          @click="exportToPDF()"
+                        >
+                          <strong>PDF</strong>
+                        </button>
+                        <button
+                          class="animate__animated animate__fadeInUp animate__slow btn-success text-white m-2 btn"
+                          @click="exportToExcel()"
+                        >
+                          <strong>Excel</strong>
+                        </button>
+                    </div>
                 </div>
 
-                <component :is="componenteActual"></component>
+                <component :is="componenteActual" 
+                    @updatePagination="obtenerPaginacion"
+                    ></component>
             </div>
         </div>
     </main>
@@ -43,30 +62,117 @@ import Reversion from "./Reversion.vue";
 import Pendiente from "./Pendiente.vue";
 import Proceso from "./Proceso.vue";
 import Finalizado from "./Finalizado.vue";
+import jsPDF from "jspdf";
+import axios from "axios";
+import { getHeaderRequest } from "@/helpers/Authenticator";
+import * as XLSX from "xlsx";
 
 const rol = ref("");
 const currentNav = ref("general");
 const estadoSeleccionado = ref("pendiente");
+const header = getHeaderRequest();
+const BaseURL =
+    import.meta.env.VITE_BASE_URL + "/reporteSolicitudesInversion/";
 
 const componenteActual = computed(() => {
     switch (estadoSeleccionado.value) {
         case "pendiente":
+            getStatusInvestment(estadoSeleccionado.value);
             return Pendiente;
         case "proceso":
+            getStatusInvestment(estadoSeleccionado.value);
             return Proceso;
         case "finalizado":
+            getStatusInvestment(estadoSeleccionado.value);
             return Finalizado;
         case "reversion":
+           getStatusInvestment(estadoSeleccionado.value);
             return Reversion;
         default:
             return Pendiente;
     }
 });
 
+const dataExports = ref('');
+const titleExportDoc = ref('')
+const page = ref(null);
+// const { data } = await axios.get(`${BaseURL}?page=${page}`, header);
+const getStatusInvestment = async (status) => { 
+    try { 
+        const response = await axios.get(`${BaseURL+status}?page=${page.value}`, header);
+        console.log(response.data);  
+        dataExports.value = response.data.data.solicitudes_inversion;
+        titleExportDoc.value = status
+    } catch(e) { 
+        console.log(e); 
+    }
+}
+
+const obtenerPaginacion = (dataPage) => { 
+    page.value = dataPage; 
+    console.log(page.value);
+}
+
 const setActive = (nav) => {
     currentNav.value = nav;
     rol.value = nav;
 };
+
+const exportToPDF = () => {
+    const doc = new jsPDF();
+    const columns =   Object.keys(dataExports.value[0]).map(key => ({
+        header: key.replace(/_/g, " "), 
+        dataKey: key,
+    }));
+    const rows = dataExports.value.map(item => {
+        const row = {};
+        columns.forEach(header => {
+        row[header.dataKey] = formatValue(item[header.dataKey]);
+        });
+        return row;
+    });
+    doc.autoTable({
+        columns: columns,
+        body: rows,
+        startY: 20,
+        theme: "grid",
+        styles: {
+        overflow: "linebreak",
+        cellPadding: 1,
+        fontSize: 6,
+        },
+    });
+
+    doc.text(titleExportDoc.value, doc.internal.pageSize.width / 2, 10, {
+        align: "center",
+    });
+    doc.save(`${titleExportDoc.value}.pdf`);
+}
+
+const exportToExcel = () => {
+    const headers = Object.keys(dataExports.value[0]);
+
+    const formattedData = dataExports.value.map(item => {
+        const row = {};
+        headers.forEach(key => {
+         row[key] = formatValue(item[key]);
+        });
+        return row;
+    });
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Inversiones");
+    XLSX.writeFile(workbook, "reporte_inversiones.xlsx");
+};
+
+const formatValue = (value) => {
+    if (typeof value === "string" && !isNaN(Date.parse(value))) {
+      const date = new Date(value);
+      return date.toLocaleDateString("en-CA");
+    }
+    return value;
+};
+
 </script>
 
 <style scoped>
