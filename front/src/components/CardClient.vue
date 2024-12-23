@@ -6,7 +6,7 @@ import { onMounted, ref, defineProps, computed } from "vue";
 import { getUser } from "@/helpers/utilities";
 import {successAlert, errorAlert} from "../helpers/iziToast";
 
-const enlace = ref('http://localhost:5173/marketplace');
+const enlace = ref(import.meta.env.VITE_BASE_URL+'/marketplace');
 const mostrarBoton = ref(false);
 
 const props = defineProps({

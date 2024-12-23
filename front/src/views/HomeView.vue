@@ -1,8 +1,8 @@
 <template>
   <main class="">
-    <div v-if="!loading">
-      <Carrusel :rol="user?.rol"/>
-    <Destacados :rol="user?.rol" />
+    <div v-if="!loading && user">
+      <Carrusel :rol="user.rol"/>
+    <Destacados :rol="user.rol" />
     <Partners :rol="user?.rol"/>
     <ComoFunciona />
     </div>
@@ -30,14 +30,12 @@ const user = ref(null)
 onMounted(async()=>{
   loading.value =true
   user.value = await getUser();
-  setTimeout(() => {
-    loading.value =false
-  }, 500);
-
+  
   if (userL.rol == 'Null' || userL.rol == '' || userL.rol == null) {
-
+    
     infoAlert(`No tienes un rol. <a href="/perfil" style="color: blue; text-decoration:none;">ÚNETE</a> a nuestra comunidad como Inversor o Talento`, "Por favor Unete a nuestra comunidad")
   }
+  loading.value =false
 })
 
 </script>
