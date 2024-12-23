@@ -1,6 +1,6 @@
 <template>
     <main class="bg-light pt-4 ps-4">
-        <div class="d-flex">
+        <div class="d-flex pt-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li :class="{ 'active px-2': currentNav === 'general' }" @click="setActive('general')"
@@ -9,7 +9,7 @@
                     </li>
                     <li :class="{ 'active px-2': currentNav === 'inversiones' }" @click="setActive('inversiones')"
                         class="nav-link mx-2">
-                        <label>Inversiones </label>
+                        <label>Reversion </label>
                     </li>
                 </ol>
             </nav>
@@ -20,8 +20,8 @@
                 <Gral />
             </div>
             <div class="container" v-if="currentNav == 'inversiones'">
-                <div class="d-flex justify-content-center gap-5">
-                    <div class="mb-3 col-md-2 p-3">
+                <div class="d-flex justify-content-between">
+                    <div class="mb-3 col-md-2 pt-5">
                         <select class="form-select custom-select" v-model="estadoSeleccionado"
                             aria-label="Seleccionar estado">
                             <option value="pendiente">Pendiente</option>
@@ -30,16 +30,16 @@
                             <option value="reversion">Reversión</option>
                         </select>
                     </div>
-                    <span class="subtitle-class">Reportes</span>
-                    <div class="custom-abs-rigth">
+                    <span class="title text-center pt-0">Reportes</span>
+                    <div class="custom-abs-rigth d-flex justify-content-end align-items-center pt-4">
                         <button
-                          class="animate__animated animate__fadeInUp animate__slow btn-danger m-2 btn text-white"
+                          class="animate__animated animate__fadeInUp animate__slow btn-danger m-2 btn btn-sm text-white"
                           @click="exportToPDF()"
                         >
                           <strong>PDF</strong>
                         </button>
                         <button
-                          class="animate__animated animate__fadeInUp animate__slow btn-success text-white m-2 btn"
+                          class="animate__animated animate__fadeInUp animate__slow btn-success text-white m-2 btn btn-sm"
                           @click="exportToExcel()"
                         >
                           <strong>Excel</strong>
