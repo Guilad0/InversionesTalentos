@@ -16,7 +16,7 @@
                             <th class="td-custom align-middle custom-size">Inversores</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="solicitudesInversion.length">
                         <tr v-for="(solicitud, index) in solicitudesInversion" :key="solicitud.id">
                             <td class="text-start fw-bold">
                                 {{ index + 1 }}. {{ solicitud.cliente.nombre }}
@@ -42,6 +42,13 @@
                                     :disabled="!tieneInversores(solicitud.inversores)">
                                     Ver Inversores
                                 </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-3">
+                            No hay datos disponibles para mostrar.
                             </td>
                         </tr>
                     </tbody>

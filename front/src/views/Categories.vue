@@ -383,7 +383,7 @@ const createCategory = async () => {
   formData.append("porcentaje_interes", porcentaje_interes.value);
   
   if (!formCreate.value.image) {
-    errorAlert("La iamgen es requerida", "Error"); // Mostrar mensaje de error en caso de excepción
+    errorAlert("La imagen es requerida", "Error"); // Mostrar mensaje de error en caso de excepción
     return
   }
   if (montoInvMin.value >= montoInvMax.value ) {
@@ -426,13 +426,12 @@ const createCategory = async () => {
     }
   } catch (error) {
     console.error("Error al crear la categoría", error);
-    errorAlert("Error al crear la categoría", "Error"); // Mostrar mensaje de error en caso de excepción
+    errorAlert("El nombre de categoria ya existe", "Error"); // Mostrar mensaje de error en caso de excepción
   }
 };
 
 
 const editCategory = async () => {
-  
   if (!montoMin.value  || !montoMax.value || montoMin.value <= 0 || montoMax.value <= 0) {
     errorAlert("Los montos de inversion son requeridos", "Error"); // Mostrar mensaje de error en caso de excepción
     return
@@ -469,7 +468,7 @@ const editCategory = async () => {
    montoMax.value = 0;
    porcentaje.value = 0;
   } catch (error) {
-    errorAlert("Error al actualizar la categoría", "Error");
+    errorAlert("El nombre de categoria ya existe", "Error");
   }
   console.log('enviado');
 };
