@@ -315,12 +315,12 @@ const revertirInversion = (req, res) => {
     [fechaActual, req.query.observaciones, req.params.id],
     (err, results) => {
       if (err) {
-        return res.status(500).json({ msg: "Error al actualizar inversiones" });
+        return res.status(500).json({ msg: "Error al actualizar inversiones paso 1" });
       }
       console.log(req.params.id);
       query = `
       UPDATE inversiones
-      SET estado_inversion = 'Revertido'
+      SET monto = monto
       WHERE solicitud_inv_id = ${req.params.id};    
       `;
       conexion.query(query, (err, results) => {
@@ -333,15 +333,17 @@ const revertirInversion = (req, res) => {
       FROM inversiones
       WHERE solicitud_inv_id = ${req.params.id};`;
         conexion.query(query, (err, results) => {
+          console.log('clientessssssssssssssss', results);
           if (err) {
             return res
               .status(500)
-              .json({ msg: "Error al actualizar inversiones" });
+              .json({ msg: "Error al actualizar inversiones paso2" });
           }
           const usersId = results.flatMap(item => [
             { tipo: 'talento', id: item.cliente_id, tipoMovimiento: 'Egreso', },
             { tipo: 'inversor', id: item.inversor_id, tipoMovimiento: 'Ingreso', }
           ]);
+          
           const promises = usersId.map((cliente) => {
             const query = `UPDATE movimientos SET tipo=?,descripcion='Reversion' WHERE usuario_id = ?`;
             return new Promise((resolve, reject) => {
@@ -535,8 +537,8 @@ const procesarSolicitudInversion = (req, res) => {
     }
     const { minInv, maxInv, idCliente } = req.query;
     query =
-      "update informacion set monto_inversion = ?, cantidad_maxima_inversiones = ? where cliente_id = ?";
-    conexion.query(query, [minInv, maxInv, idCliente], (err, results) => {
+      "update informacion set monto_inversion = ?, cantidad_maxima_inversiones = cantidad_maxima_inversiones where cliente_id = ?";
+    conexion.query(query, [minInv, idCliente], (err, results) => {
       if (err) {
         return res
           .status(500)
@@ -609,7 +611,7 @@ const getSolicitudesInversionByUserId = (req, res) => {
     FROM solicitudes_inversion s
     LEFT JOIN inversiones i ON s.id = i.solicitud_inv_id
     LEFT JOIN usuarios u ON i.inversor_id = u.usuario_id
-    WHERE s.cliente_id = ? AND s.estado = 1
+    WHERE s.cliente_id = ? AND ${req.query.estado}
     GROUP BY s.id
     ORDER BY s.id DESC
     LIMIT ? OFFSET ?`;
@@ -663,7 +665,7 @@ const getSolicitudesInversionByUserId = (req, res) => {
       });
 
       res.status(200).json({
-        data: processedResults,
+        results: processedResults,
         pagination: {
           total,
           totalPages,
@@ -742,6 +744,29 @@ const cambiarEstadoProceso = (req, res) => {
     });
   });
 };
+const procesarInversionByUser = (req, res) => {
+  const { id } = req.params;
+  console.log(req.query.reason);
+  const query = (req.query.tipoAccion == 'cancelo')? `
+    UPDATE solicitudes_inversion 
+    SET aprobado = 'Rechazado', observaciones = '${req.query.reason}', canceladoPor = 'Talento' 
+    WHERE id = ?`:`UPDATE solicitudes_inversion 
+    SET aprobado = 'Aprobado', estado_inversion = 'Pendiente' 
+    WHERE id = ?`;
+
+  conexion.query(query, [id],(err, results) => {
+    if (err) {
+      return res.status(500).json({
+        msg: "Error al cambiar el estado de la solicitud a Poendiente",
+        error: err
+      });
+    }
+
+    res.status(200).json({
+      msg: "Estado de la solicitud cambiado a Pendiente exitosamente",
+    });
+  });
+};
 
 const getSolicitudByClienteId = (req, res) => {
   let query = `SELECT * FROM solicitudes_inversion WHERE cliente_id = ${req.params.id}`;
@@ -777,5 +802,6 @@ module.exports = {
   finalizarInversion,
   revertirInversion,
   cambiarEstadoProceso,
-  getSolicitudByClienteId
+  getSolicitudByClienteId,
+  procesarInversionByUser
 };

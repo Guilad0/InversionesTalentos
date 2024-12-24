@@ -6,7 +6,7 @@ import { onMounted, ref, defineProps, computed } from "vue";
 import { getUser } from "@/helpers/utilities";
 import {successAlert, errorAlert} from "../helpers/iziToast";
 
-const enlace = ref('http://localhost:5173/marketplace');
+const enlace = ref(import.meta.env.VITE_BASE_URL+'/marketplace');
 const mostrarBoton = ref(false);
 
 const props = defineProps({
@@ -168,6 +168,7 @@ const copiarEnlace = () => {
 <template>
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 ">
     <div class="card m-2 rounded-3 position-relative p-2 shadow">
+    
       <img :src="client.imagen || 'https://cdn-icons-png.flaticon.com/512/6429/6429059.png'"
         class="rounded-circle border m-auto border-2" width="150" height="150">
       <div class="card-body">
@@ -198,7 +199,11 @@ const copiarEnlace = () => {
           </div>
         </div>
         <div class="text-center">
-          <label class="card-text token py-3 m-auto">Inversiones desde: {{
+          <label class="card-text token pt-2">Solicitado para: {{
+            props.client.titulo}} </label>
+        </div>
+        <div class="text-center">
+          <label class="card-text token py-2">Inversiones desde: {{
             props.client.monto_inversion == null
               ? "00.00"
               : props.client.monto_inversion
