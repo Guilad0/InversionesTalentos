@@ -91,6 +91,55 @@
         <h2 class="text-xl font-bold mb-4">
           Filtros
         </h2>
+        <div class="d-flex gap-3 ">
+          <div class="col-2">
+            <div class="card  mb-3" style="max-width: 15rem;">
+              <div class="card-header bg-gray text-light">Mayor inversionista</div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>Usuario:</strong> {{ nombre_inversor }} <br>
+                  <strong>Inversiones realizadas:</strong> {{ total_inversiones }} <br>
+                  <strong>Tokens:</strong> {{ total_tokens }} <br>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="card  mb-3" style="max-width: 15rem;">
+              <div class="card-header bg-gray text-light">Talento con mas inversiones</div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>Usuario:</strong> {{ nombre_cliente }} <br>
+                  <strong>Inversiones obtenidas:</strong> {{ total_inversiones_cliente }} <br>
+                  <strong>Tokens:</strong> {{ total_tokens_cliente }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="card  mb-3" style="max-width: 15rem;">
+              <div class="card-header bg-gray text-light">Ganancia de la pagina</div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>USD:</strong> {{ total_comisiones }} <br>
+  
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="card  mb-3" style="max-width: 15rem;">
+              <div class="card-header bg-gray text-light">Movimientos</div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>Compras de token:</strong> {{ movTokens.movimientos_realizados }} <br>
+                  <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }}<br>
+                  <strong>Devoluciones:</strong> {{ movDeveoluciones.movimientos_realizados }} <br>
+  
+                </p>
+              </div>
+            </div>
+          </div>
         <div class="d-flex justify-content-center">
 
           <button v-for="(tabAdmin, index) in tabsAdmin" :key="index" :class="[
@@ -101,7 +150,6 @@
           ]" @click="showReports(reportes_inversiones[index], index)">
             {{ tabAdmin }} <span></span>
           </button>
-
         </div>
         <div class="d-flex justify-content-center gap-3 my-3 py-3">
 
@@ -443,7 +491,7 @@ const showReportCustom = async () => {
         console.log(reports.value);
       } catch (error) {
 
-      }
+      } 
     }
   }
 };

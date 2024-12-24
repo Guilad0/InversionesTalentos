@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 //importamos la coneccion a la base de datos
-var conexion = require('../database');
+var {conexion} = require('../database');
 
 
 

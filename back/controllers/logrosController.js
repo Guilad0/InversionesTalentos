@@ -1,7 +1,7 @@
-const connection = require("../database");
+const {conexion} = require("../database");
 
 const getLogros = (req, res) => {
-  connection.query("SELECT * FROM logros", (err, results) => {
+  conexion.query("SELECT * FROM logros", (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -14,7 +14,7 @@ const postLogros = (req, res) => {
 
   const query = `INSERT INTO logros(cliente_id, descripcion, fecha) VALUES (?, ?, ?)`;
   
-  connection.query(query, [cliente_id, descripcion, fecha], (err, results) => {
+  conexion.query(query, [cliente_id, descripcion, fecha], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -28,7 +28,7 @@ const putLogros = (req, res) => {
 
   const query = `UPDATE logros SET descripcion = ? WHERE logro_id = ?`;
 
-  connection.query(query, [descripcion, id], (err, results) => {
+  conexion.query(query, [descripcion, id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -41,7 +41,7 @@ const deleteLogros = (req, res) => {
 
   const query = `DELETE FROM logros WHERE logro_id = ?`;
 
-  connection.query(query, [id], (err, results) => {
+  conexion.query(query, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -54,7 +54,7 @@ const patchLogros = (req, res) => {
 
   const query = `UPDATE logros SET estado = NOT estado WHERE logro_id = ?`;
 
-  connection.query(query, [id], (err, results) => {
+  conexion.query(query, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }

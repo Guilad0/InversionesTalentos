@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const {conexion} = require('../database.js')
 
 const {
         getUsers,
@@ -43,5 +44,14 @@ router.get("/handleTelefono/telefono", handleTelefono);
 router.patch("/approved/:id", approvedUser);
 router.get("/getSolInvById/:id", getSolInvById);
  
+router.get('/AllUsers', async (req, res, next) => {
+        conexion.query("SELECT * FROM usuarios", (err, results) => {
+                if (err) {
+                        return res.status(500).json({ error: err.message });
+                }
+                res.status(200).json({ data: results, message: "Lista de logros" });
+                });
+});
+
 
 module.exports = router;

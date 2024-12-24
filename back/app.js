@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cors = require('cors');
 var fileUpload = require('express-fileupload')
 var bodyParser = require('body-parser');
+const cron = require('node-cron');
+const { checkInvestmentRequest } = require('./helpers/nodeCron.js')
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var clientsRouter = require('./routes/clients');
@@ -87,6 +90,9 @@ app.use('/preview', previewRouter);
 app.use('/solicitudesInversion', solicitudesInversionRouter);
 app.use('/reporteReversion', reporteReversionRouter);
 app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
+
+// se activa a las 23:50 cada dia
+cron.schedule('50 23 * * *', checkInvestmentRequest)
 
 
 module.exports = app;

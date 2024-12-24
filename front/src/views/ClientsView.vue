@@ -8,6 +8,8 @@ import FilterClientsSm from "@/components/FilterClientsSm.vue";
 import PlaceholderCards from "@/components/placeholder/PlaceholderCards.vue";
 import Unete from "@/components/Unete.vue";
 import { orderByName, orderByEdad, orderByPrice, getUser } from "@/helpers/utilities";
+import axios from "axios";
+import { getHeaderRequest } from "@/helpers/Authenticator";
 
 const { results: categories, getData: getCategories } = useFetchData(ref("/categories"));
 const activeCategory = ref(null);
@@ -15,6 +17,7 @@ const path = ref("/clients");
 const { results: clients, getData: getClients, isLoading } = useFetchData(path);
 const name = ref("");
 const user = ref(null);
+const header = getHeaderRequest(); 
 
 // Variables de paginación
 const currentPage = ref(1);
@@ -60,6 +63,7 @@ const getAll = () => {
   activeCategory.value = null;
   path.value = "/clients/";
   getClients();
+  getAllUsers();
 };
 
 const orderBy = (order) => {
@@ -88,12 +92,20 @@ const handleName = () => {
   }
 };
 
+const getAllUsers =  async () => { 
+  try { 
+    const response = await axios.get('http://localhost:3000/users/AllUsers', header);
+    console.log(response.data);
+  } catch(e) { 
+    console.error(e); 
+  }
+}
 
 onMounted(async () => {
   getCategories();
   getClients();
+  getAllUsers();
   user.value = await getUser();
-
 });
 </script>
 <template>

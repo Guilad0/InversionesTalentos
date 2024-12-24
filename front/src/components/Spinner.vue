@@ -1,7 +1,7 @@
 <template>
     <div class="center">
-  <div class="sppiner"></div>
-</div>
+      <div class="sppiner"></div>
+    </div>
 </template>
 
 <style scoped>

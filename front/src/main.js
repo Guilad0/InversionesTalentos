@@ -11,10 +11,7 @@ import iziToast from './plugins/iziToast';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
-
-
 // import 'bootstrap-icons/font/bootstrap-icons.css';
-
 
 import Swal from 'sweetalert2';
 import { Notyf } from 'notyf';

@@ -1,4 +1,4 @@
-const conexion = require("../database");
+const {conexion} = require("../database");
 const { response: res, request: req } = require("express");
 const { uploadFile } = require("../helpers/uploadImage");
 const { v4: uuidv4 } = require("uuid");

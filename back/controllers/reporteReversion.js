@@ -1,4 +1,4 @@
-const conexion = require("../database");
+const {conexion} = require("../database");
 
 const getInversionesReversion = (req, res) => {
     // Parámetros de paginación

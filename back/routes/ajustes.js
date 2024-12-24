@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const conexion = require('../database');
+const {conexion} = require('../database');
 // Crear ajuste
 router.post('/', (req, res) => {
     const {

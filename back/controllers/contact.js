@@ -1,5 +1,5 @@
 const { response: res, request: req } = require('express')
-const conexion = require('../database');
+const {conexion} = require('../database');
 
 const transporter = require('../helpers/mailer');
 

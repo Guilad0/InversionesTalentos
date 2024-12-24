@@ -1,5 +1,5 @@
 const { response: res, request: req, query, json } = require("express");
-const conexion = require("../database");
+const { conexion } = require("../database");
 const bcrypt = require("bcrypt");
 
 const cloudinary = require("cloudinary").v2;

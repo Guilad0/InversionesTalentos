@@ -1,5 +1,5 @@
 const { response: res, request: req } = require('express')
-const conexion = require('../database');
+const {conexion} = require('../database');
 const bcrypt = require('bcrypt');
 const jsonWebToken = require('jsonwebtoken');
 const Cryptr = require('cryptr');

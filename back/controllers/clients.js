@@ -1,5 +1,5 @@
 const { response: res, request: req } = require('express')
-const conexion = require('../database');
+const {conexion} = require('../database');
 // const bcrypt = require('bcrypt');
 // const fs = require('fs');
 // const path = require('path');
@@ -111,7 +111,6 @@ const getAllClientesByCategory = async (req, res) => {
             cant: results.length
         });
     });
-
 }
 
 /**
