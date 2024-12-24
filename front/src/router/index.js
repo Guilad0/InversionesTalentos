@@ -28,7 +28,6 @@ import TerminosCondicionesView from '@/views/TerminosCondicionesView.vue'
 import PoliticaPrivacidadView from '@/views/PoliticaPrivacidadView.vue'
 import NotFound from '@/views/NotFound.vue'
 import { getUser } from '@/helpers/utilities'
-import { ref } from "vue";
 import SolicitudInversion from '@/views/SolicitudInversion.vue'
 
 import axios from 'axios'

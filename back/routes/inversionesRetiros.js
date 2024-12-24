@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var connection = require("../database");
+var {conexion} = require("../database");
 
 router.get("/inversiones", function (req, res, next) {
   // Parámetros de paginación y búsqueda
@@ -14,7 +14,7 @@ router.get("/inversiones", function (req, res, next) {
                       FROM inversiones
                       INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id;`;
 
-  connection.query(queryFilas, (err, results) => {
+  conexion.query(queryFilas, (err, results) => {
     if (err) {
       return res.status(500).json({
         err,
@@ -35,7 +35,7 @@ router.get("/inversiones", function (req, res, next) {
                   ORDER BY inversiones.inversion_id DESC
                   LIMIT ${limite};`;
 
-    connection.query(query, (err, results) => {
+    conexion.query(query, (err, results) => {
       if (err) {
         return res.status(500).json({
           err,
@@ -76,7 +76,7 @@ router.put("/inversion/:id", function (req, res, next) {
     });
   }
 
-  connection.query(query, [estado, inversionId], function (error, results, fields) {
+  conexion.query(query, [estado, inversionId], function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -141,7 +141,7 @@ router.get("/inversionista/:id", function (req, res, next) {
       AND solicitudes_inversion.aprobado = 'Aprobado';
   `;
 
-  connection.query(query, function (error, results) {
+  conexion.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -149,7 +149,7 @@ router.get("/inversionista/:id", function (req, res, next) {
         message: "Error al realizar la petición"
       });
     } else {
-      connection.query(countQuery, function (countError, countResults) {
+      conexion.query(countQuery, function (countError, countResults) {
         if (countError) {
           console.log(countError);
           res.status(500).send({
@@ -216,7 +216,7 @@ ON inversiones.inversor_id = usuarios.usuario_id
 WHERE inversiones.cliente_id = ${req.params.id}
 AND inversiones.estado = 1
 ORDER BY inversiones.inversion_id DESC;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -241,7 +241,7 @@ DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
 FROM solicitudes_retiro                
 WHERE usuario_id = ${req.params.id}
 ORDER BY retiro_id DESC;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -265,7 +265,7 @@ DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
 FROM solicitudes_retiro                
 WHERE usuario_id = ${req.params.id}
 ORDER BY retiro_id DESC;`;
-  connection.query(query, function (error, results) {
+  conexion.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -293,7 +293,7 @@ router.get("/inversiones_vencidas/:id", function (req, res, next) {
   AND fecha_devolucion <= CURRENT_DATE()
   AND estado = 1
   ORDER BY inversion_id DESC;`;
-  connection.query(query, function (error, results) {
+  conexion.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -325,7 +325,7 @@ router.get("/tokensClienteRecibido/:id", function (req, res, next) {
     ) AS tokensCompradosCliente
   FROM inversiones
   WHERE inversiones.cliente_id = ${req.params.id};`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -348,7 +348,7 @@ router.post("/devolverTokens", function (req, res, next) {
                 SET estado=!estado 
                 WHERE inversion_id = '${inversion_id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -359,7 +359,7 @@ router.post("/devolverTokens", function (req, res, next) {
       var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${cliente_id}', '${inversion_id}', NULL);`;
 
-      connection.query(queryTokenCliente, function (error, results, fields) {
+      conexion.query(queryTokenCliente, function (error, results, fields) {
         if (error) {
           console.log(error);
           res.status(500).send({
@@ -371,7 +371,7 @@ router.post("/devolverTokens", function (req, res, next) {
           var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
           VALUES ('Ingreso', 'Ganancia de tokens invertidos', CURRENT_TIMESTAMP(), NULL, '${token}', '${inversor_id}', '${inversion_id}', NULL);`;
 
-          connection.query(queryTokenInversionista, function (error, results, fields) {
+          conexion.query(queryTokenInversionista, function (error, results, fields) {
             if (error) {
               console.log(error);
               res.status(500).send({

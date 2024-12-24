@@ -38,4 +38,7 @@ router.get('/getTotals/totals', getTotals),
   router.put('/cambiarEstadoProceso/:id', cambiarEstadoProceso);
   router.get('/getSolicitudByClienteId/:id', getSolicitudByClienteId);
 
+
+
+
 module.exports = router;

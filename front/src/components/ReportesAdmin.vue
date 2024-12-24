@@ -96,7 +96,7 @@ const componenteActual = computed(() => {
 const dataExports = ref('');
 const titleExportDoc = ref('')
 const page = ref(null);
-// const { data } = await axios.get(`${BaseURL}?page=${page}`, header);
+
 const getStatusInvestment = async (status) => { 
     try { 
         const response = await axios.get(`${BaseURL+status}?page=${page.value}`, header);
@@ -142,7 +142,6 @@ const exportToPDF = () => {
         fontSize: 6,
         },
     });
-
     doc.text(titleExportDoc.value, doc.internal.pageSize.width / 2, 10, {
         align: "center",
     });
@@ -172,7 +171,6 @@ const formatValue = (value) => {
     }
     return value;
 };
-
 </script>
 
 <style scoped>

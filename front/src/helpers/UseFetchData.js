@@ -1,5 +1,6 @@
 import {ref, onMounted, watch} from 'vue';
 import axios  from 'axios';
+import { getHeaderRequest } from './Authenticator';
 
 export default function useFetchData(ruta){
     
@@ -9,15 +10,19 @@ export default function useFetchData(ruta){
     const isLoading = ref(false);
     // const baseURL = 'https://apitalentos.pruebasdeploy.online';
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const total = ref('')
+    const total = ref('');
+    const header = getHeaderRequest();
+
     const getData = async ()=>{
         try {
             isLoading.value = true;
-            const { data } = await axios.get(`${baseURL}${ruta.value}`);
+            const { data } = await axios.get(`${baseURL}${ruta.value}`, header);
             results.value = data.results;
             next.value = data.next;
             prev.value = data.prev;
             total.value = data.total;
+            console.log(`${baseURL}${ruta.value}`);
+            console.log(data.results);
         } catch (error) {
             console.log(error);
         }finally{

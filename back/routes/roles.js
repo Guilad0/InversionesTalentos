@@ -1,4 +1,4 @@
-const connection = require("../database");
+const {conexion} = require("../database");
 var express = require('express');
 var router = express.Router();
 const cloudinary = require('cloudinary').v2;
@@ -8,7 +8,7 @@ cloudinary.config(process.env.CLOUDINARY_URL)
 
 router.get("/", (req, res) => {
     var logros = "SELECT * FROM usuarios";
-    connection.query(logros, function (err, results) {
+    conexion.query(logros, function (err, results) {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -30,7 +30,7 @@ router.patch("/updateRole/:id", (req, res) => {
     const { rol } = req.body;
     const updateQuery = "UPDATE usuarios SET rol = ? WHERE usuario_id = ?";
 
-    connection.query(updateQuery, [rol, id], (err, result) => {
+    conexion.query(updateQuery, [rol, id], (err, result) => {
         if (err) {
             res.status(500).send({
                 error: err,

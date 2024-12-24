@@ -1,4 +1,4 @@
-const connection = require("../database");
+const {conexion} = require("../database");
 var express = require('express');
 var router = express.Router();
 const cloudinary = require('cloudinary').v2;
@@ -8,7 +8,7 @@ cloudinary.config(process.env.CLOUDINARY_URL)
 
 router.get("/", (req, res) => {
     var logros = "SELECT * FROM posts";
-    connection.query(logros, function (err, results) {
+    conexion.query(logros, function (err, results) {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
         const { secure_url } = result;
         const { titulo, contenido, estado } = req.body;
         var posts = `INSERT INTO posts(titulo, imagen_portada, contenido, estado) VALUES ("${titulo}", "${secure_url}", "${contenido}", "${estado}");`;
-        connection.query(posts, (err, results) => {
+        conexion.query(posts, (err, results) => {
             if (err) {
                 //console.log(err);
                 res.status(500).send({
@@ -78,7 +78,7 @@ router.post("/", async (req, res) => {
 //                       ${secure_url ? `imagen_portada = "${secure_url}",` : ""}
 //                       contenido = "${contenido}", estado = "${estado}" 
 //                       WHERE post_id = "${post_id}";`;
-//       connection.query(posts, (err, results) => {
+//       conexion.query(posts, (err, results) => {
 //         if (err) {
 //           console.error("Error en la actualización de post:", err);
 //           return res.status(500).send({
@@ -136,7 +136,7 @@ router.put("/:post_id", async (req, res) => {
             : [titulo, contenido, estado, post_id];
 
         // Ejecutar la consulta
-        connection.query(query, values, (err, results) => {
+        conexion.query(query, values, (err, results) => {
             if (err) {
                 console.error("Error en la actualización de post:", err);
                 return res.status(500).send({
@@ -167,7 +167,7 @@ router.put("/:post_id", async (req, res) => {
 router.delete("/:post_id", (req, res) => {
     const { post_id } = req.params;
     const posts = `DELETE FROM posts WHERE post_id = "${post_id}";`;
-    connection.query(posts, (err, results) => {
+    conexion.query(posts, (err, results) => {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -186,7 +186,7 @@ router.delete("/:post_id", (req, res) => {
 router.patch('/estado/:post_id', (req, res) => {
     const { post_id } = req.params;
     const query = `UPDATE posts SET estado = IF(estado = 'Activo', 'Inactivo', 'Activo') WHERE post_id = ?`;
-    connection.query(query, [post_id], (error, results) => {
+    conexion.query(query, [post_id], (error, results) => {
         if (error) {
             res.status(500).send({
                 error: error,
@@ -203,7 +203,7 @@ router.patch('/estado/:post_id', (req, res) => {
 
 router.get("/activos", (req, res) => {
     const query = "SELECT * FROM posts WHERE estado = 'Activo'";
-    connection.query(query, (err, results) => {
+    conexion.query(query, (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -221,7 +221,7 @@ router.get("/activos", (req, res) => {
 router.get("/:post_id", (req, res) => {
     const { post_id } = req.params;
     const query = `SELECT * FROM posts WHERE post_id = ?`;
-    connection.query(query, [post_id], (err, results) => {
+    conexion.query(query, [post_id], (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,

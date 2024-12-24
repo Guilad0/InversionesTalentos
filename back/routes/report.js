@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var connection = require("../database");
+var {conexion} = require("../database");
 
 router.get("/usuariosCantidad", function (req, res, next) {
   var query = ` SELECT rol, COUNT(*) AS cantidad FROM usuarios GROUP BY rol;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -22,7 +22,7 @@ router.get("/usuariosCantidad", function (req, res, next) {
 
 router.get("/solicitudesCantidad", function (req, res, next) {
   var query = ` SELECT estado, COUNT(*) AS cantidad FROM solicitudes_retiro GROUP BY estado;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -41,7 +41,7 @@ router.get("/solicitudesCantidad", function (req, res, next) {
 router.get("/tokensInvertidos", function (req, res, next) {
   var query = ` SELECT SUM(token) as tokens_invertidos FROM movimientos
 WHERE descripcion = 'Tokens invertidos';`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -59,7 +59,7 @@ WHERE descripcion = 'Tokens invertidos';`;
 
 router.get("/sumaComisiones", function (req, res, next) {
   var query = `SELECT estado,SUM(comision_aplicar) AS total_comisiones FROM solicitudes_retiro GROUP BY estado;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -87,7 +87,7 @@ router.get("/totalCompras/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
                 `;
 
-  connection.query(queryCompraTokens, function (error, results, fields) {
+  conexion.query(queryCompraTokens, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -116,7 +116,7 @@ router.get("/totalInversiones/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
   `;
 
-  connection.query(queryInversionToken, function (error, results, fields) {
+  conexion.query(queryInversionToken, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -145,7 +145,7 @@ router.get("/totalInversionesRecibidas/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
   `;
 
-  connection.query(queryInversionToken, function (error, results, fields) {
+  conexion.query(queryInversionToken, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -173,7 +173,7 @@ AND YEAR(fecha_devolucion) = ${anho}
 GROUP BY MONTH(fecha_devolucion);
 `;
 
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -206,7 +206,7 @@ AND estado = 'Aprobado'
 GROUP BY MONTH(fecha_solicitud);
 `;
 
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -234,7 +234,7 @@ router.get("/inversionesCantidad", function (req, res, next) {
     COUNT(*) AS cantidad 
 FROM inversiones 
 GROUP BY estado_descripcion;`;
-  connection.query(query, function (error, results, fields) {
+  conexion.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({

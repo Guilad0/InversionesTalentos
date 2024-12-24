@@ -1,4 +1,4 @@
-const connection = require("../database");
+const {conexion} = require("../database");
 var express = require('express');
 var router = express.Router();
 
@@ -17,7 +17,7 @@ GROUP BY e.cargo, l.descripcion
 ORDER BY promedio DESC 
 LIMIT 1;`;
 
-    connection.query(preview, [clienteId], function (err, results) {
+    conexion.query(preview, [clienteId], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,

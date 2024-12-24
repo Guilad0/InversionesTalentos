@@ -78,7 +78,7 @@
               <div class="card-body">
                 <p class="card-text">
                   <strong>Compras de token:</strong> {{ movTokens.movimientos_realizados }} <br>
-                  <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }} <br>
+                  <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }}<br>
                   <strong>Devoluciones:</strong> {{ movDeveoluciones.movimientos_realizados }} <br>
   
                 </p>
@@ -311,9 +311,6 @@ import { getHeaderRequest } from "@/helpers/Authenticator";
       };
     } catch (error) {
       console.log(error);
-      if (error.response.status == 401 || error.response.status == 403) {
-        expirado();
-      }
     }
   };
   
@@ -470,19 +467,24 @@ import { getHeaderRequest } from "@/helpers/Authenticator";
   const movTokens = ref({})
   const movRetiros = ref({})
   const movDeveoluciones = ref({})
+
   const getReportsTotals = async () => {
     try {
-      const { data } = await axios.get(baseURL + '/mayorInversionista', header)
-      nombre_inversor.value = data.data[0].nombre_inversor
-      total_inversiones.value = data.data[0].total_inversiones
-      total_tokens.value = data.data[0].total_tokens
-      const { data: data2 } = await axios.get(baseURL + '/mayorCliente', header)
-      nombre_cliente.value = data2.data[0].nombre_cliente
-      total_inversiones_cliente.value = data2.data[0].total_inversiones
-      total_tokens_cliente.value = data2.data[0].total_tokens
-      const { data: data3 } = await axios.get(baseURL + '/sumaComisiones', header)
-      total_comisiones.value = data3.data[1].total_comisiones
-      const { data: data4 } = await axios.get(baseURL + '/totalMovimientos', header)
+      const { data } = await axios.get(baseURL + 'mayorInversionista', header);
+      console.log('1');
+      nombre_inversor.value = data.data[0].nombre_inversor;
+      total_inversiones.value = data.data[0].total_inversiones;
+      total_tokens.value = data.data[0].total_tokens;
+      const { data: data2 } = await axios.get(baseURL + 'mayorCliente', header);
+      console.log('2');
+      nombre_cliente.value = data2.data[0].nombre_cliente;
+      total_inversiones_cliente.value = data2.data[0].total_inversiones;
+      total_tokens_cliente.value = data2.data[0].total_tokens;
+      const { data: data3 } = await axios.get(baseURL + 'sumaComisiones', header);
+      console.log(data3);
+      total_comisiones.value = data3.data[1]?.total_comisiones || 0;
+      const { data: data4 } = await axios.get(baseURL + 'totalMovimientos', header);
+      console.log('4');
       movTokens.value = data4.data[0];
       movRetiros.value = data4.data[3];
       movDeveoluciones.value = data4.data[5];

@@ -1,4 +1,4 @@
-const connection = require("../database");
+const {conexion} = require("../database");
 var express = require('express');
 var router = express.Router();
 const cloudinary = require('cloudinary').v2;
@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
         LIMIT ? OFFSET ?
     `;
 
-    connection.query(countQuery, [search ? `%${search}%` : null, estado || null].filter(v => v !== null), (err, countResult) => {
+    conexion.query(countQuery, [search ? `%${search}%` : null, estado || null].filter(v => v !== null), (err, countResult) => {
         if (err) {
             return res.status(500).send({ error: err, message: "Error al contar los registros" });
         }
@@ -49,7 +49,7 @@ router.get("/", (req, res) => {
         const total = countResult[0].total;
         const totalPages = Math.ceil(total / limit);
 
-        connection.query(dataQuery, [search ? `%${search}%` : null, estado || null, limit, offset].filter(v => v !== null), (err, dataResult) => {
+        conexion.query(dataQuery, [search ? `%${search}%` : null, estado || null, limit, offset].filter(v => v !== null), (err, dataResult) => {
             if (err) {
                 return res.status(500).send({ error: err, message: "Error al obtener los comentarios" });
             }
@@ -78,7 +78,7 @@ router.get("/cliente/:id", function (req, res, next) {
     const comentarios = `
         SELECT c.comentario, c.calificacion FROM comentarios c WHERE c.cliente_id = ?`;
 
-        connection.query(comentarios, [clienteId], function (err, results) {
+        conexion.query(comentarios, [clienteId], function (err, results) {
             if (err) {
                 res.status(500).send({
                     error: err,
@@ -102,7 +102,7 @@ router.post("/", (req, res) => {
         VALUES (?, ?, ?, ?, NOW())
     `;
 
-    connection.query(query, [cliente_id, inversor_id, comentario, calificacion], (err, result) => {
+    conexion.query(query, [cliente_id, inversor_id, comentario, calificacion], (err, result) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -122,7 +122,7 @@ router.patch("/aprobar/:id", function (req, res, next) {
     estado = 'Aprobado'
     WHERE id_comentarios = '${req.params.id}';`;
   
-    connection.query(query, function (error, results, fields) {
+    conexion.query(query, function (error, results, fields) {
       if (error) {
         console.log(error);
         res.status(500).send({
@@ -145,7 +145,7 @@ router.patch("/aprobar/:id", function (req, res, next) {
     estado = 'Rechazado'
     WHERE id_comentarios = '${req.params.id}';`;
   
-    connection.query(query, function (error, results, fields) {
+    conexion.query(query, function (error, results, fields) {
       if (error) {
         console.log(error);
         res.status(500).send({
@@ -172,7 +172,7 @@ router.patch("/aprobar/:id", function (req, res, next) {
         LIMIT 10;
     `;
 
-    connection.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
+    conexion.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -191,7 +191,7 @@ router.get("/estadisticas/:usuario_id", (req, res) => {
         WHERE cliente_id = ? AND estado = 'Aprobado';
     `;
 
-    connection.query(query, [usuario_id], (err, results) => {
+    conexion.query(query, [usuario_id], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
