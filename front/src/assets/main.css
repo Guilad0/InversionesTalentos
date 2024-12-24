@@ -268,3 +268,13 @@ textarea {
   transition: transform 0.3s ease-in !important;
 
 }
+
+.btn-6 {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}

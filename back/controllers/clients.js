@@ -10,6 +10,7 @@ const cloudinary = require('cloudinary').v2;
 // const crypto = require('crypto');
 cloudinary.config(process.env.CLOUDINARY_URL);
 
+// Filtra todos  clientes  ( usado en el marketplace )
 
 const getAllClientesWithInfo = (req, res) => {
     let query = `
@@ -32,7 +33,8 @@ const getAllClientesWithInfo = (req, res) => {
         i.preparacion, 
         i.estudios, 
         i.vision,
-        c.nombre as categoria
+        c.nombre as categoria,
+        s.nombre as titulo
     FROM 
         usuarios AS u
     LEFT JOIN 
@@ -41,7 +43,8 @@ const getAllClientesWithInfo = (req, res) => {
         categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
     LEFT JOIN solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente';
+        u.rol = "cliente" and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente'
+        and CURRENT_DATE BETWEEN s.fecha_inicio_recaudacion AND s.fecha_fin_recaudacion;
     `;
     
     conexion.query(query, (err, results) => {
@@ -58,6 +61,7 @@ const getAllClientesWithInfo = (req, res) => {
     });
 }
 
+// Filtra clientes por su categoria ( usado en el marketplace )
 
 const getAllClientesByCategory = async (req, res) => {
     let query = `
@@ -79,7 +83,8 @@ const getAllClientesByCategory = async (req, res) => {
         i.preparacion, 
         i.estudios, 
         i.vision,
-        c.nombre as categoria
+        c.nombre as categoria,
+        s.nombre as titulo
     FROM 
         usuarios AS u
     LEFT JOIN 
@@ -89,7 +94,8 @@ const getAllClientesByCategory = async (req, res) => {
         LEFT JOIN 
         solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and u.categoria_persona_id = ? and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente';
+        u.rol = "cliente" and u.categoria_persona_id = ? and s.aprobado = 'Aprobado' and s.estado_inversion = 'Pendiente'
+        and CURRENT_DATE BETWEEN s.fecha_inicio_recaudacion AND s.fecha_fin_recaudacion;
     ;
     `;
     
@@ -132,7 +138,8 @@ const getAllClientesByFilterName =  (req, res) => {
         i.cantidad_maxima_inversiones,
         i.preparacion, 
         i.estudios, 
-        i.vision
+        i.vision,
+        s.nombre as titulo
     FROM 
         usuarios AS u
     LEFT JOIN 
@@ -140,7 +147,8 @@ const getAllClientesByFilterName =  (req, res) => {
     LEFT JOIN 
         solicitudes_inversion as s on u.usuario_id = s.cliente_id
     WHERE 
-        u.rol = "cliente" and s.aprobado = 'Aprobado'and s.estado_inversion = 'Pendiente' and u.nombre like ?;
+        u.rol = "cliente" and s.aprobado = 'Aprobado'and s.estado_inversion = 'Pendiente' and u.nombre like ?
+        and CURRENT_DATE BETWEEN s.fecha_inicio_recaudacion AND s.fecha_fin_recaudacion;
     ;
     `;
     

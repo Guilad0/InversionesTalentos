@@ -268,12 +268,51 @@ const isInversorPhoto = (req, res) => {
  * Obtener destacados
  */
 const getFeatured = (req, res) => {
-  let sql = `SELECT cliente_id, COUNT(*) AS total_inversiones
-        FROM inversiones 
-        WHERE estado = 1 
-        GROUP BY cliente_id
-        ORDER BY total_inversiones DESC
-        LIMIT 5`;
+  let sql = `SELECT 
+    u.usuario_id,
+    u.nombre, 
+    u.apellido, 
+    u.correo, 
+    u.categoria_persona_id,
+    u.username, 
+    u.pais_residencia,
+    u.edad, 
+    u.imagen,
+    u.rol, 
+    i.ocupacion, 
+    u.estado,
+    i.descripcion, 
+    i.monto_inversion, 
+    i.cantidad_maxima_inversiones,
+    i.preparacion, 
+    i.estudios, 
+    i.vision,
+    c.nombre AS categoria,
+    s.nombre AS titulo,
+    COUNT(*) AS total_inversiones
+FROM 
+    usuarios AS u
+LEFT JOIN 
+    informacion AS i ON u.usuario_id = i.cliente_id
+LEFT JOIN 
+    categoria_personas AS c ON u.categoria_persona_id = c.categoria_persona_id
+LEFT JOIN 
+    solicitudes_inversion AS s ON u.usuario_id = s.cliente_id
+WHERE 
+    u.rol = "cliente" 
+    AND s.aprobado = 'Aprobado' 
+    AND s.estado_inversion = 'Pendiente'
+    AND CURRENT_DATE BETWEEN s.fecha_inicio_recaudacion AND s.fecha_fin_recaudacion
+GROUP BY 
+    u.usuario_id, u.nombre, u.apellido, u.correo, u.categoria_persona_id, 
+    u.username, u.pais_residencia, u.edad, u.imagen, u.rol, 
+    i.ocupacion, u.estado, i.descripcion, i.monto_inversion, 
+    i.cantidad_maxima_inversiones, i.preparacion, i.estudios, i.vision, 
+    c.nombre, s.nombre
+ORDER BY 
+    total_inversiones DESC
+LIMIT 5;
+`;
   conexion.query(sql, (err, results) => {
     console.log(results);
     if (err) {

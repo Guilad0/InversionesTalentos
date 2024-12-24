@@ -14,7 +14,7 @@
       <div class="d-none d-sm-block">
       <div class="d-flex flex-wrap justify-content-center">
         <CardClient
-          v-for="client in primerosCinco"
+          v-for="client in clients"
           :key="client.usuario_id"
           :client="client"
           class="animate__animated animate__fadeIn card-client"
@@ -65,9 +65,8 @@ import Button from '../components/Buttons/Button.vue'
 import axios from "axios";
 import LoadingButton from "./Buttons/LoadingButton.vue";
 
-const path = ref("/clients");
+const path = ref("/utilities/getFeatured");
 const { results: clients, getData: getClients } = useFetchData(path);
-const primerosCinco = computed(() => clients.value.slice(0, 5));
 const text = ref('')
 
 

@@ -11,7 +11,7 @@
               <th class="td-custom align-middle custom-size">Inversores</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="Object.keys(inversionesPorCliente).length">
             <tr v-for="(cliente, clienteIndex) in Object.keys(inversionesPorCliente)" :key="clienteIndex">
               <td class="text-start fw-bold">
                 {{ clienteIndex + 1 }}. {{ cliente }}
@@ -25,6 +25,13 @@
                 <button class="btn btn-primary btn-sm" @click="abrirModal(cliente, inversionesPorCliente[cliente])">
                   Ver Inversores
                 </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="3" class="text-center text-muted py-3">
+                No hay datos disponibles para mostrar.
               </td>
             </tr>
           </tbody>
