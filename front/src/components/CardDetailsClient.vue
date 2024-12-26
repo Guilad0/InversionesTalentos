@@ -402,13 +402,14 @@ const loadingValores = ref(false)
 const cargaValoresIniciales = async () => {
   try {
     loadingValores.value = true;
-    const { data } = await axios.get(baseURL + "valores");
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + "/categories/user/" + userId.value);
     console.log('ajsutes', data);
-    tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
-    valorTokens.value = parseInt(data.data[0].valor_token);
+    //tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
+    //valorTokens.value = parseInt(data.data[0].valor_token);
     // monto_tokens_invertir.value = client.value.monto_inversion;
-    rangoMinimo.value = client.value.monto_inversion;
-    rangoMaximo.value = client.value.cantidad_maxima_inversiones;
+    rangoMinimo.value = data.monto_minimo_inversion;
+    rangoMaximo.value = data.monto_maximo_inversion;
+    porcentaje_inversion.value = parseFloat(data.porcentaje_interes);
 
     loadingValores.value = false;
   } catch (error) {
@@ -451,8 +452,8 @@ const calcularGanancias = async () => {
       monto_tokens_invertir.value = parseFloat(monto_tokens_invertir.value);
       console.log(monto_tokens_invertir.value);
       tiempo_inversion.value = parseInt(data.data[0].tiempo_inversion);
-      porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
-      console.log(porcentaje_inversion.value);
+      //porcentaje_inversion.value = parseFloat(data.data[0].porcentaje_inversion);
+      //console.log(porcentaje_inversion.value);
       ganancia_tokens_inv.value =
         monto_tokens_invertir.value * (porcentaje_inversion.value / 100);
     } catch (error) {
