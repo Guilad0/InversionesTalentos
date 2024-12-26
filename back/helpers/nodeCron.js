@@ -41,6 +41,7 @@ async function verifyInvestmentRequest(data) {
         if (total >= data.monto) {
             console.log(total+'===' + data.monto);
             console.log("El monto es suficiente.");
+            // 433415345345345
             //pasar la solicitud de inversion a un estado acorde
         } else {
             console.log("El monto no es suficiente.");
