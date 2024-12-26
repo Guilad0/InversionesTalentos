@@ -23,6 +23,9 @@
       </nav> -->
     </div>
     <div class="content">
+      <div class="text-end p-3">
+        <button @click="checkInvestmentRevert">Revert. Revisar inversiones</button>
+      </div>
       <h4 class="d-block my-2 text-center title pt-4">Solicitudes de Inversiones</h4>
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
@@ -289,6 +292,7 @@ import { ref, onMounted } from "vue";
 import ModalEstadoInversiones from './ModalEstadoInversiones.vue'
 import axios from "axios";
 import { errorAlert, successAlert } from "@/helpers/iziToast";
+import { getHeaderRequest } from "@/helpers/Authenticator";
 const modalRef = ref('')
 const modalRefEstadoInv = ref('')
 const modalRefRevertir = ref('')
@@ -299,6 +303,7 @@ const minInv = ref(0);
 const maxInv = ref(0);
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
 let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudesInversion";
+let BaseURLstandard = import.meta.env.VITE_BASE_URL + "/";
 const currentNav = ref("General");
 const totalSolicitudes = ref(0);
 const solicitudesPendientes = ref(0);
@@ -306,8 +311,10 @@ const solicitudesAprobados = ref(0);
 const solicitudesRechazados = ref(0);
 const observaciones = ref('');
 const msgAprobacion = ref('');
-const idClient = ref(null)
-const loadingTabla = ref(false) 
+const idClient = ref(null);
+const loadingTabla = ref(false);
+const header = getHeaderRequest();
+
 onMounted(async () => {
   loadingTabla.value = true
   await obtenerDatos();
@@ -506,6 +513,15 @@ const revertir =async () =>{
       loadingRev.value = false;
       cleanFields()
     }
+}
+
+const checkInvestmentRevert = async () => { 
+  try{ 
+    const response = await axios.get(BaseURLstandard+'solicitudesInversion/check/RevertInversiones', header);
+    console.log(response);
+  } catch (e) { 
+    console.error(e);
+  }
 }
 
 </script>

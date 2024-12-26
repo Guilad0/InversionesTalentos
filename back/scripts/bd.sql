@@ -231,25 +231,25 @@ INSERT INTO `informacion_inversionista` (`id`, `id_inversionista`, `nombre_compl
 	(17, 143, 'juan', '789789789', 'ci', 'calle aroma', 'Cercado', 'Independiente', 'Autonomo', NULL, NULL, NULL);
 
 -- Volcando estructura para tabla railway.inversiones
-CREATE TABLE IF NOT EXISTS `inversiones` (
+CREATE TABLE `inversiones` (
   `inversion_id` int NOT NULL AUTO_INCREMENT,
+  `solicitud_inv_id` int NOT NULL,
   `cliente_id` int DEFAULT NULL,
   `inversor_id` int DEFAULT NULL,
-  `monto` decimal(10,2) DEFAULT '0.00',
+  `monto` int DEFAULT '0',
   `tipo_ganancia` enum('Monto fijo','Porcentual') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ganancia_estimada` decimal(10,2) DEFAULT NULL,
   `fecha_deposito` date DEFAULT NULL,
   `fecha_devolucion` date DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
-  `solicitud_inv_id` int DEFAULT NULL,
   PRIMARY KEY (`inversion_id`),
   KEY `cliente_id` (`cliente_id`),
   KEY `inversor_id` (`inversor_id`),
-  KEY `fk_sol_inv_idx` (`solicitud_inv_id`),
-  CONSTRAINT `fk_sol_inv` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `solicitud_inv_id` (`solicitud_inv_id`),
   CONSTRAINT `inversiones_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
-  CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`),
+  CONSTRAINT `inversiones_ibfk_3` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
 -- Volcando datos para la tabla railway.inversiones: ~12 rows (aproximadamente)
 INSERT INTO `inversiones` (`inversion_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`, `solicitud_inv_id`) VALUES

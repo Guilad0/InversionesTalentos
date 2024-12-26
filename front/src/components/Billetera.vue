@@ -270,6 +270,7 @@ const obtenerDolares_Inversionista = async () => {
 const obtenerTokens_Inversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + 'totalTokens/' + inversionista_ID.value);
+    console.log('tokens del inversionista : '+ data.data);
     tokensIngresan.value = data.data[0].token;
     tokensEgresan.value = data.data[1].token || 0;
     tokensTOTAL.value = tokensIngresan.value - tokensEgresan.value;
@@ -300,6 +301,7 @@ const calcularTokens = async () => {
     try {
       montoLimite.value = montoUsd.value;
       const { data } = await axios.get(baseURL + 'valores');
+      console.log("tokens calculado: "+ data.data);
       valores.value = data.data;
       let valor = parseFloat(data.data[0].valor_token)
       montoUsd.value = parseFloat(montoUsd.value) || 0;
@@ -465,6 +467,7 @@ const inversionistaInvertir = async () => {
 const obtenerTokens_Cliente = async () => {
   try {
     const { data } = await axios.get(baseURL + 'totalTokens/' + cliente_ID.value);
+    console.log('tokens del cliente: '+ data);
     tokensIngresan.value = data.data[0].token;
     tokensEgresan.value = data.data[1].token || 0;
     tokensTOTAL.value = parseFloat(tokensIngresan.value) - parseFloat(tokensEgresan.value);

@@ -6,7 +6,7 @@ var cors = require('cors');
 var fileUpload = require('express-fileupload')
 var bodyParser = require('body-parser');
 const cron = require('node-cron');
-const { checkInvestmentRequest } = require('./helpers/nodeCron.js')
+const { checkInvestmentRequest } = require('./helpers/nodeCron.js');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

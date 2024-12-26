@@ -20,6 +20,7 @@ const {
   procesarInversionByUser,
   getSolicitudByClienteId,
 } = require("../controllers/solicitudesInversion");
+const { checkInvestmentRequest } = require('../helpers/nodeCron.js');
 
 router.get("/", getSolicitudesInversion);
 router.get("/aprobados", getSolicitudesInversionAprobados);
@@ -40,7 +41,7 @@ router.put("/revertirInversion/:id", revertirInversion),
 router.put("/cambiarEstadoProceso/:id", cambiarEstadoProceso);
 router.get("/getSolicitudByClienteId/:id", getSolicitudByClienteId);
 
-
+router.get('/check/RevertInversiones', checkInvestmentRequest);
 
 
 module.exports = router;
