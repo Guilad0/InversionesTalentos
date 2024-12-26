@@ -230,7 +230,7 @@ onMounted(async () => {
   await obtenerTotales();
   await obtenerGanancias();
   await obtenerUsuarios();
-  await getReportsTotals()
+  // await getReportsTotals()
 })
 
 const series = ref([]);
@@ -470,31 +470,32 @@ const total_comisiones = ref(0)
 const movTokens = ref({})
 const movRetiros = ref({})
 const movDeveoluciones = ref({})
-const getReportsTotals = async () => {
-  try {
-    const { data } = await axios.get(baseURL + '/mayorInversionista', header)
-    console.log("DATA",data);
-    nombre_inversor.value = data.data[0].nombre_inversor
-    total_inversiones.value = data.data[0].total_inversiones
-    total_tokens.value = data.data[0].total_tokens
-    const { data: data2 } = await axios.get(baseURL + '/mayorCliente', header)
-    console.log("DATA2",data2);
-    nombre_cliente.value = data2.data[0].nombre_cliente
-    total_inversiones_cliente.value = data2.data[0].total_inversiones
-    total_tokens_cliente.value = data2.data[0].total_tokens
-    const { data: data3 } = await axios.get(baseURL + '/sumaComisiones', header)
-    console.log("DATA3",data3);
-    total_comisiones.value = data3.data[1].total_comisiones
-    const { data: data4 } = await axios.get(baseURL + '/totalMovimientos', header)
-    console.log("DATA4",data4);
-    movTokens.value = data4.data[0];
-    movRetiros.value = data4.data[3];
-    movDeveoluciones.value = data4.data[5];
-  } catch (error) {
-    errorAlert('Error al realizar la peticion', 'Error')
-    console.log(error);
-  }
-}
+
+// const getReportsTotals = async () => {
+//   try {
+//     const { data } = await axios.get(baseURL + '/mayorInversionista', header)
+//     console.log("DATA",data);
+//     nombre_inversor.value = data.data[0].nombre_inversor
+//     total_inversiones.value = data.data[0].total_inversiones
+//     total_tokens.value = data.data[0].total_tokens
+//     const { data: data2 } = await axios.get(baseURL + '/mayorCliente', header)
+//     console.log("DATA2",data2);
+//     nombre_cliente.value = data2.data[0].nombre_cliente
+//     total_inversiones_cliente.value = data2.data[0].total_inversiones
+//     total_tokens_cliente.value = data2.data[0].total_tokens
+//     const { data: data3 } = await axios.get(baseURL + '/sumaComisiones', header)
+//     console.log("DATA3",data3);
+//     total_comisiones.value = data3.data[1].total_comisiones
+//     const { data: data4 } = await axios.get(baseURL + '/totalMovimientos', header)
+//     console.log("DATA4",data4);
+//     movTokens.value = data4.data[0];
+//     movRetiros.value = data4.data[3];
+//     movDeveoluciones.value = data4.data[5];
+//   } catch (error) {
+//     errorAlert('Error al realizar la peticion', 'Error')
+//     console.log(error);
+//   }
+// }
 
 const exportToExcel = () => {
   if (typeReport.value == "mayorInversionistaCustom" && reports.value.length > 0) {
