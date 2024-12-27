@@ -4,7 +4,8 @@
                <div class="d-flex flex-wrap container">
                     <div class="col">
                          <h3 class="text-center mb-3">
-                              Detalles Inversion
+                              Detalles Inversion 
+                              <label v-if="props.results[0].estado_inversion == 'Pendiente'">( Proceso de Recaudacion {{ ((props.results[0].monto - props.results[0].monto_faltante) / props.results[0].monto * 100).toFixed(2) }}% )</label>
                          </h3>
                          <div class="d-flex justify-content-between ">
                               <div class="col-5">
@@ -81,7 +82,7 @@
 
                     </div>
                </div>
-               <div v-if="props.results[0].aprobado == 'Pendiente' && props.results[0].estado_inversion == 'Inicial'"
+               <div v-if="props.results[0].aprobado == 'Aprobado' && props.results[0].estado_inversion == 'Inicial'"
                     class="text-center mt-3">
                     <button :disabled="isLoading == true" class="btn btn-gray rounded-5 btn-sm me-2" type="button"
                          @click="aceptarInversion">

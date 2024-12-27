@@ -53,7 +53,8 @@ import LoadingButton from './Buttons/LoadingButton.vue';
 
 const props = defineProps({
   rol: {
-    type: String,
+    type: [String, null],
+    default: null,
     required: true
   }
 })

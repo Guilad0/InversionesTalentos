@@ -43,7 +43,7 @@ export const infoAlert = (message, title, position) => {
         position: "bottomRight",
         closeOnEscape:true,
         closeOnClick:true,  
-        timeout: 30000,
+        timeout: 5000,
       })
 }
 
