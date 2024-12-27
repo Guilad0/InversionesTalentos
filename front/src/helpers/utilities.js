@@ -48,7 +48,7 @@ export const getUser = async () => {
       return null;
     }
     const { data } = await axios.get(
-      baseURL+"/users/getUserById/" + user.usuario_id, header
+      baseURL+"/users/getUserById/" + user.usuario_id, {header}
     );
 
     localStorage.setItem("usuario", JSON.stringify(data.results[0]));

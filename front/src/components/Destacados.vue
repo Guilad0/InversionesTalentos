@@ -101,7 +101,8 @@ const saveText =async() =>{
 }
 const props = defineProps({
   rol:{
-    type:String,
+    type: [String, null],
+    default: null,
   required:true
   }
 })

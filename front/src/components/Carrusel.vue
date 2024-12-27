@@ -123,8 +123,8 @@ const cleanImage = () => {
 }
 const props = defineProps({
   rol: {
-    type: String,
-    required: true
+    type: [String, null], 
+    default: null
   }
 })
 const loading = ref(false);
