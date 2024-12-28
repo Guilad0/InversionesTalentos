@@ -219,9 +219,9 @@ const porcentajeGananciaPlataforma = ref(0);
 const pagoMensual = ref("");
 const montoTotal = ref("");
 
-onMounted(() => {
-  obtenetPorcentajeGananciaPlataforma();
-  obtenerPorcentajeInteres();
+onMounted(async() => {
+ await obtenetPorcentajeGananciaPlataforma();
+ await obtenerPorcentajeInteres();
   console.log(user.value);
   if (user) {
     cliente_id.value = user.value.usuario_id;
