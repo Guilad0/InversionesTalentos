@@ -423,14 +423,14 @@ const createSolicitudInversion = (req, res) => {
       const { monto_minimo_inversion, monto_maximo_inversion } =
         categoriaResults[0];
 
-      let aprobado = "Aprobado";
+      let aprobado = "Inicial";
       if (monto > monto_maximo_inversion || monto < monto_minimo_inversion) {
-        aprobado = "Pendiente";
+        aprobado = "Inicial";
       }
-
+      const currentDate = new Date()
       const query =
-        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, porcentaje_interes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+        "INSERT INTO solicitudes_inversion (cliente_id, nombre, descripcion, fecha_inicio_recaudacion, fecha_fin_recaudacion, monto, cantidad_pagos, fecha_inicio_pago, fecha_fin_pago, aprobado, porcentaje_interes,fecha_solicitud) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+      
       conexion.query(
         query,
         [
@@ -445,6 +445,7 @@ const createSolicitudInversion = (req, res) => {
           fecha_fin_pago,
           aprobado,
           porcentaje_interes,
+          currentDate
         ],
         (err, results) => {
           if (err) {
@@ -784,6 +785,56 @@ const getSolicitudByClienteId = (req, res) => {
   });
 };
 
+//cambia el campo aprobado de Inicial a Pendiente
+const aprobarAutomaticamenteSolicitudes = () =>{
+  let query = 'select id,fecha_solicitud from solicitudes_inversion'
+  conexion.query(query,(err, results) =>{
+    if (err) {
+      console.error("Error al obtener las solicitudes de inversión:", err);
+      return;
+    }
+    const currentDate = new Date();
+    results.forEach(inv => {
+        let fecha_solicitud = new Date(inv.fecha_solicitud);
+        const diferenciaMin = currentDate - fecha_solicitud
+        if (diferenciaMin > 10800000) {
+            query = `update solicitudes_inversion set aprobado = 'Pendiente' where id = ${inv.id}`;
+            conexion.query(query,(err, results) =>{
+              if (err) {
+                console.error("Error al obtener las solicitudes de inversión", err);
+                return;
+              }
+            })
+        } 
+    });
+  })
+}
+//cambia el campo aprobado de Pendiente a Aprobado
+const aprobarAutomaticamenteInversiones = () =>{
+  let query = `select id,fecha_solicitud from solicitudes_inversion where aprobado = 'Pendiente'`
+  conexion.query(query,(err, results) =>{
+    if (err) {
+      console.error("Error al obtener las solicitudes de inversión:", err);
+      return;
+    }
+    const currentDate = new Date();
+    results.forEach(inv => {
+        let fecha_solicitud = new Date(inv.fecha_solicitud);
+        const diferenciaMin = currentDate - fecha_solicitud
+        if (diferenciaMin > 432000000) {
+            query = `update solicitudes_inversion set aprobado = 'Aprobado', estado_inversion = 'Pendiente' where id = ${inv.id}`;
+            conexion.query(query,(err, results) =>{
+              if (err) {
+                console.error("Error al obtener las solicitudes de inversión", err);
+                return;
+              }
+            })
+        } 
+    });
+  })
+}
+
+
 
 module.exports = {
   getSolicitudesInversion,
@@ -803,5 +854,7 @@ module.exports = {
   revertirInversion,
   cambiarEstadoProceso,
   getSolicitudByClienteId,
-  procesarInversionByUser
+  procesarInversionByUser,
+  aprobarAutomaticamenteSolicitudes,
+  aprobarAutomaticamenteInversiones
 };

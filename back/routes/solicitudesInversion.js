@@ -40,4 +40,5 @@ router.put("/revertirInversion/:id", revertirInversion),
 router.put("/cambiarEstadoProceso/:id", cambiarEstadoProceso);
 router.get("/getSolicitudByClienteId/:id", getSolicitudByClienteId);
 
+
 module.exports = router;

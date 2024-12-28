@@ -67,7 +67,7 @@
             <thead>
               <tr class="table-secondary">
                 <th class="td-custom align-middle custom-size">ID</th>
-                <th class="td-custom align-middle custom-size">Nombre Usuario</th>
+                <th class="td-custom align-middle custom-size">Motivo</th>
                 <th class="td-custom align-middle custom-size">Descripcion</th>
                 <th class="td-custom align-middle custom-size">Periodo de Recaudacion</th>
                 <th class="td-custom align-middle custom-size">Periodo de Pagos</th>
@@ -140,7 +140,8 @@
               </tr>
             </tbody>
           </table>
-
+          <label class="pb-3">
+  <strong>Nota:</strong> Las solicitudes en estado inicial serán aprobadas automáticamente dentro de un plazo máximo de 72 horas.</label>
           <!-- Modal Aprobar Inv -->
           <div class="modal fade" id="aprobarInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -174,7 +175,7 @@
                   </div>
                   <div class="col px-5 row">
                   </div>
-                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ montoFinal*(porcentaje_interes/100)+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }} {{ ajustes.tipo_moneda }} <br>
+                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ (montoFinal*(parseInt(porcentaje_interes)/100))+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }} {{ ajustes.tipo_moneda }} <br>
                     Los parámetros establecidos no podrán ser modificados durante
                     el proceso de recaudación.
                    </p>
@@ -295,7 +296,7 @@ const modalRefRevertir = ref('')
 const modalAprobarInv = ref('')
 const solicitudes = ref([]);
 const paginacion = ref({});
-const minInv = ref(0);
+const minInv = ref(1);
 const maxInv = ref(0);
 // let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
 let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudesInversion";
@@ -414,7 +415,6 @@ const idInv = ref('')
 const actInv = ref('')
 const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) => {
   if (action == 'Pendiente') {
-    montoFinal.value = interes * monto;
     montoFinal.value += Number(monto) 
     porcentaje_interes.value = interes
     observaciones.value = '';
@@ -422,7 +422,7 @@ const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) 
     const valorTokens = monto * ajustes.value.valor_token;
     idInv.value = id;
     actInv.value = action;
-    msgAprobacion.value = `La inversion con el identificador ${id} perteneciente al usuario ${nombreUser}, con un monto a requerir de ${monto}$
+    msgAprobacion.value = `La inversion con el identificador ${id} referente a  ${nombreUser}, con un monto a requerir de ${parseInt(monto)}$
     equivalente a ${valorTokens}${ajustes.value.tipo_moneda}, sera aprobado despues de configurar los parametros de inversion.`;
     const modal = new bootstrap.Modal(modalAprobarInv.value);
     modal.show();

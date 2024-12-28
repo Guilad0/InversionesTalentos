@@ -89,4 +89,13 @@ app.use('/reporteReversion', reporteReversionRouter);
 app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
 
 
+const { aprobarAutomaticamenteSolicitudes } = require("./controllers/solicitudesInversion");
+const { aprobarAutomaticamenteInversiones } = require("./controllers/solicitudesInversion");
+setInterval(() => {
+  aprobarAutomaticamenteSolicitudes();
+  aprobarAutomaticamenteInversiones();
+}, 86400000);
+
+
+
 module.exports = app;
