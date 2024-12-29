@@ -35,6 +35,7 @@ var previewRouter = require('./routes/preview');
 var solicitudesInversionRouter = require('./routes/solicitudesInversion');
 var reporteReversionRouter = require('./routes/reporteReversion');
 var reporteSolicitudesInversionRouter = require('./routes/reporteSolicitudesInversion');
+var planPagosRouter = require('./routes/planPagos');
 
 var app = express();
 
@@ -87,6 +88,7 @@ app.use('/preview', previewRouter);
 app.use('/solicitudesInversion', solicitudesInversionRouter);
 app.use('/reporteReversion', reporteReversionRouter);
 app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
+app.use('/planPagos', planPagosRouter);
 
 
 const { aprobarAutomaticamenteSolicitudes } = require("./controllers/solicitudesInversion");
