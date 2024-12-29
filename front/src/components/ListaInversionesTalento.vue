@@ -1,11 +1,13 @@
 <template>
      <main>
-          <div v-if="props.activeTabCli == 0">
+          <div v-if="props.activeTabCli == 0 && props.results[0].estado_inversion == 'Pendiente'">
                <div class="d-flex flex-wrap container">
                     <div class="col">
                          <h3 class="text-center mb-3">
-                              Detalles Inversion 
-                              <label v-if="props.results[0].estado_inversion == 'Pendiente'">( Proceso de Recaudacion {{ ((props.results[0].monto - props.results[0].monto_faltante) / props.results[0].monto * 100).toFixed(2) }}% )</label>
+                              Detalles Inversion <br>
+                              <label class="fs-6" v-if="props.results[0].estado_inversion == 'Pendiente'">( Proceso de
+                                   Recaudacion {{ ((props.results[0].monto - props.results[0].monto_faltante) /
+                                        props.results[0].monto * 100).toFixed(2) }}% )</label>
                          </h3>
                          <div class="d-flex justify-content-between ">
                               <div class="col-5">
@@ -56,7 +58,8 @@
                          </h3>
                          <div class="d-flex justify-content-center flex-wrap ">
                               <div class=" col ">
-                                   <button class="btn  btn-gray rounded-5 btn-sm mb-3 position-relative m-auto px-2"
+                                   <button v-if="props.results[0].inversores.length > 0"
+                                        class="btn  btn-gray rounded-5 btn-sm mb-3 position-relative m-auto px-2"
                                         type="button" @click="toggleCollapse" :aria-expanded="isCollapsed.toString()"
                                         aria-controls="collapseExample">
                                         {{ isCollapsed ? 'Inversores' : 'Cerrar' }}
@@ -65,6 +68,7 @@
                                              {{ props.results[0].inversores.length }}
                                         </span>
                                    </button>
+                                   <label v-else>Actualmente, no dispone de inversores.</label>
                                    <div class="collapse text-start ms-4" :id="collapseId"
                                         v-bind:class="{ show: !isCollapsed }">
                                         <div class="border border-1 p-3 rounded-3 "
@@ -82,11 +86,11 @@
 
                     </div>
                </div>
-               <div v-if="props.results[0].aprobado == 'Aprobado' && props.results[0].estado_inversion == 'Inicial'"
+               <div v-if="props.results[0].aprobado == 'Pendiente' && props.results[0].estado_inversion == 'Inicial'"
                     class="text-center mt-3">
                     <button :disabled="isLoading == true" class="btn btn-gray rounded-5 btn-sm me-2" type="button"
                          @click="aceptarInversion">
-                         Iniciar Inversion
+                         Aprobar Inversion
                     </button>
                     <button :disabled="isLoading == true" class="btn btn-gray rounded-5 btn-sm" type="button"
                          @click="cancelarInversion">
@@ -99,6 +103,70 @@
                          @click="revertirInversion">
                          Revertir Inversion
                     </button>
+               </div>
+          </div>
+          <div v-if="props.activeTabCli == 0 && props.results[0].estado_inversion == 'Proceso'"
+               class="animate__animated animate__fadeIn">
+               <h3 class="text-center mb-3">
+                    Plan de Pagos de Inversión ({{ porcentaje }}%)
+               </h3>
+               <div class="container-custom animate__animated  animate__fadeIn ">
+                    <div class="m-auto text-center">
+                         <label> <strong>Total de Pagos: </strong> {{ pagos.length }} </label> <br>
+                         <label> <strong>Pagos Realizados: </strong> ({{ pagados }}/{{ pagos.length }}) </label> <br>
+                         <label> <strong>Monto Pagado: </strong> ( {{ parseFloat(cantidadPagada) }}/{{
+                              parseFloat(cantidadFinal) }}) USDT </label> <br>
+                         <label> <strong>Siguiente pago: </strong> #{{ sigPago }} </label> <br>
+                         <label> <strong>Saldo Disponible: </strong> {{ saldo }} </label>
+                    </div>
+                    <p class="text-center mb-0 mt-2">Inicio de Pagos</p>
+                    <div class="timeline ">
+                         <div v-for="(pago, index) in pagos" :key="pago"
+                              class="d-flex justify-content-center  timeline-item  m-auto">
+                              <div class="col-6 ">
+                                   <div class="card my-3 shadow"
+                                        :class="{ 'bg-degrade text-light': pago.estado_pago == 'Pagado' }">
+                                        <div class="card-body  ">
+                                             <p class="card-text m-0 text-center fw-semibold">Pago {{ index + 1 }}</p>
+                                             <div class="d-flex justify-content-center">
+                                                  <div class="col">
+                                                       <p class="card-text m-0"><strong>Monto:</strong> {{
+                                                            parseFloat(pago.monto_pago) }}</p>
+                                                       <p class="card-text m-0"><strong>Fecha limite:</strong> {{
+                                                            pago.fecha_programada.slice(0, 10) }}</p>
+                                                       <p class="card-text m-0"><strong>Estado: </strong>
+                                                            <label v-if="pago.estado_pago == 'Pagado'"> Pagado <i
+                                                                      class="fa-regular fa-circle-check text-success"></i>
+                                                            </label>
+                                                            <label v-if="pago.estado_pago == 'Pendiente'"> Pendiente <i
+                                                                      class="fa-regular fa-clock text-danger"></i></label>
+                                                       </p>
+                                                       <p class="card-text m-0"><strong>Fecha Cancelada: </strong>
+                                                            <label v-if="pago.fecha_pagada == null">No
+                                                                 Disponible</label>
+                                                            <label v-else>{{ pago.fecha_pagada.slice(0, 10) }}</label>
+                                                       </p>
+                                                  </div>
+                                                  <div class="col text-end m-auto">
+                                                       <button v-if="sigPago == (index + 1)"
+                                                            :disabled="loadingButton == true"
+                                                            class="btn btn-orange btn-sm rounded-5"
+                                                            @click="pagar(pago)">Pagar</button>
+                                                       <button v-else class="btn btn-orange btn-sm rounded-5" disabled>
+                                                            <label v-if="pago.estado_pago == 'Pendiente'"> No Disponible
+                                                            </label>
+                                                            <label v-if="pago.estado_pago == 'Pagado'"> Pagado </label>
+                                                       </button>
+
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                    </div>
+                    <p class="text-center">Fin de Pagos</p>
                </div>
           </div>
           <div v-if="props.activeTabCli == 1">
@@ -196,9 +264,11 @@
                                         <div class="col">
                                              <strong class="me-2 my-1">Titulo</strong><br> {{ inv.nombre }}<br>
                                              <strong class="me-2 my-1">Motivo</strong><br> {{ inv.descripcion }}<br>
-                                             <strong class="me-2 my-1">Cantidad Solicitada:</strong><br> {{ inv.monto }} USDT<br>
-                                             <strong class="me-2 my-1">Fecha de solicitud:</strong><br> {{ inv.monto }} USDT<br>
-                                       
+                                             <strong class="me-2 my-1">Cantidad Solicitada:</strong><br> {{ inv.monto }}
+                                             USDT<br>
+                                             <strong class="me-2 my-1">Fecha de solicitud:</strong><br> {{ inv.monto }}
+                                             USDT<br>
+
                                         </div>
                                         <div class="col">
                                              <strong class="me-2 my-1">Motivo del rechazo</strong><br> {{ inv.nombre
@@ -207,7 +277,7 @@
                                              {{ inv.porcentaje_interes }}<br>
                                              <strong class="me-2 my-1">Rechazado por:</strong><br>
                                              {{ inv.porcentaje_interes }}<br>
-                                        
+
                                         </div>
                                    </div>
                               </div>
@@ -215,10 +285,13 @@
                     </div>
                </div>
           </div>
+          <label v-if="props.results[0].aprobado == 'Pendiente'" class="ms-2 mt-3"> <strong>Nota: </strong>La solicitud
+               será automáticamente aprobada por el sistema hasta el {{
+                    getFechaAutomaticaDeAprobacion(props.results[0].fecha_solicitud) }} </label>
      </main>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import { errorAlert } from '@/helpers/iziToast';
@@ -237,7 +310,21 @@ const props = defineProps({
      },
 })
 
+const getFechaAutomaticaDeAprobacion = (fecha) => {
+     const date = new Date(fecha);
+     date.setDate(date.getDate() + 4);
+     return date.toISOString().slice(0, 10)
+}
 
+const saldo = ref(0)
+const getTokensCliente = async () => {
+     try {
+          const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/billetera/totalTokens/' + props.results[0].cliente_id);
+          saldo.value = data.data[0].token - data.data[1].token;
+     } catch (error) {
+          console.log(error);
+     }
+}
 
 const aceptarInversion = async () => {
      const { isConfirmed } = await Swal.fire({
@@ -338,18 +425,88 @@ const revertirInversion = async () => {
 const emit = defineEmits(['inversionAceptada']);
 const currentDay = ref(new Date()); // Timestamp de la fecha actual
 const fechaInv = ref(new Date(props.results[0].fecha_inicio_recaudacion));
+const pagos = ref([])
+const sigPago = ref(0)
+const porcentaje = ref(0)
+const cantidadPagada = ref(0)
+const cantidadFinal = ref(0)
 
-
+onMounted(async () => {
+     if (!props.results || props.results.length === 0) {
+          console.error("Error: No se encontraron resultados.");
+     } else if (props.results[0].estado_inversion === 'Proceso') {
+          try {
+               await getTokensCliente()
+               const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/planPagos/getPlanPagosByIdSolicitud/' + props.results[0].id)
+               pagos.value = data.results;
+               pagados.value = data.pagados;
+               sigPago.value = data.sigPago;
+               porcentaje.value = data.porcentaje;
+               cantidadPagada.value = data.cantidadPagada;
+               cantidadFinal.value = (parseFloat(props.results[0].monto) * (parseFloat(props.results[0].porcentaje_interes / 100))) + parseFloat(props.results[0].monto)
+          } catch (error) {
+               console.log(error);
+          }
+     }
+})
 
 watch(
      () => props.activeTabCli,
      (newVal, oldVal) => {
 
-
      }
 )
+const loadingButton = ref(false)
+const pagar = async (pago) => {
+     console.log(pago);
+     if (saldo.value < pago.monto_pago) {
+          errorAlert('No dispone de los fondos necesarios para realizar la operación', 'Fondos insuficientes');
+          return
+     }
+     loadingButton.value = true
+     const data = {
+          pago,
+          totalPagos: pagos.value.length,
+          inversores: props.results[0].inversores,
+          numPago: sigPago.value
+     }
+      try {
+           await axios.post(import.meta.env.VITE_BASE_URL+'/planPagos',data);
+           if (sigPago.value == pagos.value.length) {
+          Swal.fire({
+               title: "Felicidades!!!",
+               text: "El proceso de inversión ha finalizado exitosamente. Todas las cuotas han sido abonadas a sus respectivos inversores en su totalidad.",
+               imageUrl: "https://cdn-icons-gif.flaticon.com/16072/16072637.gif",
+               imageWidth: 300,
+               imageHeight: 300,
+               imageAlt: "Custom image",
+               confirmButtonColor: "#FE8330",
+               confirmButtonText: "Aceptar",
+               allowOutsideClick: false,
+               allowEscapeKey: false,   
+          }).then((result) => {
+               if (result.isConfirmed) {
+                    loadingButton.value = false;
+                    emit('inversionAceptada');
+               }
+          });
+          return;
+     }
+           emit('inversionAceptada');
+      } catch (error) {
+           errorAlert('No dispone de los fondos necesarios para realizar la operación', error.response.data.msg);
+      }finally{
+           loadingButton.value = false
+      }
+  
+
+
+  
+}
+
 const collapseId = ref('collapseExample')
 const isCollapsed = ref(true)
+const pagados = ref(0)
 
 const toggleCollapse = () => {
      isCollapsed.value = !isCollapsed.value
@@ -358,5 +515,45 @@ const toggleCollapse = () => {
 <style scoped>
 .custom-border {
      border-right: 1px solid var(--yellow-orange);
+}
+
+.timeline {
+     position: relative;
+     padding: 1rem 0;
+}
+
+.timeline::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     bottom: 0;
+     left: 50%;
+     width: 2px;
+     background-color: var(--yellow-orange);
+     transform: translateX(-50%);
+}
+
+.timeline-item {
+     position: relative;
+     padding: 1rem 2rem;
+     margin-bottom: 2rem;
+}
+
+.timeline-item::after {
+     content: '';
+     position: absolute;
+     top: 0.5rem;
+     left: 50%;
+     width: 1rem;
+     height: 1rem;
+     background-color: var(--yellow-orange);
+     border-radius: 50%;
+     transform: translateX(-50%);
+}
+
+.container-custom {
+     max-height: 45vh;
+     overflow-y: auto;
+
 }
 </style>

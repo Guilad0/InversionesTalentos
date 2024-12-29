@@ -7,7 +7,7 @@
                <div class="col-10  container bg-degrade rounded-3 py-4">
                     <h1 class="text-light text-center font-bold  title mt-3 mb-2 p-0">Gestion de Inversiones</h1>
                     <div class="d-flex justify-content-center mb-3">
-                         <button v-for="(tabCli, index) in tabsCli" :key="index" class="button-container rounded-5"
+                         <button v-for="(tabCli, index) in tabsCli" :key="index" class="button-container rounded-5  text-dark hover-custom"
                               :class="[
                                    'animate__animated',
                                    'animate__fadeInUp',
@@ -132,5 +132,8 @@ button {
      text-decoration: underline;
      text-underline-offset: 5px;
 
+}
+.hover-custom:hover{
+     color: wheat !important;
 }
 </style>
