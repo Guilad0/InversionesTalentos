@@ -42,14 +42,15 @@ CREATE TABLE IF NOT EXISTS `ajustes` (
   `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_moneda` char(50) COLLATE utf8mb4_unicode_ci DEFAULT 'USDT',
   PRIMARY KEY (`ajuste_id`),
   KEY `admin_id` (`admin_id`),
   CONSTRAINT `admin_id` FOREIGN KEY (`admin_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla railway.ajustes: ~1 rows (aproximadamente)
-INSERT INTO `ajustes` (`ajuste_id`, `comision_fija_ganancia`, `comision_porcentual_ganancia`, `comision_fija_retiro`, `comision_porcentual_retiro`, `tiempo_minimo_inversion`, `tiempo_maximo_inversion`, `sancion_porcentual_retraso`, `estado`, `valor_token`, `admin_id`, `image1`, `image2`, `image3`, `textHome`, `partners`, `propositoText`, `proposito_imagen`, `video`, `logo`, `nombre`) VALUES
-	(6, NULL, 5.00, NULL, 4.00, 3, 3, NULL, 1, 300.00, 23, 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023774/home/image1.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023791/home/image2.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734024034/home/image3.png', 'Queremos ayudar a todos los talentos profesionales en áreas como la ingeniería, tecnología y más, a desarrollar sus carreras, aprovechando el apoyo financiero de todos sus seguidores y entusiastas.', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734019144/home/partners.png', 'Ser el aliado líder en el crecimiento financiero de nuestros clientes, ofreciendo soluciones de inversión innovadoras, seguras y responsables, que generen valor sostenible en el tiempo. Aspiramos a transformar la industria de inversiones mediante el uso de tecnología avanzada, transparencia y compra', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732722280/home/proposito_imagen.png', 'https://www.youtube.com/watch?v=aO5GKcWe-FA', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732894553/home/logo.png', 'Slice2.0');
+INSERT INTO `ajustes` (`ajuste_id`, `comision_fija_ganancia`, `comision_porcentual_ganancia`, `comision_fija_retiro`, `comision_porcentual_retiro`, `tiempo_minimo_inversion`, `tiempo_maximo_inversion`, `sancion_porcentual_retraso`, `estado`, `valor_token`, `admin_id`, `image1`, `image2`, `image3`, `textHome`, `partners`, `propositoText`, `proposito_imagen`, `video`, `logo`, `nombre`, `tipo_moneda`) VALUES
+	(6, NULL, 5.00, NULL, 4.00, 3, 3, NULL, 1, 1.00, 23, 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023774/home/image1.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023791/home/image2.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734024034/home/image3.png', 'Queremos ayudar a todos los talentos profesionales en áreas como la ingeniería, tecnología y más, a desarrollar sus carreras, aprovechando el apoyo financiero de todos sus seguidores y entusiastas.', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734019144/home/partners.png', 'Ser el aliado líder en el crecimiento financiero de nuestros clientes, ofreciendo soluciones de inversión innovadoras, seguras y responsables, que generen valor sostenible en el tiempo. Aspiramos a transformar la industria de inversiones mediante el uso de tecnología avanzada, transparencia y compra', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732722280/home/proposito_imagen.png', 'https://www.youtube.com/watch?v=aO5GKcWe-FA', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732894553/home/logo.png', 'Slice2.0', 'USDT');
 
 -- Volcando estructura para tabla railway.categoria_personas
 CREATE TABLE IF NOT EXISTS `categoria_personas` (
@@ -59,19 +60,26 @@ CREATE TABLE IF NOT EXISTS `categoria_personas` (
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   `monto_minimo_inversion` int DEFAULT '0',
   `monto_maximo_inversion` int DEFAULT '0',
+  `porcentaje_interes` decimal(5,2) DEFAULT '0.00',
   PRIMARY KEY (`categoria_persona_id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.categoria_personas: ~7 rows (aproximadamente)
-INSERT INTO `categoria_personas` (`categoria_persona_id`, `imagen`, `nombre`, `estado`, `monto_minimo_inversion`, `monto_maximo_inversion`) VALUES
-	(16, '983e1d00-0170-4039-80a7-d70a8ed525da.png', 'Sin categoria ', 1, 0, 0),
-	(18, 'c09ad69e-3191-4065-b46b-3b36099bd487.jpg', 'Desarrollo de software Backend', 1, 0, 0),
-	(19, '33dfdf61-c8ef-43af-aa34-8a11e5a89e11.png', 'Diseño Gráfico', 1, 1000, 5000),
-	(20, '2a01efb4-5ed5-43af-9a14-c83a935a56e3.png', 'Desarrollo de software Frontend', 1, 0, 0),
-	(26, '7a4a1fe7-366e-42f3-a748-62fc7a23a0d0.png', 'Arquitectura ', 0, 0, 0),
-	(47, '4d02bfa3-e79c-44e4-af8b-9f4207751ca0.jpg', 'Ingeniería', 1, 5000, 20000),
-	(54, '586b55a9-02e2-4429-9992-4c03ca1a4390.jpg', 'Diseño Gráfico 2', 1, 100, 10000);
+-- Volcando datos para la tabla railway.categoria_personas: ~13 rows (aproximadamente)
+INSERT INTO `categoria_personas` (`categoria_persona_id`, `imagen`, `nombre`, `estado`, `monto_minimo_inversion`, `monto_maximo_inversion`, `porcentaje_interes`) VALUES
+	(16, '983e1d00-0170-4039-80a7-d70a8ed525da.png', 'Chofer', 1, 1000, 5000, 5.00),
+	(18, 'c09ad69e-3191-4065-b46b-3b36099bd487.jpg', 'Desarrollo de software Backend', 0, 5000, 10000, 2.00),
+	(19, '33dfdf61-c8ef-43af-aa34-8a11e5a89e11.png', 'Diseño Gráfico', 0, 1000, 5000, 3.00),
+	(20, '2a01efb4-5ed5-43af-9a14-c83a935a56e3.png', 'Desarrollo de software Frontend', 1, 2000, 5000, 3.00),
+	(26, '7a4a1fe7-366e-42f3-a748-62fc7a23a0d0.png', 'Arquitectura ', 0, 0, 0, 4.00),
+	(47, '4d02bfa3-e79c-44e4-af8b-9f4207751ca0.jpg', 'Ingeniería', 1, 5000, 20000, 5.00),
+	(54, '586b55a9-02e2-4429-9992-4c03ca1a4390.jpg', 'Diseño Gráfico 3', 1, 8000, 10000, 5.00),
+	(60, '3458904f-cc6b-4a94-b2de-364234f04e73.png', 'Prueba', 1, 222, 333, 5.03),
+	(61, 'a6c254d3-f79a-4825-b670-f13a4bace930.png', 'Prueba2', 1, 3333, 4444, 10.03),
+	(62, '0187cdd7-4c54-442a-984c-a23374606b8c.png', 'Prueba233', 1, 2221, 33333, 2.30),
+	(63, '8f49ac53-b3f3-4364-87f1-756512f33aaa.jpg', 'Derechos Reales', 1, 5000, 7000, 5.00),
+	(64, 'a74415d7-c825-4fe6-a77a-f0674ed88365.png', 'Prueba3', 1, 3, 4, 2.00),
+	(65, 'f0f55024-510b-4288-a49c-8dc18d732926.png', 'Prueba31', 1, 3, 4, 2.00);
 
 -- Volcando estructura para tabla railway.comentarios
 CREATE TABLE IF NOT EXISTS `comentarios` (
@@ -131,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `experiencia` (
   PRIMARY KEY (`experiencia_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla railway.experiencia: ~9 rows (aproximadamente)
 INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo`, `actividades`, `fecha_inicio`, `fecha_final`, `estado`) VALUES
@@ -143,34 +151,9 @@ INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo
 	(38, 159, NULL, NULL, NULL, '2024-11-26', NULL, 1),
 	(39, 144, NULL, NULL, NULL, '2024-11-04', NULL, 1),
 	(41, 139, 'Numquam quis optio', 'Tempore autem ut qu', 'Laborum Sed tempora', '1987-01-25', '1991-10-06', 1),
-	(42, 166, 'Quas fugit do ipsum', 'Natus voluptatibus e', 'Autem eligendi sint', '2002-10-16', '2005-12-15', 1);
-
--- Volcando estructura para tabla railway.faq
-CREATE TABLE IF NOT EXISTS `faq` (
-  `faq_id` int NOT NULL AUTO_INCREMENT,
-  `pregunta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `respuesta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `estado` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`faq_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Volcando datos para la tabla railway.faq: ~13 rows (aproximadamente)
-INSERT INTO `faq` (`faq_id`, `pregunta`, `respuesta`, `estado`, `created_at`, `updated_at`) VALUES
-	(2, ' ¿Qué es “Hamilo Inversiones”?', ' <p> <b>Hamilo Inversiones</b> es una plataforma en la que inversionistas pueden apoyar a talentos y profesionales en diversos sectores, invirtiendo en sus carreras y proyectos a cambio de una parte de sus futuras ganancias (dividendos), además de formar parte de una comunidad exclusiva junto a estos talentos. </p>', 1, '2024-10-22 20:03:48', '2024-11-28 20:35:45'),
-	(3, '¿Qué significa forma parte de los inversionistas?', '<p>Esto significa que los inversionistas que compren tokens de un deportista o profesional podrán acceder a beneficios, contenido exclusivo y experiencias especiales que estos elijan ofrecer a su comunidad. Sin embargo, esto depende completamente de cada deportista o profesional, ya que la compra de un token o suscripción no los obliga a ofrecer beneficios adicionales.</p>', 1, '2024-10-22 20:05:23', '2024-11-25 05:16:13'),
-	(4, '¿Cómo funciona?', '<p> Cuando talentos y profesionales se registran en nuestra plataforma, establecen el valor inicial de sus tokens. Las ganancias se generan a través de las inversiones realizadas por los inversionistas. </p> <p> Los inversionistas pueden adquirir estos tokens y, al hacerlo, invierten directamente en los talentos y profesionales. Los fondos recaudados se destinan exclusivamente al desarrollo de sus carreras o proyectos, especialmente en las etapas iniciales. Durante este período, los talentos y profesionales deben emplear los recursos únicamente para cubrir gastos relacionados con sus objetivos. </p> <p> A cambio, los inversionistas reciben un porcentaje de las ganancias futuras generadas por los talentos y profesionales, conocido como dividendos. <b>Hamilo Inversiones</b> facilita este proceso notificando a los talentos y profesionales sobre la devolución de los tokens y auditando el uso adecuado de los fondos. </p> <p> Para participar y reclamar tanto los tokens como los dividendos, los inversionistas deben estar registrados en nuestra plataforma. </p>', 1, '2024-10-22 20:05:51', '2024-11-28 20:57:24'),
-	(6, '¿Con que frecuencia tiene lugar la distribución? ', '<p> <b>Hamilo Inversiones</b> recaudará mensualmente y anualmente el dinero del premio de cada deportista o profesional y distribuirá los dividendos a la billetera <b>Hamilo Inversiones</b> del titular del token. </p>', 1, '2024-10-22 20:07:22', '2024-11-28 20:57:50'),
-	(7, 'Desde el punto de vista de un inversor ¿Por qué comprar un token a un profesional o jugador junior?', '<p>Desde el punto de vista de un inversionista, la razón para comprar un token de un deportista o profesional junior es la oportunidad de participar en el crecimiento y éxito de su carrera o proyecto a largo plazo. Al invertir en un token, el inversionista no solo respalda financieramente a un profesional o deportista emergente, sino que también tiene la posibilidad de recibir un porcentaje de sus futuras ganancias (dividendos), que provienen de premios, ingresos o ingresos generados por el éxito del profesional.</p>', 1, '2024-10-22 20:07:51', '2024-11-25 05:20:13'),
-	(8, '¿Cómo reclamo mis dividendos?', '<p>Los usuarios que hayan completado su validación de identidad podrán reclamar sus dividendos, los cuales se sumarán a su balance.</p>', 1, '2024-10-22 20:08:14', '2024-11-25 05:20:44'),
-	(9, '¿Qué parte de los ingresos comparte el talento o profesional?', '<p>El porcentaje de las ganancias que se destina a los inversionistas es determinado por cada talento o profesional, en función del valor que asignen a su token.</p>', 1, '2024-10-22 20:09:20', '2024-11-28 20:59:09'),
-	(10, '¿Cómo puedo comprar un token?', '<p> Para comprar un token, primero debes registrarte en <b>Hamilo Inversiones</b>. Una vez registrado, podrás acceder a tu billetera en la plataforma para adquirir tokens y recargarla. Posteriormente, podrás utilizar estos fondos para invertir en talentos y profesionales, apoyando el desarrollo de sus carreras o proyectos. </p>', 1, '2024-10-22 20:09:44', '2024-11-28 20:58:25'),
-	(11, '¿Puedo enviar una oferta personalizada a cualquier jugador? ', '<p>Sí, puedes enviar una oferta personalizada a cualquier talento o profesional, siempre y cuando cumpla con el requisito de una compra mínima de 700 tokens y un máximo de 5000 tokens, según el valor establecido para el token.</p>', 1, '2024-10-22 20:10:08', '2024-11-25 05:22:21'),
-	(12, '¿Cómo puedo fondear mi billetera?', '<p>Añadiendo fondos Dólares (Usd) utilizando cualquier método de pago como se muestra en el proceso de pago.</p>', 1, '2024-10-22 20:10:30', '2024-11-25 05:22:50'),
-	(14, '¿Cómo puedo conocer a los talentos o profesionales?', '<p>Puedes acceder al perfil oficial del talento o profesional a través de nuestra página web. Además, te animamos a que los sigas en sus redes sociales, donde publican regularmente diferentes noticias, actualizaciones y contenidos de todos sus logros y proyectos.</p>', 1, '2024-10-22 20:11:17', '2024-11-25 05:23:55'),
-	(15, 'Desde el punto de vista de un inversor, ¿Por qué comprar un token a un talento o profesional experimentado?', '<p>Adquirir un token de un talento o profesional experimentado representa una atractiva oportunidad de inversión debido a su historial comprobado de éxito. Estos talentos y profesionales suelen contar con una carrera establecida, lo que incrementa la probabilidad de generar ganancias futuras sostenibles a través de premios, patrocinios o proyectos relacionados con su trayectoria.</p>', 1, '2024-10-22 20:11:42', '2024-11-25 05:25:32'),
-	(27, ' ', ' ', 1, '2024-11-26 14:34:48', '2024-11-26 14:34:48');
+	(42, 166, 'Quas fugit do ipsum', 'Natus voluptatibus e', 'Autem eligendi sint', '2002-10-16', '2005-12-15', 1),
+	(43, 170, 'Maxime sequi earum h', 'Rerum qui quibusdam', 'Accusantium voluptat', '2024-12-01', '2024-12-13', 1),
+	(44, 171, 'dsadasd', 'asdasd', 'asdasd', '2020-02-16', '2024-12-16', 1);
 
 -- Volcando estructura para tabla railway.informacion
 CREATE TABLE IF NOT EXISTS `informacion` (
@@ -178,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `informacion` (
   `cliente_id` int DEFAULT NULL,
   `ocupacion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `monto_inversion` decimal(10,2) DEFAULT NULL,
+  `monto_inversion` int DEFAULT '1',
   `cantidad_maxima_inversiones` int DEFAULT NULL,
   `preparacion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `estudios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -190,18 +173,21 @@ CREATE TABLE IF NOT EXISTS `informacion` (
   PRIMARY KEY (`info_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `informacion_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.informacion: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla railway.informacion: ~11 rows (aproximadamente)
 INSERT INTO `informacion` (`info_id`, `cliente_id`, `ocupacion`, `descripcion`, `monto_inversion`, `cantidad_maxima_inversiones`, `preparacion`, `estudios`, `vision`, `estado`, `video`, `imagen`, `inversion_control`) VALUES
-	(13, 149, 'Ingeniero de software', 'Soy un ingeniero de software con [número de años] años de experiencia en el diseño y desarrollo de aplicaciones web y móviles. Mi enfoque principal es crear soluciones tecnológicas eficientes, escalables y centradas en el usuario', 200.00, 1000, 'Título Universitario: Ingeniero en Sistemas de Información Universidad [Nombre de la Universidad] | [Año de finalización] Formación sólida en fundamentos de programación, estructuras de datos, bases de datos, ingeniería de software y redes informáticas.', 'Ingeniería en Sistemas de Información Universidad [Nombre de la Universidad] [Años de estudio, ej. 2018 - 2023]', 'Mi visión es ser un líder en el desarrollo de soluciones tecnológicas innovadoras que impacten positivamente en la vida de las personas y las operaciones de las empresas. Aspiro a crear software eficiente, escalable y accesible, mientras contribuyo al avance de la industria tecnológica mediante el aprendizaje continuo y la colaboración en proyectos de alto impacto.\n\nCreo en el poder de la tecnología para transformar realidades, y mi objetivo es formar parte de equipos que valoren la creatividad, la calidad y el enfoque en el usuario. Mi meta a largo plazo es combinar habilidades técnicas con liderazgo para guiar iniciativas que impulsen el cambio y el crecimiento sostenible.', 1, '4fc1bddb-5837-40cc-8dd5-ce2a1ade7140.mp4', NULL, 0),
-	(14, 144, 'Ingeniero de Sistemas', 'Dedicado al Desarrollo Web con experiencia de 1 año', 20.00, 1000, 'Ingeniero ', 'Universidad', 'Aperturar empresa de desarrollo', 1, 'a1bc6f7b-7513-4eff-a932-a33d83b90d88.mp4', NULL, 0),
-	(15, 151, 'estudiante', 'asd', 500.00, 90000, 'asd', 'tec', 'futuro', 1, 'e5b43861-202c-492b-83bc-c2560071fdff.mp4', NULL, 0),
-	(17, 153, 'Hacker', 'Ciberseguridad', 200.00, 1000, 'Berlin College', 'Ciberseguridad', 'Controlar y/o erradicar la pirateria', 1, NULL, NULL, 0),
-	(21, 159, ' ', '  ', 0.00, 0, ' ', ' ', ' ', 1, NULL, NULL, 0),
-	(22, 139, 'Nobis sunt qui deser', 'Sed enim amet ad au', 10.00, 100, 'Consectetur temporib', 'Labore consectetur s', 'Reprehenderit velit', 1, NULL, NULL, 0),
-	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 50.00, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0),
-	(27, 168, 'Desarrollador', 'Desarrollador de software', 10000.00, 5, 'Licenciatura en Ciencias de la Computación', 'Universidad XYZ', 'Crear soluciones innovadoras', 1, NULL, NULL, 0);
+	(13, 149, 'Ingeniero de software', 'Soy un ingeniero de software con [número de años] años de experiencia en el diseño y desarrollo de aplicaciones web y móviles. Mi enfoque principal es crear soluciones tecnológicas eficientes, escalables y centradas en el usuario', 10, 20, 'Título Universitario: Ingeniero en Sistemas de Información Universidad [Nombre de la Universidad] | [Año de finalización] Formación sólida en fundamentos de programación, estructuras de datos, bases de datos, ingeniería de software y redes informáticas.', 'Ingeniería en Sistemas de Información Universidad [Nombre de la Universidad] [Años de estudio, ej. 2018 - 2023]', 'Mi visión es ser un líder en el desarrollo de soluciones tecnológicas innovadoras que impacten positivamente en la vida de las personas y las operaciones de las empresas. Aspiro a crear software eficiente, escalable y accesible, mientras contribuyo al avance de la industria tecnológica mediante el aprendizaje continuo y la colaboración en proyectos de alto impacto.\n\nCreo en el poder de la tecnología para transformar realidades, y mi objetivo es formar parte de equipos que valoren la creatividad, la calidad y el enfoque en el usuario. Mi meta a largo plazo es combinar habilidades técnicas con liderazgo para guiar iniciativas que impulsen el cambio y el crecimiento sostenible.', 1, '4fc1bddb-5837-40cc-8dd5-ce2a1ade7140.mp4', NULL, 0),
+	(14, 144, 'Ingeniero de Sistemas', 'Dedicado al Desarrollo Web con experiencia de 1 año', 50, 200, 'Ingeniero ', 'Universidad', 'Aperturar empresa de desarrollo', 1, 'a1bc6f7b-7513-4eff-a932-a33d83b90d88.mp4', NULL, 0),
+	(15, 151, 'estudiante', 'asd', 10, 20, 'asd', 'tec', 'futuro', 1, 'e5b43861-202c-492b-83bc-c2560071fdff.mp4', NULL, 0),
+	(17, 153, 'Hacker', 'Ciberseguridad', 200, 1000, 'Berlin College', 'Ciberseguridad', 'Controlar y/o erradicar la pirateria', 1, NULL, NULL, 0),
+	(21, 159, ' ', '  ', 1, 0, ' ', ' ', ' ', 1, NULL, NULL, 0),
+	(22, 139, 'Nobis sunt qui deser', 'Sed enim amet ad au', 10, 100, 'Consectetur temporib', 'Labore consectetur s', 'Reprehenderit velit', 1, NULL, NULL, 0),
+	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 50, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0),
+	(27, 168, 'Desarrollador', 'Desarrollador de software', 50, 500, 'Licenciatura en Ciencias de la Computación', 'Universidad XYZ', 'Crear soluciones innovadoras', 1, NULL, NULL, 0),
+	(30, 170, 'Sit nostrum esse Na', 'Quia consectetur vol', 50, 500, 'Id laboriosam assum', 'Quos velit in in pla', 'Lorem sit id volup', 1, 'a7a203ac-de53-4400-aa2a-6c9f0e1fca6c.mp4', NULL, 0),
+	(31, 171, 'fronted', 'fronted', 1, NULL, 'fronted', 'fronted', 'front', 1, '1d571b62-58e0-4764-93f9-2856c1ac25d3.mp4', NULL, 0),
+	(32, 145, 'Dolore ratione conse', 'Autem similique et i', 1, 400, 'Ut similique unde as', 'Ea rem minim quasi s', 'Asperiores iste quib', 1, '0e41e671-bf31-4359-9936-d46bfcc82820.mp4', NULL, 0);
 
 -- Volcando estructura para tabla railway.informacion_inversionista
 CREATE TABLE IF NOT EXISTS `informacion_inversionista` (
@@ -233,40 +219,33 @@ INSERT INTO `informacion_inversionista` (`id`, `id_inversionista`, `nombre_compl
 -- Volcando estructura para tabla railway.inversiones
 CREATE TABLE IF NOT EXISTS `inversiones` (
   `inversion_id` int NOT NULL AUTO_INCREMENT,
+  `solicitud_inv_id` int NOT NULL,
   `cliente_id` int DEFAULT NULL,
   `inversor_id` int DEFAULT NULL,
-  `monto` decimal(10,2) DEFAULT '0.00',
+  `monto` int DEFAULT '0',
   `tipo_ganancia` enum('Monto fijo','Porcentual') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ganancia_estimada` decimal(10,2) DEFAULT NULL,
   `fecha_deposito` date DEFAULT NULL,
   `fecha_devolucion` date DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
-  `solicitud_inv_id` int DEFAULT NULL,
   PRIMARY KEY (`inversion_id`),
   KEY `cliente_id` (`cliente_id`),
   KEY `inversor_id` (`inversor_id`),
-  KEY `fk_sol_inv_idx` (`solicitud_inv_id`),
-  CONSTRAINT `fk_sol_inv` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `solicitud_inv_id` (`solicitud_inv_id`),
   CONSTRAINT `inversiones_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
-  CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`),
+  CONSTRAINT `inversiones_ibfk_3` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.inversiones: ~12 rows (aproximadamente)
-INSERT INTO `inversiones` (`inversion_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`, `solicitud_inv_id`) VALUES
-	(122, 149, 140, 200.00, NULL, 210.00, '2024-11-24', '2025-02-25', 1, NULL),
-	(123, 149, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1, NULL),
-	(124, 145, 140, 1000.00, NULL, 1050.00, '2024-11-25', '2025-02-25', 1, NULL),
-	(125, 151, 148, 50000.00, NULL, 52500.00, '2024-11-25', '2025-02-25', 1, NULL),
-	(126, 145, 148, 2000.00, NULL, 2100.00, '2024-11-25', '2025-02-25', 1, NULL),
-	(127, 149, 161, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1, NULL),
-	(128, 149, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1, NULL),
-	(129, 149, 140, 1000.00, NULL, 1050.00, '2024-11-26', '2025-02-26', 1, NULL),
-	(130, 149, 143, 300.00, NULL, 315.00, '2024-11-26', '2025-02-26', 1, NULL),
-	(131, 145, 140, 800.00, NULL, 840.00, '2024-11-26', '2025-02-26', 1, NULL),
-	(132, 145, 143, 600.00, NULL, 630.00, '2024-11-27', '2025-02-27', 1, NULL),
-	(133, 144, 143, 500.00, NULL, 525.00, '2024-11-27', '2025-02-27', 1, NULL),
-	(134, 149, 143, 200.00, NULL, 210.00, '2024-12-13', '2025-03-13', 1, NULL),
-	(135, 149, 143, 800.00, NULL, 840.00, '2024-12-13', '2025-03-13', 1, 1);
+-- Volcando datos para la tabla railway.inversiones: ~7 rows (aproximadamente)
+INSERT INTO `inversiones` (`inversion_id`, `solicitud_inv_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`) VALUES
+	(144, 37, 145, 143, 300, NULL, 60.00, '2024-12-22', '2025-03-22', 1),
+	(145, 47, 140, 149, 300, 'Monto fijo', 350.00, '2024-12-15', '2025-06-15', 1),
+	(146, 48, 142, 149, 190, 'Porcentual', 200.00, '2024-12-20', '2025-07-20', 1),
+	(147, 39, 170, 173, 50, NULL, 52.50, '2024-12-29', '2025-03-29', 1),
+	(148, 39, 170, 173, 50, NULL, 52.50, '2024-12-29', '2025-03-29', 1),
+	(149, 42, 149, 173, 10, NULL, 10.50, '2024-12-29', '2025-03-29', 1),
+	(150, 55, 145, 143, 2000, NULL, 2060.00, '2024-12-29', '2025-03-29', 1);
 
 -- Volcando estructura para tabla railway.links
 CREATE TABLE IF NOT EXISTS `links` (
@@ -293,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `logros` (
   PRIMARY KEY (`logro_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `logros_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla railway.logros: ~13 rows (aproximadamente)
 INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`) VALUES
@@ -309,14 +288,16 @@ INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`
 	(38, 139, 'Quasi eos reprehend', 1, '2005-07-31 00:00:00'),
 	(39, 139, 'Sed laudantium ipsu', 1, '2024-10-02 00:00:00'),
 	(40, 139, 'Aut reprehenderit m', 1, '2024-11-01 00:00:00'),
-	(41, 166, 'Asperiores amet qui', 1, '2015-04-06 00:00:00');
+	(41, 166, 'Asperiores amet qui', 1, '2015-04-06 00:00:00'),
+	(42, 170, 'Desperté a las 09:00', 1, '2024-12-13 00:00:00'),
+	(43, 171, 'asdaasda', 1, '2024-12-16 00:00:00');
 
 -- Volcando estructura para tabla railway.movimientos
 CREATE TABLE IF NOT EXISTS `movimientos` (
   `movimiento_id` int NOT NULL AUTO_INCREMENT,
   `tipo` enum('Ingreso','Egreso') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `monto` decimal(10,2) DEFAULT '0.00',
-  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_solicitud` datetime DEFAULT CURRENT_TIMESTAMP,
   `fecha_desembolso` date DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
@@ -324,7 +305,6 @@ CREATE TABLE IF NOT EXISTS `movimientos` (
   `solicitudes_retiro_id` int DEFAULT NULL,
   `usuario_id` int DEFAULT NULL,
   `token` decimal(10,2) DEFAULT '0.00',
-  `movimientoscol` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`movimiento_id`),
   KEY `inversiones_id` (`inversiones_id`),
   KEY `solicitudes_retiro_id` (`solicitudes_retiro_id`),
@@ -332,239 +312,114 @@ CREATE TABLE IF NOT EXISTS `movimientos` (
   CONSTRAINT `inversiones_id` FOREIGN KEY (`inversiones_id`) REFERENCES `inversiones` (`inversion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `solicitudes_retiro_id` FOREIGN KEY (`solicitudes_retiro_id`) REFERENCES `solicitudes_retiro` (`retiro_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=580 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.movimientos: ~225 rows (aproximadamente)
-INSERT INTO `movimientos` (`movimiento_id`, `tipo`, `monto`, `descripcion`, `fecha_solicitud`, `fecha_desembolso`, `estado`, `inversiones_id`, `solicitudes_retiro_id`, `usuario_id`, `token`, `movimientoscol`) VALUES
-	(214, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-18 19:58:07', NULL, 1, NULL, NULL, 88, 2000000.00, NULL),
-	(215, 'Egreso', NULL, 'Tokens invertidos', '2024-11-18 19:58:17', NULL, 1, 77, NULL, 88, 2000.00, NULL),
-	(216, 'Ingreso', NULL, 'Inversión recibida', '2024-11-18 19:58:18', NULL, 1, 77, NULL, 85, 2000.00, NULL),
-	(218, 'Egreso', NULL, 'Tokens invertidos', '2024-11-19 20:11:55', NULL, 1, 78, NULL, 90, 500.00, NULL),
-	(219, 'Ingreso', NULL, 'Inversión recibida', '2024-11-19 20:11:55', NULL, 1, 78, NULL, 87, 500.00, NULL),
-	(220, 'Ingreso', 50.00, 'Compra de tokens', '2024-11-19 20:15:07', NULL, 1, NULL, NULL, 90, 10000.00, NULL),
-	(221, 'Egreso', NULL, 'Tokens invertidos', '2024-11-20 19:39:07', NULL, 1, 79, NULL, 90, 20.00, NULL),
-	(222, 'Ingreso', NULL, 'Inversión recibida', '2024-11-20 19:39:08', NULL, 1, 79, NULL, 87, 20.00, NULL),
-	(223, 'Egreso', NULL, 'Tokens invertidos', '2024-11-20 19:48:35', NULL, 1, 80, NULL, 90, 500.00, NULL),
-	(224, 'Ingreso', NULL, 'Inversión recibida', '2024-11-20 19:48:35', NULL, 1, 80, NULL, 85, 500.00, NULL),
-	(226, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-20 20:57:10', NULL, 1, NULL, NULL, 88, 20000.00, NULL),
-	(227, 'Egreso', NULL, 'Tokens invertidos', '2024-11-20 20:57:23', NULL, 1, 81, NULL, 88, 1000.00, NULL),
-	(228, 'Ingreso', NULL, 'Inversión recibida', '2024-11-20 20:57:24', NULL, 1, 81, NULL, 107, 1000.00, NULL),
-	(230, 'Egreso', NULL, 'Tokens invertidos', '2024-11-21 15:09:52', NULL, 1, 82, NULL, 88, 12.00, NULL),
-	(231, 'Ingreso', NULL, 'Inversión recibida', '2024-11-21 15:09:52', NULL, 1, 82, NULL, 87, 12.00, NULL),
-	(232, 'Egreso', NULL, 'Tokens invertidos', '2024-11-21 15:10:49', NULL, 1, 83, NULL, 88, 20.00, NULL),
-	(233, 'Ingreso', NULL, 'Inversión recibida', '2024-11-21 15:10:49', NULL, 1, 83, NULL, 87, 20.00, NULL),
-	(235, 'Ingreso', 20.00, 'Compra de tokens', '2024-11-21 15:54:22', NULL, 1, NULL, NULL, 85, 4000.00, NULL),
-	(237, 'Egreso', NULL, 'Devolucion de tokens', '2024-11-21 15:58:32', NULL, 1, 67, NULL, 85, 62.00, NULL),
-	(238, 'Ingreso', NULL, 'Ganancia de tokens invertidos', '2024-11-21 15:58:33', NULL, 1, 67, NULL, 90, 62.00, NULL),
-	(239, 'Egreso', NULL, 'Tokens invertidos', '2024-11-21 16:03:26', NULL, 1, 84, NULL, 88, 200.00, NULL),
-	(240, 'Ingreso', NULL, 'Inversión recibida', '2024-11-21 16:03:26', NULL, 1, 84, NULL, 87, 200.00, NULL),
-	(241, 'Ingreso', 15.00, 'Compra de tokens', '2024-11-22 16:31:55', NULL, 1, NULL, NULL, 88, 3000.00, NULL),
-	(242, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 16:37:11', NULL, 1, 85, NULL, 88, 2000.00, NULL),
-	(243, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 16:37:11', NULL, 1, 85, NULL, 87, 2000.00, NULL),
-	(245, 'Ingreso', 20000.00, 'Compra de tokens', '2024-11-22 20:05:59', NULL, 1, NULL, NULL, 127, 10000000.00, NULL),
-	(246, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:10:39', NULL, 1, 86, NULL, 88, 10000.00, NULL),
-	(247, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:10:40', NULL, 1, 86, NULL, 85, 10000.00, NULL),
-	(248, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:12:18', NULL, 1, 87, NULL, 88, 300.00, NULL),
-	(249, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:12:19', NULL, 1, 87, NULL, 85, 300.00, NULL),
-	(250, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:12:47', NULL, 1, 88, NULL, 88, 10000.00, NULL),
-	(251, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:12:48', NULL, 1, 88, NULL, 87, 10000.00, NULL),
-	(252, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:13:25', NULL, 1, 89, NULL, 88, 100.00, NULL),
-	(253, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:13:26', NULL, 1, 89, NULL, 87, 100.00, NULL),
-	(254, 'Ingreso', 2000.00, 'Compra de tokens', '2024-11-22 20:13:52', NULL, 1, NULL, NULL, 127, 400000.00, NULL),
-	(255, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:14:29', NULL, 1, 90, NULL, 88, 200.00, NULL),
-	(256, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:14:29', NULL, 1, 90, NULL, 85, 200.00, NULL),
-	(257, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:15:08', NULL, 1, 91, NULL, 88, 100.00, NULL),
-	(258, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:15:08', NULL, 1, 91, NULL, 107, 100.00, NULL),
-	(259, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-22 20:17:46', NULL, 1, NULL, NULL, 85, 20000.00, NULL),
-	(260, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:22:28', NULL, 1, 92, NULL, 88, 1000.00, NULL),
-	(261, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:22:28', NULL, 1, 92, NULL, 85, 1000.00, NULL),
-	(262, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 20:23:27', NULL, 1, 93, NULL, 88, 4256.00, NULL),
-	(263, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 20:23:27', NULL, 1, 93, NULL, 87, 4256.00, NULL),
-	(264, 'Ingreso', 5000.00, 'Compra de tokens', '2024-11-22 20:48:34', NULL, 1, NULL, NULL, 127, 1000000.00, NULL),
-	(265, 'Ingreso', 10.00, 'Compra de tokens', '2024-11-22 20:49:15', NULL, 1, NULL, NULL, 127, 2000.00, NULL),
-	(266, 'Ingreso', 5000.00, 'Compra de tokens', '2024-11-22 20:54:53', NULL, 1, NULL, NULL, 127, 1000000.00, NULL),
-	(267, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-22 21:01:28', NULL, 1, NULL, NULL, 127, 20000.00, NULL),
-	(268, 'Ingreso', 5000.00, 'Compra de tokens', '2024-11-22 21:01:39', NULL, 1, NULL, NULL, 127, 1000000.00, NULL),
-	(269, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-22 21:08:59', NULL, 1, NULL, NULL, 127, 20000.00, NULL),
-	(270, 'Ingreso', 10.00, 'Compra de tokens', '2024-11-22 21:11:04', NULL, 1, NULL, NULL, 127, 2000.00, NULL),
-	(271, 'Ingreso', 20.00, 'Compra de tokens', '2024-11-22 21:13:09', NULL, 1, NULL, NULL, 127, 4000.00, NULL),
-	(272, 'Ingreso', 20.00, 'Compra de tokens', '2024-11-22 21:15:13', NULL, 1, NULL, NULL, 127, 4000.00, NULL),
-	(273, 'Ingreso', 20.00, 'Compra de tokens', '2024-11-22 21:15:43', NULL, 1, NULL, NULL, 127, 4000.00, NULL),
-	(274, 'Ingreso', 20.00, 'Compra de tokens', '2024-11-22 21:16:46', NULL, 1, NULL, NULL, 88, 4000.00, NULL),
-	(275, 'Ingreso', 1.00, 'Compra de tokens', '2024-11-22 21:17:29', NULL, 1, NULL, NULL, 85, 200.00, NULL),
-	(276, 'Ingreso', 300.00, 'Compra de tokens', '2024-11-22 21:19:21', NULL, 1, NULL, NULL, 88, 60000.00, NULL),
-	(277, 'Ingreso', 2000.00, 'Compra de tokens', '2024-11-22 21:20:21', NULL, 1, NULL, NULL, 127, 400000.00, NULL),
-	(278, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 21:24:25', NULL, 1, 94, NULL, 88, 200.00, NULL),
-	(279, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 21:24:25', NULL, 1, 94, NULL, 87, 200.00, NULL),
-	(280, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 21:27:31', NULL, 1, 95, NULL, 88, 800.00, NULL),
-	(281, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 21:27:31', NULL, 1, 95, NULL, 87, 800.00, NULL),
-	(282, 'Egreso', NULL, 'Tokens invertidos', '2024-11-22 21:39:04', NULL, 1, 96, NULL, 127, 300.00, NULL),
-	(283, 'Ingreso', NULL, 'Inversión recibida', '2024-11-22 21:39:04', NULL, 1, 96, NULL, 87, 300.00, NULL),
-	(284, 'Ingreso', 200.00, 'Compra de tokens', '2024-11-22 21:41:23', NULL, 1, NULL, NULL, 127, 40000.00, NULL),
-	(285, 'Ingreso', 13895700.00, 'Compra de tokens', '2024-11-22 21:42:49', NULL, 1, NULL, NULL, 127, 99999999.99, NULL),
-	(286, 'Ingreso', 500000.00, 'Compra de tokens', '2024-11-22 21:43:03', NULL, 1, NULL, NULL, 127, 99999999.99, NULL),
-	(287, 'Ingreso', 99999999.99, 'Compra de tokens', '2024-11-22 21:43:20', NULL, 1, NULL, NULL, 127, 99999999.99, NULL),
-	(288, 'Ingreso', 100000.00, 'Compra de tokens', '2024-11-22 21:43:40', NULL, 1, NULL, NULL, 127, 20000000.00, NULL),
-	(293, 'Ingreso', 123.00, 'Compra de tokens', '2024-11-23 10:36:22', NULL, 1, NULL, NULL, 84, 24600.00, NULL),
-	(295, 'Ingreso', 99999999.99, 'Compra de tokens', '2024-11-23 10:45:53', NULL, 1, NULL, NULL, 84, 99999999.99, NULL),
-	(296, 'Egreso', NULL, 'Tokens invertidos', '2024-11-23 10:47:02', NULL, 1, 97, NULL, 84, 300.00, NULL),
-	(297, 'Ingreso', NULL, 'Inversión recibida', '2024-11-23 10:47:03', NULL, 1, 97, NULL, 87, 300.00, NULL),
-	(298, 'Egreso', NULL, 'Tokens invertidos', '2024-11-23 10:47:25', NULL, 1, 98, NULL, 84, 1000.00, NULL),
-	(299, 'Ingreso', NULL, 'Inversión recibida', '2024-11-23 10:47:25', NULL, 1, 98, NULL, 87, 1000.00, NULL),
-	(300, 'Egreso', NULL, 'Tokens invertidos', '2024-11-23 10:53:37', NULL, 1, 99, NULL, 84, 2000.00, NULL),
-	(301, 'Ingreso', NULL, 'Inversión recibida', '2024-11-23 10:53:38', NULL, 1, 99, NULL, 87, 2000.00, NULL),
-	(302, 'Ingreso', 100000.00, 'Compra de tokens', '2024-11-24 02:33:05', NULL, 1, NULL, NULL, 136, 20000000.00, NULL),
-	(303, 'Ingreso', 100000.00, 'Compra de tokens', '2024-11-24 03:06:54', NULL, 1, NULL, NULL, 136, 20000000.00, NULL),
-	(309, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-24 04:40:09', NULL, 1, NULL, NULL, 136, 20000.00, NULL),
-	(335, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-24 05:25:45', NULL, 1, NULL, NULL, 136, 20000.00, NULL),
-	(336, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-24 05:26:39', NULL, 1, NULL, NULL, 136, 20000.00, NULL),
-	(337, 'Ingreso', 2000.00, 'Compra de tokens', '2024-11-24 05:28:02', NULL, 1, NULL, NULL, 136, 400000.00, NULL),
-	(338, 'Ingreso', 5000.00, 'Compra de tokens', '2024-11-24 05:28:49', NULL, 1, NULL, NULL, 136, 1000000.00, NULL),
-	(339, 'Ingreso', 200.00, 'Compra de tokens', '2024-11-24 05:30:32', NULL, 1, NULL, NULL, 136, 40000.00, NULL),
-	(341, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 22:59:51', NULL, 1, 100, NULL, 136, 100.00, NULL),
-	(342, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 22:59:51', NULL, 1, 100, NULL, 135, 100.00, NULL),
-	(343, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:01:00', NULL, 1, 101, NULL, 136, 50.00, NULL),
-	(344, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:01:00', NULL, 1, 101, NULL, 135, 50.00, NULL),
-	(345, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:01:08', NULL, 1, 102, NULL, 136, 50.00, NULL),
-	(346, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:01:08', NULL, 1, 102, NULL, 135, 50.00, NULL),
-	(347, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:02:04', NULL, 1, 103, NULL, 136, 800.00, NULL),
-	(348, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:02:04', NULL, 1, 103, NULL, 135, 800.00, NULL),
-	(349, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:02:52', NULL, 1, 104, NULL, 136, 600.00, NULL),
-	(350, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:02:52', NULL, 1, 104, NULL, 135, 600.00, NULL),
-	(351, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:06:05', NULL, 1, 105, NULL, 136, 500.00, NULL),
-	(352, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:06:05', NULL, 1, 105, NULL, 135, 500.00, NULL),
-	(353, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:06:20', NULL, 1, 106, NULL, 136, 100.00, NULL),
-	(354, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:06:20', NULL, 1, 106, NULL, 135, 100.00, NULL),
-	(355, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:07:02', NULL, 1, 107, NULL, 136, 50.00, NULL),
-	(356, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:07:02', NULL, 1, 107, NULL, 135, 50.00, NULL),
-	(357, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:07:18', NULL, 1, 108, NULL, 136, 100.00, NULL),
-	(358, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:07:18', NULL, 1, 108, NULL, 135, 100.00, NULL),
-	(359, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:08:02', NULL, 1, 109, NULL, 136, 50.00, NULL),
-	(360, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:08:02', NULL, 1, 109, NULL, 135, 50.00, NULL),
-	(361, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:08:07', NULL, 1, 110, NULL, 136, 50.00, NULL),
-	(362, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:08:07', NULL, 1, 110, NULL, 135, 50.00, NULL),
-	(363, 'Egreso', NULL, 'Tokens invertidos', '2024-11-24 23:08:11', NULL, 1, 111, NULL, 136, 50.00, NULL),
-	(364, 'Ingreso', NULL, 'Inversión recibida', '2024-11-24 23:08:11', NULL, 1, 111, NULL, 135, 50.00, NULL),
-	(365, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:10:52', NULL, 1, 112, NULL, 136, 100.00, NULL),
-	(366, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:10:53', NULL, 1, 112, NULL, 135, 100.00, NULL),
-	(367, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:12:48', NULL, 1, 113, NULL, 136, 400.00, NULL),
-	(368, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:12:49', NULL, 1, 113, NULL, 135, 400.00, NULL),
-	(369, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:13:03', NULL, 1, 114, NULL, 136, 100.00, NULL),
-	(370, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:13:03', NULL, 1, 114, NULL, 135, 100.00, NULL),
-	(371, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:15:51', NULL, 1, 115, NULL, 136, 900.00, NULL),
-	(372, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:15:52', NULL, 1, 115, NULL, 135, 900.00, NULL),
-	(373, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:16:05', NULL, 1, 116, NULL, 136, 100.00, NULL),
-	(374, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:16:05', NULL, 1, 117, NULL, 136, 100.00, NULL),
-	(375, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:16:05', NULL, 1, 117, NULL, 135, 100.00, NULL),
-	(376, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:16:05', NULL, 1, 116, NULL, 135, 100.00, NULL),
-	(377, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:21:15', NULL, 1, 118, NULL, 136, 100.00, NULL),
-	(378, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:21:16', NULL, 1, 118, NULL, 135, 100.00, NULL),
-	(379, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:23:00', NULL, 1, 119, NULL, 136, 500.00, NULL),
-	(380, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:23:00', NULL, 1, 119, NULL, 135, 500.00, NULL),
-	(381, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 00:23:09', NULL, 1, 120, NULL, 136, 500.00, NULL),
-	(382, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 00:23:09', NULL, 1, 120, NULL, 135, 500.00, NULL),
-	(383, 'Ingreso', 14.00, 'Compra de tokens', '2024-11-25 01:34:36', NULL, 1, NULL, NULL, 85, 2800.00, NULL),
-	(384, 'Ingreso', 10.00, 'Compra de tokens', '2024-11-25 01:35:07', NULL, 1, NULL, NULL, 85, 2000.00, NULL),
-	(385, 'Ingreso', 30.00, 'Compra de tokens', '2024-11-25 01:35:54', NULL, 1, NULL, NULL, 85, 6000.00, NULL),
-	(386, 'Ingreso', 200.00, 'Compra de tokens', '2024-11-25 01:55:26', NULL, 1, NULL, NULL, 85, 40000.00, NULL),
-	(387, 'Ingreso', 22.00, 'Compra de tokens', '2024-11-25 02:49:25', NULL, 1, NULL, NULL, 85, 4400.00, NULL),
-	(388, 'Ingreso', 11.00, 'Compra de tokens', '2024-11-25 02:49:34', NULL, 1, NULL, NULL, 85, 2200.00, NULL),
-	(389, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-25 03:10:14', NULL, 1, NULL, NULL, 136, 20000.00, NULL),
-	(391, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 04:28:48', NULL, 1, 121, NULL, 88, 1200.00, NULL),
-	(392, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 04:28:49', NULL, 1, 121, NULL, 87, 1200.00, NULL),
-	(393, 'Ingreso', 2594.00, 'Compra de tokens', '2024-11-25 14:21:35', NULL, 1, NULL, NULL, 148, 518800.00, NULL),
-	(394, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-25 14:37:00', NULL, 1, NULL, NULL, 149, 2000000.00, NULL),
-	(395, 'Ingreso', 1000.00, 'Compra de tokens', '2024-11-25 14:37:52', NULL, 1, NULL, NULL, 140, 200000.00, NULL),
-	(396, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 14:38:23', NULL, 1, NULL, 87, 140, 1000.00, NULL),
-	(397, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 14:43:31', NULL, 1, 122, NULL, 140, 200.00, NULL),
-	(398, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 14:43:31', NULL, 1, 122, NULL, 149, 200.00, NULL),
-	(399, 'Egreso', NULL, 'Tokens invertidos', '2024-11-25 14:43:48', NULL, 1, 123, NULL, 140, 1000.00, NULL),
-	(400, 'Ingreso', NULL, 'Inversión recibida', '2024-11-25 14:43:49', NULL, 1, 123, NULL, 149, 1000.00, NULL),
-	(401, 'Ingreso', 500.00, 'Compra de tokens', '2024-11-25 14:53:47', NULL, 1, NULL, NULL, 144, 100000.00, NULL),
-	(402, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 15:52:44', NULL, 1, NULL, 88, 149, 1200.00, NULL),
-	(403, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 15:53:27', NULL, 1, NULL, 89, 149, 1200.00, NULL),
-	(404, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 15:55:36', NULL, 1, NULL, 90, 149, 1200.00, NULL),
-	(405, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 15:57:10', NULL, 1, NULL, 91, 149, 1200.00, NULL),
-	(406, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 15:57:30', NULL, 1, NULL, 92, 149, 1200.00, NULL),
-	(407, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 16:00:31', NULL, 1, NULL, 93, 149, 1200.00, NULL),
-	(408, 'Ingreso', 500.00, 'Compra de tokens', '2024-11-25 16:11:57', NULL, 1, NULL, NULL, 142, 100000.00, NULL),
-	(409, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 16:15:40', NULL, 1, NULL, 94, 142, 1000.00, NULL),
-	(410, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 16:32:59', NULL, 1, NULL, 95, 149, 1000.00, NULL),
-	(411, 'Egreso', NULL, 'Por solicitud de retiro', '2024-11-25 16:33:14', NULL, 1, NULL, 96, 149, 200.00, NULL),
-	(412, 'Ingreso', 400.00, 'Compra de tokens', '2024-11-25 18:59:27', NULL, 1, NULL, NULL, 148, 80000.00, NULL),
-	(413, 'Ingreso', 500.00, 'Compra de tokens', '2024-11-25 18:59:56', NULL, 1, NULL, NULL, 148, 100000.00, NULL),
-	(414, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-25 19:00:04', NULL, 1, NULL, NULL, 148, 2000000.00, NULL),
-	(415, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 19:52:06', NULL, 1, NULL, 97, 142, 100.00, NULL),
-	(416, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 19:52:38', NULL, 1, NULL, 98, 142, 8900.00, NULL),
-	(417, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 19:53:23', NULL, 1, NULL, 99, 142, 3000.00, NULL),
-	(418, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-25 19:58:25', NULL, 1, 124, NULL, 140, 1000.00, NULL),
-	(419, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-25 19:58:26', NULL, 1, 124, NULL, 145, 1000.00, NULL),
-	(420, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-25 21:50:23', NULL, 1, 125, NULL, 148, 50000.00, NULL),
-	(421, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-25 21:50:24', NULL, 1, 125, NULL, 151, 50000.00, NULL),
-	(422, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-25 21:51:35', NULL, 1, 126, NULL, 148, 2000.00, NULL),
-	(423, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-25 21:51:35', NULL, 1, 126, NULL, 145, 2000.00, NULL),
-	(424, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 22:36:43', NULL, 1, NULL, 100, 148, 200.00, NULL),
-	(425, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 23:36:28', NULL, 1, NULL, 101, 149, 100.00, NULL),
-	(426, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-25 23:36:56', NULL, 1, NULL, 102, 149, 100000.00, NULL),
-	(427, 'Ingreso', 12.00, 'Compra de tokens', '2024-11-26 14:16:31', NULL, 1, NULL, NULL, 144, 2400.00, NULL),
-	(428, 'Ingreso', 40.00, 'Compra de tokens', '2024-11-26 14:20:15', NULL, 1, NULL, NULL, 144, 8000.00, NULL),
-	(429, 'Ingreso', 15.00, 'Compra de tokens', '2024-11-26 14:21:55', NULL, 1, NULL, NULL, 151, 3000.00, NULL),
-	(430, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 14:22:47', NULL, 1, NULL, 103, 151, 5300.00, NULL),
-	(431, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-26 15:37:17', NULL, 1, NULL, NULL, 161, 2000000.00, NULL),
-	(432, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 15:39:52', NULL, 1, NULL, 104, 161, 10.00, NULL),
-	(433, 'Egreso', 0.05, NULL, '2024-11-26 11:41:39', NULL, 1, NULL, 104, 161, 10.00, NULL),
-	(434, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 15:49:57', NULL, 1, NULL, 105, 161, 100.00, NULL),
-	(435, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-26 15:52:19', NULL, 1, 127, NULL, 161, 1000.00, NULL),
-	(436, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-26 15:52:19', NULL, 1, 127, NULL, 149, 1000.00, NULL),
-	(437, 'Egreso', 0.97, NULL, '2024-11-26 14:30:01', NULL, 1, NULL, 96, 149, 200.00, NULL),
-	(438, 'Egreso', 4.85, NULL, '2024-11-26 14:49:38', NULL, 1, NULL, 95, 149, 1000.00, NULL),
-	(439, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-26 20:22:51', NULL, 1, NULL, NULL, 143, 2000000.00, NULL),
-	(440, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 20:23:00', NULL, 1, NULL, 106, 143, 100.00, NULL),
-	(441, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-26 20:24:10', NULL, 1, 128, NULL, 140, 800.00, NULL),
-	(442, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-26 20:24:11', NULL, 1, 128, NULL, 149, 800.00, NULL),
-	(443, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-26 20:24:45', NULL, 1, 129, NULL, 140, 1000.00, NULL),
-	(444, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-26 20:24:45', NULL, 1, 129, NULL, 149, 1000.00, NULL),
-	(445, 'Ingreso', 25.00, 'Compra de tokens', '2024-11-26 20:35:07', NULL, 1, NULL, NULL, 140, 5000.00, NULL),
-	(446, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-26 20:39:10', NULL, 1, 130, NULL, 143, 300.00, NULL),
-	(447, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-26 20:39:10', NULL, 1, 130, NULL, 149, 300.00, NULL),
-	(448, 'Ingreso', 1250.00, 'Compra de tokens', '2024-11-26 20:50:48', NULL, 1, NULL, NULL, 140, 250000.00, NULL),
-	(449, 'Ingreso', 1500.00, 'Compra de tokens', '2024-11-26 21:00:04', NULL, 1, NULL, NULL, 145, 300000.00, NULL),
-	(450, 'Ingreso', 25.00, 'Compra de tokens', '2024-11-26 22:48:33', NULL, 0, NULL, NULL, 140, 5000.00, NULL),
-	(451, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 22:57:18', NULL, 1, NULL, 107, 140, 5000.00, NULL),
-	(452, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 22:58:35', NULL, 1, NULL, 108, 140, 5000.00, NULL),
-	(453, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-26 23:01:07', NULL, 1, 131, NULL, 140, 800.00, NULL),
-	(454, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-26 23:01:07', NULL, 1, 131, NULL, 145, 800.00, NULL),
-	(455, 'Ingreso', 6.00, 'Compra de tokens', '2024-11-26 23:55:26', NULL, 0, NULL, NULL, 145, 1200.00, NULL),
-	(456, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-26 23:56:08', NULL, 1, NULL, 109, 145, 5000.00, NULL),
-	(457, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-27 06:26:55', NULL, 1, 132, NULL, 143, 600.00, NULL),
-	(458, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-27 06:26:56', NULL, 1, 132, NULL, 145, 600.00, NULL),
-	(459, 'Ingreso', 10.00, 'Compra de tokens', '2024-11-27 13:52:50', NULL, 1, NULL, NULL, 144, 2000.00, NULL),
-	(460, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-27 13:53:01', NULL, 1, NULL, 110, 144, 5.00, NULL),
-	(461, 'Ingreso', 5000.00, 'Compra de tokens', '2024-11-27 21:08:29', NULL, 0, NULL, NULL, 166, 1000000.00, NULL),
-	(462, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-27 21:09:48', NULL, 1, NULL, 111, 166, 500.00, NULL),
-	(463, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-27 21:13:14', NULL, 0, NULL, NULL, 143, 2000000.00, NULL),
-	(464, 'Egreso', 0.00, 'Por solicitud de retiro', '2024-11-27 21:13:36', NULL, 1, NULL, 112, 143, 38000.00, NULL),
-	(465, 'Egreso', 0.00, 'Tokens invertidos', '2024-11-27 21:15:33', NULL, 1, 133, NULL, 143, 500.00, NULL),
-	(466, 'Ingreso', 0.00, 'Inversión recibida', '2024-11-27 21:15:33', NULL, 1, 133, NULL, 144, 500.00, NULL),
-	(467, 'Egreso', 24.25, NULL, '2024-11-28 18:21:21', NULL, 1, NULL, 107, 140, 5000.00, NULL),
-	(468, 'Egreso', 4.85, NULL, '2024-11-28 18:22:29', NULL, 1, NULL, 87, 140, 1000.00, NULL),
-	(469, 'Egreso', 184.30, NULL, '2024-11-28 18:28:36', NULL, 1, NULL, 112, 143, 38000.00, NULL),
-	(470, 'Ingreso', 123.00, 'Compra de tokens', '2024-11-29 14:33:51', NULL, 0, NULL, NULL, 145, 24600.00, NULL),
-	(471, 'Ingreso', 12.00, 'Compra de tokens', '2024-11-29 14:34:07', NULL, 0, NULL, NULL, 145, 2400.00, NULL),
-	(472, 'Ingreso', 2.50, 'Compra de tokens rechazada', '2024-11-29 14:40:40', NULL, 0, NULL, NULL, 143, 500.00, NULL),
-	(473, 'Ingreso', 2.50, 'Compra de tokens rechazada', '2024-11-29 15:12:24', NULL, 0, NULL, NULL, 140, 500.00, NULL),
-	(474, 'Ingreso', 2.50, 'Compra de tokens', '2024-11-29 15:19:41', '2024-11-29', 1, NULL, NULL, 140, 500.00, NULL),
-	(475, 'Ingreso', 1000.00, 'Compra de tokens', '2024-11-30 05:35:45', NULL, 0, NULL, NULL, 143, 300000.00, NULL),
-	(476, 'Ingreso', 10000.00, 'Compra de tokens', '2024-11-30 05:36:17', NULL, 0, NULL, NULL, 143, 3000000.00, NULL),
-	(477, 'Ingreso', 1000.00, 'Compra de tokens', '2024-11-30 05:36:47', '2024-12-01', 1, NULL, NULL, 143, 300000.00, NULL),
-	(478, 'Ingreso', 1100.00, 'Compra de tokens rechazada', '2024-11-30 05:37:25', NULL, 0, NULL, NULL, 143, 330000.00, NULL),
-	(479, 'Ingreso', 100.00, 'Compra de tokens rechazada', '2024-11-30 05:37:42', NULL, 0, NULL, NULL, 143, 30000.00, NULL),
-	(480, 'Ingreso', 2000.00, 'Compra de tokens', '2024-11-30 05:37:53', '2024-12-01', 1, NULL, NULL, 143, 600000.00, NULL),
-	(481, 'Ingreso', 100.00, 'Compra de tokens', '2024-11-30 05:38:43', '2024-12-01', 1, NULL, NULL, 143, 30000.00, NULL),
-	(482, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-13 01:19:02', NULL, 1, 134, NULL, 143, 200.00, NULL),
-	(483, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-13 01:19:02', NULL, 1, 134, NULL, 149, 200.00, NULL),
-	(484, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-13 01:25:40', NULL, 1, 135, NULL, 143, 800.00, NULL),
-	(485, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-13 01:25:40', NULL, 1, 135, NULL, 149, 800.00, NULL);
+-- Volcando datos para la tabla railway.movimientos: ~36 rows (aproximadamente)
+INSERT INTO `movimientos` (`movimiento_id`, `tipo`, `monto`, `descripcion`, `fecha_solicitud`, `fecha_desembolso`, `estado`, `inversiones_id`, `solicitudes_retiro_id`, `usuario_id`, `token`) VALUES
+	(503, 'Ingreso', 5000.00, 'Reversion', '2024-12-22 05:48:18', NULL, 0, NULL, NULL, 143, 5000.00),
+	(504, 'Ingreso', 0.00, 'Reversion', '2024-12-22 05:48:36', NULL, 1, 144, NULL, 143, 300.00),
+	(505, 'Egreso', 0.00, 'Reversion', '2024-12-22 05:48:36', NULL, 1, 144, NULL, 145, 300.00),
+	(506, 'Ingreso', 5000.00, 'Compra de tokens', '2024-12-23 17:51:10', '2024-12-29', 1, NULL, NULL, 143, 5000.00),
+	(507, 'Ingreso', 500.00, 'Compra de tokens', '2024-12-23 23:14:27', '2024-12-23', 1, NULL, NULL, 149, 500.00),
+	(508, 'Egreso', 300.00, 'Inversión realizada por cliente 140', '2024-12-15 10:00:00', '2024-12-15', 1, 145, NULL, 149, 300.00),
+	(509, 'Egreso', 190.00, 'Inversión realizada por cliente 142', '2024-12-20 15:30:00', '2024-12-20', 1, 146, NULL, 149, 190.00),
+	(510, 'Ingreso', 500.00, 'Compra de tokens', '2024-12-26 15:04:15', '2024-12-29', 1, NULL, NULL, 148, 500.00),
+	(511, 'Ingreso', 5000.00, 'Compra de tokens', '2024-12-27 15:05:29', '2024-12-29', 1, NULL, NULL, 145, 5000.00),
+	(512, 'Ingreso', 24.00, 'Compra de tokens', '2024-12-29 15:28:00', '2024-12-29', 1, NULL, NULL, 173, 24.00),
+	(513, 'Ingreso', 50.00, 'Compra de tokens', '2024-12-29 15:29:19', '2024-12-29', 1, NULL, NULL, 173, 50.00),
+	(514, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:29:50', NULL, 1, 147, NULL, 173, 50.00),
+	(515, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:29:50', NULL, 1, 147, NULL, 170, 50.00),
+	(516, 'Ingreso', 1000.00, 'Compra de tokens', '2024-12-29 15:31:58', '2024-12-29', 1, NULL, NULL, 173, 1000.00),
+	(517, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:32:27', NULL, 1, 148, NULL, 173, 50.00),
+	(518, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:32:27', NULL, 1, 148, NULL, 170, 50.00),
+	(519, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:33:12', NULL, 1, 149, NULL, 173, 10.00),
+	(520, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:33:12', NULL, 1, 149, NULL, 149, 10.00),
+	(521, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 16:46:15', NULL, 1, NULL, NULL, NULL, 10.00),
+	(522, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 17:08:03', NULL, 1, 150, NULL, 143, 2000.00),
+	(523, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 17:08:03', NULL, 1, 150, NULL, 145, 2000.00),
+	(553, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:12:53', NULL, 1, NULL, NULL, 145, 27.00),
+	(554, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:12:54', NULL, 1, NULL, NULL, 143, 513.00),
+	(555, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:12:55', NULL, 1, NULL, NULL, 145, 540.00),
+	(556, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:26', NULL, 1, NULL, NULL, 145, 27.00),
+	(557, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:26', NULL, 1, NULL, NULL, 145, 540.00),
+	(558, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:26', NULL, 1, NULL, NULL, 143, 513.00),
+	(559, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:34', NULL, 1, NULL, NULL, 145, 27.00),
+	(560, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:35', NULL, 1, NULL, NULL, 145, 540.00),
+	(561, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:35', NULL, 1, NULL, NULL, 143, 513.00),
+	(562, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:43', NULL, 1, NULL, NULL, 145, 27.00),
+	(563, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:43', NULL, 1, NULL, NULL, 145, 540.00),
+	(564, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:43', NULL, 1, NULL, NULL, 143, 513.00),
+	(574, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 18:51:43', NULL, 1, NULL, NULL, 145, 27.00),
+	(575, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 22:51:43', NULL, 1, NULL, NULL, 145, 540.00),
+	(576, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 22:51:43', NULL, 1, NULL, NULL, 143, 513.00);
+
+-- Volcando estructura para tabla railway.plan_pagos
+CREATE TABLE IF NOT EXISTS `plan_pagos` (
+  `plan_id` int NOT NULL AUTO_INCREMENT,
+  `solicitud_inv_id` int NOT NULL,
+  `cliente_id` int NOT NULL,
+  `num_pago` int NOT NULL,
+  `monto_pago` decimal(10,2) NOT NULL,
+  `fecha_programada` date NOT NULL,
+  `estado_pago` enum('Pendiente','Pagado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pendiente',
+  `fecha_pagada` date DEFAULT NULL,
+  PRIMARY KEY (`plan_id`),
+  KEY `fk_solicitud_inv` (`solicitud_inv_id`),
+  KEY `fk_cliente_plan` (`cliente_id`),
+  CONSTRAINT `fk_cliente_plan` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
+  CONSTRAINT `fk_solicitud_inv` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Volcando datos para la tabla railway.plan_pagos: ~48 rows (aproximadamente)
+INSERT INTO `plan_pagos` (`plan_id`, `solicitud_inv_id`, `cliente_id`, `num_pago`, `monto_pago`, `fecha_programada`, `estado_pago`, `fecha_pagada`) VALUES
+	(1, 40, 170, 1, 1070.00, '2024-12-31', 'Pendiente', NULL),
+	(2, 40, 170, 2, 1070.00, '2025-01-31', 'Pendiente', NULL),
+	(3, 40, 170, 3, 1070.00, '2025-02-28', 'Pendiente', NULL),
+	(4, 40, 170, 4, 1070.00, '2025-03-31', 'Pendiente', NULL),
+	(5, 40, 170, 5, 1070.00, '2025-04-30', 'Pendiente', NULL),
+	(6, 40, 170, 6, 1070.00, '2025-05-31', 'Pendiente', NULL),
+	(7, 40, 170, 7, 1070.00, '2025-06-30', 'Pendiente', NULL),
+	(8, 40, 170, 8, 1070.00, '2025-07-31', 'Pendiente', NULL),
+	(9, 40, 170, 9, 1070.00, '2025-08-31', 'Pendiente', NULL),
+	(10, 40, 170, 10, 1070.00, '2025-09-30', 'Pendiente', NULL),
+	(11, 37, 145, 1, 206.00, '2024-12-26', 'Pendiente', NULL),
+	(12, 37, 145, 2, 206.00, '2025-01-26', 'Pendiente', NULL),
+	(13, 37, 145, 3, 206.00, '2025-02-26', 'Pendiente', NULL),
+	(14, 37, 145, 4, 206.00, '2025-03-26', 'Pendiente', NULL),
+	(15, 37, 145, 5, 206.00, '2025-04-26', 'Pendiente', NULL),
+	(16, 37, 145, 6, 206.00, '2025-05-26', 'Pendiente', NULL),
+	(17, 37, 145, 7, 206.00, '2025-06-26', 'Pendiente', NULL),
+	(18, 37, 145, 8, 206.00, '2025-07-26', 'Pendiente', NULL),
+	(19, 37, 145, 9, 206.00, '2025-08-26', 'Pendiente', NULL),
+	(20, 37, 145, 10, 206.00, '2025-09-26', 'Pendiente', NULL),
+	(21, 55, 145, 1, 540.00, '2025-10-10', 'Pagado', '2024-12-29'),
+	(22, 55, 145, 2, 540.00, '2025-11-10', 'Pagado', '2024-12-29'),
+	(23, 55, 145, 3, 540.00, '2025-12-10', 'Pagado', '2024-12-29'),
+	(24, 55, 145, 4, 540.00, '2026-01-10', 'Pagado', '2024-12-29'),
+	(25, 55, 145, 5, 540.00, '2026-02-10', 'Pagado', '2024-12-29'),
+	(26, 55, 145, 6, 540.00, '2026-03-10', 'Pendiente', '2024-12-29'),
+	(27, 56, 170, 1, 4377.27, '2025-01-03', 'Pendiente', NULL),
+	(28, 56, 170, 2, 4377.27, '2025-02-03', 'Pendiente', NULL),
+	(29, 56, 170, 3, 4377.27, '2025-03-03', 'Pendiente', NULL),
+	(30, 56, 170, 4, 4377.27, '2025-04-03', 'Pendiente', NULL),
+	(31, 56, 170, 5, 4377.27, '2025-05-03', 'Pendiente', NULL),
+	(32, 56, 170, 6, 4377.27, '2025-06-03', 'Pendiente', NULL),
+	(33, 56, 170, 7, 4377.27, '2025-07-03', 'Pendiente', NULL),
+	(34, 56, 170, 8, 4377.27, '2025-08-03', 'Pendiente', NULL),
+	(35, 56, 170, 9, 4377.27, '2025-09-03', 'Pendiente', NULL),
+	(36, 56, 170, 10, 4377.27, '2025-10-03', 'Pendiente', NULL),
+	(37, 56, 170, 11, 4377.27, '2025-11-03', 'Pendiente', NULL),
+	(38, 56, 170, 12, 4377.27, '2025-12-03', 'Pendiente', NULL),
+	(39, 56, 170, 13, 4377.27, '2026-01-03', 'Pendiente', NULL),
+	(40, 56, 170, 14, 4377.27, '2026-02-03', 'Pendiente', NULL),
+	(41, 56, 170, 15, 4377.27, '2026-03-03', 'Pendiente', NULL),
+	(42, 56, 170, 16, 4377.27, '2026-04-03', 'Pendiente', NULL),
+	(43, 56, 170, 17, 4377.27, '2026-05-03', 'Pendiente', NULL),
+	(44, 56, 170, 18, 4377.27, '2026-06-03', 'Pendiente', NULL),
+	(45, 56, 170, 19, 4377.27, '2026-07-03', 'Pendiente', NULL),
+	(46, 56, 170, 20, 4377.27, '2026-08-03', 'Pendiente', NULL),
+	(47, 56, 170, 21, 4377.27, '2026-09-03', 'Pendiente', NULL),
+	(48, 56, 170, 22, 4377.27, '2026-10-03', 'Pendiente', NULL);
 
 -- Volcando estructura para tabla railway.posts
 CREATE TABLE IF NOT EXISTS `posts` (
@@ -611,35 +466,27 @@ CREATE TABLE IF NOT EXISTS `solicitudes_inversion` (
   `cantidad_pagos` int NOT NULL DEFAULT '0',
   `fecha_inicio_pago` date NOT NULL,
   `fecha_fin_pago` date NOT NULL,
-  `aprobado` enum('Pendiente','Aprobado','Rechazado') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pendiente',
+  `aprobado` enum('Inicial','Pendiente','Aprobado','Rechazado') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Inicial',
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   `observaciones` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado_inversion` enum('Pendiente','Proceso','Finalizado','Reversion') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado_inversion` enum('Inicial','Pendiente','Proceso','Finalizado','Reversion') COLLATE utf8mb4_general_ci DEFAULT 'Inicial',
+  `porcentaje_interes` decimal(5,2) DEFAULT '0.00',
+  `canceladoPor` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'Admin',
+  `fecha_solicitud` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `si_cliente_id` (`cliente_id`) USING BTREE,
   CONSTRAINT `si_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla railway.solicitudes_inversion: ~12 rows (aproximadamente)
-INSERT INTO `solicitudes_inversion` (`id`, `cliente_id`, `nombre`, `descripcion`, `fecha_inicio_recaudacion`, `fecha_fin_recaudacion`, `monto`, `cantidad_pagos`, `fecha_inicio_pago`, `fecha_fin_pago`, `aprobado`, `estado`, `observaciones`, `estado_inversion`) VALUES
-	(1, 149, 'Cliente', 'Desarrollo de software Backend', '2024-01-12', '2024-02-12', 3000.00, 6, '2024-04-22', '2024-10-23', 'Aprobado', 1, '', 'Reversion'),
-	(2, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'rerearea', NULL),
-	(3, 145, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'fdsfdsa', 'Reversion'),
-	(4, 145, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'fsdafsda', 'Reversion'),
-	(5, 144, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 3, 'reacahzado', 'Reversion'),
-	(6, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Rechazado', 1, 'ffdsfdsfdsfdsafdsafadfdsafdsfdsfdsa', NULL),
-	(7, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 2, 'fdsafdsafds', NULL),
-	(8, 151, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, 'fdsfdsfdsa', 'Reversion'),
-	(9, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, 'fdsafdsafdsa', NULL),
-	(10, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, NULL),
-	(11, 169, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, 'Reversion'),
-	(12, 149, 'Danny', 'Desarrollo de software Frontes', '2024-12-11', '2025-03-11', 2000.00, 4, '2025-04-11', '2024-08-11', 'Pendiente', 1, NULL, 'Reversion'),
-	(13, 149, 'Inversión Actualizada', 'Descripción actualizada de la inversión', '2023-10-01', '2023-12-01', 15000.00, 12, '2024-01-01', '2024-12-01', 'Pendiente', 1, NULL, 'Reversion'),
-	(14, 169, 'Inversión Actualizada', 'Descripción actualizada de la inversión', '2023-10-01', '2023-12-01', 15000.00, 12, '2024-01-01', '2024-12-01', 'Pendiente', 1, NULL, NULL),
-	(17, 168, 'Dolore officiis volu', 'Similique dolore mol', '1995-10-17', '2001-05-13', 2000.00, 25, '1993-02-24', '1995-03-24', 'Aprobado', 1, NULL, NULL),
-	(18, 168, 'Quo nesciunt quis a', 'Sed praesentium libe', '2016-07-21', '1996-07-01', 6000.00, 62, '2003-10-10', '2008-12-10', 'Pendiente', 1, NULL, NULL),
-	(19, 168, 'Laboris iusto aut fu', 'Eum quasi aut magna ', '1982-07-27', '2001-07-20', 94000.00, 43, '1994-03-07', '1997-10-07', 'Pendiente', 1, NULL, NULL),
-	(20, 145, '     ', '     ', '2000-10-10', '2000-10-10', -10.00, -10, '1999-10-10', '1999-10-10', 'Pendiente', 1, NULL, NULL);
+-- Volcando datos para la tabla railway.solicitudes_inversion: ~7 rows (aproximadamente)
+INSERT INTO `solicitudes_inversion` (`id`, `cliente_id`, `nombre`, `descripcion`, `fecha_inicio_recaudacion`, `fecha_fin_recaudacion`, `monto`, `cantidad_pagos`, `fecha_inicio_pago`, `fecha_fin_pago`, `aprobado`, `estado`, `observaciones`, `estado_inversion`, `porcentaje_interes`, `canceladoPor`, `fecha_solicitud`) VALUES
+	(39, 170, 'Est numquam laborum ', 'Esse assumenda a el', '2024-12-28', '2024-12-31', 100000.00, 10, '2025-01-01', '2025-11-01', 'Aprobado', 1, NULL, 'Finalizado', 2.00, 'Admin', '2024-12-27 21:03:37'),
+	(40, 170, 'Inversion motivo', 'descripcion solicitud', '2024-12-28', '2024-12-31', 10000.00, 10, '2024-12-31', '2025-10-31', 'Aprobado', 1, NULL, 'Finalizado', 7.00, 'Admin', '2024-12-27 21:03:37'),
+	(42, 149, 'inversion agricola', 'quiero poder sembrar 100 hectaras de cania', '2024-12-24', '2025-01-24', 1000.00, 8, '2024-12-31', '2025-10-31', 'Aprobado', 1, NULL, 'Pendiente', 8.00, 'Admin', '2024-12-27 21:03:37'),
+	(47, 140, 'Inversión A', 'Primera solicitud de inversión.', '2024-12-01', '2024-12-23', 10000.00, 12, '2025-01-01', '2025-12-31', 'Pendiente', 1, 'Sin observaciones', 'Pendiente', 5.00, 'Admin', '2024-12-27 21:03:37'),
+	(48, 142, 'Inversión B', 'Segunda solicitud de inversión.', '2024-11-15', '2024-12-23', 20000.00, 24, '2025-01-15', '2026-12-31', 'Pendiente', 1, NULL, 'Pendiente', 6.50, 'Admin', '2024-12-27 21:03:37'),
+	(55, 145, 'diplomado', 'especializacion en prgoramciaocn', '2024-12-28', '2024-12-31', 3000.00, 6, '2025-10-10', '2026-04-10', 'Aprobado', 1, NULL, 'Proceso', 8.00, 'Admin', '2024-12-27 21:03:37'),
+	(56, 170, 'Accusantium nesciunt', 'Libero consectetur ', '2024-12-30', '2024-12-31', 90000.00, 22, '2025-01-03', '2026-11-03', 'Aprobado', 1, NULL, 'Proceso', 7.00, 'Admin', '2024-12-29 22:44:42');
 
 -- Volcando estructura para tabla railway.solicitudes_retiro
 CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
@@ -663,34 +510,7 @@ CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
   CONSTRAINT `solicitudes_retiro_ibfk_2` FOREIGN KEY (`inversion_id`) REFERENCES `inversiones` (`inversion_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.solicitudes_retiro: ~26 rows (aproximadamente)
-INSERT INTO `solicitudes_retiro` (`retiro_id`, `tipo`, `usuario_id`, `monto_solicitud`, `tokens_cambio`, `comision_aplicar`, `monto_recibir`, `fecha_solicitud`, `fecha_aprobacion`, `foto_identificacion`, `selfie_identificacion`, `estado`, `inversion_id`) VALUES
-	(87, 'inversor', 140, 5.00, 1000.00, 0.15, 4.85, '2024-11-24 00:00:00', '2024-11-28', NULL, NULL, 'Aprobado', NULL),
-	(88, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:52:44', NULL, NULL, NULL, 'Pendiente', NULL),
-	(89, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:53:26', NULL, NULL, NULL, 'Pendiente', NULL),
-	(90, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:55:36', NULL, NULL, NULL, 'Pendiente', NULL),
-	(91, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:57:10', NULL, NULL, NULL, 'Pendiente', NULL),
-	(92, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 15:57:29', NULL, NULL, NULL, 'Pendiente', NULL),
-	(93, 'cliente', 149, 6.00, 1200.00, 0.18, 5.82, '2024-11-25 16:00:31', NULL, NULL, NULL, 'Pendiente', NULL),
-	(94, 'cliente', 142, 5.00, 1000.00, 0.15, 4.85, '2024-11-25 16:15:39', NULL, NULL, NULL, 'Pendiente', NULL),
-	(95, 'cliente', 149, 5.00, 1000.00, 0.15, 4.85, '2024-11-25 16:32:59', '2024-11-26', NULL, NULL, 'Aprobado', NULL),
-	(96, 'cliente', 149, 1.00, 200.00, 0.03, 0.97, '2024-11-25 16:33:14', '2024-11-26', NULL, NULL, 'Aprobado', NULL),
-	(97, 'cliente', 142, 0.50, 100.00, 0.02, 0.49, '2024-11-25 19:52:06', NULL, NULL, NULL, 'Pendiente', NULL),
-	(98, 'cliente', 142, 44.50, 8900.00, 1.34, 43.17, '2024-11-25 19:52:38', NULL, NULL, NULL, 'Pendiente', NULL),
-	(99, 'cliente', 142, 15.00, 3000.00, 0.45, 14.55, '2024-11-25 19:53:23', NULL, NULL, NULL, 'Pendiente', NULL),
-	(100, 'inversor', 148, 1.00, 200.00, 0.03, 0.97, '2024-11-25 22:36:43', NULL, NULL, NULL, 'Pendiente', NULL),
-	(101, 'cliente', 149, 0.50, 100.00, 0.02, 0.49, '2024-11-25 23:36:28', NULL, NULL, NULL, 'Pendiente', NULL),
-	(102, 'cliente', 149, 500.00, 100000.00, 15.00, 485.00, '2024-11-25 23:36:56', NULL, NULL, NULL, 'Pendiente', NULL),
-	(103, 'cliente', 151, 26.50, 5300.00, 0.79, 25.71, '2024-11-26 14:22:47', NULL, NULL, NULL, 'Pendiente', NULL),
-	(104, 'inversor', 161, 0.05, 10.00, 0.00, 0.05, '2024-11-26 15:39:51', '2024-11-26', NULL, NULL, 'Aprobado', NULL),
-	(105, 'inversor', 161, 0.50, 100.00, 0.02, 0.49, '2024-11-26 15:49:56', NULL, NULL, NULL, 'Pendiente', NULL),
-	(106, 'inversor', 143, 0.50, 100.00, 0.02, 0.49, '2024-11-26 20:22:59', NULL, NULL, NULL, 'Pendiente', NULL),
-	(107, 'inversor', 140, 25.00, 5000.00, 0.75, 24.25, '2024-11-26 22:57:17', '2024-11-28', NULL, NULL, 'Aprobado', NULL),
-	(108, 'inversor', 140, 25.00, 5000.00, 0.75, 24.25, '2024-11-26 22:58:35', NULL, NULL, NULL, 'Pendiente', NULL),
-	(109, 'cliente', 145, 25.00, 5000.00, 0.75, 24.25, '2024-11-26 23:56:07', NULL, NULL, NULL, 'Pendiente', NULL),
-	(110, 'cliente', 144, 0.03, 5.00, 0.00, 0.02, '2024-11-27 13:53:01', NULL, NULL, NULL, 'Pendiente', NULL),
-	(111, 'cliente', 166, 2.50, 500.00, 0.08, 2.43, '2024-11-27 21:09:47', NULL, NULL, NULL, 'Pendiente', NULL),
-	(112, 'inversor', 143, 190.00, 38000.00, 5.70, 184.30, '2024-11-27 21:13:36', '2024-11-28', NULL, NULL, 'Aprobado', NULL);
+-- Volcando datos para la tabla railway.solicitudes_retiro: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla railway.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
@@ -726,18 +546,18 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `numero_telefono` (`numero_telefono`),
   KEY `categoria_persona_id` (`categoria_persona_id`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`categoria_persona_id`) REFERENCES `categoria_personas` (`categoria_persona_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.usuarios: ~25 rows (aproximadamente)
+-- Volcando datos para la tabla railway.usuarios: ~29 rows (aproximadamente)
 INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pais`, `numero_telefono`, `username`, `pais_residencia`, `password`, `edad`, `acepta_terminos`, `categoria_persona_id`, `rol`, `created_at`, `updated_at`, `estado`, `cod_verificacion`, `verificado`, `saldo_total`, `registrado_por`, `aprobado`, `resetPasswordToken`, `resetPasswordExpires`, `genero`, `imagen`, `video`, `porcentaje_registro`) VALUES
 	(140, 'Brian', 'Villarroel', 'braal.vf@gmail.com', '+591', '76543210', 'Brian - Villarroel', 'Bolivia', '$2b$10$QfURX5A.flFB9CYg/vo7uO4lIpN.DJBmW9oruYpKVruyIatgMZcU6', 32, 1, 16, 'Inversionista', '2024-11-25 13:37:00', '2024-11-25 13:37:00', 1, '1e80ab3a68c8ecb03cbd77dc5042bda28e357038', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544180/clients/140.jpg', NULL, '100%'),
 	(142, 'cecilia ', 'Velarde', 'airamposoruco@gmail.com', '+591', '60397621', 'cecilia  - Velarde', 'Bolivia', '$2b$10$rGg18E/rfqdJvtbU78lhJ.BLTcK6ejLllptG/LRaWENrr/oJVM6kW', 33, 1, NULL, 'Admin', '2024-11-25 13:38:28', '2024-11-25 13:38:28', 1, 'c6ada34e5f6096d23d45d2ec9799217a1c549ff1', 1, 0.00, '', 1, NULL, NULL, 'mujer', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732549700/clients/142.jpg', NULL, '20%'),
 	(143, 'inversionista', 'inver', 'inver@gmail.com', '+591', '45645645', 'inversionista - inver', 'Bolivia', '$2b$10$cbaTGqNRwxjE2UezjKWD0es/lOHX1Adk4pjfNSadsT7yy3TNetB.W', 24, 1, 16, 'Inversionista', '2024-11-25 13:41:25', '2024-11-25 13:41:25', 1, '7658ef742c85cad0aa890703ba8f3b691666f002', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732652362/clients/143.png', NULL, '100%'),
 	(144, 'Victor Hugo', 'Bolivia', 'victorhugo31103@gmail.com', '+591', '62554738', 'Victor Hugo - Bolivia', 'Argentina', '$2b$10$UERZZYj0IoPYkNQKQJZhd.tL2AHUsikYU/5fp8e/hsVQyQGinjMxy', 32, 1, NULL, 'Cliente', '2024-11-25 13:42:16', '2024-11-25 13:42:16', 1, '20d6894bfa066b5e380b563d04955b288cd2b85a', 1, 0.00, '', 1, NULL, NULL, '', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732545074/clients/144.png', NULL, '100%'),
-	(145, 'Jonathan', 'Villarroel', 'guilad1233@gmail.com', '+591', '75946778', 'Jonathan - Villarroel', 'Bolivia', '$2b$10$Z3bIYqaitNdcoaQ0mrYBmOHtowmKwEXAehxsUK3YeVrFrap6JT07y', 20, 1, 19, 'Cliente', '2024-11-25 13:46:35', '2024-11-25 13:46:35', 1, '0d0bf76cec374dd70d10793b1b72e22cf21a58e3', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732543762/clients/145.jpg', NULL, '60%'),
+	(145, 'Jonathan', 'Villarroel', 'guilad1233@gmail.com', '+591', '75946778', 'Jonathan - Villarroel', 'Bolivia', '$2b$10$Z3bIYqaitNdcoaQ0mrYBmOHtowmKwEXAehxsUK3YeVrFrap6JT07y', 20, 1, 19, 'Cliente', '2024-11-25 13:46:35', '2024-11-25 13:46:35', 1, '0d0bf76cec374dd70d10793b1b72e22cf21a58e3', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732543762/clients/145.jpg', NULL, '100%'),
 	(148, 'Alex', 'Bolivia', 'alexandercortezorias@gmail.com', '+591', '77563943', 'Alex - Bolivia', 'Bolivia', '$2b$10$PFIqFwS0FJRk9WXBhd3/nubei3r6toWNMbeKvILymDsQ0LcpU.3Nu', 32, 1, 16, 'Inversionista', '2024-11-25 13:56:40', '2024-11-25 13:56:40', 1, 'a424eccc2aa5ae8b7db969fc62509179a60d5da7', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732543840/clients/148.jpg', NULL, '100%'),
 	(149, 'cliente', 'talento', 'cliente@gmail.com', '+591', '12121212', 'cliente - talento', 'Bolivia', '$2b$10$US35l7jTZVpP5vhw7PNbSuOBIof.L.g3UUUbekn4Jv6evpzAnlbqO', 24, 1, 19, 'Cliente', '2024-11-25 14:01:49', '2024-11-25 14:01:49', 1, 'a704ac94bc2049d06e79d25ee1f28307103b5026', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544817/clients/149.png', NULL, '100%'),
-	(150, 'admin', 'admin', 'admin@gmail.com', '+54', '78787878', 'admin - admin', 'Argentina', '$2b$10$x4CZx8LXdpr/l66DOfj/5.9aJ.ce/ELXoF6M098x0xbd0D3sFsy4e', 24, 1, 16, 'Admin', '2024-11-25 14:05:15', '2024-11-25 14:05:15', 1, 'bd0c7fa5f936eafedd68ffee0fa0f98d3875d647', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
+	(150, 'admin', 'admin', 'admin@gmail.com', '+54', '78787878', 'admin - admin', 'Argentina', '$2b$10$oU7v/Jy9VexIh/N/7l1SH.YA.i6AMjJAMjw/T.3q1gXjny8cidlZy', 24, 1, 16, 'Admin', '2024-11-25 14:05:15', '2024-11-25 14:05:15', 1, 'bd0c7fa5f936eafedd68ffee0fa0f98d3875d647', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(151, 'leandro', 'ledezma', 'lleandroledezma@gmail.com', '+591', '61814110', 'leandro - ledezma', 'Bolivia', '$2b$10$a5hn6r08RjbTR7XTuFTJYOGszBj0Pqk1JBVXCfK/DWo9OxxwKSkqu', 25, 1, NULL, 'Cliente', '2024-11-25 14:07:32', '2024-11-25 14:07:32', 1, 'f014ca117ed281b09269c6b33e276ba2a41ae9ac', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732545500/clients/151.jpg', NULL, '100%'),
 	(152, 'Pedro', 'Olmos', 'pedro@gmail.com', '+54', '+1 (224) 414-8779', 'Pedro - Olmos', 'Peru', '$2b$10$tpGUZXl5Eao1C6TQeXSmz.1ZFzUEtladFjiXiY6vTkY0nJOlkKsDq', 29, 1, 16, 'Null', '2024-11-25 14:07:53', '2024-11-25 14:07:53', 1, '593d70c7856ec23f12b26f54ccc5f41a0ef07cfb', 1, 0.00, '', 0, NULL, NULL, '', NULL, NULL, '0%'),
 	(153, 'torman', 'Guard', 'toromanguard@gmail.com', '+591', '77563936', 'torman - Guard', 'Bolivia', '$2b$10$CIsOFveerAkfK7zoS6zRE.u51ekOw7Ax19XidpesfHUQDw1VqUvgS', 58, 1, NULL, 'Cliente', '2024-11-25 14:42:03', '2024-11-25 14:42:03', 1, '771a9a8cff786cf8523ab0e451cce091015ddd18', 1, 0.00, '', 0, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732546795/clients/153.jpg', NULL, '80%'),
@@ -750,11 +570,74 @@ INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pa
 	(162, 'ewq', 'weq', 's@gmail.com', '+591', '1234123456781234', 'ewq - weq', 'Bolivia', '$2b$10$wYTx4Nsj8SzHYYxkmqVEked2aLGsUoKHRFL2zBdon9Wwxl5kTr.hq', 24, 1, 16, 'Null', '2024-11-27 14:03:53', '2024-11-27 14:03:53', 1, '2f92d8bed33c2becb0d8c9e357f3083b4101dba5', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'mujer', NULL, NULL, '0%'),
 	(163, 'eew', 'qwe', 'q@gmail.com', '+55', '20202020202', 'eew - qwe', 'Brazil', '$2b$10$uAv0U9NceK0jJwJ4jE3mN.CqzHuvy7YQnd6U13.NgHnR9BPO4b3Cy', 24, 1, 19, 'Null', '2024-11-27 14:23:33', '2024-11-27 14:23:33', 1, 'dec2c42ff4e17d45c44299abe6e5d1bd54d8b231', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(164, 'Ari', 'Dorado', 'a@gmail.com', '+1', '1479852', 'Ari - Dorado', 'Canada', '$2b$10$wWeaXqP0e2cKplJPhhunCeZzpsGRMSO.MJ8NUDLmIGZDpFANnoSa.', 23, 1, 19, 'Inversionista', '2024-11-27 14:33:23', '2024-11-27 14:33:23', 1, '71c9fdd7955332dde4b798430cd5e8eba1a9b702', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
-	(165, 'Marvin Ramirez', 'Wiley', 'vujime@mailinator.com', '+591', '+1 (631) 169-7471', 'Marvin Ramirez - Wiley', 'Cuba', '$2b$10$u8kd/4vid7xyM/D8W/KCdOAxGyt.61QLxc36M9Ow.o3NkW4bCqRBy', 20, 1, 16, 'Null', '2024-11-27 20:46:53', '2024-11-27 20:46:53', 1, '5f13150d959ecd5665c3a122c6f4de1e5bca8d17', 1, 0.00, '', 0, NULL, NULL, 'mujer', NULL, NULL, '0%'),
-	(166, 'luis', 'luis', 'joryorch5000@gmail.com', '+54', '12345678', 'luis - luis', 'Argentina', '$2b$10$x0tYSekcYuTPPYaApbRW4OK3s9DfHmNWcOaKIotm2NktVAWdTj8ae', 24, 1, 18, 'Cliente', '2024-11-27 20:58:18', '2024-11-27 20:58:18', 1, '9a2e7a85a5dbf1c2c992e3a302f3d1aa78a7d8d1', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732741507/clients/166.png', NULL, '100%'),
+	(165, 'Marvin Ramirez', 'Wiley', 'vujime@mailinator.com', '+591', '+1 (631) 169-7471', 'Marvin Ramirez - Wiley', 'Cuba', '$2b$10$u8kd/4vid7xyM/D8W/KCdOAxGyt.61QLxc36M9Ow.o3NkW4bCqRBy', 20, 1, 18, 'Null', '2024-11-27 20:46:53', '2024-11-27 20:46:53', 1, '5f13150d959ecd5665c3a122c6f4de1e5bca8d17', 1, 0.00, '', 0, NULL, NULL, 'mujer', NULL, NULL, '0%'),
+	(166, 'luis', 'luis', 'joryorch5000@gmail.com', '+54', '12345678', 'luis - luis', 'Argentina', '$2b$10$x0tYSekcYuTPPYaApbRW4OK3s9DfHmNWcOaKIotm2NktVAWdTj8ae', 24, 1, 16, 'Admin', '2024-11-27 20:58:18', '2024-11-27 20:58:18', 1, '9a2e7a85a5dbf1c2c992e3a302f3d1aa78a7d8d1', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732741507/clients/166.png', NULL, '100%'),
 	(167, 'Cristian Andres', 'Carvajal Garcia', 'andres-carvajal-garcia64@outlook.com', '+591', '68757882', 'Cristian Andres - Carvajal Garcia', 'Bolivia', '$2b$10$olLLW68MACyzhaQ95CsZh.iffKjggMRDKl2oGLTf6a4qly6osHiYi', 26, 1, 20, 'Cliente', '2024-11-28 21:33:55', '2024-11-28 21:33:55', 1, '6d45e9730a178d6aacc587c4f77293899c11d9c7', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
-	(168, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.heredia@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$6R.Caj3zru1NW7.uuOBpTOLLllSGYn5xcqQjk7RHp9uqu0UAR1r7a', 28, 1, 19, 'Cliente', '2024-12-11 20:34:54', '2024-12-11 20:34:54', 1, '5db5c3fab427d9f3f15696c048098fda9ef4cc17', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '20%'),
-	(169, 'Danny', 'Gonzales Medina', 'd1303gm@gmail.com', '+591', '60746303', 'Danny - Gonzales Medina', 'Bolivia', '$2b$10$Ufm/tnQWNW39E/XS9nJqpuCArGOBbCFpUPkrOeew70zcz4MhGOVae', 26, 1, 16, 'Cliente', '2024-12-11 21:24:07', '2024-12-11 21:24:07', 1, '9076104c1597fe4b39fb8efc060db1282ffd81de', 0, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '0%');
+	(168, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.herediaaa@gmail.com', '+591', '76993789', 'Rodrigso - Gandarillas Heredisa', 'Bolivia', '$2b$10$6R.Caj3zru1NW7.uuOBpTOLLllSGYn5xcqQjk7RHp9uqu0UAR1r7a', 28, 1, 19, 'Cliente', '2024-12-11 20:34:54', '2024-12-11 20:34:54', 1, '5db5c3fab427d9f3f15696c048098fda9ef4cc17', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '20%'),
+	(169, 'Danny', 'Gonzales Medina', 'd1303gm@gmail.com', '+591', '60746303', 'Danny - Gonzales Medina', 'Bolivia', '$2b$10$Ufm/tnQWNW39E/XS9nJqpuCArGOBbCFpUPkrOeew70zcz4MhGOVae', 26, 1, 16, 'Cliente', '2024-12-11 21:24:07', '2024-12-11 21:24:07', 1, '9076104c1597fe4b39fb8efc060db1282ffd81de', 0, 0.00, '', 0, 'a8d23532bdf04c775e95b90d940252a7d28ed952', 1734366005179, 'hombre', NULL, NULL, '0%'),
+	(170, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.heredia@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$jE81XG7prbHWUW4v0XoVre0seadbGfb2RL0KnifuXItW/mwoueR3a', 29, 1, 18, 'Cliente', '2024-12-13 14:31:04', '2024-12-13 14:31:04', 1, 'a413f0049d12b515289119c4474b2238bd78cc21', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734100562/clients/170.jpg', NULL, '100%'),
+	(171, 'Danny ', 'Gonzales Medina', 'dan9813gm@gmail.com', '+591', '60746302', 'Danny  - Gonzales Medina', 'Bolivia', '$2b$10$bmAenGiVHTgSPA46HPnT6.xCJe5hkbYkNBXb0bIHswU4AWe7p.6.W', 26, 1, 20, 'Cliente', '2024-12-16 15:26:12', '2024-12-16 15:26:12', 1, '73e0fccd6534b98f63163f305bfff733a9f1ff71', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734364323/clients/171.png', NULL, '100%'),
+	(172, 'Bradley Wiggins', 'Haney', 'rkorodri@gmail.com', '+591', '+1 (717) 629-9067', 'Bradley Wiggins - Haney', 'Costa Rica', '$2b$10$Q/T0LweBqlqOxhX6bIi7Le9sZeP7HO/PGawKMcPfzbHzh2dTEHbH6', 52, 1, 16, 'Cliente', '2024-12-16 16:56:57', '2024-12-16 16:56:57', 1, '5019d2ce482ec486a617cf57ee6b999eda8bc32f', 1, 0.00, '', 0, NULL, NULL, '', NULL, NULL, '0%'),
+	(173, 'Cecilia', 'Soruco', 'airamppo1@gmail.com', '+591', '68501530', 'Cecilia - Soruco', 'Bolivia', '$2b$10$WhnpfE49NL37RT.oYT/i2eTCmjkBI9/pFH4rX6YNGd.XwwNU3cO2u', 33, 1, 16, 'Inversionista', '2024-12-27 20:03:27', '2024-12-27 20:03:27', 1, '99b8289be5a915653119b3a37f0891e08befb0a3', 1, 0.00, '', 1, NULL, NULL, 'mujer', NULL, NULL, '0%');
+
+-- Volcando estructura para disparador railway.generar_plan_pagos_solicitud
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `generar_plan_pagos_solicitud` AFTER UPDATE ON `solicitudes_inversion` FOR EACH ROW BEGIN
+    DECLARE v_monto_pago DECIMAL(10,2);
+    DECLARE v_fecha_pago DATE;
+    DECLARE i INT DEFAULT 1;
+    DECLARE v_existe_plan INT;
+    DECLARE v_inversion_id INT;
+    
+    -- Verificar si ya existe un plan de pagos
+    SELECT COUNT(*) INTO v_existe_plan
+    FROM plan_pagos
+    WHERE solicitud_inv_id = NEW.id
+    LIMIT 1;
+    
+    -- Obtener el ID de la inversión relacionada
+    SELECT inversion_id INTO v_inversion_id
+    FROM inversiones
+    WHERE solicitud_inv_id = NEW.id
+    LIMIT 1;
+    
+    -- Solo ejecutar si el estado cambió a 'Proceso' y no existe plan de pagos
+    IF NEW.estado_inversion = 'Proceso' AND v_existe_plan = 0 THEN
+        -- Actualizar la ganancia estimada en inversiones usando porcentaje_interes
+        UPDATE inversiones 
+        SET ganancia_estimada = (NEW.monto * NEW.porcentaje_interes / 100)
+        WHERE inversion_id = v_inversion_id;
+        
+        -- Calcular monto por pago usando porcentaje_interes
+        SET v_monto_pago = (NEW.monto + (NEW.monto * NEW.porcentaje_interes / 100)) / NEW.cantidad_pagos;
+        
+        -- Generar los pagos mensuales
+        WHILE i <= NEW.cantidad_pagos DO
+            SET v_fecha_pago = DATE_ADD(NEW.fecha_inicio_pago, INTERVAL (i-1) MONTH);
+            
+            INSERT INTO plan_pagos (
+                solicitud_inv_id,
+                cliente_id,
+                num_pago,
+                monto_pago,
+                fecha_programada,
+                estado_pago
+            ) VALUES (
+                NEW.id,
+                NEW.cliente_id,
+                i,
+                v_monto_pago,
+                v_fecha_pago,
+                'Pendiente'
+            );
+            
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
