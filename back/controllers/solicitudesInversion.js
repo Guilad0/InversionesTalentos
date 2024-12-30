@@ -61,9 +61,9 @@ const getSolicitudesInversion = (req, res) => {
 const getTotals = (req, res) => {
   const query = `
 SELECT 
-    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Rechazado,
+    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Pendiente,
     SUM(CASE WHEN aprobado = 'Aprobado' THEN 1 ELSE 0 END) AS Aprobado,
-    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Pendiente,
+    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Rechazado,
     COUNT(*) AS total
 FROM solicitudes_inversion;
   `;
@@ -785,7 +785,7 @@ const getSolicitudByClienteId = (req, res) => {
   });
 };
 
-//cambia el campo aprobado de Inicial a Pendiente
+//cambia el campo aprobado de Inicial a Pendiente despues de  3 dias
 const aprobarAutomaticamenteSolicitudes = () =>{
   let query = 'select id,fecha_solicitud from solicitudes_inversion'
   conexion.query(query,(err, results) =>{
@@ -809,7 +809,7 @@ const aprobarAutomaticamenteSolicitudes = () =>{
     });
   })
 }
-//cambia el campo aprobado de Pendiente a Aprobado
+//cambia el campo aprobado de Pendiente a Aprobado despues de  5 dias
 const aprobarAutomaticamenteInversiones = () =>{
   let query = `select id,fecha_solicitud from solicitudes_inversion where aprobado = 'Pendiente'`
   conexion.query(query,(err, results) =>{

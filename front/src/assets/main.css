@@ -278,3 +278,41 @@ textarea {
   color: var(--gray-color);
   transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
+.bg-degrade-inverso {
+  background: linear-gradient(to left, var(--gray-color), rgb(101, 126, 197));
+}
+
+.bg-degrade {
+  background: linear-gradient(to right, var(--gray-color), rgb(101, 126, 197));
+}
+
+.btn-6 {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  color: var(--gray-color);
+  transition: color 0.4s ease-in-out, background-color 0.6s ease-in-out;
+}
+
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: var(--gray-color);
+  transition: width 0.6s ease-in-out, height 0.6s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.btn-6:hover {
+  color: var(--white-anti-flash-color);
+}
+
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
+}
