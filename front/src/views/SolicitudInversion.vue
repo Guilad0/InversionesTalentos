@@ -219,9 +219,9 @@ const porcentajeGananciaPlataforma = ref(0);
 const pagoMensual = ref("");
 const montoTotal = ref("");
 
-onMounted(async() => {
- await obtenetPorcentajeGananciaPlataforma();
- await obtenerPorcentajeInteres();
+onMounted(async () => {
+  await obtenetPorcentajeGananciaPlataforma();
+  await obtenerPorcentajeInteres();
   console.log(user.value);
   if (user) {
     cliente_id.value = user.value.usuario_id;
@@ -347,8 +347,8 @@ const validarCampos = () => {
     errorAlert("El monto debe ser mayor a 0.", "Error");
     return false;
   }
-  if (cantidad_pagos.value <= 0) {
-    errorAlert("La cantidad de pagos debe ser mayor a 0.", "Error");
+  if (cantidad_pagos.value < 10 || cantidad_pagos.value > 24) {
+    errorAlert("La cantidad de pagos debe estar entre 10 y 24 meses.", "Error");
     return false;
   }
   if (
