@@ -430,6 +430,7 @@ const sigPago = ref(0)
 const porcentaje = ref(0)
 const cantidadPagada = ref(0)
 const cantidadFinal = ref(0)
+const comision_porcentual = ref(0)
 
 onMounted(async () => {
      if (!props.results || props.results.length === 0) {
@@ -443,6 +444,7 @@ onMounted(async () => {
                sigPago.value = data.sigPago;
                porcentaje.value = data.porcentaje;
                cantidadPagada.value = data.cantidadPagada;
+               comision_porcentual.value = data.comision_porcentual_ganancia;
                cantidadFinal.value = (parseFloat(props.results[0].monto) * (parseFloat(props.results[0].porcentaje_interes / 100))) + parseFloat(props.results[0].monto)
           } catch (error) {
                console.log(error);
@@ -468,7 +470,8 @@ const pagar = async (pago) => {
           pago,
           totalPagos: pagos.value.length,
           inversores: props.results[0].inversores,
-          numPago: sigPago.value
+          numPago: sigPago.value,
+          comision_porcentual:comision_porcentual.value
      }
       try {
            await axios.post(import.meta.env.VITE_BASE_URL+'/planPagos',data);
