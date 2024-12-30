@@ -61,9 +61,9 @@ const getSolicitudesInversion = (req, res) => {
 const getTotals = (req, res) => {
   const query = `
 SELECT 
-    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Rechazado,
+    SUM(CASE WHEN aprobado = 'Pendiente' THEN 1 ELSE 0 END) AS Pendiente,
     SUM(CASE WHEN aprobado = 'Aprobado' THEN 1 ELSE 0 END) AS Aprobado,
-    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Pendiente,
+    SUM(CASE WHEN aprobado = 'Rechazado' THEN 1 ELSE 0 END) AS Rechazado,
     COUNT(*) AS total
 FROM solicitudes_inversion;
   `;

@@ -76,7 +76,7 @@
                 <th class="td-custom align-middle custom-size">% Interes</th>
                 <th class="td-custom align-middle custom-size">Estado</th>
                 <th class="td-custom align-middle custom-size">Aprobar Rechazar</th>
-                <th class="td-custom align-middle custom-size">Finalizar Revertir</th>
+                <!-- <th class="td-custom align-middle custom-size">Finalizar Revertir</th> -->
               </tr>
             </thead>
             <tbody>
@@ -109,20 +109,20 @@
                   <div v-if="item.aprobado == 'Inicial'" class="d-flex justify-content-center">
                     <button class="border-0 m-auto hover-button  mx-1"
                       @click="procesarSolicitud(item.id, 'Pendiente', item.monto, item.nombre, item.cliente_id,item.porcentaje_interes)">
-                      <i class="fa-regular fa-circle-check text-success "></i>
+                      <i class="fa-regular fa-circle-check text-success cursor"></i>
 
                     </button>
                     <button class="border-0 m-auto hover-button  mx-1" @click="procesarSolicitud(item.id, 'Rechazado')">
                       <i class="fa-solid fa-ban text-danger"></i>
                     </button>
                   </div>
-                  <i v-if="item.aprobado == 'Aprobado'" class="fa-solid fa-eye text-secondary fs-6"
+                  <i v-if="item.aprobado == 'Aprobado'" class="fa-solid fa-eye text-secondary fs-6 cursor"
                     @click="openModal(item)"></i>
                   <label v-if="item.aprobado == 'Rechazado'">Sin acciones</label>
                 </td>
 
 
-                <td class="text-center align-middle ">
+                <!-- <td class="text-center align-middle ">
                   <span v-if="item.estado_inversion == 'Finalizado'" class="badge bg-success text-light"
                     @click="openModal(item)">Finalizado</span>
                   <label v-if="item.estado_inversion == 'Reversion'" class="badge bg-danger text-light"
@@ -136,7 +136,7 @@
                       <i class="fa-solid fa-ban text-danger"></i>
                     </button>
                   </div>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
