@@ -1121,27 +1121,33 @@ const getUserById = (req, res) => {
   });
 };
 
-const getSolInvById = (req,res)=>{
+const getSolInvById = (req, res) => {
   let query = `
-  select 
-    id,
-    descripcion,
-    fecha_inicio_recaudacion,
-    fecha_fin_recaudacion,
-    monto,
-    aprobado
-    from solicitudes_inversion
-    where cliente_id = ${req.params.id} AND aprobado = 'Aprobado'
+ SELECT
+    s.*,
+    COALESCE(SUM(i.monto), 0) as total_recaudado,
+    (s.monto - COALESCE(SUM(i.monto), 0)) as monto_restante
+  FROM solicitudes_inversion s
+  LEFT JOIN inversiones i ON i.solicitud_inv_id = s.id
+  WHERE s.cliente_id = ?
+    AND s.aprobado = 'Aprobado'
+  GROUP BY s.id
+  ORDER BY s.id DESC
+  LIMIT 1
   `;
-  conexion.query(query,(err,results)=>{
+  conexion.query(query, [req.params.id], (err, results) => {
     if (err) {
       return res.status(500).send({ message: "Error en la consulta" });
     }
     results[0].fecha_fin_recaudacion = new Date(results[0].fecha_fin_recaudacion)
-    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     results[0].fecha_inicio_recaudacion = new Date(results[0].fecha_inicio_recaudacion)
-    .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    res.status(200).json({ results:results[0] })
+      .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    results[0].fecha_inicio_pago = new Date(results[0].fecha_inicio_pago)
+      .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    results[0].fecha_fin_pago = new Date(results[0].fecha_fin_pago)
+      .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    res.status(200).json({ results: results[0] })
   })
 }
 
