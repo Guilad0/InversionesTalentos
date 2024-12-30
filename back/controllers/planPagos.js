@@ -1,31 +1,43 @@
 const conexion = require("../database");
 
 const getPlanPagosByIdSolicitud = (req, res) => {
-  let query = `select * from plan_pagos where solicitud_inv_id = ${req.params.id}`;
-  conexion.query(query, (err, results) => {
+  let query = 'select comision_porcentual_ganancia from ajustes where ajuste_id = 6'
+  conexion.query(query,(err,results)=>{
+
     if (err) {
       return res
         .status(500)
         .json({ msg: "Error al realizar la transaccion", err });
     }
-    const pagados = results.filter(
-      (pago) => pago.estado_pago == "Pagado"
-    ).length;
-    const sigPago =
-      results.findIndex((pago) => pago.estado_pago == "Pendiente") + 1 ||
-      "Sin pagos Disponibles";
-      const cantidadPagada = results
-      .filter((pago) => pago.estado_pago == "Pagado")
-      .reduce((suma, pago) => suma + parseFloat(pago.monto_pago), 0);
-    const porcentaje = ((pagados / results.length) * 100).toFixed(2);
-    res.status(200).json({
-      results,
-      pagados,
-      sigPago,
-      porcentaje,
-      cantidadPagada,
+    const comision_porcentual_ganancia = results[0].comision_porcentual_ganancia
+
+    let query = `select * from plan_pagos where solicitud_inv_id = ${req.params.id}`;
+    conexion.query(query, (err, results) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ msg: "Error al realizar la transaccion", err });
+      }
+      const pagados = results.filter(
+        (pago) => pago.estado_pago == "Pagado"
+      ).length;
+      const sigPago =
+        results.findIndex((pago) => pago.estado_pago == "Pendiente") + 1 ||
+        "Sin pagos Disponibles";
+        const cantidadPagada = results
+        .filter((pago) => pago.estado_pago == "Pagado")
+        .reduce((suma, pago) => suma + parseFloat(pago.monto_pago), 0);
+      const porcentaje = ((pagados / results.length) * 100).toFixed(2);
+      res.status(200).json({
+        results,
+        pagados,
+        sigPago,
+        porcentaje,
+        cantidadPagada,
+        comision_porcentual_ganancia
+      });
     });
-  });
+  })
 };
 
 const pagarCuota = (req, res) => {
@@ -33,7 +45,7 @@ const pagarCuota = (req, res) => {
     totalPagos,
     pago,
     inversores,
-    comision_porcentual = "5",
+    comision_porcentual,
     numPago,
   } = req.body;
   const gananciaPagina = (comision_porcentual / 100) * pago.monto_pago;
