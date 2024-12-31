@@ -104,12 +104,28 @@ const getClienteIdByUsuarioId = (req, res) => {
   });
 };
 
+const getInformacionByClienteId = (req, res) => {
+  const { cliente_id } = req.params; // Obtener cliente_id de los parámetros de la solicitud
+
+  let query = "SELECT * FROM informacion WHERE cliente_id = ?";
+
+  conexion.query(query, [cliente_id], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Información no encontrada' });
+    }
+    res.status(200).json({ results });
+  });
+};
 
 
 module.exports = {
   getInformacion,
   postInformacion,
   saveVideo,
-  getClienteIdByUsuarioId
+  getClienteIdByUsuarioId,
+  getInformacionByClienteId
 };
 

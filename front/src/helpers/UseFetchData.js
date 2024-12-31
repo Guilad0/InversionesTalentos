@@ -6,6 +6,7 @@ export default function useFetchData(ruta){
     const results = ref([]);
     const next = ref('');
     const prev = ref('');
+    const tipoMoneda = ref('');
     const isLoading = ref(false);
     // const baseURL = 'https://apitalentos.pruebasdeploy.online';
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -18,6 +19,7 @@ export default function useFetchData(ruta){
             next.value = data.next;
             prev.value = data.prev;
             total.value = data.total;
+            tipoMoneda.value = data.ajustes.tipo_moneda;
         } catch (error) {
             console.log(error);
         }finally{
@@ -49,6 +51,7 @@ export default function useFetchData(ruta){
         prev,
         isLoading,
         ChangeState,
-        total
+        total,
+        tipoMoneda
     };
 }

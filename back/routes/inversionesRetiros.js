@@ -389,5 +389,74 @@ router.post("/devolverTokens", function (req, res, next) {
     }
   });
 });
+router.get("/getInversores", (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10; 
+  const offset = (page - 1) * limit;
+  const { id_inversor, estadoInv } = req.query;
+  const ajustesQuery = 'SELECT comision_porcentual_ganancia,tipo_moneda FROM ajustes WHERE ajuste_id = 6';
+  connection.query(ajustesQuery, (err, ajustesPorcentaje) => {
+      if (err) {
+          return res.status(500).json({ err, msg: 'Error al obtener los ajustes' });
+      }
+      const ajustes = ajustesPorcentaje[0]; 
+      const inversionesQuery = `
+          SELECT 
+              s.estado_inversion,
+              s.id,
+              s.monto as monto_objetivo,
+              s.fecha_inicio_pago,
+              s.fecha_fin_pago,
+              s.fecha_inicio_recaudacion,
+              s.fecha_fin_recaudacion,
+              s.cantidad_pagos,
+              s.porcentaje_interes,
+              u.imagen,
+              u.nombre,
+              u.apellido,
+              i.monto as monto_invertido,
+              i.fecha_deposito
+          FROM 
+              inversiones AS i
+          JOIN 
+              solicitudes_inversion AS s 
+          ON 
+              i.solicitud_inv_id = s.id
+          JOIN 
+              usuarios AS u 
+          ON 
+              u.usuario_id = s.cliente_id
+          WHERE 
+              i.inversor_id = ? AND s.estado_inversion = 'Pendiente' OR s.estado_inversion = 'Proceso'
+          LIMIT ? OFFSET ?;
+      `;
 
+      connection.query(inversionesQuery, [id_inversor, limit, offset], (err, results) => {
+          if (err) {
+              return res.status(500).json({ err, msg: 'Error al obtener inversiones' });
+          }
+
+          const resultsWithAjustes = results.map(item => ({
+              ...item,
+              porcentajeGananciaPagina: ajustes.comision_porcentual_ganancia,
+              monto_mas_ganancia:(((parseFloat(item.porcentaje_interes-ajustes.comision_porcentual_ganancia)/100)*item.monto_invertido) + item.monto_invertido),
+              gananciaAproximada: ((((parseFloat(item.porcentaje_interes-ajustes.comision_porcentual_ganancia)/100)*item.monto_invertido) + item.monto_invertido)/item.cantidad_pagos).toFixed(2),
+          }));
+
+          res.status(200).json({ results: resultsWithAjustes,ajustes });
+      });
+  });
+});
+
+
+router.get("/getPagosInversor", (req, res, next)  =>{
+  let query = 'select fecha_programada,estado_pago,fecha_pagada,num_pago from plan_pagos  where solicitud_inv_id =?'
+  connection.query(query,[req.query.id],(err,results) =>{
+    if (err) {
+      return res.status(500).json({ err, msg: 'Error al obtener los ajustes' });
+  }
+  res.status(200).json({results})
+  })
+}
+)
 module.exports = router;
