@@ -95,6 +95,9 @@
                 class="input form-control no-spin"
                 required
               />
+              <div v-if="monto" class="text-sm text-gray-600 mt-1">
+                Equivalente: {{ montoCalculado.usdt }}
+              </div>
             </div>
           </div>
           <div class="col-md-4">
@@ -205,6 +208,7 @@ const fecha_inicio_pago = ref("");
 const fecha_inicio_recaudacion = ref("");
 const fecha_fin_recaudacion = ref("");
 const fecha_fin_pago = ref("");
+const valor_token = ref(0);
 const refMinDate = ref("");
 const refDescripcion = ref("");
 const refMonto = ref("");
@@ -247,6 +251,13 @@ const obtenetPorcentajeGananciaPlataforma = async () => {
     );
     porcentajeGananciaPlataforma.value =
       data.results[0].comision_porcentual_ganancia;
+    valor_token.value = data.results[0].valor_token;
+    console.log(
+      "el valor del token es:",
+      valor_token.value,
+      "el porcentaje de ganancia de la plataforma es:",
+      porcentajeGananciaPlataforma.value
+    );
   } catch (error) {
     console.error(
       "Error al obtener el porcentaje de ganancia de la plataforma:",
@@ -276,6 +287,20 @@ const obtenerPorcentajeInteres = async () => {
     }
   }
 };
+const montoCalculado = computed(() => {
+  if (!monto.value) return { usd: "$0", usdt: "0 USDT" };
+
+  const montoNumerico = parseFloat(monto.value.replace(/[^0-9.-]+/g, ""));
+
+  return {
+    usd: montoNumerico.toLocaleString("es-EC", {
+      style: "currency",
+      currency: "USD",
+    }),
+    usdt: (montoNumerico * valor_token.value).toFixed(2) + " USDT",
+  };
+});
+
 const porcentajeInteresFormateado = computed(() => {
   return porcentajeInteres.value ? `${porcentajeInteres.value}%` : "0%";
 });
@@ -312,7 +337,9 @@ const registrarExperiencia = async () => {
     cliente_id: cliente_id.value,
     nombre: nombre.value,
     descripcion: descripcion.value,
-    monto: parseFloat(monto.value.replace(/[^0-9.-]+/g, "")),
+    monto: parseFloat(
+      monto.value.replace(/[^0-9.-]+/g, "") * valor_token.value
+    ),
     cantidad_pagos: cantidad_pagos.value,
     fecha_inicio_recaudacion: fecha_inicio_recaudacion.value,
     fecha_fin_recaudacion: fecha_fin_recaudacion.value,
