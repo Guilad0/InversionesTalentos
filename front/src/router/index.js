@@ -196,35 +196,38 @@ const router = createRouter({
     {
       path: '/inversiones-talento',
       name: 'inversiones-talento',
-      component: InversionesTalentoView
+      component: InversionesTalentoView,
+      meta: { roles: ["Cliente"] }
     },
     {
       path: '/solicitar-inversion',
       name: 'solicitar-inversion',
 
       component: SolicitudInversion,
-      beforeEnter: async (to, from, next) => {
-        try {
-          const user = JSON.parse(localStorage.getItem('usuario'));
-          if (!user) {
-            next('/not-found');
-            return;
-          }
+      meta: { roles: ["Cliente"] }
+      // beforeEnter: async (to, from, next) => {
+      //   try {
+      //     const user = JSON.parse(localStorage.getItem('usuario'));
+      //     if (!user) {
+      //       next('/not-found');
+      //       return;
+      //     }
+ 
+      //     const response = await axios.get(
+      //       `${import.meta.env.VITE_BASE_URL}/solicitudesInversion/showButton/${user.usuario_id}`
+      //     );
 
-          const response = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/solicitudesInversion/showButton/${user.usuario_id}`
-          );
-
-          if (response.data.showButton === 0) {
-            next('/not-found');
-          } else {
-            next();
-          }
-        } catch (error) {
-          console.error('Error verificando acceso:', error);
-          next('/not-found');
-        }
-      }
+      //     if (response.data.showButton === 0) {
+      //       next('/not-found');
+      //     } else {
+      //       next();
+      //     }
+      //   } catch (error) {
+      //     console.error('Error verificando acceso:', error);
+      //     next('/not-found');
+      //   }
+      // }
+      //
     },
 
 
@@ -232,6 +235,7 @@ const router = createRouter({
       path: '/inversionesRealizadas',
       name: 'inversionesRealizadas',
       component: InversionesRealizadas,
+      meta: { roles: ["Inversionista"] }
     },
 
   ]
