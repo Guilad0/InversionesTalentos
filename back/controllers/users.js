@@ -1147,6 +1147,7 @@ const getSolInvById = (req, res) => {
       .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     results[0].fecha_fin_pago = new Date(results[0].fecha_fin_pago)
       .toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    results[0].total_recaudado = parseFloat(results[0].total_recaudado).toFixed(2);
     res.status(200).json({ results: results[0] })
   })
 }
