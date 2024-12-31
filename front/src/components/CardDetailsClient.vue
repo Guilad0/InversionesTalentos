@@ -79,7 +79,6 @@
           </div>
 
           <div class="mt-3 animate__animated animate__fadeInUp animate__slow" v-if="!loadingValues">
-            <h5 class="title text-center text-light mb-3">Descripción del Proyecto</h5>
 
             <h5 class="title text-center text-light mb-3 ">Descripción del Proyecto</h5>
 
@@ -111,7 +110,6 @@
                       inv.monto_restante }} </span></p>
                   </div>
 
-                  <!-- Barra de progreso para los tokens acumulados -->
                   <div class="progress">
                     <div class="progress-bar" role="progressbar"
                       :style="'width: ' + (inv.total_recaudado / inv.monto * 100) + '%'"
