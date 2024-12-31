@@ -27,7 +27,7 @@
 
             <div class="col-8">
 
-              <h2 class="card-title">{{ client.nombre }} {{ client.apellido }}</h2>
+              <h2 class="card-title" style="text-transform: capitalize;">{{ client.nombre }} {{ client.apellido }}</h2>
 
               <h5>{{ client.ocupacion }}</h5>
 
@@ -53,7 +53,7 @@
 
           </div>
 
-          <div class="row">
+          <div class="row justify-content-center">
 
             <button :disabled="loadingValues" class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-3"
               data-bs-toggle="modal" data-bs-target="#modalVideoPresentacion">
@@ -95,12 +95,44 @@
 
             <h5 class="title text-center text-light mb-3 ">Descripción del Proyecto</h5>
 
-            <div class="  d-flex  justify-content-evenly gap-3 text-center">
+            <div class="card bg-degrade-light p-1 rounded-4">
+              <div class="card-body row text-black justify-content-between">
+                <div class="col-md-6">
+                  <p class="font col"> <strong>Inversión</strong> <br>{{ inv.nombre }}</p>
+                  <p class="font col"> <strong>Objetivo de la inversión </strong> <br>{{ inv.descripcion }}</p>
+                  <p class="font col"> <strong>Período de recaudación (Inicio - Fin) </strong> <br> {{
+                    inv.fecha_inicio_recaudacion }}
+                    - {{ inv.fecha_fin_recaudacion }}</p>
+                  <p class="font col"> <strong>Cantidad total de pagos </strong> <br>{{ inv.cantidad_pagos }}</p>
+                  <p class="font col"> <strong>Inicio de pago de intereses</strong> <br>{{ inv.fecha_inicio_pago }}</p>
+                  <p class="font col"> <strong>Último pago de intereses</strong> <br>{{ inv.fecha_fin_pago }}</p>
+                </div>
 
-              <p class="font col"> <strong>Objetivo de la Inversión </strong> <br>{{ inv.descripcion }}</p>
-              <p class="font col"> <strong>Tokens Requeridos </strong> <br> {{ inv.monto * valorTokens }} </p>
-              <p class="font col"> <strong>Periodo de recaudacion </strong> <br> {{ inv.fecha_inicio_recaudacion }} - {{
-                inv.fecha_fin_recaudacion }}</p>
+                <div class="col-md-6 text-center">
+                  <br><br><br><br><br>
+                  <p class="font col fs-5"> <strong>TOKENS REQUERIDOS </strong> <span
+                      class="text-primary fw-bold fs-5 text-center"><br>
+                      {{
+                        inv.monto
+                      }}
+                    </span></p>
+                  <div class="col-md-12 row ">
+                    <p class="font col text-start"> <strong>Acumulado </strong> <span class="text-primary fw-bold"><br>
+                        {{ inv.total_recaudado }} </span></p>
+                    <p class="font col text-end"> <strong>Faltante </strong> <span class="text-primary fw-bold"><br> {{
+                      inv.monto_restante }} </span></p>
+                  </div>
+
+                  <!-- Barra de progreso para los tokens acumulados -->
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                      :style="'width: ' + (inv.total_recaudado / inv.monto * 100) + '%'"
+                      :aria-valuenow="inv.total_recaudado / inv.monto * 100" aria-valuemin="0" aria-valuemax="100">
+                      {{ (inv.total_recaudado / inv.monto * 100).toFixed(1) }}%
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div v-else class="mt-3 text-center align-middle m-auto">cargando</div>
@@ -122,10 +154,12 @@
           client.monto_inversion }}</h6>
         <h6 class="mt-3"><i class="fas fa-tags"></i> Categoría: {{ client.categoria }}</h6>
         <h6 class="mt-3"><i class="fas fa-graduation-cap"></i> <strong>Estudios:</strong> {{ client.estudios }}</h6>
-        <h6 class="mt-3"><i class="fas fa-info-circle"></i> <strong>Descripción:</strong> {{ client.descripcion }}</h6>
+        <h6 class="mt-3"><i class="fas fa-info-circle"></i> <strong>Descripción:</strong> {{ client.descripcion }}
+        </h6>
         <h6 class="mt-3"><i class="fas fa-calendar-alt"></i> <strong>Edad:</strong> {{ client.edad }}</h6>
         <h6 class="mt-3"><i class="fas fa-venus-mars"></i> <strong>Género:</strong> {{ client.genero }}</h6>
-        <h6 class="mt-3"><i class="fas fa-phone"></i> <strong>Número de teléfono:</strong> {{ client.numero_telefono }}
+        <h6 class="mt-3"><i class="fas fa-phone"></i> <strong>Número de teléfono:</strong> {{ client.numero_telefono
+          }}
         </h6>
         <h6 class="mt-3"><i class="fas fa-envelope"></i> <strong>Correo:</strong> {{ client.correo }}</h6>
 
@@ -217,7 +251,7 @@
             <div class="row">
               <div class="col text-center">
                 <p>Estás invirtiendo en el talento {{ client.nombre }} que tiene como objetivo recaudar <strong>{{
-                  inv.monto*valorTokens }}</strong> tokens.</p>
+                  inv.monto * valorTokens }}</strong> tokens.</p>
                 <p>Puedes invertir hasta el: <strong>{{
                   inv.fecha_fin_recaudacion }}</strong></p>
               </div>
@@ -236,9 +270,11 @@
                     <label for="monto_tokens_invertir" class="form-label">Tokens a Invertir</label>
                     <input type="number" v-model="monto_tokens_invertir" id="monto_tokens_invertir"
                       class="form-control mb-2" @input="calcularGanancias()" required />
-                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMinimo }">Monto minimo de inversion:
+                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMinimo }">Monto minimo de
+                      inversion:
                       <strong>{{ rangoMinimo }}</strong> </label>
-                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMaximo }">Monto maximo de inversion:
+                    <label for="monto_tokens_invertir" :class="{ 'text-danger': bandMaximo }">Monto maximo de
+                      inversion:
                       <strong>{{ rangoMaximo }}</strong> </label>
                   </div>
                 </div>
@@ -423,8 +459,8 @@ const fechaInicioPago = ref(null);
 const fechaFinPago = ref(null);
 const obtenerFechasPagos = async () => {
   try {
-    const { data } = await axios.get(import.meta.env.VITE_BASE_URL  + '/solicitudesInversion/getSolicitudByClienteId/' + userId.value);
-    
+    const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/solicitudesInversion/getSolicitudByClienteId/' + userId.value);
+
     if (data.results) {
       const solicitud = data.results; // Suponiendo que es un único resultado
       cantidadPagos.value = solicitud.cantidad_pagos;
@@ -639,6 +675,10 @@ const pauseVideo = () => {
   border-radius: 10px;
 }
 
+.bg-degrade-light {
+  background: linear-gradient(to right, rgb(248, 248, 248), rgb(187, 209, 233));
+}
+
 .font {
   font-size: 1rem
 }
@@ -819,4 +859,3 @@ button {
   transform: scale(0.95);
 }
 </style>
-
