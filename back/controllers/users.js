@@ -1123,18 +1123,22 @@ const getUserById = (req, res) => {
 
 const getSolInvById = (req, res) => {
   let query = `
- SELECT
-    s.*,
-    COALESCE(SUM(i.monto), 0) as total_recaudado,
-    (s.monto - COALESCE(SUM(i.monto), 0)) as monto_restante
-  FROM solicitudes_inversion s
-  LEFT JOIN inversiones i ON i.solicitud_inv_id = s.id
-  WHERE s.cliente_id = ?
-    AND s.aprobado = 'Aprobado'
-  GROUP BY s.id
-  ORDER BY s.id DESC
-  LIMIT 1
-  `;
+        SELECT
+        s.*,
+        COALESCE(SUM(i.monto), 0) as total_recaudado,
+        (s.monto - COALESCE(SUM(i.monto), 0)) as monto_restante,
+        cp.nombre as nombre_categoria,
+        cp.porcentaje_interes
+      FROM solicitudes_inversion s
+      LEFT JOIN inversiones i ON i.solicitud_inv_id = s.id
+      LEFT JOIN usuarios u ON s.cliente_id = u.usuario_id
+      LEFT JOIN categoria_personas cp ON u.categoria_persona_id = cp.categoria_persona_id
+      WHERE s.cliente_id = ?
+        AND s.aprobado = 'Aprobado'
+      GROUP BY s.id
+      ORDER BY s.id DESC
+      LIMIT 1
+    `;
   conexion.query(query, [req.params.id], (err, results) => {
     if (err) {
       return res.status(500).send({ message: "Error en la consulta" });
