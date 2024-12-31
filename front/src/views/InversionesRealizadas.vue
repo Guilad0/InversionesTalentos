@@ -1,163 +1,108 @@
 <template>
-  <div class="row my-4">
+  <div class="w-100">
     <!-- Contenedor Izquierdo (Sidebar) -->
-    <div class="col-3 ms-4 sidebar-container">
-      <SidebarProfile :user="user" :currentPath="currentPath" />
-    </div>
-
-    <!-- Contenedor Derecho 1 -->
-    <div class="col-4 container2">
-      <div class="content-container">
-        <h2>Bienvenido {{ user?.nombre }} {{ user?.apellido }}</h2>
-        <div v-if="dataContainer2.length > 0">
-          <ul>
-            <li v-for="item in dataContainer2" :key="item.inversion_id">
-              <p>Cliente ID: {{ item.cliente_id }}</p>
-              <p>Nombre Cliente: {{ item.nombre_cliente }}</p>
-              <p>Monto de inversión: ${{ item.monto }}</p>
-              <p>Fecha de inversión: {{ item.fecha_inversion }}</p>
-              <p>Fecha de retorno: {{ item.fecha_retorno }}</p>
-              <p>Estado: {{ item.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
-            </li>
-          </ul>
+    <div class="d-flex justify-content-center pt-5 flex-wrap">
+      <div class="col-2">
+        <SidebarProfile />
+      </div>
+      <div class="col-10 container bg-degrade rounded-3 py-4">
+        <h1 class="text-light text-center font-bold  title mt-3 mb-2 p-0">Gestion de Inversiones </h1>
+        <div class="d-flex justify-content-center mb-3">
+          <button v-for="(tabCli, index) in tabsCli" :key="index"
+            class="button-container rounded-5 px-2 text-dark hover-custom" :class="[
+              'animate__animated',
+              'animate__fadeInUp',
+              'animate__slow',
+              'btn-6',
+              'm-2',
+              { active: activeTabCli === index },
+            ]" @click="showAction(index)">
+            {{ tabCli }} <span></span>
+          </button>
         </div>
-        <div v-else>
-          <p>No hay datos disponibles para mostrar.</p>
+        <div v-if="!isLoading" class="card  mx-3 rounded-3 m-auto ">
+          <div v-if="results.length > 0" class="card-body">
+            <ListaInversionesInversor :results="results" :activeTabCli="activeTabCli" @inversionAceptada="handleClose"
+              :isLoading="isLoading" :tipoMoneda="tipoMoneda"/>
+          </div>
+          <div v-else class=" card text-center align-middle">
+            <div class="alert alert-light m-0" role="alert">
+              <h4 class="alert-heading">No cuentas con inversiones en esta seccion!</h4>
+              <p>    Explora nuevas oportunidades y apoya el talento. <br>
+                ¡Haz crecer tu portafolio invirtiendo estratégicamente! <br>
+                <RouterLink class="mt-2 nav-link custom-link" to="marketplace"> Ir al Marketplace </RouterLink>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div v-else class="m-auto text-center mt-5">
+          <label class="text-light text-center m-auto ">Cargando...</label>
         </div>
       </div>
     </div>
-
-    <!-- Contenedor Derecho 2 -->
-    <div class="col-4 container3">
-      <div class="content-container">
-        <h2>Detalles de Talento Inversión</h2>
-        <!-- <div v-if="dataContainer3.length > 0"> -->
-          <ul>
-            <li v-for="item in dataContainer3.data" :key="item.inversion_id">
-              <h4>{{ item.nombre_cliente}}</h4>
-              <p>Descripción: {{ item.talento_inversion.descripcion }}</p>
-              <p>Monto Total: ${{ item.monto }}</p>
-              <p>Cantidad de pagos: {{ item.talento_inversion.cantidad_pagos }}</p> -->
-              <p>Fecha de inicio recaudación: {{ item.talento_inversion.fecha_inicio_recaudacion }}</p>
-              <p>Fecha de fin recaudación: {{ item.talento_inversion.fecha_fin_recaudacion }}</p>
-            </li>
-          </ul>
-        </div>
-
-        <div v-if="dataContainer3.length > 0" class="timeline">
-          <h4>Total recaudado: ${{ item.totalRecaudado }}</h4>
-          <h4>Restante a recaudar: ${{ item.restanteRecaudar }}</h4>
-        </div>
-      </div>
-    </div>
+  </div>
 
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
-import axios from "axios";
+import { ref } from "vue";
 import SidebarProfile from "@/components/SidebarProfile.vue"; // Importación del componente
+import useFetchData from "@/helpers/UseFetchData";
+import ListaInversionesInversor from "../components/ListaInversionesInversor.vue";
+const tabsCli = ref(["En Proceso","Finalizados", "Revertidos"]);
+const activeTabCli = ref(0)
+const page = ref(1)
+const user = ref(JSON.parse(localStorage.getItem('usuario')));
+const path = ref(`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&page=${page.value}`)
+const { results, getData, isLoading,tipoMoneda } = useFetchData(ref(path));
 
-const route = useRoute();
-const currentPath = route.name;
-const user = ref(null);
-
-const dataContainer2 = ref([]); // Datos para el contenedor 2 (Inversiones)
-const dataContainer3 = ref([]); // Datos para el contenedor 3 (Detalles de talento inversión)
-
-// Función para cargar datos del API
-const loadData = async () => {
-  try {
-    const responseContainer2 = await axios.get(
-      "http://localhost:3000/inversionesRetiros/inversionista/148"
-    );
-    const responseContainer3 = await axios.get(
-      "http://localhost:3000/inversionesRetiros/inversionista/148"
-    );
-
-    // Verificar la respuesta de la API
-    console.log("Respuesta API Container 2:", responseContainer2.data);
-    console.log("Respuesta API Container 3:", responseContainer3.data);
-
-    // Almacenar los datos obtenidos en las variables reactivas
-    dataContainer2.value = responseContainer2.data;
-    dataContainer3.value = responseContainer3.data;
-  } catch (error) {
-    console.error("Error al obtener los datos: ", error);
+const showAction = async (index) => {
+  console.log(index);
+  activeTabCli.value = index;
+  switch (index) {
+    case 0:
+      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&page=${page.value}`)
+      break;
+    case 1:
+      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Proceso&page=${page.value}`)
+      break;
+    case 2:
+      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Finalizado&page=${page.value}`)
+      break;
+    case 3:
+      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Reversion&page=${page.value}`)
+      break;
+    default:
+      break;
   }
-};
+  await getData();
+}
+const handleClose = async () => {
+     await getData()
+}
 
-const totalRecaudado = computed(() => {
-  let total = 0;
-  for (const item of dataContainer3.value) {
-    total += parseFloat(item.talento_inversion.total_recaudado) || 0; // Sumar total_recaudado si existe
-  }
-  return total;
-});
-
-const restanteRecaudar = computed(() => {
-  let total = 0;
-  for (const item of dataContainer3.value) {
-    total += parseFloat(item.talento_inversion.restante_recaudado) || 0; // Sumar restante_recaudado si existe
-  }
-  return total;
-});
-
-// Cargar los datos cuando el componente se monta
-onMounted(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    user.value = JSON.parse(storedUser); // Guardar en la variable reactiva
-  } else {
-    console.log("No se encontró el usuario en localStorage");
-  }
-
-  loadData(); // Asegúrate de cargar los datos al montar el componente
-});
 </script>
 
 <style scoped>
-/* Estilos para la tabla y línea de tiempo */
-.sidebar-container {
-  margin-left: 40px;
-  width: 300px; /* Aumenta el ancho del sidebar */
-  padding: 15px; /* Aumenta el relleno para mejorar el aspecto */
-  background-color:none;
-  border-radius: 8px;
-  box-shadow: none;
+.hover-custom:hover {
+  color: wheat !important;
 }
 
-.content-container {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+.active {
+  background-color: var(--yellow-orange);
+  color: white !important;
+  z-index: 1 !important;
 }
 
-.timeline {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  box-shadow: none;
+.custom-link{
+     text-decoration: none;
+     transition: all 0.5s ease;
 }
+.custom-link:hover{
+     font-size: 1rem;
+     font-weight: bold;
+     text-decoration: underline;
+     text-underline-offset: 5px;
 
-.timeline h4 {
-  margin: 5px 0;
-}
-
-.container2, .container3 {
-  margin-top: 40px;
-}
-
-.custom-card {
-  background-color: #f9f7f4;
-  box-shadow: none;
-  border-radius: 10px;
-  margin-left: 0;
-  margin-top: 40px;
-  text-align: center;
 }
 </style>
-
