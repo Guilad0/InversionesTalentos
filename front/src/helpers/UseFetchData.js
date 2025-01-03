@@ -19,7 +19,7 @@ export default function useFetchData(ruta){
             next.value = data.next;
             prev.value = data.prev;
             total.value = data.total;
-            tipoMoneda.value = data.ajustes.tipo_moneda;
+            tipoMoneda.value = data.ajustes?.tipo_moneda || '';
         } catch (error) {
             console.log(error);
         }finally{

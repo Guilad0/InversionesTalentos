@@ -152,9 +152,27 @@ router.post("/invertirTokens", function (req, res, next) {
     id_inv
   } = req.body;
 
-  var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
-                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');`;
-
+  let getData = `SELECT 
+    monto, 
+    inversion_id
+    FROM 
+        inversiones
+    WHERE 
+    inversor_id = ? 
+    AND solicitud_inv_id = ?;`
+  connection.query(getData,[inversor_id, id_inv],(err, results)=>{
+    if( err ){
+      return res.status(500).json({ err,msg:'Error en la transaccion' })
+    }
+    const id_2 = results[0]?.inversion_id
+    const monto2 = monto + parseFloat(results[0]?.monto);
+    console.log('pruebaaaaaaaaaaaaa', results.length === 0, ' logintudddddddd',results.length);
+    var query = (results.length === 0)? ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
+                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');` 
+                :
+                `
+                update inversiones set monto=${monto2} where  inversor_id = ${inversor_id} and solicitud_inv_id = ${id_inv}
+                `;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -163,8 +181,7 @@ router.post("/invertirTokens", function (req, res, next) {
         message: "Error al realizar la petición",
       });
     } else {
-      console.log(results.insertId);
-      const inversion_id = results.insertId;
+      const inversion_id = results.insertId || id_2;
       var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${usuario_id}', '${inversion_id}', NULL);`;
 
@@ -202,7 +219,10 @@ router.post("/invertirTokens", function (req, res, next) {
       });
     }
   });
+  })
 });
+
+
 
 router.get("/tokensClienteRecibido/:id", function (req, res, next) {
   var query = `WITH movimientos_resumen AS (

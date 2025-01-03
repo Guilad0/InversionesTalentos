@@ -101,15 +101,15 @@
             </button>
 
             <button
-              :disabled="loadingValues"
+              :disabled="loadingValues ||loadingInvertir == true"
               v-if="user.rol !== 'Admin'"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               data-bs-toggle="modal"
               data-bs-target="#modalInversion"
             >
               <i class="fas fa-dollar-sign"></i>
-              <label v-if="!loadingValues">Invertir</label>
-              <label v-if="loadingValues">..cargando</label>
+              <label v-if="!loadingValues || loadingInvertir == true">Invertir</label>
+              <label v-else>..cargando</label>
               <span></span>
             </button>
           </div>
@@ -461,7 +461,7 @@
           </div>
           <div class="modal-footer">
             <button
-              :disabled="bandMaximo != false || bandMinimo != false"
+              :disabled="bandMaximo != false || bandMinimo != false || loadingInvertir == true"
               type="button"
               @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6"
@@ -493,7 +493,7 @@
 <script setup>
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { errorAlert, successAlert } from "@/helpers/iziToast";
 const route = useRoute();
 const router = useRouter();
@@ -576,11 +576,11 @@ onMounted(async () => {
   await getInversion();
   await obtenerFechasPagos();
   loadingValues.value = false;
+  
 });
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
 let baseURL = import.meta.env.VITE_BASE_URL + "/billetera/";
-console.log(baseURL);
 
 const valorTokens = ref(0);
 const monto_tokens_invertir = ref(0);
@@ -609,33 +609,28 @@ const cargaValoresIniciales = async () => {
     const { data } = await axios.get(
       import.meta.env.VITE_BASE_URL + "/categories/user/" + userId.value
     );
-    console.log("ajsutes", data);
     const response = await axios.get(
       import.meta.env.VITE_BASE_URL + "/billetera/valores"
     );
     const data1 = response.data;
-    console.log("data1", data1);
     const response2 = await axios.get(
       import.meta.env.VITE_BASE_URL +
         "/informacion/informacionId/" +
         userId.value
     );
     const data2 = response2.data;
-    console.log("data2", data2);
     const response3 = await axios.get(
       import.meta.env.VITE_BASE_URL +
         "/solicitudesInversion/getSolicitudByClienteId/" +
         userId.value
     );
     const data3 = response3.data;
-    console.log("data3", data3);
     let montoTotal = 0;
     // Obtener el id de data3 y asignarlo a inv.value.id
     if (data3.results) {
       inv.value.id = data3.results.id; // Asigna el id correctamente
       montoTotal = data3.results.monto;
     }
-    console.log("ID:", inv.value.id); // Quinta solicitud usando inv.value.id
     const response4 = await axios.get(
       import.meta.env.VITE_BASE_URL +
         "/solicitudesInversion/getInversoresDeSolicitud/" +
@@ -646,7 +641,6 @@ const cargaValoresIniciales = async () => {
     if (data4.results) {
       totalInvertido = data4.totalInvertido;
     }
-    console.log("data4", data4);
 
     // Acceder a las propiedades de data1
     valorTokens.value = parseInt(data1.data[0].valor_token);
@@ -744,7 +738,6 @@ const obtenerTokens_Inversionista = async () => {
       baseURL + "tokensInversionistaComprados/" + inversionista_ID.value
     );
     tokensCompradosInversionista.value = data.data[0].totalTokensComprados;
-    console.log(tokensCompradosInversionista.value);
   } catch (error) {
     console.log(error);
   }
@@ -763,6 +756,8 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
   }
 };
 
+
+
 const loadingInvertir = ref(false);
 const inversionistaInvertir = async () => {
   const tokensInversionista =
@@ -776,14 +771,12 @@ const inversionistaInvertir = async () => {
     console.log(inversionista_ID.value);
     cliente_Invertir_ID.value = parseInt(userId.value);
     console.log(cliente_Invertir_ID.value);
-    console.log(userId.value);
     ganancia_estimada.value =
       monto_tokens_invertir.value + ganancia_tokens_inv.value;
     const fecha_devolucion = ref("");
     const fecha = new Date();
     fecha.setMonth(fecha.getMonth() + tiempo_inversion.value);
     fecha_devolucion.value = new Date(fecha).toISOString().slice(0, 10);
-    console.log(fecha_devolucion.value);
     const datos = {
       token: monto_tokens_invertir.value,
       usuario_id: inversionista_ID.value,
@@ -796,8 +789,6 @@ const inversionistaInvertir = async () => {
       fecha_devolucion: fecha_devolucion.value,
       id_inv: inv.value.id,
     };
-    console.log(datos);
-    console.log(baseURL + "invertirTokens", datos);
     try {
       await axios.post(baseURL + "invertirTokens", datos);
       await obtenerTokens_Inversionista();
@@ -806,6 +797,10 @@ const inversionistaInvertir = async () => {
       await obtenerTokens_Inversionista();
       await obtenerTokens_Inversionista_Invertidos();
       await cargaValoresIniciales();
+      await obtenerLogros();
+      await obtenerExperiencia();
+      await obtenerPromedio();
+      await getInversion();
       await obtenerFechasPagos();
       successAlert("Inversion realizada exitosamente", "Felicidades!!!");
       var myModalEl = document.getElementById("modalInversion");
@@ -825,7 +820,9 @@ const inversionistaInvertir = async () => {
     );
   }
 };
+watch(loadingInvertir, (newValue, oldValue) => {
 
+});
 const irBilletera = () => {
   router.push("/billetera");
 };

@@ -49,8 +49,6 @@ const pagarCuota = (req, res) => {
     numPago,
   } = req.body;
   const gananciaPagina = (comision_porcentual / 100) * pago.monto_pago;
-  let montoApagar = pago.monto_pago - gananciaPagina;
-  montoApagar = montoApagar / inversores.length;
   const currentDate = new Date();
   //fecha_solicitud = fecha de deposito o creacion
   let query = `SELECT 
@@ -86,8 +84,19 @@ const pagarCuota = (req, res) => {
                 .status(500)
                 .json({ msg: "Error al actualizar el plan de pago", err });
             }
-            inversores.forEach((inv) => {
-              query = `insert into movimientos (tipo,descripcion,usuario_id,token) values ('Ingreso','Tokens invertidos',?,?)`;
+            inversores.forEach((inv,i) => {
+              query = `SELECT monto FROM inversiones WHERE solicitud_inv_id = ? AND inversor_id = ?`
+              console.log(pago.solicitud_inv_id,inv.inversor_id);
+              conexion.query(query,[pago.solicitud_inv_id,inv.inversor_id],(err,results)=>{
+                if (err) {
+                  return res
+                    .status(500)
+                    .json({ msg: "Error al actualizar el plan de pago", err });
+                }
+                console.log(results);
+                let montoApagar = ((parseFloat(results[0].monto*(comision_porcentual/100)))+results[0].monto)/totalPagos;
+                console.log(montoApagar);
+                query = `insert into movimientos (tipo,descripcion,usuario_id,token) values ('Ingreso','Tokens invertidos',?,?)`;
               conexion.query(
                 query,
                 [inv.inversor_id, montoApagar],
@@ -98,6 +107,7 @@ const pagarCuota = (req, res) => {
                   }
                 }
               );
+              })
             });
             query = `insert into movimientos (tipo,descripcion,usuario_id,token) values ('Egreso','Pago cuota',?,?)`;
             conexion.query(
