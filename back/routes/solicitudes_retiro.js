@@ -1,9 +1,11 @@
-var express = require("express");
+import express from "express";
+import {sequelize} from "../database.js";
+
+
 var router = express.Router();
 
 //importamos la conexión a la base de datos
 
-var connection = require("../database");
 
 // get para pendientes de retiros
 router.get("/pendiente", function (req, res, next) {
@@ -23,7 +25,7 @@ router.get("/pendiente", function (req, res, next) {
     WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
     ${filtroEstado};`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -36,7 +38,7 @@ router.get("/pendiente", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -75,7 +77,7 @@ router.get("/aprobado", function (req, res, next) {
     WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
     ${filtroEstado};`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -88,7 +90,7 @@ router.get("/aprobado", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -114,7 +116,7 @@ router.patch("/:id", function (req, res, next) { //eliminado lógico
   estado = 'Eliminado'
   WHERE retiro_id = '${req.params.id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -149,7 +151,7 @@ router.get("/rechazado", function (req, res, next) {
     WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
     ${filtroEstado};`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -162,7 +164,7 @@ router.get("/rechazado", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -201,7 +203,7 @@ router.get("/", function (req, res, next) {
     WHERE concat(usuarios.nombre, ' ', usuarios.apellido) LIKE '%${busqueda}%'
     ${filtroEstado};`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -213,7 +215,7 @@ router.get("/", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -241,7 +243,7 @@ router.put("/aprobar/:id", function (req, res, next) {
   estado = 'Aprobado', fecha_aprobacion = ?
   WHERE retiro_id = '${req.params.id}';`;
   let date = new Date();
-  connection.query(query,[date], function (error, results) {
+  sequelize.query(query,[date], function (error, results) {
     if (error) {
       res.status(500).send({
         error: error,
@@ -251,7 +253,7 @@ router.put("/aprobar/:id", function (req, res, next) {
     } 
     query = 'insert into movimientos (tipo, monto, fecha_solicitud,inversiones_id,solicitudes_retiro_id,usuario_id,token) values (?,?,?,?,?,?,?)';
     const data = ['Egreso', monto_recibir, date, inversion_id, retiro_id, usuario_id, tokens_cambio ]
-      connection.query(query,data,(err,results) =>{
+      sequelize.query(query,data,(err,results) =>{
         if( err ){
           res.status(500).json({
           message: "Error al crear la tabla movimientos",
@@ -272,7 +274,7 @@ router.patch("/rechazar/:id", function (req, res, next) { //rechazar la solicitu
   estado = 'Rechazado'
   WHERE retiro_id = '${req.params.id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -294,7 +296,7 @@ router.patch("/pendiente/:id", function (req, res, next) { //pendiente la solici
   estado = 'Pendiente'
   WHERE retiro_id = '${req.params.id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -320,7 +322,7 @@ router.get("/totales", function (req, res, next) {
       (SELECT COUNT(*) FROM solicitudes_retiro WHERE estado = 'Rechazado') AS rechazados;
   `;
 
-  connection.query(queryTotales, function (error, results) {
+  sequelize.query(queryTotales, function (error, results) {
     if (error) {
       res.status(500).send({ error, message: "Error al obtener los totales" });
     } else {
@@ -350,7 +352,7 @@ router.get("/pendienteTokens", function (req, res, next) {
     ${filtroEstado}
     AND descripcion = 'Compra de tokens';`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -364,7 +366,7 @@ router.get("/pendienteTokens", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -404,7 +406,7 @@ router.get("/aprobadoTokens", function (req, res, next) {
     ${filtroEstado}
     AND descripcion = 'Compra de tokens';`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -419,7 +421,7 @@ router.get("/aprobadoTokens", function (req, res, next) {
       AND descripcion = 'Compra de tokens'
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -446,7 +448,7 @@ router.patch("/tokens/:id", function (req, res, next) {
   SET (descripcion, estado) =('Compra de tokens rechazada', 0)
   WHERE retiro_id = '${req.params.id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -482,7 +484,7 @@ router.get("/rechazadoTokens", function (req, res, next) {
     ${filtroEstado}
     AND descripcion = 'Compra de tokens rechazada';`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -496,7 +498,7 @@ router.get("/rechazadoTokens", function (req, res, next) {
       ${filtroEstado} 
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -537,7 +539,7 @@ router.get("/tokens", function (req, res, next) {
     AND movimientos.descripcion = 'Compra de tokens'
     ;`;
 
-  connection.query(queryFilas, function (error, results) {
+  sequelize.query(queryFilas, function (error, results) {
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 
@@ -551,7 +553,7 @@ router.get("/tokens", function (req, res, next) {
       ORDER BY movimientos.fecha_solicitud DESC
       LIMIT ${salto}, ${porPagina};`;
 
-    connection.query(query, function (error, results) {
+    sequelize.query(query, function (error, results) {
       if (error) {
         res.status(500).send({ error, message: "Error al realizar la petición" });
       } else {
@@ -582,7 +584,7 @@ router.put("/aprobarTokens/:id", function (req, res, next) {
   WHERE movimiento_id = '${req.params.id}';`;
   let date = new Date();
   
-  connection.query(query, function (error, results) {
+  sequelize.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -608,7 +610,7 @@ router.patch("/rechazarTokens/:id", function (req, res, next) { //rechazar la so
     descripcion = 'Compra de tokens rechazada'
   WHERE movimiento_id = '${req.params.id}';`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -630,7 +632,7 @@ router.patch("/pendienteTokens/:id", function (req, res, next) { //pendiente la 
   SET (estado, descripcion) = (0, 'Compra de tokens')
   WHERE movimiento_id = '${req.params.id}'  ;`;
 
-  connection.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -657,7 +659,7 @@ router.get("/totalesTokens", function (req, res, next) {
       (SELECT COUNT(*) FROM movimientos WHERE estado = 0 AND descripcion = 'Compra de tokens rechazada') AS rechazados;
   `;
 
-  connection.query(queryTotales, function (error, results) {
+  sequelize.query(queryTotales, function (error, results) {
     if (error) {
       res.status(500).send({ error, message: "Error al obtener los totales" });
     } else {
@@ -666,4 +668,4 @@ router.get("/totalesTokens", function (req, res, next) {
   });
 });
 
-module.exports = router;
+export default router;

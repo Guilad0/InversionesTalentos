@@ -1,10 +1,13 @@
-const {conexion} = require("../database");
-var express = require('express');
+import {sequelize} from "../database.js";
+import express from 'express';
+
+
 var router = express.Router();
+
 
 router.get('/listaPerfil', function(req, res, next) {
     var perfil = "SELECT * FROM usuarios";
-    conexion.query(perfil, function (err, results) {
+    sequelize.query(perfil, function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -23,7 +26,7 @@ router.put('/actualizarPerfil/:id', function(req, res, next) {
     const {codigopais, telefono, userName, pais_residencia } = req.body;
     var query = `UPDATE usuarios SET codigo_pais = '${codigopais}', numero_telefono = '${telefono}', username = '${userName}', pais_residencia = '${pais_residencia}' WHERE usuario_id = '${req.params.id}'`;
 
-    conexion.query(query, function (err, results) {
+    sequelize.query(query, function (err, results) {
         if(err){
             res.status(500).send({
                 error: err,
@@ -39,4 +42,4 @@ router.put('/actualizarPerfil/:id', function(req, res, next) {
 })
 
 
-module.exports = router;
+export default router;

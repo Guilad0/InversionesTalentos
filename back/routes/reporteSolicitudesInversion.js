@@ -1,11 +1,394 @@
-const express = require('express');
+import express from 'express';
+import {sequelize} from '../database.js';
+import { getError500, getResponse200WithData } from '../helpers/Response.js';
+
+
+
 const router = express.Router();
 
-const { getInversionesPendientes, getInversionesReversion, getInversionesProceso, getInversionesFinalizado } = require('../controllers/reporteSolicitudesInversion');
+
+const getInversionesReversion = async (req, res) => {
+    try { 
+        const porPagina = 10;
+        const pagina = parseInt(req.query.page, 10) || 1;
+        const salto = (pagina - 1) * porPagina;
+        const estado_inversion = 'Reversion';
+        const queryFilas = `
+        SELECT COUNT(DISTINCT si.id) AS numFilas
+        FROM solicitudes_inversion si
+        WHERE si.estado_inversion = ?
+          `;
+        const [countResult] = await sequelize.query(queryFilas, 
+            { replacements: [estado_inversion], type: sequelize.QueryTypes.SELECT }
+        );
+        const numFilas = countResult.numFilas;
+
+        if (numFilas === 0) {
+            return getResponse200WithData('Ok', {
+                solicitudes_inversion: [],
+                paginacion: {
+                    total: 0,
+                    current: pagina,
+                    pages: [],
+                }
+            }, res);
+        }
+        const numPaginas = Math.ceil(numFilas / porPagina);
+        const query = `
+          SELECT
+            si.*,
+            u_cliente.nombre AS cliente_nombre,
+            u_cliente.apellido AS cliente_apellido,
+            COALESCE(JSON_ARRAYAGG(
+              CASE WHEN i.inversor_id IS NOT NULL
+                THEN JSON_OBJECT(
+                  'nombre', u_inversor.nombre,
+                  'apellido', u_inversor.apellido,
+                  'inversor_id', i.inversor_id,
+                  'monto_invertido', i.monto,
+                  'fecha_deposito', i.fecha_deposito
+                )
+                ELSE NULL
+              END
+            ), '[]') AS inversores_data
+          FROM solicitudes_inversion si
+          LEFT JOIN usuarios u_cliente ON si.cliente_id = u_cliente.usuario_id
+          LEFT JOIN inversiones i ON si.id = i.solicitud_inv_id
+          LEFT JOIN usuarios u_inversor ON i.inversor_id = u_inversor.usuario_id
+          WHERE si.estado_inversion = ?
+          GROUP BY si.id
+          LIMIT ? OFFSET ?
+        `;
+        const solicitudes = await sequelize.query(query, {
+            replacements: [estado_inversion, porPagina, salto],
+            type: sequelize.QueryTypes.SELECT }  );
+        const data = {
+            solicitudes_inversion: solicitudes.map(si => ({
+                id: si.id,
+                cliente_id: si.cliente_id,
+                nombre: si.nombre,
+                descripcion: si.descripcion,
+                fecha_inicio_recaudacion: si.fecha_inicio_recaudacion,
+                fecha_fin_recaudacion: si.fecha_fin_recaudacion,
+                monto: si.monto,
+                cantidad_pagos: si.cantidad_pagos,
+                fecha_inicio_pago: si.fecha_inicio_pago,
+                fecha_fin_pago: si.fecha_fin_pago,
+                aprobado: si.aprobado,
+                estado: si.estado,
+                observaciones: si.observaciones,
+                estado_inversion: si.estado_inversion,
+                cliente: {
+                    nombre: si.cliente_nombre,
+                    apellido: si.cliente_apellido
+                },
+                inversores: si.inversores_data[0]?.inversor_id === null ? [] :
+                    (Array.isArray(si.inversores_data) ? si.inversores_data : JSON.parse(si.inversores_data || '[]'))
+            })),
+            paginacion: {
+                total: numFilas,
+                current: pagina,
+                pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
+                perPage: porPagina,
+                previous: pagina > 1 ? pagina - 1 : null,
+                next: pagina < numPaginas ? pagina + 1 : null
+            }
+        };
+        getResponse200WithData('Ok', { data }, res);
+    } catch(e) { 
+        getError500('Error en la consulta!', e, res);
+    }
+};
+
+const getInversionesProceso = async (req, res) => {
+    try { 
+        const porPagina = 10;
+        const pagina = parseInt(req.query.page, 10) || 1;
+        const salto = (pagina - 1) * porPagina;
+        const estado_inversion = 'Proceso';
+        const queryFilas = `
+            SELECT COUNT(DISTINCT si.id) AS numFilas
+            FROM solicitudes_inversion si
+            WHERE si.estado_inversion = ?
+        `;
+        const [countResult] = await sequelize.query(queryFilas, {
+            replacements: [estado_inversion],
+            type: sequelize.QueryTypes.SELECT
+        });
+        const numFilas = countResult.numFilas || 0;
+        if (numFilas === 0) {
+            return getResponse200WithData('Ok', {
+                solicitudes_inversion: [],
+                paginacion: {
+                    total: 0,
+                    current: pagina,
+                    pages: [],
+                }
+            }, res);
+        }
+        const numPaginas = Math.ceil(numFilas / porPagina);
+        const query = `
+            SELECT
+                si.*,
+                u_cliente.nombre AS cliente_nombre,
+                u_cliente.apellido AS cliente_apellido,
+                COALESCE(JSON_ARRAYAGG(
+                CASE WHEN i.inversor_id IS NOT NULL
+                    THEN JSON_OBJECT(
+                    'nombre', u_inversor.nombre,
+                    'apellido', u_inversor.apellido,
+                    'inversor_id', i.inversor_id,
+                    'monto_invertido', i.monto,
+                    'fecha_deposito', i.fecha_deposito
+                    )
+                    ELSE NULL
+                END
+                ), '[]') AS inversores_data
+            FROM solicitudes_inversion si
+            LEFT JOIN usuarios u_cliente ON si.cliente_id = u_cliente.usuario_id
+            LEFT JOIN inversiones i ON si.id = i.solicitud_inv_id
+            LEFT JOIN usuarios u_inversor ON i.inversor_id = u_inversor.usuario_id
+            WHERE si.estado_inversion = ?
+            GROUP BY si.id
+            LIMIT ? OFFSET ? `;
+        const solicitudes = await sequelize.query(query, {
+            replacements: [estado_inversion, porPagina, salto],
+            type: sequelize.QueryTypes.SELECT
+        });
+        const data = {
+            solicitudes_inversion: solicitudes.map(si => ({
+                id: si.id,
+                cliente_id: si.cliente_id,
+                nombre: si.nombre,
+                descripcion: si.descripcion,
+                fecha_inicio_recaudacion: si.fecha_inicio_recaudacion,
+                fecha_fin_recaudacion: si.fecha_fin_recaudacion,
+                monto: si.monto,
+                cantidad_pagos: si.cantidad_pagos,
+                fecha_inicio_pago: si.fecha_inicio_pago,
+                fecha_fin_pago: si.fecha_fin_pago,
+                aprobado: si.aprobado,
+                estado: si.estado,
+                observaciones: si.observaciones,
+                estado_inversion: si.estado_inversion,
+                cliente: {
+                    nombre: si.cliente_nombre,
+                    apellido: si.cliente_apellido
+                },
+                inversores: si.inversores_data[0]?.inversor_id === null ? [] :
+                    (Array.isArray(si.inversores_data) ? si.inversores_data : JSON.parse(si.inversores_data || '[]'))
+            })),
+            paginacion: {
+                total: numFilas,
+                current: pagina,
+                pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
+                perPage: porPagina,
+                previous: pagina > 1 ? pagina - 1 : null,
+                next: pagina < numPaginas ? pagina + 1 : null
+            }
+        };
+        getResponse200WithData('Ok', {data}, res);
+    } catch(e) { 
+        getError500('Error en la consulta!', e, res);
+    }
+};
+
+const getInversionesPendientes = async (req, res) => {
+    try { 
+        const porPagina = 10;
+        const pagina = parseInt(req.query.page, 10) || 1;
+        const salto = (pagina - 1) * porPagina;
+        const estado_inversion = 'Pendiente';
+        const queryFilas = `
+            SELECT COUNT(DISTINCT si.id) AS numFilas
+            FROM solicitudes_inversion si
+            WHERE si.estado_inversion = ?
+        `;
+        const [countResult] = await sequelize.query(queryFilas, {
+            replacements: [estado_inversion],
+            type: sequelize.QueryTypes.SELECT,
+        });
+        const numFilas = countResult.numFilas || 0;
+        if (numFilas === 0) {
+            return getResponse200WithData('Ok', {
+                solicitudes_inversion: [],
+                paginacion: {
+                    total: 0,
+                    current: pagina,
+                    pages: [],
+                }
+            }, res);
+        }
+        const numPaginas = Math.ceil(numFilas / porPagina);
+        const query = `
+            SELECT
+                si.*,
+                u_cliente.nombre AS cliente_nombre,
+                u_cliente.apellido AS cliente_apellido,
+                COALESCE(JSON_ARRAYAGG(
+                CASE WHEN i.inversor_id IS NOT NULL
+                    THEN JSON_OBJECT(
+                    'nombre', u_inversor.nombre,
+                    'apellido', u_inversor.apellido,
+                    'inversor_id', i.inversor_id,
+                    'monto_invertido', i.monto,
+                    'fecha_deposito', i.fecha_deposito
+                    )
+                    ELSE NULL
+                END
+                ), '[]') AS inversores_data
+            FROM solicitudes_inversion si
+            LEFT JOIN usuarios u_cliente ON si.cliente_id = u_cliente.usuario_id
+            LEFT JOIN inversiones i ON si.id = i.solicitud_inv_id
+            LEFT JOIN usuarios u_inversor ON i.inversor_id = u_inversor.usuario_id
+            WHERE si.estado_inversion = ?
+            GROUP BY si.id
+            LIMIT ? OFFSET ?
+            `;
+        const solicitudes = await sequelize.query(query, {
+            replacements: [estado_inversion, porPagina, salto],
+            type: sequelize.QueryTypes.SELECT,
+        });
+        const data = {
+            solicitudes_inversion: solicitudes.map(si => ({
+                id: si.id,
+                cliente_id: si.cliente_id,
+                nombre: si.nombre,
+                descripcion: si.descripcion,
+                fecha_inicio_recaudacion: si.fecha_inicio_recaudacion,
+                fecha_fin_recaudacion: si.fecha_fin_recaudacion,
+                monto: si.monto,
+                cantidad_pagos: si.cantidad_pagos,
+                fecha_inicio_pago: si.fecha_inicio_pago,
+                fecha_fin_pago: si.fecha_fin_pago,
+                aprobado: si.aprobado,
+                estado: si.estado,
+                observaciones: si.observaciones,
+                estado_inversion: si.estado_inversion,
+                cliente: {
+                    nombre: si.cliente_nombre,
+                    apellido: si.cliente_apellido
+                },
+                inversores: si.inversores_data[0]?.inversor_id === null ? [] :
+                    (Array.isArray(si.inversores_data) ? si.inversores_data : JSON.parse(si.inversores_data || '[]'))
+            })),
+            paginacion: {
+                total: numFilas,
+                current: pagina,
+                pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
+                perPage: porPagina,
+                previous: pagina > 1 ? pagina - 1 : null,
+                next: pagina < numPaginas ? pagina + 1 : null
+            }
+        };
+        getResponse200WithData('Ok', {data}, res);
+    } catch(e) { 
+        getError500('Error en la consulta!', e, res);
+    }
+};
+
+const getInversionesFinalizado = async (req, res) => {
+    try { 
+        const porPagina = 10;
+        const pagina = parseInt(req.query.page, 10) || 1;
+        const salto = (pagina - 1) * porPagina;
+        const estado_inversion = 'Finalizado';
+        const queryFilas = `
+                SELECT COUNT(DISTINCT si.id) AS numFilas
+                FROM solicitudes_inversion si
+                WHERE si.estado_inversion = ?
+            `;
+        const [countResult] = await sequelize.query(queryFilas, {
+            replacements: [estado_inversion],
+            type: sequelize.QueryTypes.SELECT,
+        });
+        const numFilas = countResult.numFilas || 0;
+        if (numFilas === 0) {
+            return res.status(200).json({
+                data: {
+                    solicitudes_inversion: [],
+                    paginacion: {
+                        total: 0,
+                        current: pagina,
+                        pages: [],
+                    }
+                }
+            });
+        }
+        const numPaginas = Math.ceil(numFilas / porPagina);
+        const query = `
+            SELECT
+                si.*,
+                u_cliente.nombre AS cliente_nombre,
+                u_cliente.apellido AS cliente_apellido,
+                COALESCE(JSON_ARRAYAGG(
+                CASE WHEN i.inversor_id IS NOT NULL
+                    THEN JSON_OBJECT(
+                    'nombre', u_inversor.nombre,
+                    'apellido', u_inversor.apellido,
+                    'inversor_id', i.inversor_id,
+                    'monto_invertido', i.monto,
+                    'fecha_deposito', i.fecha_deposito
+                    )
+                    ELSE NULL
+                END
+                ), '[]') AS inversores_data
+            FROM solicitudes_inversion si
+            LEFT JOIN usuarios u_cliente ON si.cliente_id = u_cliente.usuario_id
+            LEFT JOIN inversiones i ON si.id = i.solicitud_inv_id
+            LEFT JOIN usuarios u_inversor ON i.inversor_id = u_inversor.usuario_id
+            WHERE si.estado_inversion = ?
+            GROUP BY si.id
+            LIMIT ? OFFSET ?
+            `;
+        const solicitudes = await sequelize.query(query, { 
+            replacements: [estado_inversion, porPagina, salto],
+            type: sequelize.QueryTypes.SELECT,
+        });
+        const data = {
+            solicitudes_inversion: solicitudes.map(si => ({
+                id: si.id,
+                cliente_id: si.cliente_id,
+                nombre: si.nombre,
+                descripcion: si.descripcion,
+                fecha_inicio_recaudacion: si.fecha_inicio_recaudacion,
+                fecha_fin_recaudacion: si.fecha_fin_recaudacion,
+                monto: si.monto,
+                cantidad_pagos: si.cantidad_pagos,
+                fecha_inicio_pago: si.fecha_inicio_pago,
+                fecha_fin_pago: si.fecha_fin_pago,
+                aprobado: si.aprobado,
+                estado: si.estado,
+                observaciones: si.observaciones,
+                estado_inversion: si.estado_inversion,
+                cliente: {
+                    nombre: si.cliente_nombre,
+                    apellido: si.cliente_apellido
+                },
+                inversores: si.inversores_data[0]?.inversor_id === null ? [] :
+                    (Array.isArray(si.inversores_data) ? si.inversores_data : JSON.parse(si.inversores_data || '[]'))
+            })),
+            paginacion: {
+                total: numFilas,
+                current: pagina,
+                pages: Array.from({ length: numPaginas }, (_, i) => i + 1),
+                perPage: porPagina,
+                previous: pagina > 1 ? pagina - 1 : null,
+                next: pagina < numPaginas ? pagina + 1 : null
+            }
+        };
+        getResponse200WithData('Ok', { data }, res);
+    } catch(e) { 
+        getError500('Error en la consulta!', e, res);
+    }
+};
+
 
 router.get('/pendiente', getInversionesPendientes);
 router.get('/proceso', getInversionesProceso);
 router.get('/reversion', getInversionesReversion);
 router.get('/finalizado', getInversionesFinalizado);
 
-module.exports = router;
+
+
+export default router;

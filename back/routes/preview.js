@@ -1,6 +1,9 @@
-const {conexion} = require("../database");
-var express = require('express');
+import {sequelize} from "../database.js";
+import express from 'express';
+
+
 var router = express.Router();
+
 
 router.get('/:id', function (req, res, next) {
     const clienteId = req.params.id;
@@ -17,7 +20,7 @@ GROUP BY e.cargo, l.descripcion
 ORDER BY promedio DESC 
 LIMIT 1;`;
 
-    conexion.query(preview, [clienteId], function (err, results) {
+    sequelize.query(preview, [clienteId], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -32,4 +35,4 @@ LIMIT 1;`;
     })
 });
 
-module.exports = router;
+export default router;

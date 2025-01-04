@@ -1,8 +1,9 @@
-const { response: res, request: req } = require('express');
+import express from 'express';
+
+
+const { response, request } = express;
 
 const middlewareControlAdmin = (requiredRole) => (req, res, next) => {
-    
-
     if (!requiredRole) {
         return res.status(401).json({ message: "Acceso denegado: usuario no autenticado." });
     }
@@ -10,8 +11,8 @@ const middlewareControlAdmin = (requiredRole) => (req, res, next) => {
     if (requiredRole !== 'Admin') {
         return res.status(403).json({ message: "Acceso restringido: no tiene permisos para acceder a esta sección." });
     }
-
     next(); 
 };
 
-module.exports = middlewareControlAdmin;
+
+export default middlewareControlAdmin;

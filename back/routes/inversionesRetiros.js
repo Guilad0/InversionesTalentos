@@ -1,6 +1,9 @@
-var express = require("express");
+import express from "express";
+import {sequelize} from "../database.js";
+
+
 var router = express.Router();
-var {conexion} = require("../database");
+
 
 router.get("/inversiones", function (req, res, next) {
   // Parámetros de paginación y búsqueda
@@ -14,7 +17,7 @@ router.get("/inversiones", function (req, res, next) {
                       FROM inversiones
                       INNER JOIN usuarios ON inversiones.cliente_id = usuarios.usuario_id;`;
 
-  conexion.query(queryFilas, (err, results) => {
+  sequelize.query(queryFilas, (err, results) => {
     if (err) {
       return res.status(500).json({
         err,
@@ -35,7 +38,7 @@ router.get("/inversiones", function (req, res, next) {
                   ORDER BY inversiones.inversion_id DESC
                   LIMIT ${limite};`;
 
-    conexion.query(query, (err, results) => {
+    sequelize.query(query, (err, results) => {
       if (err) {
         return res.status(500).json({
           err,
@@ -76,7 +79,7 @@ router.put("/inversion/:id", function (req, res, next) {
     });
   }
 
-  conexion.query(query, [estado, inversionId], function (error, results, fields) {
+  sequelize.query(query, [estado, inversionId], function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -141,7 +144,7 @@ router.get("/inversionista/:id", function (req, res, next) {
       AND solicitudes_inversion.aprobado = 'Aprobado';
   `;
 
-  conexion.query(query, function (error, results) {
+  sequelize.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -149,7 +152,7 @@ router.get("/inversionista/:id", function (req, res, next) {
         message: "Error al realizar la petición"
       });
     } else {
-      conexion.query(countQuery, function (countError, countResults) {
+      sequelize.query(countQuery, function (countError, countResults) {
         if (countError) {
           console.log(countError);
           res.status(500).send({
@@ -216,7 +219,7 @@ ON inversiones.inversor_id = usuarios.usuario_id
 WHERE inversiones.cliente_id = ${req.params.id}
 AND inversiones.estado = 1
 ORDER BY inversiones.inversion_id DESC;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -241,7 +244,7 @@ DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
 FROM solicitudes_retiro                
 WHERE usuario_id = ${req.params.id}
 ORDER BY retiro_id DESC;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -265,7 +268,7 @@ DATE_FORMAT(fecha_aprobacion, '%Y-%m-%d') AS fecha_aprobacion
 FROM solicitudes_retiro                
 WHERE usuario_id = ${req.params.id}
 ORDER BY retiro_id DESC;`;
-  conexion.query(query, function (error, results) {
+  sequelize.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -293,7 +296,7 @@ router.get("/inversiones_vencidas/:id", function (req, res, next) {
   AND fecha_devolucion <= CURRENT_DATE()
   AND estado = 1
   ORDER BY inversion_id DESC;`;
-  conexion.query(query, function (error, results) {
+  sequelize.query(query, function (error, results) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -325,7 +328,7 @@ router.get("/tokensClienteRecibido/:id", function (req, res, next) {
     ) AS tokensCompradosCliente
   FROM inversiones
   WHERE inversiones.cliente_id = ${req.params.id};`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -348,7 +351,7 @@ router.post("/devolverTokens", function (req, res, next) {
                 SET estado=!estado 
                 WHERE inversion_id = '${inversion_id}';`;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -359,7 +362,7 @@ router.post("/devolverTokens", function (req, res, next) {
       var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${cliente_id}', '${inversion_id}', NULL);`;
 
-      conexion.query(queryTokenCliente, function (error, results, fields) {
+      sequelize.query(queryTokenCliente, function (error, results, fields) {
         if (error) {
           console.log(error);
           res.status(500).send({
@@ -371,7 +374,7 @@ router.post("/devolverTokens", function (req, res, next) {
           var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
           VALUES ('Ingreso', 'Ganancia de tokens invertidos', CURRENT_TIMESTAMP(), NULL, '${token}', '${inversor_id}', '${inversion_id}', NULL);`;
 
-          conexion.query(queryTokenInversionista, function (error, results, fields) {
+          sequelize.query(queryTokenInversionista, function (error, results, fields) {
             if (error) {
               console.log(error);
               res.status(500).send({
@@ -390,4 +393,4 @@ router.post("/devolverTokens", function (req, res, next) {
   });
 });
 
-module.exports = router;
+export default router;

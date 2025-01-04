@@ -66,38 +66,19 @@ import Swal from 'sweetalert2'
 import { useRouter } from "vue-router";
 import { decodeCredential } from "vue3-google-login";
 import {successAlert, errorAlert} from "../helpers/iziToast";
-
 import BasicToggleSwitch from "../components/toggle-switch.vue";
 
 const switchValue = ref(false);
-
 const route = useRouter();
-
 const correo = ref("");
 const password = ref("");
-const  edIn = ref(false);
+const edIn = ref(false);
 const user = ref(null);
-
-// let baseURL = "https://apitalentos.pruebasdeploy.online/auth";
-let baseURL = import.meta.env.VITE_BASE_URL+"/auth";
+const baseURL = import.meta.env.VITE_BASE_URL+"/auth";
 const loading = ref(false);
+
 const ingresar = async () => {
   if (correo.value == "" || password.value == "") {
-    // iziToast.show({
-    //   title: "Hey",
-    //   message: "What would you like to add?",
-    // });
-
-    // Swal.fire({
-    //   title: "¡Error!",
-    //   text: "Ingrese sus credenciales",
-    //   icon: "error",
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: true,
-    //   color: 'var(--gray-color)',
-    //   confirmButtonColor: 'var(--yellow-orange)', 
-      
-    // });
     iziToast.error({
       title: 'Error',
       message: 'Ingrese sus credenciales',
@@ -105,10 +86,7 @@ const ingresar = async () => {
       position: 'topRight',
       theme: 'dark',
       color: '#f00', 
-
     })
-
-
   }
 
   var datos = {
@@ -124,28 +102,6 @@ const ingresar = async () => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("usuario", JSON.stringify(data.user));
     console.log(data.user);
-
-    // Swal.fire({
-    //   title: "Bienvenido!",
-    //   text: "Estás de regreso :) " + data.user.nombre + " " + data.user.apellido,
-    //   icon: "success",
-    //   showConfirmButton: false,
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: true,
-    //   color: 'var(--gray-color)',
-    //   timer: 1000,
-    // });
-
-    /* iziToast.success({
-      title: 'Bienvenido!',
-      message: 'Estas de regreso :) ' + data.user.nombre + ' ' + data.user.apellido,
-      messageColor: 'white',
-      position: 'topRight',
-      theme: 'dark',
-      color: '#5ce65c',
-      closeOnEscape: true,
-      progressBarColor: '#FFFFFF'
-          }) */
          successAlert('Estas de regreso '+data.user.nombre+ ''+ data.user.apellido, 'Bienvenid@')
     setTimeout(() => {
       route.push({ path: "/" });
@@ -154,18 +110,9 @@ const ingresar = async () => {
     setTimeout(() => {
       route.push({ path: "/" });
     }, 1000);
-  } catch (error) {
-    console.log(error);
-    const errorMessage = error.response?.data?.msg;
-    // Swal.fire({ 
-    //   title: "¡Error!", 
-    //   text: errorMessage, 
-    //   icon: "warning",
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: true,
-    //   color: 'var(--gray-color)',
-    //   confirmButtonColor: 'var(--yellow-orange)', 
-    // });
+  } catch (e) {
+    console.error(e);
+    const errorMessage = e.response?.data?.msg;
     iziToast.error({
       title: 'Error',
       message: errorMessage,
@@ -182,7 +129,6 @@ const ingresar = async () => {
     password.value = ''
   }
 };
-
 
 //login con google
 const callback =async (response) => {
@@ -213,8 +159,8 @@ const callback =async (response) => {
     });
   }
 };
-
 </script>
+
 
 <style scoped>
 

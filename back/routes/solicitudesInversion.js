@@ -1,6 +1,5 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   getSolicitudesInversion,
   getSolicitudesInversionAprobados,
   getSolicitudesInversionPendientes,
@@ -19,8 +18,10 @@ const {
   cambiarEstadoProceso,
   procesarInversionByUser,
   getSolicitudByClienteId,
-} = require("../controllers/solicitudesInversion");
-const { checkInvestmentRequest } = require('../helpers/nodeCron.js');
+} from "../controllers/solicitudesInversion.js";
+import { checkInvestmentRequest } from '../helpers/nodeCron.js';
+
+const router = express.Router();
 
 router.get("/", getSolicitudesInversion);
 router.get("/aprobados", getSolicitudesInversionAprobados);
@@ -44,4 +45,4 @@ router.get("/getSolicitudByClienteId/:id", getSolicitudByClienteId);
 router.get('/check/RevertInversiones', checkInvestmentRequest);
 
 
-module.exports = router;
+export default router;

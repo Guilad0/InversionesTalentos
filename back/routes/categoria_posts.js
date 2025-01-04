@@ -1,10 +1,11 @@
-const {conexion} = require("../database");
-var express = require('express');
+import {sequelize} from "../database.js";
+import express from 'express';
+
 var router = express.Router();
 
 router.get("/", (req, res) => {
     var categoria_posts = "SELECT * FROM categoria_posts";
-    conexion.query(categoria_posts, function(err, results)  {
+    sequelize.query(categoria_posts, function(err, results)  {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -24,7 +25,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     const {nombre}= req.body;
     var categoria_posts = `INSERT INTO categoria_posts(nombre) VALUES ("${nombre}");`;
-    conexion.query(categoria_posts, (err, results) => {
+    sequelize.query(categoria_posts, (err, results) => {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -44,7 +45,7 @@ router.put("/:categoria_id", (req, res) => {
     const { nombre } = req.body;
     const { categoria_id } = req.params;
     const categoria_posts = `UPDATE categoria_posts SET nombre = "${nombre}" WHERE categoria_id = "${categoria_id}";`;
-    conexion.query(categoria_posts, (err, results) => {
+    sequelize.query(categoria_posts, (err, results) => {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -63,7 +64,7 @@ router.put("/:categoria_id", (req, res) => {
 router.delete("/:categoria_id", (req, res) => {
     const { categoria_id } = req.params;
     const categoria_posts = `DELETE FROM categoria_posts WHERE categoria_id = "${categoria_id}";`;
-    conexion.query(categoria_posts, (err, results) => {
+    sequelize.query(categoria_posts, (err, results) => {
         if (err) {
             //console.log(err);
             res.status(500).send({
@@ -84,7 +85,7 @@ router.patch('/estado/:id', function (req, res, next) {
     const { nombre } = req.body;
     var query = `UPDATE categoria_posts SET estado= !estado WHERE categoria_id = ${req.params.id};`;
 
-    conexion.query(query, function (error, results, fields) {
+    sequelize.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -101,4 +102,4 @@ router.patch('/estado/:id', function (req, res, next) {
     })
 });
 
-module.exports = router;
+export default router;

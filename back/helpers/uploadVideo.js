@@ -1,5 +1,5 @@
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 const uploadVideo = ({ file }, extensiones = ['mp4', 'avi', 'mkv'], folder = 'videos') => {
     return new Promise((resolve, reject) => {
@@ -27,6 +27,6 @@ const uploadVideo = ({ file }, extensiones = ['mp4', 'avi', 'mkv'], folder = 'vi
     });
 }
 
-module.exports = {
+export {
     uploadVideo
 }

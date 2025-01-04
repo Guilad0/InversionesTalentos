@@ -1,11 +1,11 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../database.js");
+import { Model, DataTypes } from "sequelize";
+import {sequelize} from "../database.js";
 
 class User extends Model { }
 User.init(
     {
       usuarioId: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
@@ -46,10 +46,10 @@ User.init(
       rol: {
         type: DataTypes.STRING,
       },
-      createAt: {
+      createdAt: {
         type: DataTypes.DATE,
       },
-      updateAt: {
+      updatedAt: {
         type: DataTypes.DATE,
       },
       estado: {
@@ -72,9 +72,11 @@ User.init(
       },
       resetPasswordToken: {
         type: DataTypes.STRING,
+        field: 'resetPasswordToken',
       },
       resetPasswordExpires: {
         type: DataTypes.DOUBLE,
+        field: 'resetPasswordExpires',
       },
       genero: {
         type: DataTypes.STRING,
@@ -85,7 +87,7 @@ User.init(
       video: {
         type: DataTypes.STRING,
       },
-      porcentageRegistro: {
+      porcentajeRegistro: {
         type: DataTypes.STRING,
       },
     },
@@ -95,6 +97,6 @@ User.init(
       tableName: 'usuarios',
       timestamps: false
     }
-  );
+);
   
-  module.exports = User;
+export default User;

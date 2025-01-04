@@ -1,6 +1,9 @@
-const express = require('express');
+import express from 'express';
+import {sequelize} from '../database.js';
+
 const router = express.Router();
-const {conexion} = require('../database');
+
+
 // Crear ajuste
 router.post('/', (req, res) => {
     const {
@@ -15,7 +18,7 @@ router.post('/', (req, res) => {
 
     const query = 'INSERT INTO ajustes (comision_fija_ganancia, comision_porcentual_ganancia, comision_fija_retiro, comision_porcentual_retiro, tiempo_minimo_inversion, tiempo_maximo_inversion, sancion_porcentual_retraso) VALUES (?, ?, ?, ?, ?, ?, ?)';
     
-    conexion.query(query, [comision_fija_ganancia, comision_porcentual_ganancia, comision_fija_retiro, comision_porcentual_retiro, tiempo_minimo_inversion, tiempo_maximo_inversion, sancion_porcentual_retraso], (error, results) => {
+    sequelize.query(query, [comision_fija_ganancia, comision_porcentual_ganancia, comision_fija_retiro, comision_porcentual_retiro, tiempo_minimo_inversion, tiempo_maximo_inversion, sancion_porcentual_retraso], (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -25,7 +28,7 @@ router.post('/', (req, res) => {
 
 // Leer ajustes
 router.get('/', (req, res) => {
-    conexion.query('SELECT * FROM ajustes', (error, results) => {
+    sequelize.query('SELECT * FROM ajustes', (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -34,7 +37,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/ajustesTokens', (req, res) => {
-    conexion.query('SELECT valor_token, tipo_moneda FROM ajustes', (error, results) => {
+    sequelize.query('SELECT valor_token, tipo_moneda FROM ajustes', (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -51,7 +54,7 @@ router.put('/:id', (req, res) => {
 
     const query = 'UPDATE ajustes SET comision_fija_ganancia = ?, comision_porcentual_ganancia = ?, comision_fija_retiro = ?, comision_porcentual_retiro = ?, tiempo_minimo_inversion = ?, tiempo_maximo_inversion = ?, sancion_porcentual_retraso = ? WHERE ajuste_id = ?';
 
-    conexion.query(query, [comision_fija_ganancia, comision_porcentual_ganancia, comision_fija_retiro, comision_porcentual_retiro, tiempo_minimo_inversion, tiempo_maximo_inversion, sancion_porcentual_retraso, id], (error) => {
+    sequelize.query(query, [comision_fija_ganancia, comision_porcentual_ganancia, comision_fija_retiro, comision_porcentual_retiro, tiempo_minimo_inversion, tiempo_maximo_inversion, sancion_porcentual_retraso, id], (error) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -65,7 +68,7 @@ router.patch('/eliminar/:id', (req, res) => {
 
     const query = 'UPDATE ajustes SET estado = !estado WHERE ajuste_id = ?';
     
-    conexion.query(query, [id], (error) => {
+    sequelize.query(query, [id], (error) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -73,4 +76,4 @@ router.patch('/eliminar/:id', (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;

@@ -1,10 +1,13 @@
-var express = require("express");
+import express from "express";
+import {sequelize} from "../database.js";
+
+
 var router = express.Router();
-var {conexion} = require("../database");
+
 
 router.get("/usuariosCantidad", function (req, res, next) {
   var query = ` SELECT rol, COUNT(*) AS cantidad FROM usuarios GROUP BY rol;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -22,7 +25,7 @@ router.get("/usuariosCantidad", function (req, res, next) {
 
 router.get("/solicitudesCantidad", function (req, res, next) {
   var query = ` SELECT estado, COUNT(*) AS cantidad FROM solicitudes_retiro GROUP BY estado;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -41,7 +44,7 @@ router.get("/solicitudesCantidad", function (req, res, next) {
 router.get("/tokensInvertidos", function (req, res, next) {
   var query = ` SELECT SUM(token) as tokens_invertidos FROM movimientos
 WHERE descripcion = 'Tokens invertidos';`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -59,7 +62,7 @@ WHERE descripcion = 'Tokens invertidos';`;
 
 router.get("/sumaComisiones", function (req, res, next) {
   var query = `SELECT estado,SUM(comision_aplicar) AS total_comisiones FROM solicitudes_retiro GROUP BY estado;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -87,7 +90,7 @@ router.get("/totalCompras/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
                 `;
 
-  conexion.query(queryCompraTokens, function (error, results, fields) {
+  sequelize.query(queryCompraTokens, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -116,7 +119,7 @@ router.get("/totalInversiones/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
   `;
 
-  conexion.query(queryInversionToken, function (error, results, fields) {
+  sequelize.query(queryInversionToken, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -145,7 +148,7 @@ router.get("/totalInversionesRecibidas/:id", function (req, res, next) {
                 GROUP BY MONTH(fecha_solicitud);
   `;
 
-  conexion.query(queryInversionToken, function (error, results, fields) {
+  sequelize.query(queryInversionToken, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -173,7 +176,7 @@ AND YEAR(fecha_devolucion) = ${anho}
 GROUP BY MONTH(fecha_devolucion);
 `;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -206,7 +209,7 @@ AND estado = 'Aprobado'
 GROUP BY MONTH(fecha_solicitud);
 `;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       return res.status(500).send({
@@ -234,7 +237,7 @@ router.get("/inversionesCantidad", function (req, res, next) {
     COUNT(*) AS cantidad 
 FROM inversiones 
 GROUP BY estado_descripcion;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -250,4 +253,4 @@ GROUP BY estado_descripcion;`;
   });
 });
 
-module.exports = router;
+export default router;

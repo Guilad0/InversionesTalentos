@@ -1,91 +1,75 @@
-const { conexion } = require('../database.js');
+import { col, fn, Op } from 'sequelize';
+import { sequelize } from '../database.js';
+import { Inversion, SolicitudInversion } from '../models/mainExport.js'
+import { getDataError400, getError500, getResponse200WithData } from './Response.js';
 
-
-const checkInvestmentRequest = (req, res) => {
-    const query = `SELECT * FROM solicitudes_inversion 
-    WHERE fecha_fin_recaudacion < CURDATE() 
-        AND estado_inversion != 'Rechazado' AND estado = 1`;
-    conexion.query(query, function (err, results) {
-        if (err) {
-            res.status(500).send({
-                error: err,
-                message: "Error al obtener las solicitudes vencidas",
-            });
-        } else {
-            if (results.length > 0) { 
-                console.log('si hay filas que vencieron el plazo');
-                for (item of results) { 
-                    verifyInvestmentRequest(item);
+const checkInvestmentRequest = async (req, res) => {
+    try { 
+        const solicitudes = await SolicitudInversion.findAll({
+            where: { 
+                fechaFinRecaudacion: {
+                    [Op.lt]: new Date(), // > date.Now
+                    estadoInversion: {
+                    [Op.ne]: 'Rechazado', // != 'Rechazado
+                    },
+                    estado: 1,  // === 1
                 }
             }
-            res.status(200).json({
-                data: results,
-                message: "Solicitudes vencidas",
-            });
+        });
+        if (solicitudes.length > 0) { 
+            console.log('si hay filas que vencieron el plazo');
+            for (item of results) { 
+                verifyInvestmentRequest(item);
+            }
         }
-    });
+        getResponse200WithData('Ok', solicitudes, res);
+    } catch(e) { 
+        getError500('Error en la consulta!', e, res); 
+    }
 };
 
 async function verifyInvestmentRequest(data) { 
-    const query = `
-    SELECT SUM(monto) AS total
-    FROM inversiones
-    WHERE solicitud_inv_id = ? AND estado = 1
-    `;
-    conexion.query(query, [data.id], (err, results) => { 
-        if (err) {
-            console.error("Error ejecutando la consulta:", err);
-            return;
-        }
-        const total = results[0].total || 0;
+    const totalSuma = await Inversion.findAll({
+        attributes: [
+            [fn('SUM', col('monto')), 'total']
+          ],
+          where: {
+            solicitudInvId: data.id,
+            estado: 1
+          }
+    });
+        const total = totalSuma.total || 0;
         if (total >= data.monto) {
             console.log(total+'===' + data.monto);
             console.log("El monto es suficiente.");
-            // 433415345345345
             //pasar la solicitud de inversion a un estado acorde
         } else {
             console.log("El monto no es suficiente.");
             revertInvesmentRequest(data); 
         }
-    })
 }
 
 async function revertInvesmentRequest(data) { 
-    const updateQuery = `
-    UPDATE solicitudes_inversion 
-    SET aprobado = 'Rechazado'
-    WHERE id = ?
-    `;
-
-    const query = `
-    SELECT * FROM inversiones
-    WHERE solicitud_inv_id = ? AND estado = 1
-    `;
-
-    conexion.query(updateQuery, [data.id], (err) => {
-        if (err) {
-            console.error("Error actualizando el estado de la solicitud:", err);
-            return;
+    const [updateSolicitudInv] = await SolicitudInversion.update({
+        aprobado: 'Rechazado'}, {where: { id: data.id}}  );
+    const inversiones = await Inversion.findAll({
+        where: {solicitudInvId: data.id, estado: 1} });
+    if (updateSolicitudInv === 0) {
+        return getDataError400('Error actualizando el estado de la solicitud:', res);
+    }
+    console.log("Estado de la solicitud cambiado a rechazado.");
+    if (err) {
+        console.error("Error ejecutando la consulta:", err);
+        return;
+    }
+    if(results.length > 0) { 
+        for ( item of results) {
+            revertInvesments(item); 
         }
-        console.log("Estado de la solicitud cambiado a rechazado.");
-
-        conexion.query(query, [data.id], (err, results) => { 
-            if (err) {
-                console.error("Error ejecutando la consulta:", err);
-                return;
-            }
-            if(results.length > 0) { 
-                for ( item of results) {
-                    revertInvesments(item); 
-                }
-            } else {
-                console.log("no hay inversiones no se revierte nada");
-            }
-        })
-    
-    });
+    } else {
+        console.log("no hay inversiones no se revierte nada"); 
+    }
 }
-
 
 async function revertInvesments(data) {
     const query = `
@@ -140,6 +124,6 @@ async function revertInvestmentOfUser(data) {
 }
 
 
-module.exports = {
+export {
     checkInvestmentRequest,
-}
+};

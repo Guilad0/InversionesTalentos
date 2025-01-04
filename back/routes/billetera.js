@@ -1,13 +1,16 @@
-var express = require("express");
+import express from "express";
+import {sequelize} from "../database.js";
+
+
 var router = express.Router();
-var {conexion} = require("../database");
+
 
 router.get("/valores", function (req, res, next) {
   var query = ` SELECT valor_token, tiempo_minimo_inversion as tiempo_inversion, comision_porcentual_ganancia AS porcentaje_inversion, comision_porcentual_retiro AS comision_retiros
                 FROM ajustes
                 WHERE valor_token IS NOT NULL
                 ORDER BY ajuste_id DESC LIMIT 1;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -29,7 +32,7 @@ router.post("/comprarTokens", function (req, res, next) {
   var query = ` INSERT INTO movimientos (tipo, monto, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id, estado)
                 VALUES ('${tipo}', '${monto}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${tokens}', '${usuario_id}', NULL, NULL, '${estado}');`;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -50,7 +53,7 @@ router.get("/dolaresInversionista/:id", function (req, res, next) {
   var query = ` SELECT SUM(monto) as totalUsd
                 FROM movimientos
                 WHERE usuario_id =${req.params.id};`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -80,7 +83,7 @@ LEFT JOIN movimientos m
 ON t.tipo = m.tipo AND m.usuario_id = ${req.params.id} AND m.estado = 1
 GROUP BY t.tipo
 ORDER BY t.tipo DESC;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -101,7 +104,7 @@ router.get("/tokensInversionistaComprados/:id", function (req, res, next) {
                 FROM movimientos
                 WHERE usuario_id =${req.params.id}
                 AND tipo = 'Ingreso';`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -122,7 +125,7 @@ router.get("/tokensInversionistaInvertidos/:id", function (req, res, next) {
                 FROM movimientos
                 WHERE usuario_id =${req.params.id}
                 AND tipo = 'Egreso';`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -155,7 +158,7 @@ router.post("/invertirTokens", function (req, res, next) {
   var query = ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
                 VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');`;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -168,7 +171,7 @@ router.post("/invertirTokens", function (req, res, next) {
       var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${usuario_id}', '${inversion_id}', NULL);`;
 
-      conexion.query(
+      sequelize.query(
         queryTokenInversionista,
         function (error, results, fields) {
           if (error) {
@@ -181,7 +184,7 @@ router.post("/invertirTokens", function (req, res, next) {
             var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
           VALUES ('Ingreso', 'Inversión recibida', CURRENT_TIMESTAMP(), NULL, '${token}', '${cliente_id}', '${inversion_id}', NULL);`;
 
-            conexion.query(
+            sequelize.query(
               queryTokenCliente,
               function (error, results, fields) {
                 if (error) {
@@ -219,7 +222,7 @@ SELECT
     tokensEgresadosCliente,
     (tokensRecibidosCliente - tokensEgresadosCliente) AS tokensTotal
 FROM movimientos_resumen;`;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -242,7 +245,7 @@ router.get("/tokensDeudasCliente/:id", function (req, res, next) {
   WHERE cliente_id=${req.params.id}
   AND estado = 1
 `;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -265,7 +268,7 @@ router.get("/tokensGananciasInversionista/:id", function (req, res, next) {
   WHERE inversor_id=${req.params.id}
   AND estado = 1
 `;
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -295,7 +298,7 @@ router.post("/solicitarRetiro", function (req, res, next) {
   var query = ` INSERT INTO solicitudes_retiro (tipo, usuario_id, monto_solicitud, tokens_cambio, comision_aplicar, monto_recibir, estado, fecha_solicitud)
                 VALUES ('${tipo}', '${usuario_id}', '${monto_solicitud}', '${tokens_cambio}', '${comision_aplicar}', '${monto_recibir}', '${estado}', CURRENT_TIMESTAMP());`;
 
-  conexion.query(query, function (error, results, fields) {
+  sequelize.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
       res.status(500).send({
@@ -307,7 +310,7 @@ router.post("/solicitarRetiro", function (req, res, next) {
       var queryMovimientoToken = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                                       VALUES ('Egreso', 'Por solicitud de retiro', CURRENT_TIMESTAMP(), NULL, '${tokens_cambio}', '${usuario_id}', NULL, '${solicitud_id}');`;
 
-      conexion.query(
+      sequelize.query(
         queryMovimientoToken,
         function (error, results, fields) {
           if (error) {
@@ -328,4 +331,4 @@ router.post("/solicitarRetiro", function (req, res, next) {
   });
 });
 
-module.exports = router;
+export default router;

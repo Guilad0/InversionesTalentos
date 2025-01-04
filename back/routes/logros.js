@@ -1,6 +1,9 @@
-const {conexion} = require("../database");
-var express = require('express');
+import {sequelize} from "../database.js";
+import express from 'express';
+
+
 var router = express.Router();
+
 
 // Obtener logros (opcionalmente filtrado por cliente_id)
 router.get("/", (req, res) => {
@@ -12,7 +15,7 @@ router.get("/", (req, res) => {
         query += " WHERE cliente_id = ?";
     }
 
-    conexion.query(query, [cliente_id], function (err, results) {
+    sequelize.query(query, [cliente_id], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -32,7 +35,7 @@ router.post("/", (req, res) => {
     const { cliente_id, descripcion, fecha } = req.body;
     const query = "INSERT INTO logros(cliente_id, descripcion, fecha) VALUES (?, ?, ?)";
 
-    conexion.query(query, [cliente_id, descripcion, fecha], (err, results) => {
+    sequelize.query(query, [cliente_id, descripcion, fecha], (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -52,7 +55,7 @@ router.put("/:id", (req, res) => {
     const { id } = req.params;
     const query = "UPDATE logros SET cliente_id = ?, descripcion = ? WHERE id = ?";
 
-    conexion.query(query, [cliente_id, descripcion, id], (err, results) => {
+    sequelize.query(query, [cliente_id, descripcion, id], (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -71,7 +74,7 @@ router.delete("/:id", (req, res) => {
     const { id } = req.params;
     const query = "DELETE FROM logros WHERE id = ?";
 
-    conexion.query(query, [id], (err, results) => {
+    sequelize.query(query, [id], (err, results) => {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -90,7 +93,7 @@ router.patch('/estado/:id', function (req, res) {
     const { id } = req.params;
     const query = "UPDATE logros SET estado = !estado WHERE logro_id = ?";
 
-    conexion.query(query, [id], function (error, results) {
+    sequelize.query(query, [id], function (error, results) {
         if (error) {
             res.status(500).send({
                 error: error,
@@ -109,7 +112,7 @@ router.get('/logrosfechas/:id', function (req, res, next) {
     const clienteId = req.params.id;
     const logros = `SELECT l.fecha, l.descripcion FROM usuarios u INNER JOIN logros l ON u.usuario_id = l.cliente_id WHERE l.cliente_id = ?`;
 
-    conexion.query(logros, [clienteId], function (err, results) {
+    sequelize.query(logros, [clienteId], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -129,7 +132,7 @@ router.get('/experiencia/:id', function (req, res, next) {
     const logros = `SELECT e.institucion, e.cargo, e.actividades, e.fecha_inicio, e.fecha_final 
 FROM usuarios u 
 INNER JOIN experiencia e ON e.cliente_id = u.usuario_id WHERE e.cliente_id = ?`;
-    conexion.query(logros, [clienteId], function (err, results) {
+    sequelize.query(logros, [clienteId], function (err, results) {
         if (err) {
             res.status(500).send({
                 error: err,
@@ -144,4 +147,4 @@ INNER JOIN experiencia e ON e.cliente_id = u.usuario_id WHERE e.cliente_id = ?`;
     });
 });
 
-module.exports = router;
+export default router;

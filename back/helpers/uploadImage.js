@@ -1,5 +1,5 @@
-const path = require('path');
-const { v4: uuidv4 } =require('uuid');
+import path from 'path';
+import { v4 as uuidv4 }from 'uuid';
 
 const uploadFile = ( { image }, estensiones = [ 'png','jpeg','jpg' ], folder='images')=>{
     return new Promise((resolve, reject)=>{
@@ -22,6 +22,6 @@ const uploadFile = ( { image }, estensiones = [ 'png','jpeg','jpg' ], folder='im
 
 }
 
-module.exports = {
+export {
     uploadFile
-}
+};

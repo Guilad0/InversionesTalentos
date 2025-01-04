@@ -10,7 +10,7 @@
           <Register @changePage="changePage" />
         </div>
         <div class="col   " :class="{ 'move-left': currentPage === 1 }">
-        <Login @changePage="changePage" />
+          <Login @changePage="changePage" />
         </div>
       </div>
     </main>
@@ -28,6 +28,35 @@
   </div>
 </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import Register from '../components/Register.vue'
+import Login from '../components/Login.vue'
+import axios from 'axios';
+onMounted(async()=>{
+  await getNameSstem()
+  localStorage.clear()
+})
+const nameSyystem = ref('')
+const getNameSstem = async() =>{
+  try {
+    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getNameSystem')
+    console.log(data);
+    nameSyystem.value = data.nombre
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+const currentPage = ref(0);
+const changePage = () => {
+  currentPage.value = currentPage.value === 1 ? 0 : 1;
+  console.log(currentPage.value);
+};
+</script>
+
 
 <style scoped>
 .abs-custom{
@@ -95,31 +124,3 @@ main {
   
 }
 </style>
-
-<script setup>
-import { ref, onMounted } from 'vue';
-import Register from '../components/Register.vue'
-import Login from '../components/Login.vue'
-import axios from 'axios';
-onMounted(async()=>{
-  await getNameSstem()
-  localStorage.clear()
-})
-const nameSyystem = ref('')
-const getNameSstem = async() =>{
-  try {
-    const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getNameSystem')
-  console.log(data);
-  nameSyystem.value = data.nombre
-  } catch (error) {
-    console.log(error);
-  }
-
-}
-
-const currentPage = ref(0);
-const changePage = () => {
-  currentPage.value = currentPage.value === 1 ? 0 : 1;
-  console.log(currentPage.value);
-};
-</script>

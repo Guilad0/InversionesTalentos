@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 /**
  * Crea un transportador de correo electrónico utilizando la configuración de SMTP de Gmail.
  * Este objeto es responsable de la configuración y el envío de correos electrónicos.
@@ -14,6 +14,6 @@ const transporter  = nodemailer.createTransport({
     },
   });
 
-  module.exports = transporter
+  export default transporter;
 
   
