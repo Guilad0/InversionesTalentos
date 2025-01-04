@@ -1,17 +1,16 @@
-const connection = require("../database");
+const {connection} = require("../database");
 var express = require('express');
 var router = express.Router();
 
-// Obtener logros (opcionalmente filtrado por cliente_id)
+
+
 router.get("/", (req, res) => {
     const { cliente_id } = req.query;  // Obtener el cliente_id desde los parámetros de consulta
     let query = "SELECT * FROM logros";
-
     // Si se pasa cliente_id, filtramos los resultados
     if (cliente_id) {
         query += " WHERE cliente_id = ?";
     }
-
     connection.query(query, [cliente_id], function (err, results) {
         if (err) {
             res.status(500).send({
@@ -27,7 +26,6 @@ router.get("/", (req, res) => {
     });
 });
 
-// Crear un nuevo logro
 router.post("/", (req, res) => {
     const { cliente_id, descripcion, fecha } = req.body;
     const query = "INSERT INTO logros(cliente_id, descripcion, fecha) VALUES (?, ?, ?)";
@@ -46,7 +44,6 @@ router.post("/", (req, res) => {
     });
 });
 
-// Actualizar un logro existente
 router.put("/:id", (req, res) => {
     const { cliente_id, descripcion } = req.body;
     const { id } = req.params;
@@ -66,7 +63,6 @@ router.put("/:id", (req, res) => {
     });
 });
 
-// Eliminar un logro
 router.delete("/:id", (req, res) => {
     const { id } = req.params;
     const query = "DELETE FROM logros WHERE id = ?";
@@ -85,7 +81,6 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-// Actualizar el estado de un logro
 router.patch('/estado/:id', function (req, res) {
     const { id } = req.params;
     const query = "UPDATE logros SET estado = !estado WHERE logro_id = ?";
@@ -143,5 +138,6 @@ INNER JOIN experiencia e ON e.cliente_id = u.usuario_id WHERE e.cliente_id = ?`;
         }
     });
 });
+
 
 module.exports = router;

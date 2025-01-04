@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var connection = require("../database");
+var {connection} = require("../database");
 
 router.get("/inversiones", function (req, res, next) {
   // Parámetros de paginación y búsqueda
@@ -8,7 +8,6 @@ router.get("/inversiones", function (req, res, next) {
   const pagina = parseInt(req.query.page, 10) || 1; // Página actual
   const salto = (pagina - 1) * porPagina; // Calcular el número de resultados a saltar
   const limite = `${salto}, ${porPagina}`; // Límite para la consulta SQL
-
   // Consulta para contar el número total de filas
   const queryFilas = `SELECT COUNT(*) AS numFilas
                       FROM inversiones
@@ -21,7 +20,6 @@ router.get("/inversiones", function (req, res, next) {
         msg: "Error al contar las filas",
       });
     }
-
     const numFilas = results[0].numFilas;
     const numPaginas = Math.ceil(numFilas / porPagina);
 

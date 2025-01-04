@@ -1,6 +1,6 @@
-// var mysql = require('mysql');
 var mysql = require('mysql2');
 var dotenv = require('dotenv');
+var { Sequelize } = require('sequelize')
 dotenv.config();
 
 var conf = {
@@ -14,6 +14,29 @@ var conf = {
   ssl: false,
 };
 
+var sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
+    dialect: process.env.DB_DIALECT || 'mysql',
+    define: {
+        underscored: false
+    },
+    logging: console.log,
+    dialectOptions: {
+      connectTimeout: 10000, 
+      ssl: false,
+    },
+  }
+);
+
+
 var connection = mysql.createPool(conf);
 
-module.exports = connection;
+module.exports = {
+  connection,
+  sequelize
+};

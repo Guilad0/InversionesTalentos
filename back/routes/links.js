@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 //importamos la coneccion a la base de datos
-var conexion = require('../database');
+var {connection} = require('../database');
 
 
 /* GET listar links. */
@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
     //creamos la consulta  
     var query = 'SELECT * FROM links;';
     //ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -36,7 +36,7 @@ router.get("/cliente/:id", function (req, res, next) {
     const links = `
         SELECT c.link FROM links c WHERE c.cliente_id = ?`;
 
-        conexion.query(links, [clienteId], function (err, results) {
+        connection.query(links, [clienteId], function (err, results) {
             if (err) {
                 res.status(500).send({
                     error: err,
@@ -62,7 +62,7 @@ router.post('/', function (req, res, next) {
                   VALUES ("${cliente_id}", "${nombre}", "${link}", "${descripcion}");`;
 
     //ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -92,7 +92,7 @@ router.put('/:id', function (req, res, next) {
                 WHERE link_id = ${req.params.id};`;
 
     // Ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -114,7 +114,7 @@ router.delete('/:id', function (req, res, next) {
     var query = `UPDATE links SET eliminado = 1 WHERE link_id = ?`;
 
     // Ejecutamos la consulta
-    conexion.query(query, [req.params.id], function (error, results, fields) {
+    connection.query(query, [req.params.id], function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({

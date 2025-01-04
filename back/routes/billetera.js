@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var connection = require("../database");
+var {connection} = require("../database");
 
 router.get("/valores", function (req, res, next) {
   var query = ` SELECT valor_token, tiempo_minimo_inversion as tiempo_inversion, comision_porcentual_ganancia AS porcentaje_inversion, comision_porcentual_retiro AS comision_retiros

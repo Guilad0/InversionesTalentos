@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const conexion = require('../database');
+const {connection} = require('../database');
 
 // Crear movimiento
 router.post('/', (req, res) => {
@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
 
     const query = 'INSERT INTO movimientos (tipo, monto, descripcion) VALUES (?, ?, ?)';
     
-    conexion.query(query, [tipo, monto, descripcion ], (error, results) => {
+    connection.query(query, [tipo, monto, descripcion ], (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 
 // Leer movimientos
 router.get('/', (req, res) => {
-    conexion.query('SELECT * FROM movimientos', (error, results) => {
+    connection.query('SELECT * FROM movimientos', (error, results) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -33,7 +33,7 @@ router.put('/:id', (req, res) => {
 
     const query = 'UPDATE movimientos SET tipo = ?, monto = ?, descripcion = ?, fecha_solicitud = ?, fecha_desembolso = ? WHERE movimiento_id = ?';
 
-    conexion.query(query, [tipo, monto, descripcion, fecha_solicitud, fecha_desembolso, id], (error) => {
+    connection.query(query, [tipo, monto, descripcion, fecha_solicitud, fecha_desembolso, id], (error) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -47,7 +47,7 @@ router.patch('/:id', (req, res) => {
 
     const query = 'UPDATE movimientos SET estado = !estado WHERE movimiento_id = ?';
     
-    conexion.query(query, [id], (error) => {
+    connection.query(query, [id], (error) => {
         if (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -62,7 +62,7 @@ router.get('/estado/:valor', (req, res) => {
         return res.status(400).send('Valor inválido para estado');
     }
 
-    conexion.query('SELECT * FROM movimientos WHERE estado = ?', [valor], (err, results) => {
+    connection.query('SELECT * FROM movimientos WHERE estado = ?', [valor], (err, results) => {
         if (err) return res.status(500).send(err);
         res.json(results);
     });

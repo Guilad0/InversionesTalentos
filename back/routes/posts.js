@@ -1,4 +1,4 @@
-const connection = require("../database");
+const {connection} = require("../database");
 var express = require('express');
 var router = express.Router();
 const cloudinary = require('cloudinary').v2;

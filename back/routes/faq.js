@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 //importamos la coneccion a la base de datos
-var conexion = require('../database');
+var {connection} = require('../database');
 
 
 
@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
     //creamos la consulta  
     var query = 'SELECT * FROM faq;';
     //ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -39,7 +39,7 @@ router.post('/', function (req, res, next) {
                   VALUES ("${pregunta}", "${respuesta}",  CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());`;
 
     // ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -69,7 +69,7 @@ router.put('/:id', function (req, res, next) {
                 WHERE faq_id = ${req.params.id};`;
 
     // Ejecutamos la consulta
-    conexion.query(query, function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -92,7 +92,7 @@ router.delete('/:id', function (req, res, next) {
     var query = `UPDATE faq SET estado = 0 WHERE faq_id = ?`;  // 0 indica inactivo
 
     // Ejecutamos la consulta
-    conexion.query(query, [req.params.id], function (error, results, fields) {
+    connection.query(query, [req.params.id], function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -114,7 +114,7 @@ router.patch('/:id/restaurar', function (req, res, next) {
     var query = `UPDATE faq SET estado = 1 WHERE faq_id = ?`;  // 1 indica eliminado lógicamente (activo)
 
     // Ejecutamos la consulta
-    conexion.query(query, [req.params.id], function (error, results, fields) {
+    connection.query(query, [req.params.id], function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({
@@ -135,7 +135,7 @@ router.patch('/:id/restaurar', function (req, res, next) {
 router.delete('/definitivo/:id', function (req, res, next) {
     var query = `DELETE FROM faq WHERE faq_id = ?`;
 
-    conexion.query(query, [req.params.id], function (error, results, fields) {
+    connection.query(query, [req.params.id], function (error, results, fields) {
         if (error) {
             console.log(error);
             res.status(500).send({

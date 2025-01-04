@@ -3,7 +3,7 @@ var router = express.Router();
 
 //importamos la conexión a la base de datos
 
-var connection = require("../database");
+var {connection} = require("../database");
 
 // get para pendientes de retiros
 router.get("/pendiente", function (req, res, next) {

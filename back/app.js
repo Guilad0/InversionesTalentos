@@ -32,10 +32,12 @@ var reportRouter = require('./routes/report');
 var perfilRouter = require('./routes/perfil');
 var informacionRoutes = require('./routes/informacionRoutes');
 var previewRouter = require('./routes/preview');
-var solicitudesInversionRouter = require('./routes/solicitudesInversion');
+var { solicitudesInversionRouter } = require('./routes/solicitudesInversion');
 var reporteReversionRouter = require('./routes/reporteReversion');
 var reporteSolicitudesInversionRouter = require('./routes/reporteSolicitudesInversion');
 var planPagosRouter = require('./routes/planPagos');
+const cron = require('node-cron');
+const {checkInvestmentRequest} = require('./helpers/nodeCron.js')
 
 var app = express();
 
@@ -91,15 +93,14 @@ app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
 app.use('/planPagos', planPagosRouter);
 
 
-const { aprobarAutomaticamenteSolicitudes } = require("./controllers/solicitudesInversion");
-const { aprobarAutomaticamenteInversiones } = require("./controllers/solicitudesInversion");
+const { aprobarAutomaticamenteSolicitudes, aprobarAutomaticamenteInversiones } = require("./routes/solicitudesInversion.js");
 setInterval(() => {
   aprobarAutomaticamenteSolicitudes();
   aprobarAutomaticamenteInversiones();
 }, 86400000);
 
 // se activa a las 23:50 cada dia
-cron.schedule('50 23 * * *', checkInvestmentRequest)
+cron.schedule('50 23 * * *', checkInvestmentRequest);
 
 
 
