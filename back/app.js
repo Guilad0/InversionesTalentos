@@ -98,6 +98,9 @@ setInterval(() => {
   aprobarAutomaticamenteInversiones();
 }, 86400000);
 
+// se activa a las 23:50 cada dia
+cron.schedule('50 23 * * *', checkInvestmentRequest)
+
 
 
 module.exports = app;
