@@ -244,7 +244,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   try {
     const user = await getUser()
-    console.log(user);
     if (to.meta.roles) {
       if (!user) {
         console.warn("Acceso denegado usuario no autenticado");

@@ -10,58 +10,40 @@
         <router-link to="/perfil" class="btn-back">
           Volver a Perfil
         </router-link>
-      </div> -->
+      </div>  -->
 
       <form @submit.prevent="registrarExperiencia" novalidate>
-        <div class="row mb-4">
+        <div class="row mb-3">
           <div class="col-12">
             <div class="input-container">
               <label for="nombre" class="label">
                 Motivo<strong class="text-danger">*</strong>
               </label>
-              <input
-                id="nombre"
-                v-model="nombre"
-                @input="eliminarEspacioInicio('nombre')"
-                ref="refNombre"
-                type="text"
-                class="input form-control"
-                required
-              />
+              <input id="nombre" v-model="nombre" @input="eliminarEspacioInicio('nombre')" ref="refNombre" type="text"
+                class="input form-control" required />
             </div>
           </div>
-          <div class="col-12">
+          <div class="col">
             <div class="input-container">
               <label for="descripcion" class="label">
                 Descripción <strong class="text-danger">*</strong>
               </label>
-              <textarea
-                id="descripcion"
-                ref="refDescripcion"
-                v-model="descripcion"
-                @input="eliminarEspacioInicio('descripcion')"
-                class="input form-control"
-                rows="3"
-                required
-              ></textarea>
+              <textarea id="descripcion" ref="refDescripcion" v-model="descripcion"
+                @input="eliminarEspacioInicio('descripcion')" class="input form-control" rows="3" required></textarea>
             </div>
           </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
           <div class="col-md-6">
-            <div class="input-container">
+            <div class="input-container position-relative">
               <label for="fecha_inicio_recaudacion" class="label">
                 Fecha Inicio Recaudación<strong class="text-danger">*</strong>
               </label>
-              <input
-                id="fecha_inicio_recaudacion"
-                v-model="fecha_inicio_recaudacion"
-                type="date"
-                :min="fechaActual"
-                class="input form-control"
-                required
-              />
+              <input id="fecha_inicio_recaudacion" v-model="fecha_inicio_recaudacion" type="date"
+                class="input form-control" :min="fecha_inicio_rec" required />
+              <label for="fecha_inicio_recaudacion" class="mt-2 mb-0 p-0 custom-abs"> Fecha de recaudacion apartir de {{
+                fecha_inicio_rec }} </label>
             </div>
           </div>
           <div class="col-md-6">
@@ -69,32 +51,24 @@
               <label for="fecha_fin_recaudacion" class="label">
                 Fecha Final Recaudación<strong class="text-danger">*</strong>
               </label>
-              <input
-                id="fecha_fin_recaudacion"
-                v-model="fecha_fin_recaudacion"
-                type="date"
-                :min="fechaActual"
-                class="input form-control"
-                required
-              />
+              <input id="fecha_fin_recaudacion" v-model="fecha_fin_recaudacion" type="date" :min="fechaActual"
+                class="input form-control" required />
             </div>
           </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
           <div class="col-md-4">
             <div class="input-container">
               <label for="monto" class="label">
-                Monto<strong class="text-danger">*</strong>
+                Monto<strong class="text-danger">* </strong>
+                <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-bs-placement="top"
+                  data-bs-custom-class="custom-tooltip" :data-bs-title="msg">
+                </i>
               </label>
-              <input
-                id="monto"
-                v-model="monto"
-                @input="formatearMonto"
-                type="text"
-                class="input form-control no-spin"
-                required
-              />
+
+              <input id="monto" v-model="monto" @input="formatearMonto" type="text" class="input form-control no-spin"
+                required />
               <div v-if="monto" class="text-sm text-gray-600 mt-1">
                 Equivalente: {{ montoCalculado.usdt }}
               </div>
@@ -103,44 +77,31 @@
           <div class="col-md-4">
             <div class="input-container">
               <label class="label">Porcentaje de Interés</label>
-              <input
-                v-model="porcentajeInteresFormateado"
-                type="text"
-                class="input form-control"
-                readonly
-              />
+              <input v-model="porcentajeInteresFormateado" type="text" class="input form-control" readonly />
             </div>
           </div>
           <div class="col-md-4">
             <div class="input-container">
               <label for="cantidad_pagos" class="label">
-                Cantidad Pagos<strong class="text-danger">*</strong>
+                Cantidad Pagos<strong class="text-danger">* </strong>
+                <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-bs-placement="top"
+                  data-bs-custom-class="custom-tooltip" data-bs-title="Plazo maximo de hasta 24 cuotas">
+                </i>
               </label>
-              <input
-                id="cantidad_pagos"
-                v-model.number="cantidad_pagos"
-                type="number"
-                class="input form-control no-spin"
-                required
-              />
+              <input id="cantidad_pagos" v-model.number="cantidad_pagos" type="number"
+                class="input form-control no-spin" required />
             </div>
           </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
           <div class="col-md-6">
             <div class="input-container">
               <label for="fecha_inicio_pago" class="label">
                 Fecha Inicio Pago<strong class="text-danger">*</strong>
               </label>
-              <input
-                id="fecha_inicio_pago"
-                v-model="fecha_inicio_pago"
-                type="date"
-                :min="fecha_fin_recaudacion"
-                class="input form-control"
-                required
-              />
+              <input id="fecha_inicio_pago" v-model="fecha_inicio_pago" type="date" :min="fecha_fin_recaudacion"
+                class="input form-control" required />
             </div>
           </div>
           <div class="col-md-6">
@@ -148,38 +109,22 @@
               <label for="fecha_fin_pago" class="label">
                 Fecha Fin Inversión
               </label>
-              <input
-                id="fecha_fin_pago"
-                v-model="fecha_fin_pago"
-                type="date"
-                class="input form-control"
-                readonly
-              />
+              <input id="fecha_fin_pago" v-model="fecha_fin_pago" type="date" class="input form-control" readonly />
             </div>
           </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
           <div class="col-md-6">
             <div class="input-container">
               <label class="label">Pago Mensual</label>
-              <input
-                v-model="pagoMensual"
-                type="text"
-                class="input form-control"
-                readonly
-              />
+              <input v-model="pagoMensual" type="text" class="input form-control" readonly />
             </div>
           </div>
           <div class="col-md-6">
             <div class="input-container">
               <label class="label">Monto Total a Pagar</label>
-              <input
-                v-model="montoTotal"
-                type="text"
-                class="input form-control"
-                readonly
-              />
+              <input v-model="montoTotal" type="text" class="input form-control" readonly />
             </div>
           </div>
         </div>
@@ -197,6 +142,8 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import iziToast from "izitoast";
 import { successAlert, errorAlert } from "../helpers/iziToast";
+import { initializeTooltips } from "@/helpers/utilities";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const cliente_id = ref("");
@@ -222,13 +169,16 @@ const porcentajeInteres = ref(0);
 const porcentajeGananciaPlataforma = ref(0);
 const pagoMensual = ref("");
 const montoTotal = ref("");
-
+const fecha_inicio_rec = ref(new Date)
 onMounted(async () => {
+  fecha_inicio_rec.value = new Date(fecha_inicio_rec.value.setDate(fecha_inicio_rec.value.getDate() + 2)).toISOString().split('T')[0];
   await obtenetPorcentajeGananciaPlataforma();
   await obtenerPorcentajeInteres();
   console.log(user.value);
+  fecha_inicio_recaudacion.value = fecha_inicio_rec.value
   if (user) {
     cliente_id.value = user.value.usuario_id;
+    initializeTooltips()
   } else {
     // Alerta de error si no se encuentra el cliente_id en localStorage
     iziToast.error({
@@ -265,7 +215,9 @@ const obtenetPorcentajeGananciaPlataforma = async () => {
     );
   }
 };
-
+const rangoMin = ref(0)
+const rangoMax = ref(0)
+const msg = ref('')
 const obtenerPorcentajeInteres = async () => {
   if (user.value) {
     cliente_id.value = user.value.usuario_id;
@@ -273,6 +225,10 @@ const obtenerPorcentajeInteres = async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/categories/user/${cliente_id.value}`
       );
+      console.log(response);
+      msg.value = `Capital permitida para este rubro a partir de ${response.data.monto_minimo_inversion}$ a ${response.data.monto_maximo_inversion}$.`
+      rangoMin.value = response.data.monto_minimo_inversion;
+      rangoMax.value = response.data.monto_maximo_inversion;
       porcentajeInteres.value = (
         parseFloat(response.data.porcentaje_interes).toFixed(2) * 1 +
         parseFloat(porcentajeGananciaPlataforma.value).toFixed(2) * 1
@@ -355,6 +311,21 @@ const registrarExperiencia = async () => {
     );
     successAlert("Solicitud de Inversión registrada correctamente", "¡Éxito!");
     limpiarCampos();
+    if ( monto.value.replace(/[^0-9.-]+/g, "")  > rangoMax.value || monto.value.replace(/[^0-9.-]+/g, "")  < rangoMin.value ) {
+      Swal.fire({
+        title: "Monto exedido",
+        icon: "warning",
+        text: `El monto solicitado supera los límites establecidos para el rubro actual, con un rango de ${rangoMin.value}$ a ${rangoMax.value}$. Su solicitud será revisada por administración antes de ser aprobada.`,
+        confirmButtonColor: "#D95C00",
+        draggable: true,
+        allowOutsideClick: false, 
+        confirmButtonText: 'Continuar',  
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push({ name: "perfil" });
+        }
+      });
+    }
     router.push({ name: "perfil" });
   } catch (error) {
     errorAlert("Error al registrar la Solicitud de Inversión.", "Error");
@@ -376,6 +347,10 @@ const validarCampos = () => {
   }
   if (cantidad_pagos.value < 10 || cantidad_pagos.value > 24) {
     errorAlert("La cantidad de pagos debe estar entre 10 y 24 meses.", "Error");
+    return false;
+  }
+  if (fecha_inicio_recaudacion.value < fecha_inicio_rec.value) {
+    errorAlert(`Inversiones a partir de  ${fecha_inicio_rec.value}`, "Error");
     return false;
   }
   if (
@@ -610,6 +585,7 @@ textarea.input {
   background-color: #f37926;
   color: #fff;
 }
+
 .row {
   margin-bottom: 0.5rem !important;
 }
@@ -644,6 +620,7 @@ textarea.input {
     margin-top: 0;
     margin-bottom: 10px;
   }
+
   .input {
     font-size: 16px;
     padding: 6px 10px;
@@ -668,9 +645,11 @@ textarea.input {
     width: 95%;
     padding: 10px;
   }
+
   .input-container {
     margin-top: 5px;
   }
+
   .row {
     margin-bottom: 0.15rem !important;
   }
@@ -693,6 +672,7 @@ textarea.input {
     padding: 6px 12px;
     height: 35px;
   }
+
   .submit {
     font-size: 14px;
     height: 40px;
@@ -769,9 +749,15 @@ textarea.input {
     margin-top: 10px;
   }
 }
+
 .no-spin::-webkit-inner-spin-button,
 .no-spin::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.custom-abs {
+  position: absolute;
+  bottom: -22px;
 }
 </style>

@@ -110,7 +110,6 @@ onMounted(() => {
 const logo = ref('')
 const getLogoSystem = async() =>{
     const {data} = await axios.get(import.meta.env.VITE_BASE_URL+'/utilities/getLogoSystem')
-    console.log(data);
     logo.value = data.logo    
 }
 
