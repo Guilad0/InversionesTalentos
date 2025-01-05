@@ -101,11 +101,12 @@
             </button>
 
             <button
-              :disabled="loadingValues ||loadingInvertir == true"
+              :disabled="loadingValues ||loadingInvertir == true || (tokensCompradosInversionista - tokensInvertidosInversionista) <= 0 || inv.monto == inv.total_recaudado"
               v-if="user.rol !== 'Admin'"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               data-bs-toggle="modal"
               data-bs-target="#modalInversion"
+              :title="(tokensCompradosInversionista - tokensInvertidosInversionista) <= 0 ? 'No tienes tokens suficientes para invertir' : '' || inv.monto == inv.total_recaudado ? 'El proyecto ha alcanzado su objetivo' : ''"
             >
               <i class="fas fa-dollar-sign"></i>
               <label v-if="!loadingValues || loadingInvertir == true">Invertir</label>
@@ -422,7 +423,7 @@
                       for="monto_tokens_invertir"
                       :class="{ 'text-danger': bandMaximo }"
                       >Monto maximo de inversion:
-                      <strong>{{ rangoMaximo }}</strong>
+                      <strong>{{ inv.monto_restante  }}</strong>
                     </label>
                   </div>
                 </div>
@@ -461,7 +462,7 @@
           </div>
           <div class="modal-footer">
             <button
-              :disabled="bandMaximo != false || bandMinimo != false || loadingInvertir == true"
+              :disabled="(tokensCompradosInversionista - tokensInvertidosInversionista) <= inv.monto || bandMinimo != false || loadingInvertir == true"
               type="button"
               @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6"
@@ -619,12 +620,14 @@ const cargaValoresIniciales = async () => {
         userId.value
     );
     const data2 = response2.data;
+    console.log(data2.results);
     const response3 = await axios.get(
       import.meta.env.VITE_BASE_URL +
         "/solicitudesInversion/getSolicitudByClienteId/" +
         userId.value
     );
     const data3 = response3.data;
+    console.log(data3.results);
     let montoTotal = 0;
     // Obtener el id de data3 y asignarlo a inv.value.id
     if (data3.results) {
@@ -637,6 +640,7 @@ const cargaValoresIniciales = async () => {
         inv.value.id
     );
     const data4 = response4.data;
+    console.log(data4.results);
     let totalInvertido = 0;
     if (data4.results) {
       totalInvertido = data4.totalInvertido;
@@ -653,6 +657,7 @@ const cargaValoresIniciales = async () => {
     console.log(montoTotal);
     console.log(totalInvertido);
     rangoMaximo.value = montoTotal * valorTokens.value - totalInvertido;
+    console.log(rangoMaximo.value, "rangoMaximo.value");
     porcentaje_inversion.value = parseFloat(data.porcentaje_interes);
 
     loadingValores.value = false;
