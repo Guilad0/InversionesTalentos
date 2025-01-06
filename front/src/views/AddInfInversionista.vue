@@ -185,8 +185,8 @@ const validarFormulario = (event) => {
 const loading = ref(false)
 const addInfoInversionista = async (event) => {
   if (!validarFormulario(event)) return;
-  if ( tipo_dni.value == 'ci' && !/^\d{8}$/.test(dni.value)) {
-  errorAlert('La cédula de identidad debe tener exactamente 8 dígitos numéricos.','Error')
+  if ( tipo_dni.value == 'ci' && !/^\d{7}$/.test(dni.value)) {
+  errorAlert('La cédula de identidad debe tener exactamente 7 dígitos numéricos.','Error')
   dni.value = ''
   errorDni.value = 'Formato no valido'
   return;
