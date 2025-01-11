@@ -394,9 +394,7 @@
                   <p class="text-center">
                     Tokens Disponibles:
                     <strong>{{
-                      tokensCompradosInversionista -
-                      tokensInvertidosInversionista -
-                      monto_tokens_invertir
+                      tokensDisponibles
                     }}</strong>
                   </p>
                 </div>
@@ -462,7 +460,7 @@
           </div>
           <div class="modal-footer">
             <button
-              :disabled="(tokensCompradosInversionista - tokensInvertidosInversionista) <= inv.monto || bandMinimo != false || loadingInvertir == true || monto_tokens_invertir > inv.monto_restante"
+              :disabled="monto_tokens_invertir > inv.monto_restante || tokensDisponibles  < 0  || bandMinimo != false || loadingInvertir == true "
               type="button"
               @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6"
@@ -494,7 +492,7 @@
 <script setup>
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { errorAlert, successAlert } from "@/helpers/iziToast";
 const route = useRoute();
 const router = useRouter();
@@ -828,6 +826,15 @@ const inversionistaInvertir = async () => {
 watch(loadingInvertir, (newValue, oldValue) => {
 
 });
+
+const tokensDisponibles = computed(() => {
+  return (
+    tokensCompradosInversionista.value -
+    tokensInvertidosInversionista.value -
+    monto_tokens_invertir.value
+  );
+});
+
 const irBilletera = () => {
   router.push("/billetera");
 };
@@ -897,6 +904,8 @@ const pauseVideo = () => {
     video.pause(); // Pausa el video
   }
 };
+
+
 </script>
 
 <style scoped>
