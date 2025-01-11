@@ -462,7 +462,7 @@
           </div>
           <div class="modal-footer">
             <button
-              :disabled="(tokensCompradosInversionista - tokensInvertidosInversionista) <= inv.monto || bandMinimo != false || loadingInvertir == true"
+              :disabled="(tokensCompradosInversionista - tokensInvertidosInversionista) <= inv.monto || bandMinimo != false || loadingInvertir == true || monto_tokens_invertir > inv.monto_restante"
               type="button"
               @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6"
