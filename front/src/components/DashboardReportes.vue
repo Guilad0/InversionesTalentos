@@ -49,7 +49,6 @@
               :options="options3"
               :series="series3"
             ></apexchart>
-            <!-- <BarChart :series="series3" :labels="meses" chart-title="Usuarios por mes" /> -->
           </div>
         </div>
       </div>
@@ -63,9 +62,11 @@
             <div class="card-header bg-gray text-light">Mayor inversionista</div>
             <div class="card-body">
               <p class="card-text">
-                <strong>Usuario:</strong> {{ nombre_inversor }} <br />
-                <strong>Inversiones realizadas:</strong> {{ total_inversiones }} <br />
-                <strong>Tokens:</strong> {{ total_tokens }} <br />
+                <!-- <strong>Usuario:</strong> {{ mayorInversionista[0].nombre_inversor }}
+                <br />
+                <strong>Inversiones realizadas:</strong>
+                {{ mayorInversionista[0].total_inversiones }} <br />
+                <strong>Tokens:</strong> {{ mayorInversionista[0].total_tokens }} <br /> -->
               </p>
             </div>
           </div>
@@ -101,6 +102,22 @@
                 <strong>Retiros:</strong> {{ movRetiros.movimientos_realizados }} <br />
                 <strong>Devoluciones:</strong>
                 {{ movDeveoluciones.movimientos_realizados }} <br />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="card mb-3" style="max-width: 15rem">
+            <div class="card-header bg-gray text-light">Usuarios activos</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Usuarios Admin</strong> {{ series3[0] }} <br />
+              </p>
+              <p class="card-text">
+                <strong>Usuarios Inversionistas</strong> {{ series3[1] }} <br />
+              </p>
+              <p class="card-text">
+                <strong>Usuarios Clientes</strong> {{ series3[2] }} <br />
               </p>
             </div>
           </div>
@@ -307,10 +324,14 @@ onMounted(async () => {
   await obtenerTotales();
   await obtenerGanancias();
   await obtenerUsuarios();
+  await obtenerMayorInversionista();
   // await getReportsTotals()
   Object.values(series).map((valor) => console.log(valor));
   Object.values(series2).map((valor) => console.log(valor));
   Object.values(series3).map((valor) => console.log(valor));
+  Object.values(reports).map((valor) => console.log(valor));
+  console.log(mayorInversionista + "mayorInversionista");
+  Object.values(mayorInversionista).map((valor) => console.log(valor));
 });
 
 const series = ref([]);
@@ -384,28 +405,46 @@ const options3 = ref({
   labels: ["Admin", "Inversionista", "Cliente"],
 });
 
+// const obtenerUsuarios = async () => {
+//   series3.value = [];
+//   try {
+//     const { data } = await axios.get(baseURL + "usuariosCantidad", header);
+//     var roles = [];
+//     var datosCantidad = [];
+//     for (let i = 0; i < data.data.length; i++) {
+//       roles[i] = data.data[i].rol + ": " + data.data[i].cantidad;
+//       datosCantidad[i] = data.data[i].cantidad;
+//     }
+//     series3.value = datosCantidad;
+//     options3.value = {
+//       chart: {
+//         id: "vuechart-example3",
+//       },
+//       labels: roles,
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     if (error.response.status == 401 || error.response.status == 403) {
+//       expirado();
+//     }
+//   }
+// };
+
 const obtenerUsuarios = async () => {
-  series3.value = [];
   try {
     const { data } = await axios.get(baseURL + "usuariosCantidad", header);
-    var roles = [];
-    var datosCantidad = [];
+    const roles = [];
+    const datosCantidad = [];
+
     for (let i = 0; i < data.data.length; i++) {
-      roles[i] = data.data[i].rol + ": " + data.data[i].cantidad;
+      roles[i] = data.data[i].rol;
       datosCantidad[i] = data.data[i].cantidad;
     }
+
     series3.value = datosCantidad;
-    options3.value = {
-      chart: {
-        id: "vuechart-example3",
-      },
-      labels: roles,
-    };
+    labels3.value = roles;
   } catch (error) {
     console.log(error);
-    if (error.response.status == 401 || error.response.status == 403) {
-      expirado();
-    }
   }
 };
 
@@ -509,6 +548,17 @@ const obtenerGanancias = async () => {
   }
 };
 //-----REPORTES-----
+
+const mayorInversionista = ref([]);
+const obtenerMayorInversionista = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "mayorInversionista");
+    mayorInversionista.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const tabsAdmin = ref([
   "Mayores inversores",
   "Talento con mas inversiones",
