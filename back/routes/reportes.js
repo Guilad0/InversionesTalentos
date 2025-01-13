@@ -599,8 +599,12 @@ router.get("/mayorCliente", function (req, res, next) {
 
 router.get("/sumaComisiones", function (req, res, next) {
   var query = `
-  SELECT estado, SUM(comision_aplicar) AS total_comisiones 
-  FROM solicitudes_retiro GROUP BY estado;`;
+  SELECT 
+    estado,
+    COALESCE(SUM(comision_aplicar), 0) AS total_comisiones 
+    FROM solicitudes_retiro 
+    GROUP BY estado
+    ORDER BY total_comisiones DESC;`;
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);

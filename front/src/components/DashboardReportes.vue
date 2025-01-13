@@ -62,11 +62,11 @@
             <div class="card-header bg-gray text-light">Mayor inversionista</div>
             <div class="card-body">
               <p class="card-text">
-                <!-- <strong>Usuario:</strong> {{ mayorInversionista[0].nombre_inversor }}
+                <strong>Usuario:</strong> {{ mayorInversionista }}
                 <br />
                 <strong>Inversiones realizadas:</strong>
-                {{ mayorInversionista[0].total_inversiones }} <br />
-                <strong>Tokens:</strong> {{ mayorInversionista[0].total_tokens }} <br /> -->
+                <br />
+                <strong>Tokens:</strong> <br />
               </p>
             </div>
           </div>
@@ -76,19 +76,39 @@
             <div class="card-header bg-gray text-light">Talento con mas inversiones</div>
             <div class="card-body">
               <p class="card-text">
-                <strong>Usuario:</strong> {{ nombre_cliente }} <br />
-                <strong>Inversiones obtenidas:</strong> {{ total_inversiones_cliente }}
+                <strong>Usuario:</strong> {{ mayorCliente }} <br />
+                <strong>Inversiones obtenidas:</strong> {{}}
                 <br />
-                <strong>Tokens:</strong> {{ total_tokens_cliente }}
+                <strong>Tokens:</strong> {{}}
               </p>
             </div>
           </div>
         </div>
         <div class="col-2">
           <div class="card mb-3" style="max-width: 15rem">
-            <div class="card-header bg-gray text-light">Ganancia de la pagina</div>
+            <div class="card-header bg-gray text-light">Usuarios activos</div>
             <div class="card-body">
-              <p class="card-text"><strong>USD:</strong> {{ total_comisiones }} <br /></p>
+              <p class="card-text">
+                <strong>Usuarios Admin</strong> {{ series3[0] }} <br />
+              </p>
+              <p class="card-text">
+                <strong>Usuarios Inversionistas</strong> {{ series3[1] }} <br />
+              </p>
+              <p class="card-text">
+                <strong>Usuarios Clientes</strong> {{ series3[2] }} <br />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-3">
+        <div class="col-2">
+          <div class="card mb-3" style="max-width: 15rem">
+            <div class="card-header bg-gray text-light">Tokens Invertidos</div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Tokens Invertidos:</strong> {{ tokens_invertidos }} <br />
+              </p>
             </div>
           </div>
         </div>
@@ -108,17 +128,9 @@
         </div>
         <div class="col-2">
           <div class="card mb-3" style="max-width: 15rem">
-            <div class="card-header bg-gray text-light">Usuarios activos</div>
+            <div class="card-header bg-gray text-light">Ganancia de la pagina</div>
             <div class="card-body">
-              <p class="card-text">
-                <strong>Usuarios Admin</strong> {{ series3[0] }} <br />
-              </p>
-              <p class="card-text">
-                <strong>Usuarios Inversionistas</strong> {{ series3[1] }} <br />
-              </p>
-              <p class="card-text">
-                <strong>Usuarios Clientes</strong> {{ series3[2] }} <br />
-              </p>
+              <p class="card-text"><strong>USD:</strong> {{ total_comisiones }} <br /></p>
             </div>
           </div>
         </div>
@@ -325,13 +337,16 @@ onMounted(async () => {
   await obtenerGanancias();
   await obtenerUsuarios();
   await obtenerMayorInversionista();
+  await obtenerTokensInvertidos();
+  await obtenerMayorCliente();
   // await getReportsTotals()
   Object.values(series).map((valor) => console.log(valor));
   Object.values(series2).map((valor) => console.log(valor));
   Object.values(series3).map((valor) => console.log(valor));
   Object.values(reports).map((valor) => console.log(valor));
-  console.log(mayorInversionista + "mayorInversionista");
   Object.values(mayorInversionista).map((valor) => console.log(valor));
+  Object.values(tokens_invertidos).map((valor) => console.log(valor));
+  Object.values(mayorCliente).map((valor) => console.log(valor));
 });
 
 const series = ref([]);
@@ -554,6 +569,27 @@ const obtenerMayorInversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + "mayorInversionista");
     mayorInversionista.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const mayorCliente = ref([]);
+
+const obtenerMayorCliente = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "mayorCliente");
+    mayorCliente.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const tokens_invertidos = ref({});
+const obtenerTokensInvertidos = async () => {
+  try {
+    const { data } = await axios.get(baseURL + "tokensInvertidos");
+    tokens_invertidos.value = data.data;
   } catch (error) {
     console.log(error);
   }
