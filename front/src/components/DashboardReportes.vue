@@ -62,11 +62,13 @@
             <div class="card-header bg-gray text-light">Mayor inversionista</div>
             <div class="card-body">
               <p class="card-text">
-                <strong>Usuario:</strong> {{ mayorInversionista }}
+                <strong>Usuario:</strong> {{ mayorInversionista.nombre_inversor }}
                 <br />
                 <strong>Inversiones realizadas:</strong>
+                {{ mayorInversionista.total_inversiones }}
                 <br />
-                <strong>Tokens:</strong> <br />
+                <strong>Tokens:</strong> {{ mayorInversionista.total_tokens }}
+                <br />
               </p>
             </div>
           </div>
@@ -76,10 +78,11 @@
             <div class="card-header bg-gray text-light">Talento con mas inversiones</div>
             <div class="card-body">
               <p class="card-text">
-                <strong>Usuario:</strong> {{ mayorCliente }} <br />
-                <strong>Inversiones obtenidas:</strong> {{}}
+                <strong>Usuario:</strong> {{ mayorCliente.nombre_cliente }} <br />
+                <strong>Inversiones obtenidas:</strong>
+                {{ mayorCliente.total_inversiones }}
                 <br />
-                <strong>Tokens:</strong> {{}}
+                <strong>Tokens:</strong> {{ mayorCliente.total_tokens }}
               </p>
             </div>
           </div>
@@ -107,7 +110,8 @@
             <div class="card-header bg-gray text-light">Tokens Invertidos</div>
             <div class="card-body">
               <p class="card-text">
-                <strong>Tokens Invertidos:</strong> {{ tokens_invertidos }} <br />
+                <strong>Tokens Invertidos:</strong>
+                {{ tokens_invertidos.tokens_invertidos }} <br />
               </p>
             </div>
           </div>
@@ -564,22 +568,22 @@ const obtenerGanancias = async () => {
 };
 //-----REPORTES-----
 
-const mayorInversionista = ref([]);
+const mayorInversionista = ref({});
 const obtenerMayorInversionista = async () => {
   try {
     const { data } = await axios.get(baseURL + "mayorInversionista");
-    mayorInversionista.value = data.data;
+    mayorInversionista.value = data;
   } catch (error) {
     console.log(error);
   }
 };
 
-const mayorCliente = ref([]);
+const mayorCliente = ref({});
 
 const obtenerMayorCliente = async () => {
   try {
     const { data } = await axios.get(baseURL + "mayorCliente");
-    mayorCliente.value = data.data;
+    mayorCliente.value = data;
   } catch (error) {
     console.log(error);
   }
@@ -589,7 +593,7 @@ const tokens_invertidos = ref({});
 const obtenerTokensInvertidos = async () => {
   try {
     const { data } = await axios.get(baseURL + "tokensInvertidos");
-    tokens_invertidos.value = data.data;
+    tokens_invertidos.value = data;
   } catch (error) {
     console.log(error);
   }
