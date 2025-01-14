@@ -36,6 +36,9 @@ var solicitudesInversionRouter = require('./routes/solicitudesInversion');
 var reporteReversionRouter = require('./routes/reporteReversion');
 var reporteSolicitudesInversionRouter = require('./routes/reporteSolicitudesInversion');
 var planPagosRouter = require('./routes/planPagos');
+const { aprobarAutomaticamenteSolicitudes, aprobarAutomaticamenteInversiones } = require("./controllers/solicitudesInversion");
+var cron = require('node-cron');
+const { checkInvestmentRequest } = require('./helpers/nodeCron.js');
 
 var app = express();
 
@@ -91,13 +94,12 @@ app.use('/reporteSolicitudesInversion', reporteSolicitudesInversionRouter);
 app.use('/planPagos', planPagosRouter);
 
 
-const { aprobarAutomaticamenteSolicitudes } = require("./controllers/solicitudesInversion");
-const { aprobarAutomaticamenteInversiones } = require("./controllers/solicitudesInversion");
 setInterval(() => {
   aprobarAutomaticamenteSolicitudes();
   aprobarAutomaticamenteInversiones();
 }, 86400000);
 
-
+// se activa a las 23:59 cada dia reversion de solicitudes de inversion
+cron.schedule('59 23 * * *', checkInvestmentRequest);
 
 module.exports = app;

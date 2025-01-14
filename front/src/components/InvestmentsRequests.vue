@@ -24,6 +24,7 @@
     </div>
     <div class="content">
       <h4 class="d-block my-2 text-center title pt-4">Solicitudes de Inversiones</h4>
+      <!--<button @click="tryRevert">Comprobar reversion de solicitudes</button> -->
       <div class="table-responsive col-md-10 offset-md-1">
         <div class="d-flex justify-content-start gap-3 position-relative my-4">
           <div class="card text-bg-secondary mb-3 rounded-5 cursor hover-custom " style="max-width: 18rem"
@@ -141,7 +142,7 @@
             </tbody>
           </table>
           <label class="pb-3">
-  <strong>Nota:</strong> Las solicitudes en estado inicial serán aprobadas automáticamente dentro de un plazo máximo de 72 horas.</label>
+          <strong>Nota:</strong> Las solicitudes en estado inicial serán aprobadas automáticamente dentro de un plazo máximo de 72 horas.</label>
           <!-- Modal Aprobar Inv -->
           <div class="modal fade" id="aprobarInv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -290,6 +291,8 @@ import { ref, onMounted } from "vue";
 import ModalEstadoInversiones from './ModalEstadoInversiones.vue'
 import axios from "axios";
 import { errorAlert, successAlert } from "@/helpers/iziToast";
+
+let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudesInversion";
 const modalRef = ref('')
 const modalRefEstadoInv = ref('')
 const modalRefRevertir = ref('')
@@ -298,8 +301,6 @@ const solicitudes = ref([]);
 const paginacion = ref({});
 const minInv = ref(1);
 const maxInv = ref(0);
-// let BaseURL = "https://apitalentos.pruebasdeploy.online/solicitudes";
-let BaseURL = import.meta.env.VITE_BASE_URL + "/solicitudesInversion";
 const currentNav = ref("General");
 const totalSolicitudes = ref(0);
 const solicitudesPendientes = ref(0);
@@ -309,6 +310,14 @@ const observaciones = ref('');
 const msgAprobacion = ref('');
 const idClient = ref(null)
 const loadingTabla = ref(false) 
+const porcentaje_interes = ref(0)
+const idInv = ref('');
+const actInv = ref('');
+const loading = ref(false);
+const loadingRev = ref(false);
+const ajustes = ref({});
+const baseUrlAjustes = import.meta.env.VITE_BASE_URL;
+
 onMounted(async () => {
   loadingTabla.value = true
   await obtenerDatos();
@@ -321,9 +330,16 @@ onMounted(async () => {
   loadingTabla.value = false
 });
 
+const tryRevert = async ()  => {
+  try {
+    // reporteSolicitudesInversion
+    const response = await axios.get(import.meta.env.VITE_BASE_URL+'/reporteSolicitudesInversion/tryRevert');
+    console.log(response);
+  } catch (e) {
+    console.error(e);
+  }
+}
 
-const ajustes = ref({})
-const baseUrlAjustes = import.meta.env.VITE_BASE_URL;
 const getAjustes = async () => {
   try {
     const { data } = await axios.get(baseUrlAjustes + '/ajustes/ajustesTokens')
@@ -357,7 +373,6 @@ const procesarInversion = async (idInversion, action) => {
 const closeModal = () => {
   cleanFields()
 }
-
 
 const inversionSeleccionada = ref({})
 const openModal = (inv) => {
@@ -396,6 +411,7 @@ const obtenerDatos = async (page = 1, search = "") => {
     console.log(error);
   }
 };
+
 const obtenerTotales = async () => {
   try {
     const { data } = await axios.get(`${BaseURL}/getTotals/totals`);
@@ -410,9 +426,7 @@ const obtenerTotales = async () => {
     console.log("Error al obtener totales:", error);
   }
 };
-const porcentaje_interes = ref(0)
-const idInv = ref('')
-const actInv = ref('')
+
 const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) => {
   if (action == 'Pendiente') {
     montoFinal.value += Number(monto) 
@@ -434,7 +448,6 @@ const procesarSolicitud = async (id, action, monto, nombreUser, userId,interes) 
   }
 };
 
-const loading = ref(false)
 const rechazar = async () => {
   if (observaciones.value.trim() == '') {
     errorAlert('El campo es requerido', 'error')
@@ -460,7 +473,6 @@ const rechazar = async () => {
 
 
 const aprobar = async () => {
-
   if (minInv.value < 0) {
     errorAlert('La cantidad minima de inversion no pouede ser menor a cero', 'Error')
     return
@@ -485,7 +497,6 @@ const aprobar = async () => {
   }
 }
 
-const loadingRev = ref(false)
 const revertir =async () =>{
     if( observaciones.value.trim() ==''  ){
       errorAlert('El campo es requerido','Error');
