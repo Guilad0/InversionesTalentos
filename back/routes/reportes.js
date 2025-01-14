@@ -68,8 +68,12 @@ router.get("/solicitudesCantidad", function (req, res, next) {
 });
 
 router.get("/tokensInvertidos", function (req, res, next) {
-  var query = ` SELECT SUM(token) as tokens_invertidos FROM movimientos
-WHERE descripcion = 'Tokens invertidos';`;
+  var query = `
+    SELECT SUM(token) AS tokens_invertidos 
+    FROM movimientos
+    WHERE descripcion = 'Tokens invertidos';
+  `;
+  
   connection.query(query, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -78,10 +82,13 @@ WHERE descripcion = 'Tokens invertidos';`;
         message: "Error al realizar la petición",
       });
     } else {
-      res.status(200).send({
-        data: results,
-        message: "Cantidad de inversiones consultados correctamente",
-      });
+      if (results.length > 0) {
+        res.status(200).send(results[0]); 
+      } else {
+        res.status(404).send({
+          message: "No se encontraron resultados",
+        });
+      }
     }
   });
 });
@@ -566,10 +573,13 @@ router.get("/mayorInversionista", function (req, res, next) {
         message: "Error al realizar la petición",
       });
     } else {
-      res.status(200).send({
-        data: results,
-        message: "Cantidad de usuarios consultados correctamente",
-      });
+      if (results.length > 0) {
+        res.status(200).send(results[0]);
+      } else {
+        res.status(404).send({
+          message: "No se encontraron resultados",
+        });
+      }
     }
   });
 });
@@ -589,10 +599,13 @@ router.get("/mayorCliente", function (req, res, next) {
         message: "Error al realizar la petición",
       });
     } else {
-      res.status(200).send({
-        data: results,
-        message: "Cantidad de usuarios consultados correctamente",
-      });
+      if (results.length > 0) {
+        res.status(200).send(results[0]);
+      } else {
+        res.status(404).send({
+          message: "No se encontraron resultados",
+        });
+      }
     }
   });
 });
