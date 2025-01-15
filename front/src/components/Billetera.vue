@@ -136,9 +136,9 @@
 
                     <div class="mb-3 my-3">
 
-                      <label class="form-label m-auto">Comisión de Retiro</label>
+                      <!-- <label class="form-label m-auto">Comisión de Retiro</label>
 
-                      <p class="text-xl text-white m-auto">{{ comision_retiro }}%</p>
+                      <p class="text-xl text-white m-auto">{{ comision_retiro }}%</p> -->
 
                     </div>
 
@@ -150,11 +150,11 @@
                       <label class="form-label m-auto">Tokens Disponibles</label>
                       <p class="text-xl text-white m-auto"> {{ tokensTOTAL - cambioTokens }}</p>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                       <label class="form-label m-auto">Dólares</label>
-                      <!-- <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p> -->
+                      <p class="text-xl text-white text-center m-auto">$US {{ montoDolares }}</p>
                       <p class="text-xl text-white text-center m-auto">$US {{ montoDolares.toFixed(3) }}</p>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col">
                     <div class="mb-3">
@@ -492,10 +492,11 @@ const calcularDolares = async () => {
         const { data } = await axios.get(baseURL + 'valores');
         valores.value = data.data;
         let valor = parseFloat(data.data[0].valor_token);
-        let interes = parseFloat(data.data[0].comision_retiros);
-        comision_retiro.value = interes
+        //let interes = parseFloat(data.data[0].comision_retiros);
+        //comision_retiro.value = interes
         montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
-        dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        //dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        dolares.value = montoDolares.value;
         console.log(cambioTokens.value);
       } catch (error) {
         console.log(error);
@@ -512,10 +513,11 @@ const calcularDolares = async () => {
         const { data } = await axios.get(baseURL + 'valores');
         valores.value = data.data;
         let valor = parseFloat(data.data[0].valor_token);
-        let interes = parseFloat(data.data[0].comision_retiros);
-        comision_retiro.value = interes
+        // let interes = parseFloat(data.data[0].comision_retiros);
+        // comision_retiro.value = interes
         montoDolares.value = parseInt(cambioTokens.value) / valor || 0;
-        dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        //dolares.value = montoDolares.value - (montoDolares.value * (interes / 100));
+        dolares.value = montoDolares.value;
         console.log(cambioTokens.value);
       } catch (error) {
         console.log(error);
