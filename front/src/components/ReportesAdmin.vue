@@ -24,8 +24,8 @@
                     <div class="mb-3 col-md-2 pt-5">
                         <select class="form-select custom-select" v-model="estadoSeleccionado"
                             aria-label="Seleccionar estado">
-                            <option value="pendiente">Pendiente</option>
-                            <option value="proceso">Proceso</option>
+                            <option value="pendiente">Periodo de recaudacion</option>
+                            <option value="proceso">Periodo de devolucion</option>
                             <option value="finalizado">Finalizado</option>
                             <option value="reversion">Reversión</option>
                         </select>

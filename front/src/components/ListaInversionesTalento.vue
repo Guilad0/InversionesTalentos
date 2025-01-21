@@ -1,6 +1,6 @@
 <template>
      <main>
-          <div v-if="props.activeTabCli == 0 && props.results[0].estado_inversion == 'Pendiente'">
+          <div v-if="props.activeTabCli == 0 && props.results[0].aprobado != 'Inicial'">
                <div class="d-flex flex-wrap container">
                     <div class="col">
                          <h3 class="text-center mb-3">
