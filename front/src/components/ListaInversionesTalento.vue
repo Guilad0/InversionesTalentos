@@ -1,6 +1,6 @@
 <template>
      <main>
-          <div v-if="props.activeTabCli == 0 && props.results[0].aprobado != 'Inicial'">
+          <div v-if="props.activeTabCli == 0 && props.results[0].estado_inversion == 'Inicial' || props.results[0].estado_inversion == 'Pendiente'">
                <div class="d-flex flex-wrap container">
                     <div class="col">
                          <h3 class="text-center mb-3">
@@ -11,10 +11,11 @@
                          </h3>
                          <div class="d-flex justify-content-between ">
                               <div class="col-5">
-                                   <strong class="me-2 my-1">Titulo</strong><br> {{ props.results[0].nombre }}<br>
-                                   <strong class="me-2 my-1">Motivo</strong> <br>{{ props.results[0]?.descripcion }}<br>
-                                   <strong class="me-2 my-1">Cantidad Solicitada:</strong><br> {{ props.results[0].monto
+                                   <strong class="me-2 my-1">Motivo</strong><br> {{ props.results[0].nombre }}<br>
+                                   <strong class="me-2 my-1">Descripcion</strong> <br>{{ props.results[0]?.descripcion }}<br>
+                                   <strong class="me-2 my-1">Cantidad Solicitada</strong><br> {{ props.results[0].monto
                                    }} USDT<br>
+                                 
                                    <strong class="me-2 my-1">Periodo de Recaudacion</strong> <br>{{
                                         props.results[0].fecha_inicio_recaudacion.slice(0, 10) }} - {{
                                         props.results[0].fecha_inicio_recaudacion.slice(0, 10) }}<br>
@@ -26,7 +27,7 @@
                                    <p v-if="props.results[0].estado_inversion != 'Inicial'" class="m-0"><strong
                                              class="me-2 my-1">Cantidad Recaudada</strong> <br> {{
                                                   props.results[0].monto_recaudado }} USDT</p>
-                                   <p class="m-0"><strong class="me-2 my-1">Estado de Inversion</strong> <br> {{
+                                   <p class="m-0"><strong class="me-2 my-1">Estado de solicitud</strong> <br> {{
                                         props.results[0].aprobado }} &nbsp;
                                         <i v-if="props.results[0].aprobado == 'Aprobado'"
                                              class="fa fa-check text-success" aria-hidden="true"></i>
@@ -42,8 +43,10 @@
                                         props.results[0].cantidad_pagos }}
 
                                    </p>
-                                   <p v-if="props.results[0].estado_inversion != 'Inicial'" class="m-0"><strong
-                                             class="me-2 my-1">Estado de Solicitud</strong> <br>
+                                   <strong class="me-2 my-1">Cantidad a cancelar</strong><br> {{ (parseFloat(props.results[0].monto) * parseFloat(props.results[0].porcentaje_interes/100))+ parseFloat(props.results[0].monto)
+                                   }} USDT<br>
+                                   <p v-if="props.results[0].estado_inversion != 'Inicial' && currentDate >= new Date(props.results[0].fecha_inicio_recaudacion) " class="m-0"><strong
+                                             class="me-2 my-1">Estado de inversion</strong> <br>
                                         <label v-if="props.results[0].estado_inversion == 'Pendiente'">Etapa de
                                              Recaudacion</label>
                                         <label v-if="props.results[0].estado_inversion == 'Proceso'">Etapa de
@@ -97,7 +100,7 @@
                          Cancelar Inversion
                     </button>
                </div>
-               <div v-if="currentDay >= fechaInv && props.results[0].estado_inversion == 'Pendiente'"
+               <div v-if="currentDay >= fechaInv && props.results[0].estado_inversion == 'Pendiente' "
                     class="text-center mt-3">
                     <button :disabled="isLoading == true" class="btn btn-gray rounded-5 btn-sm" type="button"
                          @click="revertirInversion">
@@ -117,7 +120,7 @@
                          <label> <strong>Monto Pagado: </strong> ( {{ parseFloat(cantidadPagada) }}/{{
                               parseFloat(cantidadFinal) }}) USDT </label> <br>
                          <label> <strong>Siguiente pago: </strong> #{{ sigPago }} </label> <br>
-                         <label> <strong>Saldo Disponible: </strong> {{ saldo }} </label>
+                         <label> <strong>Saldo Disponible: </strong> {{ saldo }} USDT</label>
                     </div>
                     <p class="text-center mb-0 mt-2">Inicio de Pagos</p>
                     <div class="timeline ">
@@ -190,15 +193,17 @@
                                                   inv.fecha_inicio_pago.slice(0, 10) }} - {{
                                                   inv.fecha_fin_pago.slice(0, 10) }} <br>
                                         </div>
-                                        <div class="col">
+                                        <div class="col mb-2">
                                              <strong class="me-2 my-1">Motivo de la reversion</strong><br> {{ inv.nombre
                                              }}<br>
                                              <strong class="me-2 my-1">Porcentaje de interes</strong><br>
                                              {{ inv.porcentaje_interes }}<br>
                                              <strong class="me-2 my-1">Monto Recaudado</strong><br>
                                              {{ inv.monto_recaudado }} USDT<br>
-                                             <strong class="me-2 my-1">Estado de la Recaudacion</strong><br>
+                                             <strong class="me-2 my-1">Estado de Recaudacion</strong><br>
                                              {{ ((inv.monto - inv.monto_faltante) / inv.monto * 100).toFixed(2) }}%<br>
+                                             <strong class="me-2 my-1">Cantidad Pagada</strong><br>
+                                             {{ parseInt(inv.monto*(inv.porcentaje_interes/100))+parseInt(inv.monto) }} USDT<br>
 
                                         </div>
                                    </div>
@@ -310,6 +315,8 @@ const props = defineProps({
      },
 })
 
+const user = ref(JSON.parse(localStorage.getItem('usuario')));
+const currentDate =  ref(new Date())
 const getFechaAutomaticaDeAprobacion = (fecha) => {
      const date = new Date(fecha);
      date.setDate(date.getDate() + 4);
@@ -328,8 +335,8 @@ const getTokensCliente = async () => {
 
 const aceptarInversion = async () => {
      const { isConfirmed } = await Swal.fire({
-          text: `El monto final a recaudar será de ${parseInt(props.results[0].monto) + parseInt(props.results[0].monto * (props.results[0].porcentaje_interes) / 100)}, 
-    considerando un porcentaje de interés del ${props.results[0].porcentaje_interes}% aplicado al monto solicitado de ${parseInt(props.results[0].monto)}.
+          text: `El monto final a recaudar será de ${parseInt(props.results[0].monto) + parseInt(props.results[0].monto * (props.results[0].porcentaje_interes) / 100)} USDT, 
+    considerando un porcentaje de interés del ${props.results[0].porcentaje_interes}% aplicado al monto solicitado de ${parseInt(props.results[0].monto)} USDT.
 ¿Deseas aceptar los términos e iniciar la inversión?  
     `,
           position: 'top',
@@ -438,7 +445,8 @@ onMounted(async () => {
      } else if (props.results[0].estado_inversion === 'Proceso') {
           try {
                await getTokensCliente()
-               const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/planPagos/getPlanPagosByIdSolicitud/' + props.results[0].id)
+               console.log(import.meta.env.VITE_BASE_URL + '/planPagos/getPlanPagosByIdSolicitud/' + props.results[0].id+'?catId='+user.value.categoria_persona_id);
+               const { data } = await axios.get(import.meta.env.VITE_BASE_URL + '/planPagos/getPlanPagosByIdSolicitud/' + props.results[0].id+'?catId='+user.value.categoria_persona_id)
                pagos.value = data.results;
                pagados.value = data.pagados;
                sigPago.value = data.sigPago;

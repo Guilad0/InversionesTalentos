@@ -1,114 +1,3 @@
-<template>
-     <main class="container">
-       <div v-if="props.activeTabCli == 0">
-         <h3 class="text-center mb-3">Mis inversiones</h3>
-         <div
-           v-for="inv in props.results"
-           :key="inv.id"
-           class="row d-flex justify-content-center"
-         >
-           <!-- Contenedor de la tarjeta -->
-           <div class="col-md-10 mb-3">
-             <div class="card shadow-sm">
-               <div class="card-body bg-degrade-light">
-                 <!-- Contenedor de tres columnas -->
-                 <div class="row">
-                   <!-- Columna 1: Imagen del perfil -->
-                   <div class="col-md-3 d-flex justify-content-center align-items-center">
-                     <img
-                       :src="inv.imagen"
-                       alt="Imagen de perfil"
-                       class="img-fluid rounded-circle"
-                       width="150"
-                       height="150"
-                     />
-                   </div>
-   
-                   <!-- Columna 2: Información del inversor y botón Pagos -->
-                   <div class="col-md-6 infoClient">
-                     <p class="mb-1"><strong>Nombre:</strong> {{ inv.nombre }}</p>
-                     <p class="mb-1"><strong>Apellido:</strong> {{ inv.apellido }}</p>
-                     <p class="mb-1">
-                       <strong>Estado de la inversión:</strong> {{ inv.estado_inversion }}
-                     </p>
-                     <p class="mb-1"><strong>Monto invertido:</strong> {{ inv.monto_invertido }}</p>
-                     <p class="mb-1">
-                       <strong>Fecha depósito:</strong> {{ formatDate(inv.fecha_deposito) }}
-                     </p>
-                     <p class="mb-1">
-                       <strong>Cantidad de pagos:</strong> {{ inv.cantidad_pagos }}
-                     </p>
-                     <p class="mb-1">
-                       <strong>Porcentaje de interés:</strong> {{ inv.porcentaje_interes }}%
-                     </p>
-                     <p class="mb-1">
-                       <strong>Ganancia aproximada:</strong> {{ inv.gananciaAproximada }}
-                     </p>
-                     <p class="mb-1"><strong>Monto a recibir:</strong> {{ inv.monto_mas_ganancia }}</p>
-   
-                     <button
-                       v-if="inv.estado_inversion == 'Pendiente'"
-                       class="btn btn-gray btn-sm rounded-5"
-                       @click="mostrarGanacias(
-                         inv.id,
-                         inv.monto_invertido,
-                         inv.porcentaje_interes,
-                         inv.porcentajeGananciaPagina,
-                         inv.gananciaAproximada
-                       )"
-                     >
-                       Pagos
-                     </button>
-                   </div>
-   
-                   <!-- Columna 3: Timeline -->
-                   <div class="col-md-3">
-                    <div class="timeline">
-                         <div class="container left">
-                           <div class="content">
-                             <h2>Inicio de recaudación:</h2>
-                             <span>{{ formatDate(inv.fecha_inicio_recaudacion) }}</span>
-                             
-                           </div>
-                         </div>
-                         <div class="container right">
-                           <div class="content">
-                             <h2 class="font">Fin de recaudación:</h2>
-                             <span>{{ formatDate(inv.fecha_fin_recaudacion)}}</span>
-                             
-                           </div>
-                         </div>
-                       </div>
-                  </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-   
-       <div v-if="props.activeTabCli == 1">
-         <div class="card">
-           <div class="card-body">finalizados</div>
-         </div>
-       </div>
-       <div v-if="props.activeTabCli == 2">
-         <div class="card">
-           <div class="card-body">reversiones</div>
-         </div>
-       </div>
-   
-       <ModalPagosInversor
-         :pagos="pagos"
-         :montoInvInversor="montoInvInversor"
-         :interesInversion="interesInversion"
-         :interesPagina="interesPagina"
-         :gananciaAproximada="gananciaAproximada"
-         :tipoMoneda="props.tipoMoneda"
-         :laodingPagos="laodingPagos"
-       />
-     </main>
-   </template>
 <script setup>
 
 import axios from "axios";
@@ -207,6 +96,7 @@ const obtenerPagos = async () => {
 
 
 </script>
+
 <style scoped>
 .timeline .content h2 {
      font-size: 12px !important; /* Ajusta el tamaño según lo necesites */
@@ -225,194 +115,164 @@ const obtenerPagos = async () => {
   border-right: 1px solid var(--yellow-orange);
 }
 
-.container-custom {
-  max-height: 45vh;
-  overflow-y: auto;
+.timeline {
+     position: relative;
+     padding: 1rem 0;
 }
 
-   /* Set a background color */
-   body {
-     background-color: #474e5d;
-     font-family: var(--font-montserrat-semibold);
-     font-size: 15px;
-   }
-   
-   /* The actual timeline (the vertical ruler) */
-   .timeline {
-     position: relative;
-  max-width: 100%; /* Ajustar al ancho de la card */
- 
-  padding: 0;      /* Remover padding innecesario */
-  overflow-x: hidden; /* Evitar que el timeline se desborde */
-   }
-   .timeline::before {
-     content: "";
-     position: absolute;
-     width: 2px;
-     background-color: #ff6b00; /* Color de la línea */
-     top: 0;
-     bottom: 0;
-     left: 5%; /* Ajusta según sea necesario para que quede dentro del contenedor */
-     transform: none; /* Elimina transformaciones innecesarias */
-   }
-   
-   /* The actual timeline (the vertical ruler) */
-   .timeline::after {
+.timeline::before {
      content: '';
      position: absolute;
-     width: 6px;
-     background-color: white;
      top: 0;
      bottom: 0;
      left: 50%;
-     margin-left: -150px;
-   }
-   
-   /* Container around content */
-   .container {
-     padding: 10px 40px;
+     width: 2px;
+     background-color: var(--yellow-orange);
+     transform: translateX(-50%);
+}
+
+.timeline-item {
      position: relative;
-     background-color: inherit;
-     width: 100%;
-   }
-   
-   /* The circles on the timeline */
-   .container::after {
+     padding: 1rem 2rem;
+     margin-bottom: 2rem;
+}
+
+.timeline-item::after {
      content: '';
      position: absolute;
-     margin-top: 23px;
-     width: 25px;
-     height: 25px;
-     right: 185px;
-     background-color: white;
-     border: 4px solid #FF9F55;
-     top: 15px;
+     top: 0.5rem;
+     left: 50%;
+     width: 1rem;
+     height: 1rem;
+     background-color: var(--yellow-orange);
      border-radius: 50%;
-     z-index: 1;
+     transform: translateX(-50%);
+}
+   .custom-abs{
+    position: absolute;
+    right: 0;
    }
-   
-   /* Place the container to the left */
-   .left {
-     left: 0;
-   }
-   
-   /* Place the container to the right */
-   .right {
-     left: 0%;
-   }
-   
-   /* Add arrows to the left container (pointing right) */
-   .left::before {
-     content: " ";
-     height: 0;
-     position: absolute;
-     top: 22px;
-     width: 0;
-     z-index: 1;
-     right: 30px;
-     border: medium solid white;
-     border-width: 10px 0 10px 10px;
-     border-color: transparent transparent transparent white;
-   }
-   
-   /* Add arrows to the right container (pointing left) */
-   .right::before {
-     content: " ";
-     height: 0;
-     position: absolute;
-     top: 30px;
-     width: 0;
-     z-index: 1;
-     left: 30px;
-     border: medium solid white;
-     border-width: 10px 10px 10px 0;
-     border-color: transparent white transparent transparent;
-   }
-   
-   /* Fix the circle for containers on the right side */
-   .right::after {
-     left: 0px;
-   }
-   
-   /* The actual content */
-   .content {
-     padding: 20px 30px;
-     background-color: white;
-     position: relative;
-     border-radius: 6px;
-     width: 100%;
-   }
-   .timeline-event {
-     position: relative;
-     margin: 10px 0; /* Reduce el margen */
-     padding: 10px;
-     background-color: #fff;
-     border: 1px solid #ddd;
-     border-radius: 5px;
-     max-width: 90%; /* Limitar el ancho dentro de la card */
-   }
-   .timeline-event::before {
-     content: "";
-     position: absolute;
-     width: 10px;
-     height: 10px;
-     background-color: #ff6b00; /* Color del punto */
-     border-radius: 50%;
-     top: 10px;
-     left: -15px; /* Ajustar para que quede dentro del contenedor */
-   }
-   
-   .timeline-content {
-     text-align: left;
-     word-wrap: break-word; /* Romper texto largo */
-     font-size: 14px;
-   }
-   .timeline .container {
-    position: relative;
-    margin: 10px 0;
-    padding: 20px;
-  }
-  
 
-  
-  .timeline .container.left::before {
-    left: -20px; /* Posición de la bolita en el lado izquierdo */
-  }
-  
-  .timeline .container.right::before {
-    right: -20px; /* Posición de la bolita en el lado derecho */
-  }
-   
-   /* Media queries - Responsive timeline on screens less than 600px wide */
-   @media screen and (max-width: 600px) {
-   /* Place the timelime to the left */
-     .timeline::after {
-       left: 31px;
-     }
-   
-   /* Full-width containers */
-     .container {
-       width: 100%;
-       padding-left: 70px;
-       padding-right: 25px;
-     }
-   
-   /* Make sure that all arrows are pointing leftwards */
-     .container::before {
-       left: 60px;
-       border: medium solid white;
-       border-width: 10px 10px 10px 0;
-       border-color: transparent white transparent transparent;
-     }
-   
-   /* Make sure all circles are at the same spot */
-     .left::after, .right::after {
-       left: 15px;
-     }
-   
-   /* Make all right containers behave like the left ones */
-     .right {
-       left: 0%;
-     }
-   }
 </style>
+<template>
+     <main class="">
+       <div v-if="props.activeTabCli == 0">
+         <h3 class="text-center mb-3">Mis inversiones</h3>
+         <div
+           v-for="inv in props.results"
+           :key="inv.id"
+           class="row d-flex justify-content-center"
+         >
+           <!-- Contenedor de la tarjeta -->
+           <div class="col-md-10 mb-3">
+             <div class="card shadow-sm">
+               <div class="card-body bg-degrade-light">
+                 <!-- Contenedor de tres columnas -->
+                 <div class="row">
+                   <!-- Columna 1: Imagen del perfil -->
+                   <div class="col-md-3 d-flex justify-content-center align-items-center">
+                     <img
+                       :src="inv.imagen"
+                       alt="Imagen de perfil"
+                       class="img-fluid rounded-circle"
+                       width="150"
+                       height="150"
+                     />
+                   </div>
+   
+                   <!-- Columna 2: Información del inversor y botón Pagos -->
+                   <div class="col-md-6 infoClient">
+                     <p class="mb-1"><strong>Nombre del talento: </strong> {{ inv.nombre + ' '+ inv.apellido}}</p>
+                     <p class="mb-1">
+                       <strong>Estado de la inversión: </strong> 
+                       <label v-if="inv.estado_inversion == 'Pendiente'"> En recaudacion</label>
+                       <label v-if="inv.estado_inversion == 'Proceso'"> En proceso de devolucion</label>
+                     </p>
+                     <p class="mb-1"><strong>Monto invertido:</strong> {{ inv.monto_invertido }}</p>
+                     <p class="mb-1">
+                       <strong>Fecha depósito:</strong> {{ formatDate(inv.fecha_deposito) }}
+                     </p>
+                     <p class="mb-1">
+                       <strong>Cantidad de pagos:</strong> {{ inv.cantidad_pagos }}
+                     </p>
+                     <p class="mb-1">
+                       <strong>Porcentaje de interés:</strong> {{ Math.abs(inv.porcentaje_interes - inv.porcentajeGananciaPagina) }}%
+                     </p>
+                     <p class="mb-1"><strong>Monto a recibir:</strong> {{ inv.monto_mas_ganancia }}</p>
+                     <p class="mb-1"><strong>Etapa de recaudacion:</strong>  {{ inv.fecha_inicio_recaudacion.slice(0,10) }} - {{ inv.fecha_fin_recaudacion.slice(0,10) }}</p>
+                     <p class="mb-1"><strong>Etapa de devolucion:</strong> {{ inv.fecha_inicio_pago.slice(0,10) }} - {{ inv.fecha_fin_pago.slice(0,10) }}</p>
+                     <button
+                       v-if="inv.estado_inversion == 'Proceso'"
+                       class="btn btn-gray btn-sm rounded-5"
+                       @click="mostrarGanacias(
+                         inv.id,
+                         inv.monto_invertido,
+                         inv.porcentaje_interes,
+                         inv.porcentajeGananciaPagina,
+                         inv.gananciaAproximada
+                       )"
+                     >
+                       Pagos
+                     </button>
+                   </div>
+   
+                   <!-- Columna 3: Timeline -->
+             <div class="col-md-3 m-auto">
+                    <p class="text-center">Proceso de inversion</p>
+                    <div class="timeline position-relative">
+                          <p class="text-center pt-2 custom-abs" :class="{'fw-bold': inv.estado_inversion == 'Finalizado'}">Recaudacion</p>
+                      <div class="timeline-item">
+                      </div>
+                      <div class="timeline-item position-relative">
+                        <p class="text-center pt-2 custom-abs" :class="{'fw-bold': inv.estado_inversion == 'Reversion'}">Devolucion</p>
+                      </div>
+                    </div>
+                    <p class="text-center">Fin de la inversion</p>
+                  </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+   
+       <div v-if="props.activeTabCli == 1">
+  <div class="row"> <!-- Contenedor de filas -->
+    <div v-for="inv in props.results" :key="inv" class="col-md-6 mb-2"> <!-- Cada tarjeta ocupa la mitad del ancho (6 columnas de 12) -->
+      <div class="card d-flex justify-content-center gap-2">
+        <div class="card-body">
+          <p><strong>Fecha de depósito:</strong> {{ inv.fecha_deposito.slice(0,10) }}</p>
+          <p><strong>Inversión:</strong> {{ inv.nombre }}</p>
+          <p><strong>Descripción de la inversión:</strong> {{ inv.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+       <div v-if="props.activeTabCli == 2">
+        <div class="row"> <!-- Contenedor de filas -->
+    <div v-for="inv in props.results" :key="inv" class="col-md-6 mb-2"> <!-- Cada tarjeta ocupa la mitad del ancho (6 columnas de 12) -->
+      <div class="card d-flex justify-content-center gap-2">
+        <div class="card-body">
+          <p><strong>Fecha de depósito:</strong> {{ inv.fecha_deposito.slice(0,10) }}</p>
+          <p><strong>Inversión:</strong> {{ inv.nombre }}</p>
+          <p><strong>Descripción de la inversión:</strong> {{ inv.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+       </div>
+   
+       <ModalPagosInversor
+         :pagos="pagos"
+         :montoInvInversor="montoInvInversor"
+         :interesInversion="interesInversion"
+         :interesPagina="interesPagina"
+         :gananciaAproximada="gananciaAproximada"
+         :tipoMoneda="props.tipoMoneda"
+         :laodingPagos="laodingPagos"
+       />
+     </main>
+   </template>
+
+

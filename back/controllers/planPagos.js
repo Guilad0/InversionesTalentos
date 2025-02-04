@@ -1,15 +1,15 @@
 const conexion = require("../database");
 
 const getPlanPagosByIdSolicitud = (req, res) => {
-  let query = 'select comision_porcentual_ganancia from ajustes where ajuste_id = 6'
-  conexion.query(query,(err,results)=>{
+  let query = 'select porcentaje_interes from categoria_personas where categoria_persona_id = ?'
+  conexion.query(query,[req.query.catId],(err,results)=>{
 
     if (err) {
       return res
         .status(500)
         .json({ msg: "Error al realizar la transaccion", err });
     }
-    const comision_porcentual_ganancia = results[0].comision_porcentual_ganancia
+    const comision_porcentual_ganancia = results[0].porcentaje_interes
 
     let query = `select * from plan_pagos where solicitud_inv_id = ${req.params.id}`;
     conexion.query(query, (err, results) => {
@@ -67,7 +67,7 @@ const pagarCuota = (req, res) => {
     query = `insert into movimientos (tipo,descripcion,fecha_solicitud,usuario_id,token) values ('Ingreso','Ganancia web',?,?,?)`;
     conexion.query(
       query,
-      [currentDate, pago.cliente_id, gananciaPagina],
+      [currentDate, 150, gananciaPagina],
       (err, results) => {
         if (err) {
           return res

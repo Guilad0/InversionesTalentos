@@ -430,7 +430,7 @@
                     >Ganancia del {{ porcentaje_inversion }}%</label
                   >
                   <p class="text-center">
-                    <strong>{{ ganancia_tokens_inv }}</strong>
+                    <strong>{{ ganancia_tokens_inv }} USDT</strong>
                   </p>
                 </div>
               </div>

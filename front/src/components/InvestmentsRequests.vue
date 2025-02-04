@@ -117,7 +117,7 @@
                       <i class="fa-solid fa-ban text-danger"></i>
                     </button>
                   </div>
-                  <i v-if="item.aprobado == 'Aprobado'" class="fa-solid fa-eye text-secondary fs-6 cursor"
+                  <i v-if="item.aprobado == 'Aprobado' && currentDate >= new Date(item.fecha_inicio_recaudacion)" class="fa-solid fa-eye text-secondary fs-6 cursor"
                     @click="openModal(item)"></i>
                   <label v-if="item.aprobado == 'Rechazado'">Sin acciones</label>
                 </td>
@@ -176,7 +176,8 @@
                   </div>
                   <div class="col px-5 row">
                   </div>
-                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual {{ (montoFinal*(parseInt(porcentaje_interes)/100))+montoFinal }}$ equivalente a {{ (montoFinal*(porcentaje_interes/100)+montoFinal)*ajustes.valor_token }} {{ ajustes.tipo_moneda }} <br>
+                  <p class="mt-2 mb-1 text-justify px-2">Cantida final con el interes actual
+                     {{ montoFinal }} <strong>$</strong> equivalente a {{ ((montoFinal*(porcentaje_interes/100))+montoFinal)*ajustes.valor_token }} <strong>{{ ajustes.tipo_moneda }}</strong> <br>
                     Los parámetros establecidos no podrán ser modificados durante
                     el proceso de recaudación.
                    </p>
@@ -316,6 +317,7 @@ const actInv = ref('');
 const loading = ref(false);
 const loadingRev = ref(false);
 const ajustes = ref({});
+const currentDate = ref(new Date)
 const baseUrlAjustes = import.meta.env.VITE_BASE_URL;
 
 onMounted(async () => {

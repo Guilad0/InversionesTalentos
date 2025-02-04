@@ -329,7 +329,7 @@ const revertirInversion = (req, res) => {
             .status(500)
             .json({ msg: "Error al actualizar inversiones" });
         }
-        query = `SELECT cliente_id, inversor_id, inversion_id
+        query = `SELECT cliente_id, inversor_id, inversion_id, monto,solicitud_inv_id
       FROM inversiones
       WHERE solicitud_inv_id = ${req.params.id};`;
         conexion.query(query, (err, results) => {
@@ -340,14 +340,15 @@ const revertirInversion = (req, res) => {
               .json({ msg: "Error al actualizar inversiones paso2" });
           }
           const usersId = results.flatMap(item => [
-            { tipo: 'talento', id: item.cliente_id, tipoMovimiento: 'Egreso', },
-            { tipo: 'inversor', id: item.inversor_id, tipoMovimiento: 'Ingreso', }
+            { tipo: 'talento', id: item.cliente_id, tipoMovimiento: 'Ingreso', monto:item.monto, solicitud_inv_id:item.solicitud_inv_id},
+            { tipo: 'inversor', id: item.inversor_id, tipoMovimiento: 'Egreso', monto:item.monto,solicitud_inv_id:item.solicitud_inv_id}
           ]);
-          
+          console.log(usersId);
           const promises = usersId.map((cliente) => {
-            const query = `UPDATE movimientos SET tipo=?,descripcion='Reversion' WHERE usuario_id = ?`;
+            let query = `insert into movimientos (tipo,descripcion, estado,token,usuario_id) values (?,?,?,?,?)`;
+            // let query = `UPDATE movimientos SET tipo=?,descripcion='Reversion' WHERE usuario_id = ?`;
             return new Promise((resolve, reject) => {
-              conexion.query(query, [cliente.tipoMovimiento, cliente.id], (err, results) => {
+              conexion.query(query, [cliente.tipoMovimiento,'Reversion', '1',cliente.monto,cliente.id], (err, results) => {
                 if (err) {
                   console.error(`Error al actualizar el id ${cliente.id}:`, err);
                   reject(err);
@@ -834,7 +835,22 @@ const aprobarAutomaticamenteInversiones = () =>{
   })
 }
 
-
+const getInvByState = (req, res) =>{
+  const {id} = req.params;
+  console.log('iddddddddddddddddddddddddddd',id);
+  console.log(req.query.state);
+  let query = `SELECT * FROM inversiones
+LEFT JOIN solicitudes_inversion as s on inversiones.solicitud_inv_id = s.id WHERE s.estado_inversion = '${req.query.state}' and inversiones.inversor_id = ${id}`
+conexion.query(query, (err, results) =>{
+  if (err) {
+    console.error("Error al obtener las solicitudes de inversión:", err);
+    return;
+  }
+  res.status(200).json({
+    results
+  });
+})
+}
 
 module.exports = {
   getSolicitudesInversion,
@@ -856,5 +872,6 @@ module.exports = {
   getSolicitudByClienteId,
   procesarInversionByUser,
   aprobarAutomaticamenteSolicitudes,
-  aprobarAutomaticamenteInversiones
+  aprobarAutomaticamenteInversiones,
+  getInvByState
 };

@@ -431,8 +431,8 @@ const validarCampos = () => {
     errorAlert("El monto debe ser mayor a 0.", "Error");
     return false;
   }
-  if (cantidad_pagos.value < 10 || cantidad_pagos.value > 24) {
-    errorAlert("La cantidad de pagos debe estar entre 10 y 24 meses.", "Error");
+  if (cantidad_pagos.value < 0 || cantidad_pagos.value > 24) {
+    errorAlert("La cantidad de pagos debe estar entre 1 y 24 meses.", "Error");
     return false;
   }
   if (fecha_inicio_recaudacion.value < fecha_inicio_rec.value) {

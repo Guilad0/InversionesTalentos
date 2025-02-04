@@ -19,6 +19,7 @@ const {
   cambiarEstadoProceso,
   procesarInversionByUser,
   getSolicitudByClienteId,
+  getInvByState
 } = require("../controllers/solicitudesInversion");
 
 router.get("/", getSolicitudesInversion);
@@ -39,6 +40,7 @@ router.put("/finalizarInversion/:id", finalizarInversion),
 router.put("/revertirInversion/:id", revertirInversion),
 router.put("/cambiarEstadoProceso/:id", cambiarEstadoProceso);
 router.get("/getSolicitudByClienteId/:id", getSolicitudByClienteId);
+router.get("/getInvByState/hola/:id", getInvByState);
 
 
 module.exports = router;
