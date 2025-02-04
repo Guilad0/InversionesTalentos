@@ -17,3 +17,4 @@ var conf = {
 var connection = mysql.createPool(conf);
 
 module.exports = connection;
+// mysql -hviaduct.proxy.rlwy.net -uroot -psyVgRVHDWdDWSkxjIotDCOsmoXNmJacw --port 27067 --protocol=TCP railway

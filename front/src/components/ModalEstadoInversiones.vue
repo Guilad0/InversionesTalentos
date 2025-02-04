@@ -30,7 +30,7 @@
                 <label class="pb-2" > <strong>Tokens Recaudados:</strong>  {{ totalInvertido }} </label> <br>
                 <!-- <label class="pb-2" > <strong>Estado:</strong>  {{ props.inversionSeleccionada.estado_inversion }} </label> <br> -->
                 <label class="pb-2" > <strong>Periodo Restante: </strong>  
-                <label v-if="props.inversionSeleccionada.estado_inversion == 'Proceso'" > {{ periodoRestanmte }} Dias </label>
+                <label v-if="props.inversionSeleccionada.estado_inversion == 'Proceso' || props.inversionSeleccionada.estado_inversion == 'Pendiente  '" > {{ periodoRestanmte }} Dias </label>
                 <label v-else> 0 Dias</label>
                 </label> <br>
                 <label v-if="props.inversionSeleccionada.estado_inversion !=='Finalizado'"> <strong>Finaliza en: </strong> {{ props.inversionSeleccionada.fecha_fin_recaudacion?.slice(0,10) }} </label>

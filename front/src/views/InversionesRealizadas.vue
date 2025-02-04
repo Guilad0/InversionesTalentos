@@ -64,10 +64,10 @@ const showAction = async (index) => {
       path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&page=${page.value}`)
       break;
     case 1:
-      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Proceso&page=${page.value}`)
+      path.value = (`/solicitudesInversion/getInvByState/hola/${user.value.usuario_id}?state=Finalizado`)
       break;
     case 2:
-      path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Finalizado&page=${page.value}`)
+      path.value = (`/solicitudesInversion/getInvByState/hola/${user.value.usuario_id}?state=Reversion`)
       break;
     case 3:
       path.value = (`/inversionesRetiros/getInversores?id_inversor=${user.value.usuario_id}&estadoInv=Reversion&page=${page.value}`)
