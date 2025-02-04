@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         autorack.proxy.rlwy.net
--- Versión del servidor:         9.1.0 - MySQL Community Server - GPL
+-- Host:                         viaduct.proxy.rlwy.net
+-- Versión del servidor:         9.2.0 - MySQL Community Server - GPL
 -- SO del servidor:              Linux
--- HeidiSQL Versión:             12.8.0.6908
+-- HeidiSQL Versión:             12.1.0.6537
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,7 +16,7 @@
 
 
 -- Volcando estructura de base de datos para railway
-CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `railway`;
 
 -- Volcando estructura para tabla railway.ajustes
@@ -42,13 +42,13 @@ CREATE TABLE IF NOT EXISTS `ajustes` (
   `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo_moneda` char(50) COLLATE utf8mb4_unicode_ci DEFAULT 'USDT',
+  `tipo_moneda` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'USDT',
   PRIMARY KEY (`ajuste_id`),
   KEY `admin_id` (`admin_id`),
   CONSTRAINT `admin_id` FOREIGN KEY (`admin_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.ajustes: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla railway.ajustes: ~0 rows (aproximadamente)
 INSERT INTO `ajustes` (`ajuste_id`, `comision_fija_ganancia`, `comision_porcentual_ganancia`, `comision_fija_retiro`, `comision_porcentual_retiro`, `tiempo_minimo_inversion`, `tiempo_maximo_inversion`, `sancion_porcentual_retraso`, `estado`, `valor_token`, `admin_id`, `image1`, `image2`, `image3`, `textHome`, `partners`, `propositoText`, `proposito_imagen`, `video`, `logo`, `nombre`, `tipo_moneda`) VALUES
 	(6, NULL, 5.00, NULL, 4.00, 3, 3, NULL, 1, 1.00, 23, 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023774/home/image1.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734023791/home/image2.png', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734024034/home/image3.png', 'Queremos ayudar a todos los talentos profesionales en áreas como la ingeniería, tecnología y más, a desarrollar sus carreras, aprovechando el apoyo financiero de todos sus seguidores y entusiastas.', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734019144/home/partners.png', 'Ser el aliado líder en el crecimiento financiero de nuestros clientes, ofreciendo soluciones de inversión innovadoras, seguras y responsables, que generen valor sostenible en el tiempo. Aspiramos a transformar la industria de inversiones mediante el uso de tecnología avanzada, transparencia y compra', 'https://res.cloudinary.com/dpb4sg7pc/image/upload/v1732722280/home/proposito_imagen.png', 'https://www.youtube.com/watch?v=aO5GKcWe-FA', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732894553/home/logo.png', 'Slice2.0', 'USDT');
 
@@ -139,9 +139,9 @@ CREATE TABLE IF NOT EXISTS `experiencia` (
   PRIMARY KEY (`experiencia_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.experiencia: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla railway.experiencia: ~11 rows (aproximadamente)
 INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo`, `actividades`, `fecha_inicio`, `fecha_final`, `estado`) VALUES
 	(33, 145, NULL, NULL, NULL, '2023-02-25', NULL, 1),
 	(34, 144, 'Unibienes', 'Analista de Desarrollo', 'Desarrollo full Stack', '2024-11-01', '2024-11-22', 1),
@@ -153,7 +153,8 @@ INSERT INTO `experiencia` (`experiencia_id`, `cliente_id`, `institucion`, `cargo
 	(41, 139, 'Numquam quis optio', 'Tempore autem ut qu', 'Laborum Sed tempora', '1987-01-25', '1991-10-06', 1),
 	(42, 166, 'Quas fugit do ipsum', 'Natus voluptatibus e', 'Autem eligendi sint', '2002-10-16', '2005-12-15', 1),
 	(43, 170, 'Maxime sequi earum h', 'Rerum qui quibusdam', 'Accusantium voluptat', '2024-12-01', '2024-12-13', 1),
-	(44, 171, 'dsadasd', 'asdasd', 'asdasd', '2020-02-16', '2024-12-16', 1);
+	(44, 171, 'dsadasd', 'asdasd', 'asdasd', '2020-02-16', '2024-12-16', 1),
+	(45, 174, 'adsadasdasdada', 'dsadsada', 'dsadsa', '2025-01-30', '2025-02-03', 1);
 
 -- Volcando estructura para tabla railway.informacion
 CREATE TABLE IF NOT EXISTS `informacion` (
@@ -173,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `informacion` (
   PRIMARY KEY (`info_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `informacion_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla railway.informacion: ~11 rows (aproximadamente)
 INSERT INTO `informacion` (`info_id`, `cliente_id`, `ocupacion`, `descripcion`, `monto_inversion`, `cantidad_maxima_inversiones`, `preparacion`, `estudios`, `vision`, `estado`, `video`, `imagen`, `inversion_control`) VALUES
@@ -183,11 +184,12 @@ INSERT INTO `informacion` (`info_id`, `cliente_id`, `ocupacion`, `descripcion`, 
 	(17, 153, 'Hacker', 'Ciberseguridad', 200, 1000, 'Berlin College', 'Ciberseguridad', 'Controlar y/o erradicar la pirateria', 1, NULL, NULL, 0),
 	(21, 159, ' ', '  ', 1, 0, ' ', ' ', ' ', 1, NULL, NULL, 0),
 	(22, 139, 'Nobis sunt qui deser', 'Sed enim amet ad au', 10, 100, 'Consectetur temporib', 'Labore consectetur s', 'Reprehenderit velit', 1, NULL, NULL, 0),
-	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 50, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0),
+	(23, 166, 'Ipsa in dolores ill', 'Qui sit do enim fug', 1, 500, 'Non incididunt esse', 'Quo autem accusantiu', 'Tempora est nihil ma', 1, 'video', NULL, 0),
 	(27, 168, 'Desarrollador', 'Desarrollador de software', 50, 500, 'Licenciatura en Ciencias de la Computación', 'Universidad XYZ', 'Crear soluciones innovadoras', 1, NULL, NULL, 0),
 	(30, 170, 'Sit nostrum esse Na', 'Quia consectetur vol', 50, 500, 'Id laboriosam assum', 'Quos velit in in pla', 'Lorem sit id volup', 1, 'a7a203ac-de53-4400-aa2a-6c9f0e1fca6c.mp4', NULL, 0),
 	(31, 171, 'fronted', 'fronted', 1, NULL, 'fronted', 'fronted', 'front', 1, '1d571b62-58e0-4764-93f9-2856c1ac25d3.mp4', NULL, 0),
-	(32, 145, 'Dolore ratione conse', 'Autem similique et i', 1, 400, 'Ut similique unde as', 'Ea rem minim quasi s', 'Asperiores iste quib', 1, '0e41e671-bf31-4359-9936-d46bfcc82820.mp4', NULL, 0);
+	(32, 145, 'Dolore ratione conse', 'Autem similique et i', 100, 400, 'Ut similique unde as', 'Ea rem minim quasi s', 'Asperiores iste quib', 1, '0e41e671-bf31-4359-9936-d46bfcc82820.mp4', NULL, 0),
+	(33, 174, 'adsadsadsadsa', 'dsadsadsadsad', NULL, NULL, 'dasdsadasdasds', 'sdadsadsad', 'adsdadasdasdsadsadas', 1, 'f9a555ff-5c5c-484b-bab8-78a341c49339.mp4', NULL, 0);
 
 -- Volcando estructura para tabla railway.informacion_inversionista
 CREATE TABLE IF NOT EXISTS `informacion_inversionista` (
@@ -206,15 +208,18 @@ CREATE TABLE IF NOT EXISTS `informacion_inversionista` (
   PRIMARY KEY (`id`),
   KEY `FK_idinversionista` (`id_inversionista`),
   CONSTRAINT `FK_idinversionista` FOREIGN KEY (`id_inversionista`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.informacion_inversionista: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla railway.informacion_inversionista: ~7 rows (aproximadamente)
 INSERT INTO `informacion_inversionista` (`id`, `id_inversionista`, `nombre_completo`, `dni`, `tipo_dni`, `domicilio`, `ciudad`, `situacion_laboral`, `fuente_de_ingresos`, `imagen_selfie`, `imagen_pasaporte_anv`, `imagen_pasaporte_rev`) VALUES
 	(13, 148, 'Alex', '6666666', 'ci', 'Tangamandapio', 'La Paz', 'Independiente', 'Comercio', NULL, NULL, NULL),
 	(14, 140, 'Brian', '123456', 'ci', 'One Piece', 'Grand Blue', 'Independiente', 'Pirata', NULL, NULL, NULL),
 	(15, 160, 'leo', '  ', 'ci', ' ', ' ', '', ' ', NULL, NULL, NULL),
 	(16, 161, 'leo', 'fdsfd1212', 'pasaporte', '  ', '  ', '', '  ', NULL, NULL, NULL),
-	(17, 143, 'juan', '789789789', 'ci', 'calle aroma', 'Cercado', 'Independiente', 'Autonomo', NULL, NULL, NULL);
+	(17, 143, 'juan', '789789789', 'ci', 'calle aroma', 'Cercado', 'Independiente', 'Autonomo', NULL, NULL, NULL),
+	(20, 173, 'Cecilia', '5524659', 'ci', 'Grover Suarez Nº 141', 'Cochabambaa', 'Independiente', 'independiente', NULL, NULL, NULL),
+	(21, 171, 'Danny', '87312522', 'ci', 'calle arauco', 'cochabambas', 'Profesional', 'asddasdasdas', NULL, NULL, NULL),
+	(22, 176, 'Ruth', '8814563', 'ci', 'Cochabamba ciudad', 'Cochabamba ciudad', 'Profesional', 'Trabajo de Contaduria', NULL, NULL, NULL);
 
 -- Volcando estructura para tabla railway.inversiones
 CREATE TABLE IF NOT EXISTS `inversiones` (
@@ -235,17 +240,13 @@ CREATE TABLE IF NOT EXISTS `inversiones` (
   CONSTRAINT `inversiones_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `inversiones_ibfk_2` FOREIGN KEY (`inversor_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `inversiones_ibfk_3` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.inversiones: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla railway.inversiones: ~3 rows (aproximadamente)
 INSERT INTO `inversiones` (`inversion_id`, `solicitud_inv_id`, `cliente_id`, `inversor_id`, `monto`, `tipo_ganancia`, `ganancia_estimada`, `fecha_deposito`, `fecha_devolucion`, `estado`) VALUES
-	(144, 37, 145, 143, 300, NULL, 60.00, '2024-12-22', '2025-03-22', 1),
-	(145, 47, 140, 149, 300, 'Monto fijo', 350.00, '2024-12-15', '2025-06-15', 1),
-	(146, 48, 142, 149, 190, 'Porcentual', 200.00, '2024-12-20', '2025-07-20', 1),
-	(147, 39, 170, 173, 50, NULL, 52.50, '2024-12-29', '2025-03-29', 1),
-	(148, 39, 170, 173, 50, NULL, 52.50, '2024-12-29', '2025-03-29', 1),
-	(149, 42, 149, 173, 10, NULL, 10.50, '2024-12-29', '2025-03-29', 1),
-	(150, 55, 145, 143, 2000, NULL, 2060.00, '2024-12-29', '2025-03-29', 1);
+	(214, 73, 145, 143, 1000, NULL, 80.00, '2025-02-04', '2025-05-04', 1),
+	(215, 74, 174, 175, 5000, NULL, 5250.00, '2025-02-04', '2025-05-04', 1),
+	(216, 74, 174, 176, 1000, NULL, 1050.00, '2025-02-04', '2025-05-04', 1);
 
 -- Volcando estructura para tabla railway.links
 CREATE TABLE IF NOT EXISTS `links` (
@@ -272,9 +273,9 @@ CREATE TABLE IF NOT EXISTS `logros` (
   PRIMARY KEY (`logro_id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `logros_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.logros: ~13 rows (aproximadamente)
+-- Volcando datos para la tabla railway.logros: ~15 rows (aproximadamente)
 INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`) VALUES
 	(29, 145, 'Concurso de Traviesos', 1, '2024-11-14 00:00:00'),
 	(30, 149, 'Desarrollé y optimicé una aplicación web en Vue.js que mejoró la experiencia del usuario, logrando un aumento del 30% en la retención de usuarios durante los primeros tres meses de implementación.', 1, '2024-10-10 00:00:00'),
@@ -290,14 +291,15 @@ INSERT INTO `logros` (`logro_id`, `cliente_id`, `descripcion`, `estado`, `fecha`
 	(40, 139, 'Aut reprehenderit m', 1, '2024-11-01 00:00:00'),
 	(41, 166, 'Asperiores amet qui', 1, '2015-04-06 00:00:00'),
 	(42, 170, 'Desperté a las 09:00', 1, '2024-12-13 00:00:00'),
-	(43, 171, 'asdaasda', 1, '2024-12-16 00:00:00');
+	(43, 171, 'asdaasda', 1, '2024-12-16 00:00:00'),
+	(44, 174, 'asdadsa', 1, '2005-12-10 00:00:00');
 
 -- Volcando estructura para tabla railway.movimientos
 CREATE TABLE IF NOT EXISTS `movimientos` (
   `movimiento_id` int NOT NULL AUTO_INCREMENT,
   `tipo` enum('Ingreso','Egreso') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `monto` decimal(10,2) DEFAULT '0.00',
-  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_solicitud` datetime DEFAULT CURRENT_TIMESTAMP,
   `fecha_desembolso` date DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
@@ -312,46 +314,23 @@ CREATE TABLE IF NOT EXISTS `movimientos` (
   CONSTRAINT `inversiones_id` FOREIGN KEY (`inversiones_id`) REFERENCES `inversiones` (`inversion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `solicitudes_retiro_id` FOREIGN KEY (`solicitudes_retiro_id`) REFERENCES `solicitudes_retiro` (`retiro_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=580 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=920 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.movimientos: ~36 rows (aproximadamente)
+-- Volcando datos para la tabla railway.movimientos: ~88 rows (aproximadamente)
 INSERT INTO `movimientos` (`movimiento_id`, `tipo`, `monto`, `descripcion`, `fecha_solicitud`, `fecha_desembolso`, `estado`, `inversiones_id`, `solicitudes_retiro_id`, `usuario_id`, `token`) VALUES
-	(503, 'Ingreso', 5000.00, 'Reversion', '2024-12-22 05:48:18', NULL, 0, NULL, NULL, 143, 5000.00),
-	(504, 'Ingreso', 0.00, 'Reversion', '2024-12-22 05:48:36', NULL, 1, 144, NULL, 143, 300.00),
-	(505, 'Egreso', 0.00, 'Reversion', '2024-12-22 05:48:36', NULL, 1, 144, NULL, 145, 300.00),
-	(506, 'Ingreso', 5000.00, 'Compra de tokens', '2024-12-23 17:51:10', '2024-12-29', 1, NULL, NULL, 143, 5000.00),
-	(507, 'Ingreso', 500.00, 'Compra de tokens', '2024-12-23 23:14:27', '2024-12-23', 1, NULL, NULL, 149, 500.00),
-	(508, 'Egreso', 300.00, 'Inversión realizada por cliente 140', '2024-12-15 10:00:00', '2024-12-15', 1, 145, NULL, 149, 300.00),
-	(509, 'Egreso', 190.00, 'Inversión realizada por cliente 142', '2024-12-20 15:30:00', '2024-12-20', 1, 146, NULL, 149, 190.00),
-	(510, 'Ingreso', 500.00, 'Compra de tokens', '2024-12-26 15:04:15', '2024-12-29', 1, NULL, NULL, 148, 500.00),
-	(511, 'Ingreso', 5000.00, 'Compra de tokens', '2024-12-27 15:05:29', '2024-12-29', 1, NULL, NULL, 145, 5000.00),
-	(512, 'Ingreso', 24.00, 'Compra de tokens', '2024-12-29 15:28:00', '2024-12-29', 1, NULL, NULL, 173, 24.00),
-	(513, 'Ingreso', 50.00, 'Compra de tokens', '2024-12-29 15:29:19', '2024-12-29', 1, NULL, NULL, 173, 50.00),
-	(514, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:29:50', NULL, 1, 147, NULL, 173, 50.00),
-	(515, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:29:50', NULL, 1, 147, NULL, 170, 50.00),
-	(516, 'Ingreso', 1000.00, 'Compra de tokens', '2024-12-29 15:31:58', '2024-12-29', 1, NULL, NULL, 173, 1000.00),
-	(517, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:32:27', NULL, 1, 148, NULL, 173, 50.00),
-	(518, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:32:27', NULL, 1, 148, NULL, 170, 50.00),
-	(519, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 15:33:12', NULL, 1, 149, NULL, 173, 10.00),
-	(520, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 15:33:12', NULL, 1, 149, NULL, 149, 10.00),
-	(521, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 16:46:15', NULL, 1, NULL, NULL, NULL, 10.00),
-	(522, 'Egreso', 0.00, 'Tokens invertidos', '2024-12-29 17:08:03', NULL, 1, 150, NULL, 143, 2000.00),
-	(523, 'Ingreso', 0.00, 'Inversión recibida', '2024-12-29 17:08:03', NULL, 1, 150, NULL, 145, 2000.00),
-	(553, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:12:53', NULL, 1, NULL, NULL, 145, 27.00),
-	(554, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:12:54', NULL, 1, NULL, NULL, 143, 513.00),
-	(555, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:12:55', NULL, 1, NULL, NULL, 145, 540.00),
-	(556, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:26', NULL, 1, NULL, NULL, 145, 27.00),
-	(557, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:26', NULL, 1, NULL, NULL, 145, 540.00),
-	(558, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:26', NULL, 1, NULL, NULL, 143, 513.00),
-	(559, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:34', NULL, 1, NULL, NULL, 145, 27.00),
-	(560, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:35', NULL, 1, NULL, NULL, 145, 540.00),
-	(561, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:35', NULL, 1, NULL, NULL, 143, 513.00),
-	(562, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 17:14:43', NULL, 1, NULL, NULL, 145, 27.00),
-	(563, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 21:14:43', NULL, 1, NULL, NULL, 145, 540.00),
-	(564, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 21:14:43', NULL, 1, NULL, NULL, 143, 513.00),
-	(574, 'Ingreso', 0.00, 'Ganancia web', '2024-12-29 18:51:43', NULL, 1, NULL, NULL, 145, 27.00),
-	(575, 'Egreso', 0.00, 'Pago cuota', '2024-12-29 22:51:43', NULL, 1, NULL, NULL, 145, 540.00),
-	(576, 'Ingreso', 0.00, 'Tokens invertidos', '2024-12-29 22:51:43', NULL, 1, NULL, NULL, 143, 513.00);
+	(907, 'Ingreso', 1000.00, 'Compra de tokens', '2025-02-04 13:16:24', '2025-02-04', 1, NULL, NULL, 143, 1000.00),
+	(908, 'Egreso', 0.00, 'Tokens invertidos', '2025-02-04 13:17:14', NULL, 1, 214, NULL, 143, 1000.00),
+	(909, 'Ingreso', 0.00, 'Inversión recibida', '2025-02-04 13:17:14', NULL, 1, 214, NULL, 145, 1000.00),
+	(910, 'Ingreso', 80.00, 'Compra de tokens', '2025-02-04 13:20:09', '2025-02-04', 1, NULL, NULL, 145, 80.00),
+	(911, 'Ingreso', 0.00, 'Ganancia web', '2025-02-04 09:20:32', NULL, 1, NULL, NULL, 150, 32.40),
+	(912, 'Egreso', 0.00, 'Pago cuota', '2025-02-04 13:20:32', NULL, 1, NULL, NULL, 145, 1080.00),
+	(913, 'Ingreso', 0.00, 'Tokens invertidos', '2025-02-04 13:20:32', NULL, 1, NULL, NULL, 143, 1030.00),
+	(914, 'Ingreso', 6000.00, 'Compra de tokens', '2025-02-04 16:20:55', '2025-02-04', 1, NULL, NULL, 176, 6000.00),
+	(915, 'Ingreso', 9000.00, 'Compra de tokens', '2025-02-04 16:22:22', '2025-02-04', 1, NULL, NULL, 175, 9000.00),
+	(916, 'Egreso', 0.00, 'Tokens invertidos', '2025-02-04 16:24:18', NULL, 1, 215, NULL, 175, 5000.00),
+	(917, 'Ingreso', 0.00, 'Inversión recibida', '2025-02-04 16:24:18', NULL, 1, 215, NULL, 174, 5000.00),
+	(918, 'Egreso', 0.00, 'Tokens invertidos', '2025-02-04 16:29:21', NULL, 1, 216, NULL, 176, 1000.00),
+	(919, 'Ingreso', 0.00, 'Inversión recibida', '2025-02-04 16:29:21', NULL, 1, 216, NULL, 174, 1000.00);
 
 -- Volcando estructura para tabla railway.plan_pagos
 CREATE TABLE IF NOT EXISTS `plan_pagos` (
@@ -361,65 +340,36 @@ CREATE TABLE IF NOT EXISTS `plan_pagos` (
   `num_pago` int NOT NULL,
   `monto_pago` decimal(10,2) NOT NULL,
   `fecha_programada` date NOT NULL,
-  `estado_pago` enum('Pendiente','Pagado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pendiente',
+  `estado_pago` enum('Pendiente','Pagado') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pendiente',
   `fecha_pagada` date DEFAULT NULL,
   PRIMARY KEY (`plan_id`),
   KEY `fk_solicitud_inv` (`solicitud_inv_id`),
   KEY `fk_cliente_plan` (`cliente_id`),
   CONSTRAINT `fk_cliente_plan` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `fk_solicitud_inv` FOREIGN KEY (`solicitud_inv_id`) REFERENCES `solicitudes_inversion` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.plan_pagos: ~48 rows (aproximadamente)
+-- Volcando datos para la tabla railway.plan_pagos: ~12 rows (aproximadamente)
 INSERT INTO `plan_pagos` (`plan_id`, `solicitud_inv_id`, `cliente_id`, `num_pago`, `monto_pago`, `fecha_programada`, `estado_pago`, `fecha_pagada`) VALUES
-	(1, 40, 170, 1, 1070.00, '2024-12-31', 'Pendiente', NULL),
-	(2, 40, 170, 2, 1070.00, '2025-01-31', 'Pendiente', NULL),
-	(3, 40, 170, 3, 1070.00, '2025-02-28', 'Pendiente', NULL),
-	(4, 40, 170, 4, 1070.00, '2025-03-31', 'Pendiente', NULL),
-	(5, 40, 170, 5, 1070.00, '2025-04-30', 'Pendiente', NULL),
-	(6, 40, 170, 6, 1070.00, '2025-05-31', 'Pendiente', NULL),
-	(7, 40, 170, 7, 1070.00, '2025-06-30', 'Pendiente', NULL),
-	(8, 40, 170, 8, 1070.00, '2025-07-31', 'Pendiente', NULL),
-	(9, 40, 170, 9, 1070.00, '2025-08-31', 'Pendiente', NULL),
-	(10, 40, 170, 10, 1070.00, '2025-09-30', 'Pendiente', NULL),
-	(11, 37, 145, 1, 206.00, '2024-12-26', 'Pendiente', NULL),
-	(12, 37, 145, 2, 206.00, '2025-01-26', 'Pendiente', NULL),
-	(13, 37, 145, 3, 206.00, '2025-02-26', 'Pendiente', NULL),
-	(14, 37, 145, 4, 206.00, '2025-03-26', 'Pendiente', NULL),
-	(15, 37, 145, 5, 206.00, '2025-04-26', 'Pendiente', NULL),
-	(16, 37, 145, 6, 206.00, '2025-05-26', 'Pendiente', NULL),
-	(17, 37, 145, 7, 206.00, '2025-06-26', 'Pendiente', NULL),
-	(18, 37, 145, 8, 206.00, '2025-07-26', 'Pendiente', NULL),
-	(19, 37, 145, 9, 206.00, '2025-08-26', 'Pendiente', NULL),
-	(20, 37, 145, 10, 206.00, '2025-09-26', 'Pendiente', NULL),
-	(21, 55, 145, 1, 540.00, '2025-10-10', 'Pagado', '2024-12-29'),
-	(22, 55, 145, 2, 540.00, '2025-11-10', 'Pagado', '2024-12-29'),
-	(23, 55, 145, 3, 540.00, '2025-12-10', 'Pagado', '2024-12-29'),
-	(24, 55, 145, 4, 540.00, '2026-01-10', 'Pagado', '2024-12-29'),
-	(25, 55, 145, 5, 540.00, '2026-02-10', 'Pagado', '2024-12-29'),
-	(26, 55, 145, 6, 540.00, '2026-03-10', 'Pendiente', '2024-12-29'),
-	(27, 56, 170, 1, 4377.27, '2025-01-03', 'Pendiente', NULL),
-	(28, 56, 170, 2, 4377.27, '2025-02-03', 'Pendiente', NULL),
-	(29, 56, 170, 3, 4377.27, '2025-03-03', 'Pendiente', NULL),
-	(30, 56, 170, 4, 4377.27, '2025-04-03', 'Pendiente', NULL),
-	(31, 56, 170, 5, 4377.27, '2025-05-03', 'Pendiente', NULL),
-	(32, 56, 170, 6, 4377.27, '2025-06-03', 'Pendiente', NULL),
-	(33, 56, 170, 7, 4377.27, '2025-07-03', 'Pendiente', NULL),
-	(34, 56, 170, 8, 4377.27, '2025-08-03', 'Pendiente', NULL),
-	(35, 56, 170, 9, 4377.27, '2025-09-03', 'Pendiente', NULL),
-	(36, 56, 170, 10, 4377.27, '2025-10-03', 'Pendiente', NULL),
-	(37, 56, 170, 11, 4377.27, '2025-11-03', 'Pendiente', NULL),
-	(38, 56, 170, 12, 4377.27, '2025-12-03', 'Pendiente', NULL),
-	(39, 56, 170, 13, 4377.27, '2026-01-03', 'Pendiente', NULL),
-	(40, 56, 170, 14, 4377.27, '2026-02-03', 'Pendiente', NULL),
-	(41, 56, 170, 15, 4377.27, '2026-03-03', 'Pendiente', NULL),
-	(42, 56, 170, 16, 4377.27, '2026-04-03', 'Pendiente', NULL),
-	(43, 56, 170, 17, 4377.27, '2026-05-03', 'Pendiente', NULL),
-	(44, 56, 170, 18, 4377.27, '2026-06-03', 'Pendiente', NULL),
-	(45, 56, 170, 19, 4377.27, '2026-07-03', 'Pendiente', NULL),
-	(46, 56, 170, 20, 4377.27, '2026-08-03', 'Pendiente', NULL),
-	(47, 56, 170, 21, 4377.27, '2026-09-03', 'Pendiente', NULL),
-	(48, 56, 170, 22, 4377.27, '2026-10-03', 'Pendiente', NULL);
+	(73, 70, 145, 1, 1080.00, '2025-10-10', 'Pagado', '2025-02-04'),
+	(74, 71, 145, 1, 1080.00, '2025-10-10', 'Pagado', '2025-02-04'),
+	(75, 72, 145, 1, 1080.00, '2025-08-08', 'Pagado', '2025-02-04'),
+	(76, 73, 145, 1, 1080.00, '2025-08-08', 'Pagado', '2025-02-04'),
+	(77, 74, 174, 1, 733.33, '2025-03-01', 'Pendiente', NULL),
+	(78, 74, 174, 2, 733.33, '2025-04-01', 'Pendiente', NULL),
+	(79, 74, 174, 3, 733.33, '2025-05-01', 'Pendiente', NULL),
+	(80, 74, 174, 4, 733.33, '2025-06-01', 'Pendiente', NULL),
+	(81, 74, 174, 5, 733.33, '2025-07-01', 'Pendiente', NULL),
+	(82, 74, 174, 6, 733.33, '2025-08-01', 'Pendiente', NULL),
+	(83, 74, 174, 7, 733.33, '2025-09-01', 'Pendiente', NULL),
+	(84, 74, 174, 8, 733.33, '2025-10-01', 'Pendiente', NULL),
+	(85, 74, 174, 9, 733.33, '2025-11-01', 'Pendiente', NULL),
+	(86, 74, 174, 10, 733.33, '2025-12-01', 'Pendiente', NULL),
+	(87, 74, 174, 11, 733.33, '2026-01-01', 'Pendiente', NULL),
+	(88, 74, 174, 12, 733.33, '2026-02-01', 'Pendiente', NULL),
+	(89, 74, 174, 13, 733.33, '2026-03-01', 'Pendiente', NULL),
+	(90, 74, 174, 14, 733.33, '2026-04-01', 'Pendiente', NULL),
+	(91, 74, 174, 15, 733.33, '2026-05-01', 'Pendiente', NULL);
 
 -- Volcando estructura para tabla railway.posts
 CREATE TABLE IF NOT EXISTS `posts` (
@@ -466,27 +416,22 @@ CREATE TABLE IF NOT EXISTS `solicitudes_inversion` (
   `cantidad_pagos` int NOT NULL DEFAULT '0',
   `fecha_inicio_pago` date NOT NULL,
   `fecha_fin_pago` date NOT NULL,
-  `aprobado` enum('Inicial','Pendiente','Aprobado','Rechazado') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Inicial',
+  `aprobado` enum('Inicial','Pendiente','Aprobado','Rechazado') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Inicial',
   `estado` tinyint(1) NOT NULL DEFAULT '1',
-  `observaciones` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado_inversion` enum('Inicial','Pendiente','Proceso','Finalizado','Reversion') COLLATE utf8mb4_general_ci DEFAULT 'Inicial',
+  `observaciones` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado_inversion` enum('Inicial','Pendiente','Proceso','Finalizado','Reversion') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Inicial',
   `porcentaje_interes` decimal(5,2) DEFAULT '0.00',
-  `canceladoPor` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'Admin',
+  `canceladoPor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Admin',
   `fecha_solicitud` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `si_cliente_id` (`cliente_id`) USING BTREE,
   CONSTRAINT `si_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla railway.solicitudes_inversion: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla railway.solicitudes_inversion: ~2 rows (aproximadamente)
 INSERT INTO `solicitudes_inversion` (`id`, `cliente_id`, `nombre`, `descripcion`, `fecha_inicio_recaudacion`, `fecha_fin_recaudacion`, `monto`, `cantidad_pagos`, `fecha_inicio_pago`, `fecha_fin_pago`, `aprobado`, `estado`, `observaciones`, `estado_inversion`, `porcentaje_interes`, `canceladoPor`, `fecha_solicitud`) VALUES
-	(39, 170, 'Est numquam laborum ', 'Esse assumenda a el', '2024-12-28', '2024-12-31', 100000.00, 10, '2025-01-01', '2025-11-01', 'Aprobado', 1, NULL, 'Finalizado', 2.00, 'Admin', '2024-12-27 21:03:37'),
-	(40, 170, 'Inversion motivo', 'descripcion solicitud', '2024-12-28', '2024-12-31', 10000.00, 10, '2024-12-31', '2025-10-31', 'Aprobado', 1, NULL, 'Finalizado', 7.00, 'Admin', '2024-12-27 21:03:37'),
-	(42, 149, 'inversion agricola', 'quiero poder sembrar 100 hectaras de cania', '2024-12-24', '2025-01-24', 1000.00, 8, '2024-12-31', '2025-10-31', 'Aprobado', 1, NULL, 'Pendiente', 8.00, 'Admin', '2024-12-27 21:03:37'),
-	(47, 140, 'Inversión A', 'Primera solicitud de inversión.', '2024-12-01', '2024-12-23', 10000.00, 12, '2025-01-01', '2025-12-31', 'Pendiente', 1, 'Sin observaciones', 'Pendiente', 5.00, 'Admin', '2024-12-27 21:03:37'),
-	(48, 142, 'Inversión B', 'Segunda solicitud de inversión.', '2024-11-15', '2024-12-23', 20000.00, 24, '2025-01-15', '2026-12-31', 'Pendiente', 1, NULL, 'Pendiente', 6.50, 'Admin', '2024-12-27 21:03:37'),
-	(55, 145, 'diplomado', 'especializacion en prgoramciaocn', '2024-12-28', '2024-12-31', 3000.00, 6, '2025-10-10', '2026-04-10', 'Aprobado', 1, NULL, 'Proceso', 8.00, 'Admin', '2024-12-27 21:03:37'),
-	(56, 170, 'Accusantium nesciunt', 'Libero consectetur ', '2024-12-30', '2024-12-31', 90000.00, 22, '2025-01-03', '2026-11-03', 'Aprobado', 1, NULL, 'Proceso', 7.00, 'Admin', '2024-12-29 22:44:42');
+	(73, 145, 'nuevo', 'desc', '2025-02-04', '2025-02-08', 1000.00, 1, '2025-08-08', '2025-09-08', 'Aprobado', 1, '', 'Finalizado', 8.00, 'Admin', '2025-02-04 09:14:05'),
+	(74, 174, 'Diplomado en Análisis de Datos', 'Diplomado en analisis de datos', '2025-02-03', '2025-02-20', 10000.00, 15, '2025-03-01', '2026-05-29', 'Aprobado', 1, '', 'Pendiente', 10.00, 'Admin', '2025-02-04 11:55:06');
 
 -- Volcando estructura para tabla railway.solicitudes_retiro
 CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
@@ -508,9 +453,12 @@ CREATE TABLE IF NOT EXISTS `solicitudes_retiro` (
   KEY `inversion_id` (`inversion_id`),
   CONSTRAINT `solicitudes_retiro_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `solicitudes_retiro_ibfk_2` FOREIGN KEY (`inversion_id`) REFERENCES `inversiones` (`inversion_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.solicitudes_retiro: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.solicitudes_retiro: ~2 rows (aproximadamente)
+INSERT INTO `solicitudes_retiro` (`retiro_id`, `tipo`, `usuario_id`, `monto_solicitud`, `tokens_cambio`, `comision_aplicar`, `monto_recibir`, `fecha_solicitud`, `fecha_aprobacion`, `foto_identificacion`, `selfie_identificacion`, `estado`, `inversion_id`) VALUES
+	(113, 'inversor', 171, 100.00, 100.00, 0.00, 100.00, '2025-01-15 19:59:53', NULL, NULL, NULL, 'Pendiente', NULL),
+	(114, 'cliente', 171, 100.00, 100.00, 0.00, 100.00, '2025-01-15 20:58:39', NULL, NULL, NULL, 'Pendiente', NULL);
 
 -- Volcando estructura para tabla railway.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
@@ -546,9 +494,9 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `numero_telefono` (`numero_telefono`),
   KEY `categoria_persona_id` (`categoria_persona_id`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`categoria_persona_id`) REFERENCES `categoria_personas` (`categoria_persona_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla railway.usuarios: ~29 rows (aproximadamente)
+-- Volcando datos para la tabla railway.usuarios: ~31 rows (aproximadamente)
 INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pais`, `numero_telefono`, `username`, `pais_residencia`, `password`, `edad`, `acepta_terminos`, `categoria_persona_id`, `rol`, `created_at`, `updated_at`, `estado`, `cod_verificacion`, `verificado`, `saldo_total`, `registrado_por`, `aprobado`, `resetPasswordToken`, `resetPasswordExpires`, `genero`, `imagen`, `video`, `porcentaje_registro`) VALUES
 	(140, 'Brian', 'Villarroel', 'braal.vf@gmail.com', '+591', '76543210', 'Brian - Villarroel', 'Bolivia', '$2b$10$QfURX5A.flFB9CYg/vo7uO4lIpN.DJBmW9oruYpKVruyIatgMZcU6', 32, 1, 16, 'Inversionista', '2024-11-25 13:37:00', '2024-11-25 13:37:00', 1, '1e80ab3a68c8ecb03cbd77dc5042bda28e357038', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732544180/clients/140.jpg', NULL, '100%'),
 	(142, 'cecilia ', 'Velarde', 'airamposoruco@gmail.com', '+591', '60397621', 'cecilia  - Velarde', 'Bolivia', '$2b$10$rGg18E/rfqdJvtbU78lhJ.BLTcK6ejLllptG/LRaWENrr/oJVM6kW', 33, 1, NULL, 'Admin', '2024-11-25 13:38:28', '2024-11-25 13:38:28', 1, 'c6ada34e5f6096d23d45d2ec9799217a1c549ff1', 1, 0.00, '', 1, NULL, NULL, 'mujer', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732549700/clients/142.jpg', NULL, '20%'),
@@ -571,14 +519,16 @@ INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellido`, `correo`, `codigo_pa
 	(163, 'eew', 'qwe', 'q@gmail.com', '+55', '20202020202', 'eew - qwe', 'Brazil', '$2b$10$uAv0U9NceK0jJwJ4jE3mN.CqzHuvy7YQnd6U13.NgHnR9BPO4b3Cy', 24, 1, 19, 'Null', '2024-11-27 14:23:33', '2024-11-27 14:23:33', 1, 'dec2c42ff4e17d45c44299abe6e5d1bd54d8b231', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(164, 'Ari', 'Dorado', 'a@gmail.com', '+1', '1479852', 'Ari - Dorado', 'Canada', '$2b$10$wWeaXqP0e2cKplJPhhunCeZzpsGRMSO.MJ8NUDLmIGZDpFANnoSa.', 23, 1, 19, 'Inversionista', '2024-11-27 14:33:23', '2024-11-27 14:33:23', 1, '71c9fdd7955332dde4b798430cd5e8eba1a9b702', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(165, 'Marvin Ramirez', 'Wiley', 'vujime@mailinator.com', '+591', '+1 (631) 169-7471', 'Marvin Ramirez - Wiley', 'Cuba', '$2b$10$u8kd/4vid7xyM/D8W/KCdOAxGyt.61QLxc36M9Ow.o3NkW4bCqRBy', 20, 1, 18, 'Null', '2024-11-27 20:46:53', '2024-11-27 20:46:53', 1, '5f13150d959ecd5665c3a122c6f4de1e5bca8d17', 1, 0.00, '', 0, NULL, NULL, 'mujer', NULL, NULL, '0%'),
-	(166, 'luis', 'luis', 'joryorch5000@gmail.com', '+54', '12345678', 'luis - luis', 'Argentina', '$2b$10$x0tYSekcYuTPPYaApbRW4OK3s9DfHmNWcOaKIotm2NktVAWdTj8ae', 24, 1, 16, 'Admin', '2024-11-27 20:58:18', '2024-11-27 20:58:18', 1, '9a2e7a85a5dbf1c2c992e3a302f3d1aa78a7d8d1', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732741507/clients/166.png', NULL, '100%'),
+	(166, 'luis', 'luis', 'joryorch5000@gmail.com', '+54', '12345678', 'luis - luis', 'Argentina', '$2b$10$x0tYSekcYuTPPYaApbRW4OK3s9DfHmNWcOaKIotm2NktVAWdTj8ae', 24, 1, 16, 'Cliente', '2024-11-27 20:58:18', '2024-11-27 20:58:18', 1, '9a2e7a85a5dbf1c2c992e3a302f3d1aa78a7d8d1', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1732741507/clients/166.png', NULL, '100%'),
 	(167, 'Cristian Andres', 'Carvajal Garcia', 'andres-carvajal-garcia64@outlook.com', '+591', '68757882', 'Cristian Andres - Carvajal Garcia', 'Bolivia', '$2b$10$olLLW68MACyzhaQ95CsZh.iffKjggMRDKl2oGLTf6a4qly6osHiYi', 26, 1, 20, 'Cliente', '2024-11-28 21:33:55', '2024-11-28 21:33:55', 1, '6d45e9730a178d6aacc587c4f77293899c11d9c7', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', NULL, NULL, '0%'),
 	(168, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.herediaaa@gmail.com', '+591', '76993789', 'Rodrigso - Gandarillas Heredisa', 'Bolivia', '$2b$10$6R.Caj3zru1NW7.uuOBpTOLLllSGYn5xcqQjk7RHp9uqu0UAR1r7a', 28, 1, 19, 'Cliente', '2024-12-11 20:34:54', '2024-12-11 20:34:54', 1, '5db5c3fab427d9f3f15696c048098fda9ef4cc17', 1, 0.00, '', 0, NULL, NULL, 'hombre', NULL, NULL, '20%'),
-	(169, 'Danny', 'Gonzales Medina', 'd1303gm@gmail.com', '+591', '60746303', 'Danny - Gonzales Medina', 'Bolivia', '$2b$10$Ufm/tnQWNW39E/XS9nJqpuCArGOBbCFpUPkrOeew70zcz4MhGOVae', 26, 1, 16, 'Cliente', '2024-12-11 21:24:07', '2024-12-11 21:24:07', 1, '9076104c1597fe4b39fb8efc060db1282ffd81de', 0, 0.00, '', 0, 'a8d23532bdf04c775e95b90d940252a7d28ed952', 1734366005179, 'hombre', NULL, NULL, '0%'),
-	(170, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillas.heredia@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$jE81XG7prbHWUW4v0XoVre0seadbGfb2RL0KnifuXItW/mwoueR3a', 29, 1, 18, 'Cliente', '2024-12-13 14:31:04', '2024-12-13 14:31:04', 1, 'a413f0049d12b515289119c4474b2238bd78cc21', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734100562/clients/170.jpg', NULL, '100%'),
-	(171, 'Danny ', 'Gonzales Medina', 'dan9813gm@gmail.com', '+591', '60746302', 'Danny  - Gonzales Medina', 'Bolivia', '$2b$10$bmAenGiVHTgSPA46HPnT6.xCJe5hkbYkNBXb0bIHswU4AWe7p.6.W', 26, 1, 20, 'Cliente', '2024-12-16 15:26:12', '2024-12-16 15:26:12', 1, '73e0fccd6534b98f63163f305bfff733a9f1ff71', 1, 0.00, 'admin@gmail.com', 0, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734364323/clients/171.png', NULL, '100%'),
+	(170, 'Rodrigo', 'Gandarillas Heredia', 'rodrigo.gandarillaas.heredia@gmail.com', '+591', '76993762', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$jE81XG7prbHWUW4v0XoVre0seadbGfb2RL0KnifuXItW/mwoueR3a', 29, 1, 18, 'Cliente', '2024-12-13 14:31:04', '2024-12-13 14:31:04', 1, 'a413f0049d12b515289119c4474b2238bd78cc21', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734100562/clients/170.jpg', NULL, '100%'),
+	(171, 'Danny ', 'Gonzales Medina', 'dan9813gm@gmail.com', '+591', '60746302', 'Danny  - Gonzales Medina', 'Bolivia', '$2b$10$bmAenGiVHTgSPA46HPnT6.xCJe5hkbYkNBXb0bIHswU4AWe7p.6.W', 26, 1, 20, 'Cliente', '2024-12-16 15:26:12', '2024-12-16 15:26:12', 1, '73e0fccd6534b98f63163f305bfff733a9f1ff71', 1, 0.00, 'admin@gmail.com', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1734364323/clients/171.png', NULL, '100%'),
 	(172, 'Bradley Wiggins', 'Haney', 'rkorodri@gmail.com', '+591', '+1 (717) 629-9067', 'Bradley Wiggins - Haney', 'Costa Rica', '$2b$10$Q/T0LweBqlqOxhX6bIi7Le9sZeP7HO/PGawKMcPfzbHzh2dTEHbH6', 52, 1, 16, 'Cliente', '2024-12-16 16:56:57', '2024-12-16 16:56:57', 1, '5019d2ce482ec486a617cf57ee6b999eda8bc32f', 1, 0.00, '', 0, NULL, NULL, '', NULL, NULL, '0%'),
-	(173, 'Cecilia', 'Soruco', 'airamppo1@gmail.com', '+591', '68501530', 'Cecilia - Soruco', 'Bolivia', '$2b$10$WhnpfE49NL37RT.oYT/i2eTCmjkBI9/pFH4rX6YNGd.XwwNU3cO2u', 33, 1, 16, 'Inversionista', '2024-12-27 20:03:27', '2024-12-27 20:03:27', 1, '99b8289be5a915653119b3a37f0891e08befb0a3', 1, 0.00, '', 1, NULL, NULL, 'mujer', NULL, NULL, '0%');
+	(173, 'Cecilia', 'Soruco', 'airamppo1@gmail.com', '+591', '68501530', 'Cecilia - Soruco', 'Bolivia', '$2b$10$WhnpfE49NL37RT.oYT/i2eTCmjkBI9/pFH4rX6YNGd.XwwNU3cO2u', 33, 1, 16, 'Inversionista', '2024-12-27 20:03:27', '2024-12-27 20:03:27', 1, '99b8289be5a915653119b3a37f0891e08befb0a3', 1, 0.00, '', 1, NULL, NULL, 'mujer', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1736088130/clients/173.jpg', NULL, '100%'),
+	(174, 'Rodrigo', 'Gandarillas Heredia', 'rodri@gmail.com', '+591', '76993766', 'Rodrigo - Gandarillas Heredia', 'Bolivia', '$2b$10$8gRIzDZlvb2X8ouoNa0gy.SmXvI4vlGef6WHFZvclgc0bmCTZlQOW', 34, 1, 16, 'Cliente', '2025-02-04 15:42:42', '2025-02-04 15:42:42', 1, '71e1c1119e6ff57f88d212d67311cd12017a65e9', 1, 0.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1738685929/clients/174.png', NULL, '100%'),
+	(175, 'Karen', 'GandarillasHeredia', 'inversor1@gmail.com', '+591', '63256746', 'Karen - GandarillasHeredia', 'Bolivia', '$2b$10$qL5LGCcrU1n7Vksh0GFUhu7eRL3O769eIs.YlJjncCRrk91VfkfxW', 21, 1, 16, 'Inversionista', '2025-02-04 15:45:14', '2025-02-04 15:45:14', 1, '5cc397fbcdccf8c92979e8e090a2b36deeda04e4', 1, 5000.00, '', 1, NULL, NULL, 'hombre', NULL, NULL, '100%'),
+	(176, 'Ruth', 'Gandarillas Heredia', 'inversor2@gmail.com', '+591', '78569521', 'Ruth - Gandarillas Heredia', 'Bolivia', '$2b$10$8eYVW64QOV.5sa/wrBKQWuKvlJ88OxXASjtbZPhuQpkCfUQxthTqS', 24, 1, 16, 'Inversionista', '2025-02-04 15:46:07', '2025-02-04 15:46:07', 1, 'cf6511a65aecbba4b46fb8f00ba8c1fc890df587', 1, 5000.00, '', 1, NULL, NULL, 'hombre', 'https://res.cloudinary.com/dbvzafbum/image/upload/v1738685820/clients/176.jpg', NULL, '100%');
 
 -- Volcando estructura para disparador railway.generar_plan_pagos_solicitud
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';

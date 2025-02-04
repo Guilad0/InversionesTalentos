@@ -101,15 +101,30 @@
             </button>
 
             <button
-              :disabled="loadingValues ||loadingInvertir == true || (tokensCompradosInversionista - tokensInvertidosInversionista) <= 0 || inv.monto == inv.total_recaudado"
+              :disabled="
+                loadingValues ||
+                loadingInvertir == true ||
+                tokensCompradosInversionista - tokensInvertidosInversionista <=
+                  0 ||
+                inv.monto == inv.total_recaudado
+              "
               v-if="user.rol !== 'Admin'"
               class="animate__animated animate__fadeInUp animate__slow btn-6 m-2 col-2"
               data-bs-toggle="modal"
               data-bs-target="#modalInversion"
-              :title="(tokensCompradosInversionista - tokensInvertidosInversionista) <= 0 ? 'No tienes tokens suficientes para invertir' : '' || inv.monto == inv.total_recaudado ? 'El proyecto ha alcanzado su objetivo' : ''"
+              :title="
+                tokensCompradosInversionista - tokensInvertidosInversionista <=
+                0
+                  ? 'No tienes tokens suficientes para invertir'
+                  : '' || inv.monto == inv.total_recaudado
+                  ? 'El proyecto ha alcanzado su objetivo'
+                  : ''
+              "
             >
               <i class="fas fa-dollar-sign"></i>
-              <label v-if="!loadingValues || loadingInvertir == true">Invertir</label>
+              <label v-if="!loadingValues || loadingInvertir == true"
+                >Invertir</label
+              >
               <label v-else>..cargando</label>
               <span></span>
             </button>
@@ -393,9 +408,7 @@
                 <div class="col">
                   <p class="text-center">
                     Tokens Disponibles:
-                    <strong>{{
-                      tokensDisponibles
-                    }}</strong>
+                    <strong>{{ tokensDisponibles }}</strong>
                   </p>
                 </div>
                 <div class="col">
@@ -421,7 +434,7 @@
                       for="monto_tokens_invertir"
                       :class="{ 'text-danger': bandMaximo }"
                       >Monto maximo de inversion:
-                      <strong>{{ inv.monto_restante  }}</strong>
+                      <strong>{{ inv.monto_restante }}</strong>
                     </label>
                   </div>
                 </div>
@@ -460,7 +473,12 @@
           </div>
           <div class="modal-footer">
             <button
-              :disabled="monto_tokens_invertir > inv.monto_restante || tokensDisponibles  < 0  || bandMinimo != false || loadingInvertir == true "
+              :disabled="
+                monto_tokens_invertir > inv.monto_restante ||
+                tokensDisponibles < 0 ||
+                bandMinimo != false ||
+                loadingInvertir == true
+              "
               type="button"
               @click="inversionistaInvertir()"
               class="animate__animated animate__fadeInUp animate__slow btn-6"
@@ -493,7 +511,13 @@
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, onMounted, watch, computed } from "vue";
-import { errorAlert, successAlert } from "@/helpers/iziToast";
+import Swal from "sweetalert2";
+import {
+  errorAlert,
+  infoAlert,
+  successAlert,
+  successAlertAcept,
+} from "@/helpers/iziToast";
 const route = useRoute();
 const router = useRouter();
 const userId = ref("");
@@ -575,7 +599,6 @@ onMounted(async () => {
   await getInversion();
   await obtenerFechasPagos();
   loadingValues.value = false;
-  
 });
 
 // let baseURL = "https://apitalentos.pruebasdeploy.online/billetera/";
@@ -759,8 +782,6 @@ const obtenerTokens_Inversionista_Invertidos = async () => {
   }
 };
 
-
-
 const loadingInvertir = ref(false);
 const inversionistaInvertir = async () => {
   const tokensInversionista =
@@ -810,7 +831,21 @@ const inversionistaInvertir = async () => {
       var modal = bootstrap.Modal.getInstance(myModalEl);
       modal.hide();
     } catch (error) {
-      console.error("Error al invertir los tokens:", error);
+      if (error.response?.status === 400) {
+        Swal.fire({
+          icon: "warning",
+          title: "Advertencia",
+          text: error.response.data.message,
+          confirmButtonText: "Aceptar",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
       errorAlert("Error al invertir los tokens", "Transaccion fallida");
     } finally {
       loadingInvertir.value = false;
@@ -823,9 +858,7 @@ const inversionistaInvertir = async () => {
     );
   }
 };
-watch(loadingInvertir, (newValue, oldValue) => {
-
-});
+watch(loadingInvertir, (newValue, oldValue) => {});
 
 const tokensDisponibles = computed(() => {
   return (
@@ -904,8 +937,6 @@ const pauseVideo = () => {
     video.pause(); // Pausa el video
   }
 };
-
-
 </script>
 
 <style scoped>

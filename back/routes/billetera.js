@@ -67,7 +67,7 @@ router.get("/dolaresInversionista/:id", function (req, res, next) {
 });
 
 router.get("/totalTokens/:id", function (req, res, next) {
-  
+
   var query = ` 
 SELECT 
     t.tipo, 
@@ -152,7 +152,34 @@ router.post("/invertirTokens", function (req, res, next) {
     id_inv
   } = req.body;
 
-  let getData = `SELECT 
+  let checkMontoQuery = `
+    SELECT 
+      s.monto as monto_solicitado,
+      COALESCE(SUM(i.monto), 0) as monto_invertido
+    FROM solicitudes_inversion s
+    LEFT JOIN inversiones i ON i.solicitud_inv_id = s.id
+    WHERE s.id = ?
+    GROUP BY s.id, s.monto`;
+
+  connection.query(checkMontoQuery, [id_inv], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        message: 'Error al verificar montos'
+      });
+    }
+
+    const montoSolicitado = results[0].monto_solicitado;
+    const montoInvertido = results[0].monto_invertido;
+    const montoRestante = montoSolicitado - montoInvertido;
+
+    if (monto > montoRestante) {
+      return res.status(400).json({
+        message: `El monto a invertir excede el monto restante disponible. Máximo disponible: ${montoRestante}`
+      });
+    }
+
+    let getData = `SELECT 
     monto, 
     inversion_id
     FROM 
@@ -160,66 +187,67 @@ router.post("/invertirTokens", function (req, res, next) {
     WHERE 
     inversor_id = ? 
     AND solicitud_inv_id = ?;`
-  connection.query(getData,[inversor_id, id_inv],(err, results)=>{
-    if( err ){
-      return res.status(500).json({ err,msg:'Error en la transaccion' })
-    }
-    const id_2 = results[0]?.inversion_id
-    const monto2 = monto + parseFloat(results[0]?.monto);
-    console.log('pruebaaaaaaaaaaaaa', results.length === 0, ' logintudddddddd',results.length);
-    var query = (results.length === 0)? ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
-                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');` 
-                :
-                `
+    connection.query(getData, [inversor_id, id_inv], (err, results) => {
+      if (err) {
+        return res.status(500).json({ err, msg: 'Error en la transaccion' })
+      }
+      const id_2 = results[0]?.inversion_id
+      const monto2 = monto + parseFloat(results[0]?.monto);
+      console.log('pruebaaaaaaaaaaaaa', results.length === 0, ' logintudddddddd', results.length);
+      var query = (results.length === 0) ? ` INSERT INTO inversiones (cliente_id, inversor_id, monto, fecha_deposito, ganancia_estimada, fecha_devolucion,solicitud_inv_id)
+                VALUES ('${cliente_id}', '${inversor_id}', '${monto}', CURRENT_TIMESTAMP(), '${ganancia_estimada}', '${fecha_devolucion}','${id_inv}');`
+        :
+        `
                 update inversiones set monto=${monto2} where  inversor_id = ${inversor_id} and solicitud_inv_id = ${id_inv}
                 `;
-  connection.query(query, function (error, results, fields) {
-    if (error) {
-      console.log(error);
-      res.status(500).send({
-        error: error,
-        message: "Error al realizar la petición",
-      });
-    } else {
-      const inversion_id = results.insertId || id_2;
-      var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
+      connection.query(query, function (error, results, fields) {
+        if (error) {
+          console.log(error);
+          res.status(500).send({
+            error: error,
+            message: "Error al realizar la petición",
+          });
+        } else {
+          const inversion_id = results.insertId || id_2;
+          var queryTokenInversionista = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
                 VALUES ('${tipo}', '${descripcion}', CURRENT_TIMESTAMP(), NULL, '${token}', '${usuario_id}', '${inversion_id}', NULL);`;
 
-      connection.query(
-        queryTokenInversionista,
-        function (error, results, fields) {
-          if (error) {
-            console.log(error);
-            res.status(500).send({
-              error: error,
-              message: "Error al realizar la petición",
-            });
-          } else {
-            var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
+          connection.query(
+            queryTokenInversionista,
+            function (error, results, fields) {
+              if (error) {
+                console.log(error);
+                res.status(500).send({
+                  error: error,
+                  message: "Error al realizar la petición",
+                });
+              } else {
+                var queryTokenCliente = ` INSERT INTO movimientos (tipo, descripcion, fecha_solicitud, fecha_desembolso, token, usuario_id, inversiones_id, solicitudes_retiro_id)
           VALUES ('Ingreso', 'Inversión recibida', CURRENT_TIMESTAMP(), NULL, '${token}', '${cliente_id}', '${inversion_id}', NULL);`;
 
-            connection.query(
-              queryTokenCliente,
-              function (error, results, fields) {
-                if (error) {
-                  console.log(error);
-                  res.status(500).send({
-                    error: error,
-                    message: "Error al realizar la petición",
-                  });
-                }
+                connection.query(
+                  queryTokenCliente,
+                  function (error, results, fields) {
+                    if (error) {
+                      console.log(error);
+                      res.status(500).send({
+                        error: error,
+                        message: "Error al realizar la petición",
+                      });
+                    }
+                  }
+                );
               }
-            );
-          }
+            }
+          );
+          res.status(200).send({
+            data: results.insertId,
+            message: "inversion realizada",
+          });
         }
-      );
-      res.status(200).send({
-        data: results.insertId,
-        message: "inversion realizada",
       });
-    }
+    })
   });
-  })
 });
 
 
@@ -336,12 +364,12 @@ router.post("/solicitarRetiro", function (req, res, next) {
               error: error,
               message: "Error al realizar la petición",
             });
-          }else {
-              res.status(200).send({
-                data: results,
-                message: "Solicitud realizada correctamente",
-              });
-            }
+          } else {
+            res.status(200).send({
+              data: results,
+              message: "Solicitud realizada correctamente",
+            });
+          }
         }
       );
     }
